@@ -1,0 +1,40 @@
+{
+  "method": "POST",
+  "path": "/api/v1/user",
+  "summary": "Register user",
+  "tags": [
+    "My Account"
+  ],
+  "requestBody": {
+    "required": true,
+    "content": {
+      "application/json": {
+        "schema": {
+          "$ref": "#/components/schemas/RegisterOrActivateUser"
+        }
+      }
+    }
+  },
+  "responses": {
+    "200": {
+      "description": "Ok",
+      "content": {
+        "application/json": {
+          "schema": {
+            "$ref": "#/components/schemas/ApiRegisterUserResponse"
+          }
+        }
+      }
+    },
+    "default": {
+      "description": "Error",
+      "content": {
+        "application/json": {
+          "schema": {
+            "$ref": "#/components/schemas/ApiErrorPayload"
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,89 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://api-evangelist.github.io/lightdash/json-schema/lightdash-scimuser.json",
+  "title": "ScimUser",
+  "description": "Lightdash ScimUser schema",
+  "properties": {
+    "schemas": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "id": {
+      "type": "string"
+    },
+    "meta": {
+      "properties": {
+        "version": {
+          "type": "string"
+        },
+        "location": {
+          "type": "string"
+        },
+        "lastModified": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "created": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "resourceType": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "userName": {
+      "type": "string"
+    },
+    "name": {
+      "properties": {
+        "familyName": {
+          "type": "string"
+        },
+        "givenName": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "active": {
+      "type": "boolean"
+    },
+    "emails": {
+      "items": {
+        "properties": {
+          "primary": {
+            "type": "boolean"
+          },
+          "value": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "value"
+        ],
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "roles": {
+      "items": {
+        "$ref": "#/components/schemas/ScimUserRole"
+      },
+      "type": "array"
+    },
+    "urn:lightdash:params:scim:schemas:extension:2.0:User": {
+      "$ref": "#/components/schemas/LightdashScimExtension"
+    }
+  },
+  "required": [
+    "schemas",
+    "id",
+    "userName"
+  ],
+  "type": "object",
+  "additionalProperties": true
+}

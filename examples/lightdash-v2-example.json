@@ -1,0 +1,41 @@
+{
+  "method": "POST",
+  "path": "/api/v2/orgs/{orgUuid}/roles",
+  "summary": "Create custom role",
+  "tags": [
+    "v2",
+    "Custom Roles"
+  ],
+  "requestBody": {
+    "required": true,
+    "content": {
+      "application/json": {
+        "schema": {
+          "$ref": "#/components/schemas/CreateRole"
+        }
+      }
+    }
+  },
+  "responses": {
+    "201": {
+      "description": "Created",
+      "content": {
+        "application/json": {
+          "schema": {
+            "$ref": "#/components/schemas/ApiDefaultRoleResponse"
+          }
+        }
+      }
+    },
+    "default": {
+      "description": "Error",
+      "content": {
+        "application/json": {
+          "schema": {
+            "$ref": "#/components/schemas/ApiErrorPayload"
+          }
+        }
+      }
+    }
+  }
+}

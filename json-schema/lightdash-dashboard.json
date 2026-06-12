@@ -1,0 +1,162 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://api-evangelist.github.io/lightdash/json-schema/lightdash-dashboard.json",
+  "title": "Dashboard",
+  "description": "Lightdash Dashboard schema",
+  "properties": {
+    "deletedBy": {
+      "properties": {
+        "lastName": {
+          "type": "string"
+        },
+        "firstName": {
+          "type": "string"
+        },
+        "userUuid": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "lastName",
+        "firstName",
+        "userUuid"
+      ],
+      "type": "object",
+      "nullable": true
+    },
+    "deletedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "colorPaletteUuid": {
+      "type": "string",
+      "nullable": true
+    },
+    "config": {
+      "$ref": "#/components/schemas/DashboardConfig"
+    },
+    "slug": {
+      "type": "string"
+    },
+    "access": {
+      "items": {
+        "$ref": "#/components/schemas/SpaceAccess"
+      },
+      "type": "array",
+      "nullable": true
+    },
+    "inheritsFromOrgOrProject": {
+      "type": "boolean"
+    },
+    "tabs": {
+      "items": {
+        "$ref": "#/components/schemas/DashboardTab"
+      },
+      "type": "array"
+    },
+    "pinnedListOrder": {
+      "type": "number",
+      "format": "double",
+      "nullable": true
+    },
+    "pinnedListUuid": {
+      "type": "string",
+      "nullable": true
+    },
+    "firstViewedAt": {
+      "anyOf": [
+        {
+          "type": "string",
+          "format": "date-time"
+        },
+        {
+          "type": "string"
+        }
+      ],
+      "nullable": true
+    },
+    "views": {
+      "type": "number",
+      "format": "double"
+    },
+    "spaceName": {
+      "type": "string"
+    },
+    "spaceUuid": {
+      "type": "string"
+    },
+    "updatedByUser": {
+      "$ref": "#/components/schemas/UpdatedByUser"
+    },
+    "parameters": {
+      "$ref": "#/components/schemas/DashboardParameters"
+    },
+    "filters": {
+      "$ref": "#/components/schemas/DashboardFilters"
+    },
+    "tiles": {
+      "items": {
+        "$ref": "#/components/schemas/DashboardTile"
+      },
+      "type": "array"
+    },
+    "updatedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "description": {
+      "type": "string"
+    },
+    "verification": {
+      "allOf": [
+        {
+          "$ref": "#/components/schemas/ContentVerificationInfo"
+        }
+      ],
+      "nullable": true
+    },
+    "name": {
+      "type": "string"
+    },
+    "uuid": {
+      "type": "string"
+    },
+    "versionUuid": {
+      "type": "string"
+    },
+    "dashboardVersionId": {
+      "type": "number",
+      "format": "double"
+    },
+    "projectUuid": {
+      "type": "string"
+    },
+    "organizationUuid": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "colorPaletteUuid",
+    "slug",
+    "access",
+    "inheritsFromOrgOrProject",
+    "tabs",
+    "pinnedListOrder",
+    "pinnedListUuid",
+    "firstViewedAt",
+    "views",
+    "spaceName",
+    "spaceUuid",
+    "filters",
+    "tiles",
+    "updatedAt",
+    "verification",
+    "name",
+    "uuid",
+    "versionUuid",
+    "dashboardVersionId",
+    "projectUuid",
+    "organizationUuid"
+  ],
+  "type": "object"
+}

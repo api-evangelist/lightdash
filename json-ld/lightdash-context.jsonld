@@ -1,0 +1,316 @@
+{
+  "@context": {
+    "@version": 1.1,
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "schema": "https://schema.org/",
+    "lightdash": "https://docs.lightdash.com/api-reference/v1/",
+
+    "Project": {
+      "@id": "lightdash:projects",
+      "@type": "@id"
+    },
+    "projectUuid": {
+      "@id": "lightdash:projectUuid",
+      "@type": "xsd:string"
+    },
+    "projectName": {
+      "@id": "schema:name",
+      "@type": "xsd:string"
+    },
+    "dbtConnection": {
+      "@id": "lightdash:dbtConnection",
+      "@type": "@id"
+    },
+    "warehouseConnection": {
+      "@id": "lightdash:warehouseConnection",
+      "@type": "@id"
+    },
+
+    "Dashboard": {
+      "@id": "lightdash:dashboards",
+      "@type": "@id"
+    },
+    "dashboardUuid": {
+      "@id": "lightdash:dashboardUuid",
+      "@type": "xsd:string"
+    },
+    "dashboardName": {
+      "@id": "schema:name",
+      "@type": "xsd:string"
+    },
+    "tiles": {
+      "@id": "lightdash:tiles",
+      "@container": "@list"
+    },
+
+    "Chart": {
+      "@id": "lightdash:charts",
+      "@type": "@id"
+    },
+    "chartUuid": {
+      "@id": "lightdash:chartUuid",
+      "@type": "xsd:string"
+    },
+    "chartType": {
+      "@id": "lightdash:chartType",
+      "@type": "xsd:string"
+    },
+    "metricQuery": {
+      "@id": "lightdash:metricQuery",
+      "@type": "@id"
+    },
+
+    "Space": {
+      "@id": "lightdash:spaces",
+      "@type": "@id"
+    },
+    "spaceUuid": {
+      "@id": "lightdash:spaceUuid",
+      "@type": "xsd:string"
+    },
+    "spaceName": {
+      "@id": "schema:name",
+      "@type": "xsd:string"
+    },
+    "isPrivate": {
+      "@id": "lightdash:isPrivate",
+      "@type": "xsd:boolean"
+    },
+
+    "Organization": {
+      "@id": "lightdash:org",
+      "@type": "@id"
+    },
+    "organizationUuid": {
+      "@id": "lightdash:organizationUuid",
+      "@type": "xsd:string"
+    },
+    "organizationName": {
+      "@id": "schema:name",
+      "@type": "xsd:string"
+    },
+
+    "User": {
+      "@id": "schema:Person",
+      "@type": "@id"
+    },
+    "userUuid": {
+      "@id": "lightdash:userUuid",
+      "@type": "xsd:string"
+    },
+    "email": {
+      "@id": "schema:email",
+      "@type": "xsd:string"
+    },
+    "firstName": {
+      "@id": "schema:givenName",
+      "@type": "xsd:string"
+    },
+    "lastName": {
+      "@id": "schema:familyName",
+      "@type": "xsd:string"
+    },
+    "role": {
+      "@id": "lightdash:role",
+      "@type": "xsd:string"
+    },
+
+    "ServiceAccount": {
+      "@id": "lightdash:serviceAccounts",
+      "@type": "@id"
+    },
+    "serviceAccountUuid": {
+      "@id": "lightdash:serviceAccountUuid",
+      "@type": "xsd:string"
+    },
+    "token": {
+      "@id": "lightdash:token",
+      "@type": "xsd:string"
+    },
+    "expiresAt": {
+      "@id": "lightdash:expiresAt",
+      "@type": "xsd:dateTime"
+    },
+
+    "Scheduler": {
+      "@id": "lightdash:schedulers",
+      "@type": "@id"
+    },
+    "schedulerUuid": {
+      "@id": "lightdash:schedulerUuid",
+      "@type": "xsd:string"
+    },
+    "cron": {
+      "@id": "lightdash:cron",
+      "@type": "xsd:string"
+    },
+    "targets": {
+      "@id": "lightdash:targets",
+      "@container": "@list"
+    },
+
+    "Catalog": {
+      "@id": "lightdash:catalog",
+      "@type": "@id"
+    },
+    "Explore": {
+      "@id": "lightdash:explores",
+      "@type": "@id"
+    },
+    "exploreName": {
+      "@id": "schema:name",
+      "@type": "xsd:string"
+    },
+    "dimensions": {
+      "@id": "lightdash:dimensions",
+      "@container": "@list"
+    },
+    "metrics": {
+      "@id": "lightdash:metrics",
+      "@container": "@list"
+    },
+
+    "SqlRunner": {
+      "@id": "lightdash:sqlRunner",
+      "@type": "@id"
+    },
+    "sql": {
+      "@id": "lightdash:sql",
+      "@type": "xsd:string"
+    },
+
+    "Embed": {
+      "@id": "lightdash:embed",
+      "@type": "@id"
+    },
+    "embedJwt": {
+      "@id": "lightdash:embedJwt",
+      "@type": "xsd:string"
+    },
+
+    "AiAgent": {
+      "@id": "lightdash:aiAgents",
+      "@type": "@id"
+    },
+    "agentUuid": {
+      "@id": "lightdash:agentUuid",
+      "@type": "xsd:string"
+    },
+    "instructions": {
+      "@id": "lightdash:instructions",
+      "@type": "xsd:string"
+    },
+
+    "createdAt": {
+      "@id": "schema:dateCreated",
+      "@type": "xsd:dateTime"
+    },
+    "updatedAt": {
+      "@id": "schema:dateModified",
+      "@type": "xsd:dateTime"
+    },
+    "description": {
+      "@id": "schema:description",
+      "@type": "xsd:string"
+    },
+    "name": {
+      "@id": "schema:name",
+      "@type": "xsd:string"
+    },
+    "uuid": {
+      "@id": "lightdash:uuid",
+      "@type": "xsd:string"
+    },
+
+    "ScimUser": {
+      "@id": "lightdash:scim/v2/Users",
+      "@type": "@id"
+    },
+    "ScimGroup": {
+      "@id": "lightdash:scim/v2/Groups",
+      "@type": "@id"
+    },
+
+    "UserGroup": {
+      "@id": "lightdash:groups",
+      "@type": "@id"
+    },
+    "groupUuid": {
+      "@id": "lightdash:groupUuid",
+      "@type": "xsd:string"
+    },
+    "members": {
+      "@id": "schema:member",
+      "@container": "@list"
+    },
+
+    "ShareLink": {
+      "@id": "lightdash:share",
+      "@type": "@id"
+    },
+    "nanoid": {
+      "@id": "lightdash:nanoid",
+      "@type": "xsd:string"
+    },
+
+    "Notification": {
+      "@id": "lightdash:notifications",
+      "@type": "@id"
+    },
+    "notificationUuid": {
+      "@id": "lightdash:notificationUuid",
+      "@type": "xsd:string"
+    },
+    "read": {
+      "@id": "lightdash:read",
+      "@type": "xsd:boolean"
+    },
+
+    "GitIntegration": {
+      "@id": "lightdash:gitIntegration",
+      "@type": "@id"
+    },
+    "pullRequestUrl": {
+      "@id": "lightdash:pullRequestUrl",
+      "@type": "xsd:anyURI"
+    },
+
+    "Parameter": {
+      "@id": "lightdash:parameters",
+      "@type": "@id"
+    },
+    "parameterName": {
+      "@id": "schema:name",
+      "@type": "xsd:string"
+    },
+    "parameterValue": {
+      "@id": "lightdash:parameterValue"
+    },
+
+    "Validation": {
+      "@id": "lightdash:validation",
+      "@type": "@id"
+    },
+    "validationErrors": {
+      "@id": "lightdash:validationErrors",
+      "@container": "@list"
+    }
+  },
+  "@graph": [
+    {
+      "@id": "https://docs.lightdash.com/api-reference/v1/",
+      "@type": "schema:WebAPI",
+      "schema:name": "Lightdash REST API",
+      "schema:description": "Public REST API for Lightdash covering catalog, projects, charts, dashboards, spaces, SQL runner, schedulers, user management, AI agents, and integrations.",
+      "schema:url": "https://docs.lightdash.com/api-reference/v1/introduction",
+      "schema:version": "0.3156.1",
+      "schema:provider": {
+        "@type": "schema:Organization",
+        "schema:name": "Lightdash",
+        "schema:url": "https://www.lightdash.com"
+      },
+      "schema:documentation": "https://docs.lightdash.com",
+      "schema:license": "https://github.com/lightdash/lightdash/blob/main/LICENSE"
+    }
+  ]
+}

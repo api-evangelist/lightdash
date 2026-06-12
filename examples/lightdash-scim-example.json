@@ -1,0 +1,42 @@
+{
+  "method": "POST",
+  "path": "/api/v1/scim/v2/Users",
+  "summary": "Create user",
+  "tags": [
+    "SCIM"
+  ],
+  "requestBody": {
+    "description": "User to create",
+    "required": true,
+    "content": {
+      "application/json": {
+        "schema": {
+          "$ref": "#/components/schemas/ScimUpsertUser",
+          "description": "User to create"
+        }
+      }
+    }
+  },
+  "responses": {
+    "200": {
+      "description": "Ok",
+      "content": {
+        "application/json": {
+          "schema": {
+            "$ref": "#/components/schemas/ScimUser"
+          }
+        }
+      }
+    },
+    "201": {
+      "description": "Created",
+      "content": {
+        "application/json": {
+          "schema": {
+            "$ref": "#/components/schemas/ScimUser"
+          }
+        }
+      }
+    }
+  }
+}

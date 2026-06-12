@@ -1,0 +1,189 @@
+vocabulary:
+  name: Lightdash API Vocabulary
+  description: >
+    Key terms, concepts, and domain language used across the Lightdash REST API,
+    derived from endpoint tags, schema names, and resource types.
+  url: https://docs.lightdash.com/api-reference/v1/introduction
+  version: 0.3156.1
+
+categories:
+  - name: Core Resources
+    terms:
+      - term: Project
+        definition: >
+          A Lightdash project connected to a dbt semantic layer and a data warehouse.
+          All charts, dashboards, and spaces belong to a project.
+      - term: Dashboard
+        definition: >
+          A collection of chart tiles and other visual elements organized into a layout
+          for sharing and viewing business intelligence data.
+      - term: Chart
+        definition: >
+          A single visualization (bar chart, line chart, table, etc.) built on top of
+          a dbt metric or explore query within a project.
+      - term: Space
+        definition: >
+          A folder-like container for organizing charts and dashboards within a project,
+          with its own access control settings.
+      - term: Explore
+        definition: >
+          An interactive query interface based on a dbt model, allowing users to select
+          dimensions and metrics to build ad-hoc analyses.
+
+  - name: Data & Analytics
+    terms:
+      - term: Catalog
+        definition: >
+          The metadata catalog of all available dbt models, metrics, dimensions, and
+          fields that Lightdash exposes for querying.
+      - term: Metrics
+        definition: >
+          Quantitative measures defined in the dbt semantic layer and surfaced via
+          the Lightdash Metrics Explorer.
+      - term: Metrics Explorer
+        definition: >
+          A dedicated UI and API surface for browsing and querying metrics defined
+          in the dbt semantic layer.
+      - term: SQL Runner
+        definition: >
+          A feature allowing direct SQL queries against the connected data warehouse,
+          accessible via API at /api/v1/projects/{projectUuid}/sqlRunner.
+      - term: Pre-Aggregates
+        definition: >
+          Pre-computed aggregate tables or materializations that optimize query performance
+          for frequently accessed metrics.
+      - term: Parameters
+        definition: >
+          Dynamic filters or variables that can be applied to explores and dashboards to
+          modify query behavior at runtime.
+      - term: Query
+        definition: >
+          A structured request for data combining dimensions, metrics, filters, sorts,
+          and limits against a specific explore.
+
+  - name: Access Control & Identity
+    terms:
+      - term: Organization
+        definition: >
+          The top-level tenant in Lightdash. All projects, users, and settings belong
+          to an organization.
+      - term: SCIM
+        definition: >
+          System for Cross-domain Identity Management — a standard protocol supported
+          by Lightdash for provisioning users and groups from identity providers.
+      - term: Service Account
+        definition: >
+          A non-human principal with API access and optionally scoped project grants,
+          used for automation and integrations.
+      - term: Personal Access Token
+        definition: >
+          A user-generated token passed via the Authorization header to authenticate
+          REST API requests.
+      - term: Impersonation
+        definition: >
+          The ability for admins or service accounts to act on behalf of other users
+          for testing or automation purposes.
+      - term: Custom Roles
+        definition: >
+          Organization-defined roles with specific permission sets, extending the
+          built-in role hierarchy.
+      - term: Project Roles
+        definition: >
+          Role assignments scoped to a specific project, controlling what a user can
+          view or modify within that project.
+      - term: Organization Roles
+        definition: >
+          Role assignments at the organization level, granting broad permissions across
+          all projects.
+      - term: User Groups
+        definition: >
+          Collections of users that can be granted roles or permissions together,
+          simplifying access management.
+      - term: User Attributes
+        definition: >
+          Key-value metadata attached to users, used for row-level security and
+          dynamic filtering in dbt models.
+
+  - name: Scheduling & Automation
+    terms:
+      - term: Scheduler
+        definition: >
+          A configured job that runs a chart or dashboard export on a defined cron
+          schedule, delivering results via Slack, email, or Google Sheets.
+      - term: Changeset
+        definition: >
+          A set of tracked modifications to project content, used for reviewing and
+          applying changes in a controlled workflow.
+      - term: Bulk Action
+        definition: >
+          API operations that apply a mutation to multiple resources (charts, dashboards,
+          spaces) in a single request.
+
+  - name: Integrations
+    terms:
+      - term: Git Integration
+        definition: >
+          Connection to a GitHub or GitLab repository enabling dbt project sync,
+          pull request previews, and version control for Lightdash content.
+      - term: Slack Integration
+        definition: >
+          Integration for delivering scheduled reports and alerts as Slack messages
+          to channels or users.
+      - term: Google Sheets Integration
+        definition: >
+          Integration for exporting chart data directly to Google Sheets on a schedule
+          or on-demand.
+      - term: SSH Keypairs
+        definition: >
+          Cryptographic key pairs managed by Lightdash for authenticating connections
+          to private git repositories.
+      - term: Organization Warehouse Credentials
+        definition: >
+          Shared data warehouse connection credentials managed at the organization level
+          for use across multiple projects.
+
+  - name: Sharing & Collaboration
+    terms:
+      - term: Share Link
+        definition: >
+          A shareable URL with optional expiry that grants access to a specific chart
+          or dashboard without requiring a Lightdash login.
+      - term: Comment
+        definition: >
+          A discussion thread attached to a chart or dashboard tile for collaboration.
+      - term: Notification
+        definition: >
+          An in-app alert generated by scheduler events, comments, or system activity.
+      - term: Spotlight
+        definition: >
+          A feature for surfacing curated or promoted content within an organization.
+
+  - name: Embedding & Export
+    terms:
+      - term: Embed
+        definition: >
+          A JWT-based mechanism for embedding Lightdash charts and dashboards in external
+          applications without requiring user authentication.
+      - term: Exports
+        definition: >
+          API endpoints for downloading chart and dashboard data in CSV, Excel,
+          or image formats.
+      - term: Content
+        definition: >
+          A generic term for charts, dashboards, and spaces that can be moved, copied,
+          or bulk-acted upon across spaces and projects.
+
+  - name: AI & Agents
+    terms:
+      - term: AI Agent
+        definition: >
+          An automated Lightdash agent that can answer natural-language data questions
+          and route requests to appropriate projects and metrics.
+      - term: AI Router
+        definition: >
+          The organization-level routing layer that maps incoming AI agent requests to
+          the correct project or explore.
+      - term: Managed Agent
+        definition: >
+          A governed AI agent with defined instructions, run history, and commit-based
+          decision tracking for auditable automation.

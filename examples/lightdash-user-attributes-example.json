@@ -1,0 +1,42 @@
+{
+  "method": "POST",
+  "path": "/api/v1/org/attributes",
+  "summary": "Create user attribute",
+  "tags": [
+    "User attributes"
+  ],
+  "requestBody": {
+    "description": "the user attribute to create",
+    "required": true,
+    "content": {
+      "application/json": {
+        "schema": {
+          "$ref": "#/components/schemas/CreateUserAttribute",
+          "description": "the user attribute to create"
+        }
+      }
+    }
+  },
+  "responses": {
+    "200": {
+      "description": "Ok",
+      "content": {
+        "application/json": {
+          "schema": {
+            "$ref": "#/components/schemas/ApiCreateUserAttributeResponse"
+          }
+        }
+      }
+    },
+    "default": {
+      "description": "Error",
+      "content": {
+        "application/json": {
+          "schema": {
+            "$ref": "#/components/schemas/ApiErrorPayload"
+          }
+        }
+      }
+    }
+  }
+}

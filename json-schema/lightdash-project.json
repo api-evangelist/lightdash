@@ -1,0 +1,96 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://api-evangelist.github.io/lightdash/json-schema/lightdash-project.json",
+  "title": "Project",
+  "description": "Lightdash Project schema",
+  "properties": {
+    "expiresAt": {
+      "type": "string",
+      "format": "date-time",
+      "nullable": true
+    },
+    "colorPaletteUuid": {
+      "type": "string",
+      "nullable": true
+    },
+    "projectDefaults": {
+      "$ref": "#/components/schemas/ProjectDefaults"
+    },
+    "hasDefaultUserSpaces": {
+      "type": "boolean"
+    },
+    "organizationWarehouseCredentialsUuid": {
+      "type": "string"
+    },
+    "createdByUserUuid": {
+      "type": "string",
+      "nullable": true
+    },
+    "schedulerFailureContactOverride": {
+      "type": "string",
+      "nullable": true
+    },
+    "schedulerFailureIncludeContact": {
+      "type": "boolean"
+    },
+    "schedulerFailureNotifyRecipients": {
+      "type": "boolean"
+    },
+    "useProjectTimezoneInFilters": {
+      "type": "boolean"
+    },
+    "queryTimezone": {
+      "type": "string",
+      "nullable": true
+    },
+    "schedulerTimezone": {
+      "type": "string"
+    },
+    "dbtVersion": {
+      "$ref": "#/components/schemas/DbtVersionOption"
+    },
+    "upstreamProjectUuid": {
+      "type": "string"
+    },
+    "pinnedListUuid": {
+      "type": "string"
+    },
+    "warehouseConnection": {
+      "$ref": "#/components/schemas/WarehouseCredentials"
+    },
+    "dbtConnection": {
+      "$ref": "#/components/schemas/DbtProjectConfig"
+    },
+    "type": {
+      "$ref": "#/components/schemas/ProjectType"
+    },
+    "name": {
+      "type": "string"
+    },
+    "projectUuid": {
+      "type": "string"
+    },
+    "organizationUuid": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "expiresAt",
+    "colorPaletteUuid",
+    "hasDefaultUserSpaces",
+    "createdByUserUuid",
+    "schedulerFailureContactOverride",
+    "schedulerFailureIncludeContact",
+    "schedulerFailureNotifyRecipients",
+    "useProjectTimezoneInFilters",
+    "queryTimezone",
+    "schedulerTimezone",
+    "dbtVersion",
+    "dbtConnection",
+    "type",
+    "name",
+    "projectUuid",
+    "organizationUuid"
+  ],
+  "type": "object"
+}

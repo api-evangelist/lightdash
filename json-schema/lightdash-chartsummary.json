@@ -1,0 +1,25 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://api-evangelist.github.io/lightdash/json-schema/lightdash-chartsummary.json",
+  "title": "ChartSummary",
+  "description": "Lightdash ChartSummary schema",
+  "allOf": [
+    {
+      "$ref": "#/components/schemas/Pick_SavedChart.uuid-or-name-or-description-or-spaceName-or-spaceUuid-or-projectUuid-or-organizationUuid-or-pinnedListUuid-or-dashboardUuid-or-dashboardName-or-slug_"
+    },
+    {
+      "properties": {
+        "source": {
+          "$ref": "#/components/schemas/ChartSourceType"
+        },
+        "chartKind": {
+          "$ref": "#/components/schemas/ChartKind"
+        },
+        "chartType": {
+          "$ref": "#/components/schemas/ChartType"
+        }
+      },
+      "type": "object"
+    }
+  ]
+}

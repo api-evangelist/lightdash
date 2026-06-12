@@ -1,0 +1,130 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://api-evangelist.github.io/lightdash/json-schema/lightdash-space.json",
+  "title": "Space",
+  "description": "Lightdash Space schema",
+  "properties": {
+    "breadcrumbs": {
+      "items": {
+        "properties": {
+          "hasAccess": {
+            "type": "boolean"
+          },
+          "uuid": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "hasAccess",
+          "uuid",
+          "name"
+        ],
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "path": {
+      "type": "string"
+    },
+    "colorPaletteUuid": {
+      "type": "string",
+      "nullable": true
+    },
+    "projectMemberAccessRole": {
+      "allOf": [
+        {
+          "$ref": "#/components/schemas/SpaceMemberRole"
+        }
+      ],
+      "nullable": true
+    },
+    "inheritParentPermissions": {
+      "type": "boolean"
+    },
+    "parentSpaceUuid": {
+      "type": "string",
+      "nullable": true
+    },
+    "childSpaces": {
+      "items": {
+        "$ref": "#/components/schemas/SpaceSummaryBase"
+      },
+      "type": "array"
+    },
+    "slug": {
+      "type": "string"
+    },
+    "pinnedListOrder": {
+      "type": "number",
+      "format": "double",
+      "nullable": true
+    },
+    "pinnedListUuid": {
+      "type": "string",
+      "nullable": true
+    },
+    "groupsAccess": {
+      "items": {
+        "$ref": "#/components/schemas/SpaceGroup"
+      },
+      "type": "array"
+    },
+    "access": {
+      "items": {
+        "$ref": "#/components/schemas/SpaceShare"
+      },
+      "type": "array"
+    },
+    "dashboards": {
+      "items": {
+        "$ref": "#/components/schemas/SpaceDashboard"
+      },
+      "type": "array"
+    },
+    "projectUuid": {
+      "type": "string"
+    },
+    "queries": {
+      "items": {
+        "$ref": "#/components/schemas/SpaceQuery"
+      },
+      "type": "array"
+    },
+    "inheritsFromOrgOrProject": {
+      "type": "boolean"
+    },
+    "name": {
+      "type": "string"
+    },
+    "uuid": {
+      "type": "string"
+    },
+    "organizationUuid": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "path",
+    "colorPaletteUuid",
+    "projectMemberAccessRole",
+    "inheritParentPermissions",
+    "parentSpaceUuid",
+    "childSpaces",
+    "slug",
+    "pinnedListOrder",
+    "pinnedListUuid",
+    "groupsAccess",
+    "access",
+    "dashboards",
+    "projectUuid",
+    "queries",
+    "inheritsFromOrgOrProject",
+    "name",
+    "uuid",
+    "organizationUuid"
+  ],
+  "type": "object"
+}

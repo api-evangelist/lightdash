@@ -1,0 +1,59 @@
+{
+  "method": "POST",
+  "path": "/api/v1/projects/{projectUuid}/validate",
+  "summary": "Validate project",
+  "tags": [
+    "Projects"
+  ],
+  "requestBody": {
+    "description": "the compiled explores to validate against an existing project, this is used in the CLI to validate a project without creating a preview",
+    "required": true,
+    "content": {
+      "application/json": {
+        "schema": {
+          "properties": {
+            "validationTargets": {
+              "items": {
+                "$ref": "#/components/schemas/ValidationTarget"
+              },
+              "type": "array"
+            },
+            "explores": {
+              "items": {
+                "$ref": "#/components/schemas/AnyType"
+              },
+              "type": "array"
+            },
+            "onlyValidateExploresInArgs": {
+              "type": "boolean"
+            }
+          },
+          "type": "object",
+          "description": "the compiled explores to validate against an existing project, this is used in the CLI to validate a project without creating a preview"
+        }
+      }
+    }
+  },
+  "responses": {
+    "200": {
+      "description": "Success",
+      "content": {
+        "application/json": {
+          "schema": {
+            "$ref": "#/components/schemas/ApiJobScheduledResponse"
+          }
+        }
+      }
+    },
+    "default": {
+      "description": "Error",
+      "content": {
+        "application/json": {
+          "schema": {
+            "$ref": "#/components/schemas/ApiErrorPayload"
+          }
+        }
+      }
+    }
+  }
+}

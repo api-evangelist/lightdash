@@ -1,0 +1,46 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://api-evangelist.github.io/lightdash/json-schema/lightdash-schedulerandtargets.json",
+  "title": "SchedulerAndTargets",
+  "description": "Lightdash SchedulerAndTargets schema",
+  "allOf": [
+    {
+      "$ref": "#/components/schemas/Scheduler"
+    },
+    {
+      "properties": {
+        "latestRun": {
+          "allOf": [
+            {
+              "$ref": "#/components/schemas/SchedulerRun"
+            }
+          ],
+          "nullable": true
+        },
+        "targets": {
+          "items": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/SchedulerSlackTarget"
+              },
+              {
+                "$ref": "#/components/schemas/SchedulerEmailTarget"
+              },
+              {
+                "$ref": "#/components/schemas/SchedulerMsTeamsTarget"
+              },
+              {
+                "$ref": "#/components/schemas/SchedulerGoogleChatTarget"
+              }
+            ]
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "targets"
+      ],
+      "type": "object"
+    }
+  ]
+}
