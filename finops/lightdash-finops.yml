@@ -1,0 +1,80 @@
+specificationVersion: 'FinOps Framework 1.0'
+id: lightdash-finops
+name: Lightdash FinOps
+provider: Lightdash
+providerId: lightdash
+created: 2026-06-12
+modified: 2026-06-12
+url: https://www.lightdash.com/pricing
+billingModel:
+  type: flat-rate-plus-usage
+  description: >
+    Lightdash Cloud Pro is billed as a flat monthly subscription with no per-seat charges.
+    Embedded analytics loads beyond the free tier are billed on a pay-as-you-go or
+    flat-rate add-on basis. Enterprise pricing is custom. Self-hosted open-source is free.
+  currency: USD
+  billingPeriod: monthly
+focusColumns:
+  Provider: Lightdash
+  ServiceName: Business Intelligence Platform
+  ServiceCategory: Analytics
+  ChargeType: Usage | Recurring
+  Region: Cloud (managed) or self-hosted
+  PricingUnit:
+    - flat-rate per month (Cloud Pro at $3,000/month)
+    - per embed load ($0.05/load after first 1,000 free)
+    - per embed worker ($790/month per 100k loads)
+meters:
+  - name: Cloud Pro Subscription
+    unit: month
+    price: 3000
+    currency: USD
+    description: Flat monthly fee for Cloud Pro — unlimited users, AI agents, scheduled reports.
+    type: recurring
+  - name: Embed Load Pay-As-You-Go
+    unit: page_load
+    freeIncluded: 1000
+    priceAfterFree: 0.05
+    currency: USD
+    description: Per-load billing for embedded analytics beyond the monthly free tier.
+    type: metered
+  - name: Embed Worker Add-On
+    unit: worker_month
+    price: 790
+    currency: USD
+    loadsPerWorker: 100000
+    description: Predictable flat-rate add-on covering 100,000 embed loads per worker per month.
+    type: recurring
+  - name: Open Source Self-Hosted
+    unit: deployment
+    price: 0
+    currency: USD
+    description: Zero cost for self-hosted open-source deployment; infrastructure costs borne by operator.
+    type: free
+principles:
+  Visibility:
+    description: >
+      Cloud Pro subscribers receive version history retention (30 days) and activity logs
+      enabling cost attribution and usage auditing. Enterprise plans extend to 60-day retention
+      and include advanced audit logs.
+    capabilities:
+      - Activity logs
+      - Version history
+      - Usage analytics
+  Optimization:
+    description: >
+      No per-seat pricing on Cloud Pro eliminates per-user cost pressure. Embed Worker add-on
+      provides predictable cost ceiling for high-volume embedding use cases vs. pay-as-you-go.
+      Self-hosted open-source path provides full cost control at the expense of operational overhead.
+    capabilities:
+      - Unlimited users (no seat cost scaling)
+      - Embed Worker flat-rate option for predictable embedding costs
+      - Self-hosted free tier for total infrastructure control
+  Accountability:
+    description: >
+      Enterprise customers can configure SSO, SCIM provisioning, and role-based access controls
+      to attribute usage to teams and individuals. Audit logs support chargeback and showback models.
+    capabilities:
+      - SCIM 2.0 provisioning
+      - Role-based access control
+      - Audit logs (Enterprise)

@@ -1,0 +1,51 @@
+specificationVersion: '0.1'
+id: lightdash-rate-limits
+name: Lightdash Rate Limits
+provider: Lightdash
+providerId: lightdash
+created: 2026-06-12
+modified: 2026-06-12
+url: https://docs.lightdash.com/api-reference/v1/introduction
+notes: >
+  Lightdash does not publish explicit numeric rate limits in their public documentation as of
+  June 2026. The API uses Personal Access Token authentication via the Authorization header
+  (format: "ApiKey <token>"). Rate limit information below reflects general observed behavior
+  for the managed cloud service; self-hosted deployments may configure their own limits.
+headers:
+  retryAfter:
+    name: Retry-After
+    in: header
+    description: Seconds to wait before retrying after a 429 response.
+    required: false
+throttled:
+  statusCode: 429
+  description: Too Many Requests — the client has sent too many requests in a given time window.
+authentication:
+  type: apiKey
+  header: Authorization
+  format: "ApiKey {personal_access_token}"
+  notes: >
+    Personal Access Tokens (PATs) are generated in project settings under Personal Access
+    Tokens. Tokens can be given an expiration date. Not all endpoints are accessible with PAT
+    authentication.
+limits:
+  - scope: api
+    metric: requests
+    limit: not_published
+    timeFrame: not_published
+    notes: >
+      Lightdash has not published specific numeric rate limits for their cloud API.
+      Contact support@lightdash.com or consult the latest documentation for current limits.
+  - scope: csv_export
+    metric: cells
+    limit: 3000000
+    timeFrame: per_request
+    notes: >
+      Cloud Pro plan CSV exports are capped at 3 million cells per export request.
+  - scope: embed_loads
+    metric: page_loads
+    limit: 1000
+    timeFrame: month
+    notes: >
+      First 1,000 embed loads per month are included free on Cloud Pro;
+      additional loads billed at $0.05 each or via the Embed Worker add-on.

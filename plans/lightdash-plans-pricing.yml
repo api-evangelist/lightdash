@@ -1,0 +1,117 @@
+specificationVersion: '0.1'
+id: lightdash-plans-pricing
+name: Lightdash Plans and Pricing
+provider: Lightdash
+providerId: lightdash
+created: 2026-06-12
+modified: 2026-06-12
+reconciled: true
+url: https://www.lightdash.com/pricing
+plans:
+  - name: Open Source
+    description: Core BI features for teams happy to self-host on their own infrastructure.
+    type: free
+    deployment: self-hosted
+    pricing:
+      model: free
+      price: 0
+      currency: USD
+      period: month
+    quotas:
+      - name: Users
+        metric: users
+        limit: unlimited
+        type: boolean
+        notes: Unlimited users on self-hosted
+      - name: API Access
+        metric: api_access
+        limit: true
+        type: boolean
+        notes: Full REST API access
+    features:
+      - Native dbt integration
+      - Charts and dashboards
+      - Spaces and permissions
+      - Community Slack support
+      - SQL runner
+      - Scheduled deliveries
+  - name: Cloud Pro
+    description: Managed cloud deployment with unlimited users, AI agents, and dedicated support.
+    type: paid
+    deployment: cloud
+    pricing:
+      model: flat-rate
+      price: 3000
+      currency: USD
+      period: month
+    quotas:
+      - name: Users
+        metric: users
+        limit: unlimited
+        type: boolean
+        notes: No per-seat pricing
+      - name: CSV Export Cells
+        metric: cells_per_export
+        limit: 3000000
+        type: quota
+        notes: 3 million cell maximum per CSV export
+      - name: Version History
+        metric: days
+        limit: 30
+        type: quota
+        notes: 30-day version history retention
+      - name: Embedding Loads
+        metric: embed_loads
+        limit: 1000
+        type: quota
+        notes: First 1,000 embed loads free; $0.05 per load after
+    features:
+      - Everything in Open Source
+      - AI agents and threads
+      - Scheduled reports and alerting
+      - Guided onboarding
+      - 1-day support SLA
+      - Slack-based priority support
+      - Lightdash University access
+  - name: Enterprise
+    description: Cloud or on-premise with advanced security, SSO/SAML/SCIM, and priority SLAs.
+    type: enterprise
+    deployment: cloud-or-on-premise
+    pricing:
+      model: custom
+      price: null
+      currency: USD
+      period: month
+      notes: Contact sales for pricing
+    quotas:
+      - name: Version History
+        metric: days
+        limit: 60
+        type: quota
+        notes: 60-day version history retention
+      - name: Support SLA
+        metric: hours
+        limit: 8
+        type: quota
+        notes: 8-hour support SLA response time
+    features:
+      - Everything in Cloud Pro
+      - SSO + SAML + SCIM 2.0
+      - On-premise deployment option
+      - Priority support with defined SLAs
+      - Custom security configurations
+      - Advanced audit and activity logs
+add_ons:
+  - name: Embedding Predictable
+    description: Predictable pricing for embedded analytics at scale.
+    pricing:
+      model: flat-rate
+      price: 790
+      currency: USD
+      period: month
+    quotas:
+      - name: Embed Loads per Worker
+        metric: embed_loads
+        limit: 100000
+        type: quota
+        notes: 100k loads per Embed Worker per month
