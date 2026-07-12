@@ -1,0 +1,23 @@
+generated: '2026-07-11'
+method: derived
+source: openapi/lightdash-rest-api-openapi.yml
+summary:
+  types:
+  - apiKey
+  api_key_in:
+  - cookie
+  - header
+schemes:
+- name: session_cookie
+  type: apiKey
+  in: cookie
+  parameter: connect.sid
+  sources:
+  - openapi/lightdash-rest-api-openapi.yml
+- name: api_key
+  type: apiKey
+  in: header
+  parameter: Authorization
+  description: Value should be 'ApiKey <your key>'
+  sources:
+  - openapi/lightdash-rest-api-openapi.yml
