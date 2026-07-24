@@ -1,0 +1,150 @@
+openapi: 3.0.0
+info:
+  title: Lightdash AiAgents Gitlab API
+  version: 0.3156.1
+  description: 'Open API documentation for all public Lightdash API endpoints. # Authentication Before you get started, you might need to create a Personal Access Token to authenticate via the API. You can create a token by following this guide: https://docs.lightdash.com/references/personal_tokens
+
+    '
+  license:
+    name: MIT
+  contact:
+    name: Lightdash Support
+    email: support@lightdash.com
+    url: https://docs.lightdash.com/help-and-contact/contact/contact_info/
+servers:
+- url: /
+tags:
+- name: Gitlab
+paths:
+  /api/v1/gitlab/install:
+    get:
+      operationId: installGitlabIntegration
+      responses:
+        '302':
+          description: Redirect to GitLab OAuth
+      description: Initiate GitLab OAuth integration
+      summary: Install GitLab integration
+      security: []
+      parameters:
+      - description: Custom GitLab instance URL (optional, defaults to gitlab.com)
+        in: query
+        name: gitlab_instance_url
+        required: false
+        schema:
+          type: string
+      tags:
+      - Gitlab
+  /api/v1/gitlab/oauth/callback:
+    get:
+      operationId: gitlabOauthCallback
+      responses:
+        '204':
+          description: No content
+      description: GitLab OAuth callback handler
+      summary: GitLab OAuth callback
+      security: []
+      parameters:
+      - description: Authorization code from GitLab
+        in: query
+        name: code
+        required: false
+        schema:
+          type: string
+      - description: OAuth state parameter for CSRF protection
+        in: query
+        name: state
+        required: false
+        schema:
+          type: string
+      - description: GitLab instance URL (for self-hosted instances)
+        in: query
+        name: gitlab_instance_url
+        required: false
+        schema:
+          type: string
+      tags:
+      - Gitlab
+  /api/v1/gitlab/uninstall:
+    delete:
+      operationId: uninstallGitlabIntegration
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiSuccessEmpty'
+      description: Uninstall GitLab integration from the organization
+      summary: Uninstall GitLab integration
+      security: []
+      parameters: []
+      tags:
+      - Gitlab
+  /api/v1/gitlab/repos/list:
+    get:
+      operationId: getGitlabProjects
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                properties:
+                  results:
+                    items:
+                      $ref: '#/components/schemas/GitRepo'
+                    type: array
+                  status:
+                    type: string
+                    enum:
+                    - ok
+                    nullable: false
+                required:
+                - results
+                - status
+                type: object
+      description: List GitLab projects accessible via the integration
+      summary: List GitLab projects
+      security: []
+      parameters: []
+      tags:
+      - Gitlab
+components:
+  schemas:
+    GitRepo:
+      properties:
+        defaultBranch:
+          type: string
+        ownerLogin:
+          type: string
+        fullName:
+          type: string
+        name:
+          type: string
+      required:
+      - defaultBranch
+      - ownerLogin
+      - fullName
+      - name
+      type: object
+    ApiSuccessEmpty:
+      properties:
+        results: {}
+        status:
+          type: string
+          enum:
+          - ok
+          nullable: false
+      required:
+      - status
+      type: object
+  securitySchemes:
+    session_cookie:
+      type: apiKey
+      in: cookie
+      name: connect.sid
+    api_key:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: Value should be 'ApiKey <your key>'

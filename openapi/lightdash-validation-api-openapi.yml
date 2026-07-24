@@ -1,0 +1,436 @@
+openapi: 3.0.0
+info:
+  title: Lightdash AiAgents Validation API
+  version: 0.3156.1
+  description: 'Open API documentation for all public Lightdash API endpoints. # Authentication Before you get started, you might need to create a Personal Access Token to authenticate via the API. You can create a token by following this guide: https://docs.lightdash.com/references/personal_tokens
+
+    '
+  license:
+    name: MIT
+  contact:
+    name: Lightdash Support
+    email: support@lightdash.com
+    url: https://docs.lightdash.com/help-and-contact/contact/contact_info/
+servers:
+- url: /
+tags:
+- name: Validation
+paths:
+  /api/v2/projects/{projectUuid}/validate:
+    get:
+      operationId: ListValidationResults
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiPaginatedValidateResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: Get paginated validation results for a project with search, filter, and sort support.
+      summary: List validation results
+      tags:
+      - Validation
+      security: []
+      parameters:
+      - description: the projectId for the validation
+        in: path
+        name: projectUuid
+        required: true
+        schema:
+          type: string
+      - description: page number (1-indexed)
+        in: query
+        name: page
+        required: false
+        schema:
+          default: 1
+          format: double
+          type: number
+      - description: number of results per page
+        in: query
+        name: pageSize
+        required: false
+        schema:
+          default: 20
+          format: double
+          type: number
+      - description: search string to filter by name or error message
+        in: query
+        name: searchQuery
+        required: false
+        schema:
+          type: string
+      - description: field to sort by
+        in: query
+        name: sortBy
+        required: false
+        schema:
+          type: string
+          enum:
+          - name
+          - createdAt
+          - errorType
+          - source
+      - description: sort direction
+        in: query
+        name: sortDirection
+        required: false
+        schema:
+          type: string
+          enum:
+          - asc
+          - desc
+      - description: comma-separated list of source types to filter by
+        in: query
+        name: sourceTypes
+        required: false
+        schema:
+          type: string
+      - description: comma-separated list of error types to filter by
+        in: query
+        name: errorTypes
+        required: false
+        schema:
+          type: string
+      - description: whether to include chart configuration warnings
+        in: query
+        name: includeChartConfigWarnings
+        required: false
+        schema:
+          type: boolean
+      - description: boolean for analytics tracking
+        in: query
+        name: fromSettings
+        required: false
+        schema:
+          type: boolean
+  /api/v2/projects/{projectUuid}/validate/{validationIdOrUuid}:
+    get:
+      operationId: GetValidationResult
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiSingleValidationResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: Get a single validation result.
+      summary: Get validation result
+      tags:
+      - Validation
+      security: []
+      parameters:
+      - description: the projectId for the validation
+        in: path
+        name: projectUuid
+        required: true
+        schema:
+          type: string
+      - description: 'the validation UUID, or a legacy integer id
+
+          for rows created before the UUID migration (PROD-7386).'
+        in: path
+        name: validationIdOrUuid
+        required: true
+        schema: {}
+components:
+  schemas:
+    ValidationErrorTableResponse:
+      allOf:
+      - $ref: '#/components/schemas/Omit_ValidationResponseBase.name_'
+      - properties:
+          name:
+            type: string
+        type: object
+    ApiSingleValidationResponse:
+      $ref: '#/components/schemas/ApiSuccess_ValidationResponse_'
+    ValidationResponse:
+      anyOf:
+      - $ref: '#/components/schemas/ValidationErrorChartResponse'
+      - $ref: '#/components/schemas/ValidationErrorDashboardResponse'
+      - $ref: '#/components/schemas/ValidationErrorTableResponse'
+    ApiPaginatedValidateResponse:
+      $ref: '#/components/schemas/ApiSuccess_KnexPaginatedData_ValidationResponse-Array__'
+    AnyType:
+      description: 'This AnyType is an alias for any
+
+        The goal is to make it easier to identify any type in the codebase
+
+        without having to eslint-disable all the time
+
+        These are only used on legacy `any` types, don''t use it for new types.
+
+        This is added on a separate file to avoid circular dependencies.'
+    ApiErrorPayload:
+      properties:
+        error:
+          properties:
+            data:
+              $ref: '#/components/schemas/AnyType'
+              description: Optional data containing details of the error
+            message:
+              type: string
+              description: A friendly message summarising the error
+            name:
+              type: string
+              description: Unique name for the type of error
+            statusCode:
+              type: number
+              format: integer
+              description: HTTP status code
+          required:
+          - name
+          - statusCode
+          type: object
+        status:
+          type: string
+          enum:
+          - error
+          nullable: false
+      required:
+      - error
+      - status
+      type: object
+      description: 'The Error object is returned from the api any time there is an error.
+
+        The message contains'
+    ValidationErrorChartResponse:
+      allOf:
+      - $ref: '#/components/schemas/ValidationResponseBase'
+      - properties:
+          chartName:
+            type: string
+          chartViews:
+            type: number
+            format: double
+          lastUpdatedAt:
+            type: string
+            format: date-time
+          lastUpdatedBy:
+            type: string
+          fieldName:
+            type: string
+          chartKind:
+            $ref: '#/components/schemas/ChartKind'
+          chartUuid:
+            type: string
+        required:
+        - chartViews
+        type: object
+    KnexPaginatedData_ValidationResponse-Array_:
+      properties:
+        pagination:
+          allOf:
+          - $ref: '#/components/schemas/KnexPaginateArgs'
+          - properties:
+              totalResults:
+                type: number
+                format: double
+              totalPageCount:
+                type: number
+                format: double
+            required:
+            - totalResults
+            - totalPageCount
+            type: object
+        data:
+          items:
+            $ref: '#/components/schemas/ValidationResponse'
+          type: array
+      required:
+      - data
+      type: object
+    KnexPaginateArgs:
+      properties:
+        page:
+          type: number
+          format: double
+        pageSize:
+          type: number
+          format: double
+      required:
+      - page
+      - pageSize
+      type: object
+    ApiSuccess_KnexPaginatedData_ValidationResponse-Array__:
+      properties:
+        results:
+          $ref: '#/components/schemas/KnexPaginatedData_ValidationResponse-Array_'
+        status:
+          type: string
+          enum:
+          - ok
+          nullable: false
+      required:
+      - results
+      - status
+      type: object
+    ValidationErrorType:
+      enum:
+      - chart
+      - sorting
+      - filter
+      - metric
+      - model
+      - dimension
+      - custom metric
+      - chart configuration
+      type: string
+    ApiSuccess_ValidationResponse_:
+      properties:
+        results:
+          $ref: '#/components/schemas/ValidationResponse'
+        status:
+          type: string
+          enum:
+          - ok
+          nullable: false
+      required:
+      - results
+      - status
+      type: object
+    ValidationSourceType:
+      enum:
+      - chart
+      - dashboard
+      - table
+      type: string
+    Pick_ValidationResponseBase.Exclude_keyofValidationResponseBase.name__:
+      properties:
+        projectUuid:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        error:
+          type: string
+        source:
+          $ref: '#/components/schemas/ValidationSourceType'
+        validationUuid:
+          type: string
+        validationId:
+          type: number
+          format: double
+          nullable: true
+          deprecated: true
+        errorType:
+          $ref: '#/components/schemas/ValidationErrorType'
+        spaceUuid:
+          type: string
+      required:
+      - projectUuid
+      - createdAt
+      - error
+      - validationUuid
+      - validationId
+      - errorType
+      type: object
+      description: From T, pick a set of properties whose keys are in the union K
+    ValidationErrorDashboardResponse:
+      allOf:
+      - $ref: '#/components/schemas/ValidationResponseBase'
+      - properties:
+          dashboardViews:
+            type: number
+            format: double
+          lastUpdatedAt:
+            type: string
+            format: date-time
+          lastUpdatedBy:
+            type: string
+          dashboardFilterErrorType:
+            $ref: '#/components/schemas/DashboardFilterValidationErrorType'
+          tableName:
+            type: string
+          fieldName:
+            type: string
+          chartName:
+            type: string
+          dashboardUuid:
+            type: string
+        required:
+        - dashboardViews
+        type: object
+    DashboardFilterValidationErrorType:
+      enum:
+      - field_does_not_exist
+      - field_table_mismatch
+      - table_not_used_by_any_chart
+      - table_does_not_exist
+      type: string
+    ValidationResponseBase:
+      properties:
+        source:
+          $ref: '#/components/schemas/ValidationSourceType'
+        spaceUuid:
+          type: string
+        projectUuid:
+          type: string
+        errorType:
+          $ref: '#/components/schemas/ValidationErrorType'
+        error:
+          type: string
+        name:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        validationId:
+          type: number
+          format: double
+          nullable: true
+          deprecated: true
+        validationUuid:
+          type: string
+      required:
+      - projectUuid
+      - errorType
+      - error
+      - name
+      - createdAt
+      - validationId
+      - validationUuid
+      type: object
+    ChartKind:
+      enum:
+      - line
+      - horizontal_bar
+      - vertical_bar
+      - scatter
+      - area
+      - mixed
+      - pie
+      - table
+      - big_number
+      - funnel
+      - custom
+      - treemap
+      - gauge
+      - map
+      - sankey
+      type: string
+    Omit_ValidationResponseBase.name_:
+      $ref: '#/components/schemas/Pick_ValidationResponseBase.Exclude_keyofValidationResponseBase.name__'
+      description: Construct a type with the properties of T except for those in type K.
+  securitySchemes:
+    session_cookie:
+      type: apiKey
+      in: cookie
+      name: connect.sid
+    api_key:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: Value should be 'ApiKey <your key>'

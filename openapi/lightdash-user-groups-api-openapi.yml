@@ -1,0 +1,591 @@
+openapi: 3.0.0
+info:
+  title: Lightdash AiAgents User Groups API
+  version: 0.3156.1
+  description: 'Open API documentation for all public Lightdash API endpoints. # Authentication Before you get started, you might need to create a Personal Access Token to authenticate via the API. You can create a token by following this guide: https://docs.lightdash.com/references/personal_tokens
+
+    '
+  license:
+    name: MIT
+  contact:
+    name: Lightdash Support
+    email: support@lightdash.com
+    url: https://docs.lightdash.com/help-and-contact/contact/contact_info/
+servers:
+- url: /
+tags:
+- name: User Groups
+paths:
+  /api/v1/groups/{groupUuid}:
+    get:
+      operationId: getGroup
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiGroupResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: Get group details
+      summary: Get group
+      tags:
+      - User Groups
+      security: []
+      parameters:
+      - description: unique id of the group
+        in: path
+        name: groupUuid
+        required: true
+        schema:
+          type: string
+      - description: number of members to include
+        in: query
+        name: includeMembers
+        required: false
+        schema:
+          format: double
+          type: number
+      - description: offset of members to include
+        in: query
+        name: offset
+        required: false
+        schema:
+          format: double
+          type: number
+    delete:
+      operationId: deleteGroup
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiSuccessEmpty'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: Delete a group
+      summary: Delete group
+      tags:
+      - User Groups
+      security: []
+      parameters:
+      - in: path
+        name: groupUuid
+        required: true
+        schema:
+          type: string
+    patch:
+      operationId: updateGroup
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiGroupResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: Update a group
+      summary: Update group
+      tags:
+      - User Groups
+      security: []
+      parameters:
+      - in: path
+        name: groupUuid
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateGroupWithMembers'
+  /api/v1/groups/{groupUuid}/members/{userUuid}:
+    put:
+      operationId: addUserToGroup
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiSuccessEmpty'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: Add a Lightdash user to a group
+      summary: Add user to group
+      tags:
+      - User Groups
+      deprecated: true
+      security: []
+      parameters:
+      - description: the UUID for the group to add the user to
+        in: path
+        name: groupUuid
+        required: true
+        schema:
+          type: string
+      - description: the UUID for the user to add to the group
+        in: path
+        name: userUuid
+        required: true
+        schema:
+          type: string
+    delete:
+      operationId: removeUserFromGroup
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiSuccessEmpty'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: Remove a user from a group
+      summary: Remove user from group
+      tags:
+      - User Groups
+      deprecated: true
+      security: []
+      parameters:
+      - description: the UUID for the group to remove the user from
+        in: path
+        name: groupUuid
+        required: true
+        schema:
+          type: string
+      - description: the UUID for the user to remove from the group
+        in: path
+        name: userUuid
+        required: true
+        schema:
+          type: string
+  /api/v1/groups/{groupUuid}/members:
+    get:
+      operationId: getGroupMembers
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiGroupMembersResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: View members of a group
+      summary: Get group members
+      tags:
+      - User Groups
+      deprecated: true
+      security: []
+      parameters:
+      - description: the UUID for the group to view the members of
+        in: path
+        name: groupUuid
+        required: true
+        schema:
+          type: string
+  /api/v1/groups/{groupUuid}/projects/{projectUuid}:
+    post:
+      operationId: addProjectAccessToGroup
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiCreateProjectGroupAccess'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: Add project access to a group
+      summary: Add project access to group
+      tags:
+      - User Groups
+      deprecated: true
+      security: []
+      parameters:
+      - in: path
+        name: groupUuid
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: projectUuid
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Pick_CreateProjectGroupAccess.role_'
+    patch:
+      operationId: updateProjectAccessForGroup
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiUpdateProjectGroupAccess'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: Update project access for a group
+      summary: Update project access for group
+      tags:
+      - User Groups
+      deprecated: true
+      security: []
+      parameters:
+      - in: path
+        name: groupUuid
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: projectUuid
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateDBProjectGroupAccess'
+    delete:
+      operationId: removeProjectAccessFromGroup
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiSuccessEmpty'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: Remove project access from a group
+      summary: Remove project access from group
+      tags:
+      - User Groups
+      deprecated: true
+      security: []
+      parameters:
+      - in: path
+        name: groupUuid
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: projectUuid
+        required: true
+        schema:
+          type: string
+components:
+  schemas:
+    ApiUpdateProjectGroupAccess:
+      properties:
+        results:
+          $ref: '#/components/schemas/ProjectGroupAccess'
+        status:
+          type: string
+          enum:
+          - ok
+          nullable: false
+      required:
+      - results
+      - status
+      type: object
+    ApiCreateProjectGroupAccess:
+      properties:
+        results:
+          $ref: '#/components/schemas/ProjectGroupAccess'
+        status:
+          type: string
+          enum:
+          - ok
+          nullable: false
+      required:
+      - results
+      - status
+      type: object
+    Pick_CreateProjectGroupAccess.role_:
+      properties:
+        role:
+          anyOf:
+          - $ref: '#/components/schemas/ProjectMemberRole'
+          - allOf:
+            - type: string
+            - properties: {}
+              type: object
+      required:
+      - role
+      type: object
+      description: From T, pick a set of properties whose keys are in the union K
+    Group:
+      properties:
+        organizationUuid:
+          type: string
+          description: The UUID of the organization that the group belongs to
+        updatedByUserUuid:
+          type: string
+          nullable: true
+          description: The UUID of the user that last updated the group
+        updatedAt:
+          type: string
+          format: date-time
+          description: The time that the group was last updated
+        createdByUserUuid:
+          type: string
+          nullable: true
+          description: The UUID of the user that created the group
+        createdAt:
+          type: string
+          format: date-time
+          description: The time that the group was created
+        name:
+          type: string
+          description: A friendly name for the group
+        uuid:
+          type: string
+          description: The group's UUID
+      required:
+      - organizationUuid
+      - updatedByUserUuid
+      - updatedAt
+      - createdByUserUuid
+      - createdAt
+      - name
+      - uuid
+      type: object
+    AnyType:
+      description: 'This AnyType is an alias for any
+
+        The goal is to make it easier to identify any type in the codebase
+
+        without having to eslint-disable all the time
+
+        These are only used on legacy `any` types, don''t use it for new types.
+
+        This is added on a separate file to avoid circular dependencies.'
+    ApiErrorPayload:
+      properties:
+        error:
+          properties:
+            data:
+              $ref: '#/components/schemas/AnyType'
+              description: Optional data containing details of the error
+            message:
+              type: string
+              description: A friendly message summarising the error
+            name:
+              type: string
+              description: Unique name for the type of error
+            statusCode:
+              type: number
+              format: integer
+              description: HTTP status code
+          required:
+          - name
+          - statusCode
+          type: object
+        status:
+          type: string
+          enum:
+          - error
+          nullable: false
+      required:
+      - error
+      - status
+      type: object
+      description: 'The Error object is returned from the api any time there is an error.
+
+        The message contains'
+    ApiSuccessEmpty:
+      properties:
+        results: {}
+        status:
+          type: string
+          enum:
+          - ok
+          nullable: false
+      required:
+      - status
+      type: object
+    ProjectMemberRole:
+      enum:
+      - viewer
+      - interactive_viewer
+      - editor
+      - developer
+      - admin
+      type: string
+    Pick_GroupMember.userUuid_:
+      properties:
+        userUuid:
+          type: string
+          description: Unique id for the user
+          format: uuid
+      required:
+      - userUuid
+      type: object
+      description: From T, pick a set of properties whose keys are in the union K
+    GroupMember:
+      properties:
+        lastName:
+          type: string
+          description: The user's last name
+        firstName:
+          type: string
+          description: The user's first name
+        email:
+          type: string
+          description: Primary email address for the user
+        userUuid:
+          type: string
+          description: Unique id for the user
+          format: uuid
+      required:
+      - lastName
+      - firstName
+      - email
+      - userUuid
+      type: object
+      description: A summary for a Lightdash user within a group
+    ApiGroupResponse:
+      properties:
+        results:
+          anyOf:
+          - $ref: '#/components/schemas/Group'
+          - $ref: '#/components/schemas/GroupWithMembers'
+        status:
+          type: string
+          enum:
+          - ok
+          nullable: false
+      required:
+      - results
+      - status
+      type: object
+    ApiGroupMembersResponse:
+      properties:
+        results:
+          items:
+            $ref: '#/components/schemas/GroupMember'
+          type: array
+        status:
+          type: string
+          enum:
+          - ok
+          nullable: false
+      required:
+      - results
+      - status
+      type: object
+    GroupWithMembers:
+      allOf:
+      - $ref: '#/components/schemas/Group'
+      - properties:
+          memberUuids:
+            items:
+              type: string
+            type: array
+          members:
+            items:
+              $ref: '#/components/schemas/GroupMember'
+            type: array
+            description: A list of the group's members.
+        required:
+        - memberUuids
+        - members
+        type: object
+      description: Details for a group including a list of the group's members.
+    UpdateGroupWithMembers:
+      properties:
+        members:
+          items:
+            $ref: '#/components/schemas/Pick_GroupMember.userUuid_'
+          type: array
+        name:
+          type: string
+      type: object
+    ProjectGroupAccess:
+      properties:
+        role:
+          anyOf:
+          - $ref: '#/components/schemas/ProjectMemberRole'
+          - allOf:
+            - type: string
+            - properties: {}
+              type: object
+        groupUuid:
+          type: string
+        projectUuid:
+          type: string
+      required:
+      - role
+      - groupUuid
+      - projectUuid
+      type: object
+    UpdateDBProjectGroupAccess:
+      properties:
+        role_uuid:
+          type: string
+          nullable: true
+        role:
+          $ref: '#/components/schemas/ProjectMemberRole'
+      required:
+      - role
+      type: object
+  securitySchemes:
+    session_cookie:
+      type: apiKey
+      in: cookie
+      name: connect.sid
+    api_key:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: Value should be 'ApiKey <your key>'

@@ -1,0 +1,320 @@
+openapi: 3.0.0
+info:
+  title: Lightdash AiAgents Funnel API
+  version: 0.3156.1
+  description: 'Open API documentation for all public Lightdash API endpoints. # Authentication Before you get started, you might need to create a Personal Access Token to authenticate via the API. You can create a token by following this guide: https://docs.lightdash.com/references/personal_tokens
+
+    '
+  license:
+    name: MIT
+  contact:
+    name: Lightdash Support
+    email: support@lightdash.com
+    url: https://docs.lightdash.com/help-and-contact/contact/contact_info/
+servers:
+- url: /
+tags:
+- name: Funnel
+paths:
+  /api/v1/projects/{projectUuid}/funnel/event-names:
+    get:
+      operationId: GetFunnelEventNames
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiFunnelEventNamesResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: 'Get distinct event names from a dimension for funnel step selection.
+
+        Scans the last 30 days of data to limit query cost.'
+      summary: Get event names
+      tags:
+      - Funnel
+      security: []
+      parameters:
+      - description: The project UUID
+        in: path
+        name: projectUuid
+        required: true
+        schema:
+          type: string
+      - description: The explore to query
+        in: query
+        name: exploreName
+        required: true
+        schema:
+          type: string
+      - description: The dimension containing event names
+        in: query
+        name: eventDimensionId
+        required: true
+        schema:
+          type: string
+      - description: The timestamp dimension used to filter to last 30 days
+        in: query
+        name: timestampFieldId
+        required: true
+        schema:
+          type: string
+  /api/v1/projects/{projectUuid}/funnel/query:
+    post:
+      operationId: RunFunnelQuery
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiFunnelQueryResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: Execute a funnel analysis query and return conversion metrics
+      summary: Run funnel query
+      tags:
+      - Funnel
+      security: []
+      parameters:
+      - description: The project UUID
+        in: path
+        name: projectUuid
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: The funnel query configuration
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FunnelQueryRequest'
+              description: The funnel query configuration
+components:
+  schemas:
+    Exclude_FunnelDatePreset.custom_:
+      type: string
+      enum:
+      - last_7_days
+      - last_14_days
+      - last_30_days
+      - last_90_days
+      - last_6_months
+      - last_12_months
+      description: Exclude from T those types that are assignable to U
+    FunnelConversionWindowUnit:
+      type: string
+      enum:
+      - hours
+      - days
+      - weeks
+    AnyType:
+      description: 'This AnyType is an alias for any
+
+        The goal is to make it easier to identify any type in the codebase
+
+        without having to eslint-disable all the time
+
+        These are only used on legacy `any` types, don''t use it for new types.
+
+        This is added on a separate file to avoid circular dependencies.'
+    FunnelStepResult:
+      properties:
+        breakdownValue:
+          type: string
+        medianTimeToConvertSeconds:
+          type: number
+          format: double
+          nullable: true
+        stepConversionRate:
+          type: number
+          format: double
+        conversionRate:
+          type: number
+          format: double
+        totalUsers:
+          type: number
+          format: double
+        stepName:
+          type: string
+        stepOrder:
+          type: number
+          format: double
+      required:
+      - medianTimeToConvertSeconds
+      - stepConversionRate
+      - conversionRate
+      - totalUsers
+      - stepName
+      - stepOrder
+      type: object
+    ApiErrorPayload:
+      properties:
+        error:
+          properties:
+            data:
+              $ref: '#/components/schemas/AnyType'
+              description: Optional data containing details of the error
+            message:
+              type: string
+              description: A friendly message summarising the error
+            name:
+              type: string
+              description: Unique name for the type of error
+            statusCode:
+              type: number
+              format: integer
+              description: HTTP status code
+          required:
+          - name
+          - statusCode
+          type: object
+        status:
+          type: string
+          enum:
+          - error
+          nullable: false
+      required:
+      - error
+      - status
+      type: object
+      description: 'The Error object is returned from the api any time there is an error.
+
+        The message contains'
+    FunnelQueryRequest:
+      properties:
+        breakdownDimensionId:
+          type: string
+        conversionWindow:
+          properties:
+            unit:
+              $ref: '#/components/schemas/FunnelConversionWindowUnit'
+            value:
+              type: number
+              format: double
+          required:
+          - unit
+          - value
+          type: object
+        dateRange:
+          $ref: '#/components/schemas/FunnelDateRange'
+        steps:
+          items:
+            $ref: '#/components/schemas/FunnelStep'
+          type: array
+        eventNameFieldId:
+          type: string
+        userIdFieldId:
+          type: string
+        timestampFieldId:
+          type: string
+        exploreName:
+          type: string
+      required:
+      - dateRange
+      - steps
+      - eventNameFieldId
+      - userIdFieldId
+      - timestampFieldId
+      - exploreName
+      type: object
+    FunnelQueryResult:
+      properties:
+        sql:
+          type: string
+        steps:
+          items:
+            $ref: '#/components/schemas/FunnelStepResult'
+          type: array
+      required:
+      - sql
+      - steps
+      type: object
+    ApiFunnelQueryResponse:
+      properties:
+        results:
+          $ref: '#/components/schemas/FunnelQueryResult'
+        status:
+          type: string
+          enum:
+          - ok
+          nullable: false
+      required:
+      - results
+      - status
+      type: object
+    FunnelDateRange:
+      anyOf:
+      - properties:
+          preset:
+            $ref: '#/components/schemas/Exclude_FunnelDatePreset.custom_'
+          type:
+            type: string
+            enum:
+            - preset
+            nullable: false
+        required:
+        - preset
+        - type
+        type: object
+      - properties:
+          end:
+            type: string
+          start:
+            type: string
+          type:
+            type: string
+            enum:
+            - custom
+            nullable: false
+        required:
+        - end
+        - start
+        - type
+        type: object
+    FunnelStep:
+      properties:
+        eventName:
+          type: string
+        stepOrder:
+          type: number
+          format: double
+      required:
+      - eventName
+      - stepOrder
+      type: object
+    ApiFunnelEventNamesResponse:
+      properties:
+        results:
+          items:
+            type: string
+          type: array
+        status:
+          type: string
+          enum:
+          - ok
+          nullable: false
+      required:
+      - results
+      - status
+      type: object
+  securitySchemes:
+    session_cookie:
+      type: apiKey
+      in: cookie
+      name: connect.sid
+    api_key:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: Value should be 'ApiKey <your key>'

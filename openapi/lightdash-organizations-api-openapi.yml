@@ -1,0 +1,5088 @@
+openapi: 3.0.0
+info:
+  title: Lightdash AiAgents Organizations API
+  version: 0.3156.1
+  description: 'Open API documentation for all public Lightdash API endpoints. # Authentication Before you get started, you might need to create a Personal Access Token to authenticate via the API. You can create a token by following this guide: https://docs.lightdash.com/references/personal_tokens
+
+    '
+  license:
+    name: MIT
+  contact:
+    name: Lightdash Support
+    email: support@lightdash.com
+    url: https://docs.lightdash.com/help-and-contact/contact/contact_info/
+servers:
+- url: /
+tags:
+- name: Organizations
+  description: Each user is a member of a single organization. These routes allow users to manage their organization. Most actions are only available to admin users.
+paths:
+  /api/v1/org/sso/azuread:
+    get:
+      operationId: GetAzureAdSsoConfig
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiAzureAdSsoConfigResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: 'Returns the current organization''s Azure AD SSO configuration (sensitive
+
+        fields are not included).'
+      summary: Get Azure AD SSO configuration
+      tags:
+      - Organizations
+      security: []
+      parameters: []
+    put:
+      operationId: UpsertAzureAdSsoConfig
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiUpsertAzureAdSsoConfigResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: 'Creates or updates the current organization''s Azure AD SSO configuration.
+
+        Omit `oauth2ClientSecret` to preserve the previously stored secret on
+
+        updates.'
+      summary: Upsert Azure AD SSO configuration
+      tags:
+      - Organizations
+      security: []
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpsertAzureAdSsoConfig'
+    delete:
+      operationId: DeleteAzureAdSsoConfig
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiSuccessEmpty'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: Removes the current organization's Azure AD SSO configuration.
+      summary: Delete Azure AD SSO configuration
+      tags:
+      - Organizations
+      security: []
+      parameters: []
+  /api/v1/org/sso/okta:
+    get:
+      operationId: GetOktaSsoConfig
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiOktaSsoConfigResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: 'Returns the current organization''s Okta SSO configuration (sensitive
+
+        fields are not included).'
+      summary: Get Okta SSO configuration
+      tags:
+      - Organizations
+      security: []
+      parameters: []
+    put:
+      operationId: UpsertOktaSsoConfig
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiUpsertOktaSsoConfigResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: 'Creates or updates the current organization''s Okta SSO configuration.
+
+        Omit `oauth2ClientSecret` to preserve the previously stored secret on
+
+        updates.'
+      summary: Upsert Okta SSO configuration
+      tags:
+      - Organizations
+      security: []
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpsertOktaSsoConfig'
+    delete:
+      operationId: DeleteOktaSsoConfig
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiSuccessEmpty'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: Removes the current organization's Okta SSO configuration.
+      summary: Delete Okta SSO configuration
+      tags:
+      - Organizations
+      security: []
+      parameters: []
+  /api/v1/org/sso/oidc:
+    get:
+      operationId: GetGenericOidcSsoConfig
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiGenericOidcSsoConfigResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: 'Returns the current organization''s generic OIDC SSO configuration
+
+        (sensitive fields are not included).'
+      summary: Get generic OIDC SSO configuration
+      tags:
+      - Organizations
+      security: []
+      parameters: []
+    put:
+      operationId: UpsertGenericOidcSsoConfig
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiUpsertGenericOidcSsoConfigResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: 'Creates or updates the current organization''s generic OIDC SSO
+
+        configuration. Omit `clientSecret` to preserve the previously stored
+
+        secret on updates.'
+      summary: Upsert generic OIDC SSO configuration
+      tags:
+      - Organizations
+      security: []
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpsertGenericOidcSsoConfig'
+    delete:
+      operationId: DeleteGenericOidcSsoConfig
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiSuccessEmpty'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: Removes the current organization's generic OIDC SSO configuration.
+      summary: Delete generic OIDC SSO configuration
+      tags:
+      - Organizations
+      security: []
+      parameters: []
+  /api/v1/org/sso/oneLogin:
+    get:
+      operationId: GetOneLoginSsoConfig
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiOneLoginSsoConfigResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: 'Returns the current organization''s OneLogin SSO configuration (sensitive
+
+        fields are not included).'
+      summary: Get OneLogin SSO configuration
+      tags:
+      - Organizations
+      security: []
+      parameters: []
+    put:
+      operationId: UpsertOneLoginSsoConfig
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiUpsertOneLoginSsoConfigResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: 'Creates or updates the current organization''s OneLogin SSO
+
+        configuration. Omit `oauth2ClientSecret` to preserve the previously
+
+        stored secret on updates.'
+      summary: Upsert OneLogin SSO configuration
+      tags:
+      - Organizations
+      security: []
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpsertOneLoginSsoConfig'
+    delete:
+      operationId: DeleteOneLoginSsoConfig
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiSuccessEmpty'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: Removes the current organization's OneLogin SSO configuration.
+      summary: Delete OneLogin SSO configuration
+      tags:
+      - Organizations
+      security: []
+      parameters: []
+  /api/v1/org/sso/google:
+    get:
+      operationId: GetGoogleSsoConfig
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiGoogleSsoConfigResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: 'Returns the current organization''s Google SSO policy. Google is enabled
+
+        by default using the shared instance OAuth app; a configuration only
+
+        exists when the org has set an explicit policy (e.g. disabled Google).
+
+        `null` means no explicit policy — Google follows the instance default.'
+      summary: Get Google SSO configuration
+      tags:
+      - Organizations
+      security: []
+      parameters: []
+    put:
+      operationId: UpsertGoogleSsoConfig
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiUpsertGoogleSsoConfigResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: 'Creates or updates the current organization''s Google SSO policy. Google
+
+        has no per-org credentials — only the `enabled` / domain / password
+
+        flags are stored.'
+      summary: Upsert Google SSO configuration
+      tags:
+      - Organizations
+      security: []
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpsertGoogleSsoConfig'
+    delete:
+      operationId: DeleteGoogleSsoConfig
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiSuccessEmpty'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: 'Removes the current organization''s Google SSO policy, reverting to the
+
+        instance default (Google enabled).'
+      summary: Delete Google SSO configuration
+      tags:
+      - Organizations
+      security: []
+      parameters: []
+  /api/v1/org/domains:
+    get:
+      operationId: ListVerifiedDomains
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiVerifiedDomainsResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: Lists the domains the current organization has verified ownership of.
+      summary: List verified domains
+      tags:
+      - Organizations
+      security: []
+      parameters: []
+  /api/v1/org/domains/verify:
+    post:
+      operationId: RequestDomainVerification
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiDomainVerificationStatusResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: 'Sends a one-time passcode to an address at the domain to begin verifying
+
+        ownership. The domain must not be a public email provider and must not
+
+        already be verified by another organization.'
+      summary: Request domain verification
+      tags:
+      - Organizations
+      security: []
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RequestDomainVerification'
+  /api/v1/org/domains/confirm:
+    post:
+      operationId: ConfirmDomainVerification
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiDomainVerificationStatusResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: 'Confirms a domain verification passcode. On success the domain is marked
+
+        verified for the organization.'
+      summary: Confirm domain verification
+      tags:
+      - Organizations
+      security: []
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ConfirmDomainVerification'
+  /api/v1/org/domains/{domain}:
+    delete:
+      operationId: DeleteVerifiedDomain
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiSuccessEmpty'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: 'Removes a verified domain and strips it from any SSO provider that routed
+
+        to it.'
+      summary: Delete verified domain
+      tags:
+      - Organizations
+      security: []
+      parameters:
+      - in: path
+        name: domain
+        required: true
+        schema:
+          type: string
+  /api/v1/org/settings:
+    get:
+      operationId: GetOrganizationSettings
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiOrganizationSettingsResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: 'Returns the current organization''s settings. Defaults are returned when
+
+        no settings have been saved.'
+      summary: Get organization settings
+      tags:
+      - Organizations
+      security: []
+      parameters: []
+    patch:
+      operationId: UpdateOrganizationSettings
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiOrganizationSettingsResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: 'Updates the current organization''s settings. Only the provided fields
+
+        are changed.'
+      summary: Update organization settings
+      tags:
+      - Organizations
+      security: []
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateOrganizationSettings'
+  /api/v1/org/designs:
+    get:
+      operationId: ListOrganizationDesigns
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiOrganizationDesignsResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: List all organization design assets.
+      summary: List organization designs
+      tags:
+      - Organizations
+      security: []
+      parameters: []
+    post:
+      operationId: CreateOrganizationDesign
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiOrganizationDesignResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: Create a new organization design. Starts empty — upload files separately.
+      summary: Create organization design
+      tags:
+      - Organizations
+      security: []
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateOrganizationDesignRequest'
+  /api/v1/org/designs/{designUuid}:
+    get:
+      operationId: GetOrganizationDesign
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiOrganizationDesignResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: Get a single organization design with its files.
+      summary: Get organization design
+      tags:
+      - Organizations
+      security: []
+      parameters:
+      - in: path
+        name: designUuid
+        required: true
+        schema:
+          type: string
+    patch:
+      operationId: UpdateOrganizationDesign
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiOrganizationDesignResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: Update an organization design's name or description.
+      summary: Update organization design
+      tags:
+      - Organizations
+      security: []
+      parameters:
+      - in: path
+        name: designUuid
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateOrganizationDesignRequest'
+    delete:
+      operationId: DeleteOrganizationDesign
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiSuccessEmpty'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: Delete an organization design and all its files (cascades S3).
+      summary: Delete organization design
+      tags:
+      - Organizations
+      security: []
+      parameters:
+      - in: path
+        name: designUuid
+        required: true
+        schema:
+          type: string
+  /api/v1/org/designs/default:
+    delete:
+      operationId: ClearDefaultOrganizationDesign
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiSuccessEmpty'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: 'Clear whichever design is currently the organization default. Idempotent
+
+        — succeeds when no default is set.
+
+
+        NOTE: This literal `/default` route MUST stay registered before
+
+        `Delete(''/{designUuid}'')` below so Express routes a request to
+
+        `DELETE /api/v1/org/designs/default` here rather than treating
+
+        "default" as a `designUuid` path param.'
+      summary: Clear default organization design
+      tags:
+      - Organizations
+      security: []
+      parameters: []
+  /api/v1/org/designs/{designUuid}/default:
+    post:
+      operationId: SetDefaultOrganizationDesign
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiOrganizationDesignResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: Mark this design as the organization's default. Clears any previous default.
+      summary: Set default organization design
+      tags:
+      - Organizations
+      security: []
+      parameters:
+      - in: path
+        name: designUuid
+        required: true
+        schema:
+          type: string
+  /api/v1/org/designs/{designUuid}/files:
+    post:
+      operationId: UploadOrganizationDesignFile
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiOrganizationDesignFileResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: 'Upload a file into a design. Send raw bytes as the body with the
+
+        appropriate Content-Type and Content-Length headers. Pass `kind`
+
+        and `filename` as query parameters. Mirrors the data-app image
+
+        upload pattern — no multipart wrapping required.'
+      summary: Upload file to organization design
+      tags:
+      - Organizations
+      security: []
+      parameters:
+      - in: path
+        name: designUuid
+        required: true
+        schema:
+          type: string
+      - in: query
+        name: kind
+        required: true
+        schema:
+          type: string
+      - in: query
+        name: filename
+        required: true
+        schema:
+          type: string
+  /api/v1/org/designs/{designUuid}/files/{fileUuid}:
+    delete:
+      operationId: DeleteOrganizationDesignFile
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiSuccessEmpty'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: Delete a single file from an organization design.
+      summary: Delete file from organization design
+      tags:
+      - Organizations
+      security: []
+      parameters:
+      - in: path
+        name: designUuid
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: fileUuid
+        required: true
+        schema:
+          type: string
+    get:
+      operationId: DownloadOrganizationDesignFile
+      responses:
+        '200':
+          description: Success
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: 'Download a single file from an organization design. Streams the
+
+        S3 object body back with the stored Content-Type and a sensible
+
+        Content-Disposition.'
+      summary: Download file from organization design
+      tags:
+      - Organizations
+      security: []
+      parameters:
+      - in: path
+        name: designUuid
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: fileUuid
+        required: true
+        schema:
+          type: string
+  /api/v1/org:
+    get:
+      operationId: GetMyOrganization
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiOrganization'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: Get the current user's organization
+      summary: Get current organization
+      tags:
+      - Organizations
+      security: []
+      parameters: []
+    put:
+      operationId: CreateOrganization
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiSuccessEmpty'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: 'Creates a new organization, the current user becomes the Admin of the new organization.
+
+        This is only available to users that are not already in an organization.'
+      summary: Create organization
+      tags:
+      - Organizations
+      security: []
+      parameters: []
+      requestBody:
+        description: the new organization settings
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateOrganization'
+              description: the new organization settings
+    patch:
+      operationId: UpdateMyOrganization
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiSuccessEmpty'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: Update the current user's organization
+      summary: Update current organization
+      tags:
+      - Organizations
+      security: []
+      parameters: []
+      requestBody:
+        description: the new organization settings
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateOrganization'
+              description: the new organization settings
+  /api/v1/org/{organizationUuid}:
+    delete:
+      operationId: DeleteMyOrganization
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiSuccessEmpty'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: Deletes an organization and all users inside that organization
+      summary: Delete organization
+      tags:
+      - Organizations
+      security: []
+      parameters:
+      - description: the uuid of the organization to delete
+        in: path
+        name: organizationUuid
+        required: true
+        schema:
+          type: string
+  /api/v1/org/projects:
+    get:
+      operationId: ListOrganizationProjects
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiOrganizationProjects'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: Gets all projects of the current user's organization
+      summary: List organization projects
+      tags:
+      - Organizations
+      security: []
+      parameters: []
+    post:
+      operationId: CreateProject
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiSuccess_ApiCreateProjectResults_'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: Create a new project in the organization
+      summary: Create project
+      tags:
+      - Organizations
+      security: []
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateProjectOptionalCredentials'
+  /api/v1/org/users:
+    get:
+      operationId: ListOrganizationMembers
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiOrganizationMemberProfiles'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: Gets all the members of the current user's organization
+      summary: List organization members
+      tags:
+      - Organizations
+      security: []
+      parameters:
+      - in: query
+        name: includeGroups
+        required: false
+        schema:
+          format: double
+          type: number
+      - in: query
+        name: pageSize
+        required: false
+        schema:
+          format: double
+          type: number
+      - in: query
+        name: page
+        required: false
+        schema:
+          format: double
+          type: number
+      - in: query
+        name: searchQuery
+        required: false
+        schema:
+          type: string
+      - description: filter users who can view this project
+        in: query
+        name: projectUuid
+        required: false
+        schema:
+          type: string
+      - in: query
+        name: googleOidcOnly
+        required: false
+        schema:
+          type: boolean
+  /api/v1/org/users/{userUuid}:
+    get:
+      operationId: GetOrganizationMemberByUuid
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiOrganizationMemberProfile'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: Get the member profile for a user in the current user's organization by uuid
+      summary: Get organization member by UUID
+      tags:
+      - Organizations
+      deprecated: true
+      security: []
+      parameters:
+      - description: the uuid of the user
+        in: path
+        name: userUuid
+        required: true
+        schema:
+          $ref: '#/components/schemas/UUID'
+    patch:
+      operationId: UpdateOrganizationMember
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiOrganizationMemberProfile'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: Updates the membership profile for a user in the current user's organization
+      summary: Update organization member
+      tags:
+      - Organizations
+      deprecated: true
+      security: []
+      parameters:
+      - description: the uuid of the user to update
+        in: path
+        name: userUuid
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: the new membership profile
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrganizationMemberProfileUpdate'
+              description: the new membership profile
+  /api/v1/org/users/email/{email}:
+    get:
+      operationId: GetOrganizationMemberByEmail
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiOrganizationMemberProfile'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: Get the member profile for a user in the current user's organization by email
+      summary: Get organization member by email
+      tags:
+      - Organizations
+      deprecated: true
+      security: []
+      parameters:
+      - description: the email of the user
+        in: path
+        name: email
+        required: true
+        schema:
+          type: string
+  /api/v1/org/user/{userUuid}:
+    delete:
+      operationId: DeleteOrganizationMember
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiSuccessEmpty'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: Deletes a user from the current user's organization
+      summary: Delete organization member
+      tags:
+      - Organizations
+      security: []
+      parameters:
+      - description: the uuid of the user to delete
+        in: path
+        name: userUuid
+        required: true
+        schema:
+          type: string
+  /api/v1/org/user/{userUuid}/schedulers-summary:
+    get:
+      operationId: GetUserSchedulersSummary
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiUserSchedulersSummaryResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: Gets a summary of scheduled deliveries owned by a user across all projects
+      summary: Get user schedulers
+      tags:
+      - Organizations
+      security: []
+      parameters:
+      - description: the uuid of the user
+        in: path
+        name: userUuid
+        required: true
+        schema:
+          type: string
+  /api/v1/org/user/{userUuid}/reassign-schedulers:
+    patch:
+      operationId: ReassignUserSchedulers
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiReassignUserSchedulersResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: Reassigns all scheduled deliveries from one user to another
+      summary: Reassign schedulers
+      tags:
+      - Organizations
+      security: []
+      parameters:
+      - description: the uuid of the user whose schedulers will be reassigned
+        in: path
+        name: userUuid
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: the new owner details
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReassignUserSchedulersRequest'
+              description: the new owner details
+  /api/v1/org/allowedEmailDomains:
+    get:
+      operationId: ListOrganizationEmailDomains
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiOrganizationAllowedEmailDomains'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: Gets the allowed email domains for the current user's organization
+      summary: List allowed email domains
+      tags:
+      - Organizations
+      security: []
+      parameters: []
+    patch:
+      operationId: UpdateOrganizationEmailDomains
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiOrganizationAllowedEmailDomains'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: Updates the allowed email domains for the current user's organization
+      summary: Update allowed email domains
+      tags:
+      - Organizations
+      security: []
+      parameters: []
+      requestBody:
+        description: the new allowed email domains
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateAllowedEmailDomains'
+              description: the new allowed email domains
+  /api/v1/org/groups:
+    post:
+      operationId: CreateGroupInOrganization
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiCreateGroupResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: Creates a new group in the current user's organization
+      summary: Create group
+      tags:
+      - Organizations
+      security: []
+      parameters: []
+      requestBody:
+        description: the new group details
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateGroup'
+              description: the new group details
+    get:
+      operationId: ListGroupsInOrganization
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiGroupListResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: Gets all the groups in the current user's organization
+      summary: List organization groups
+      tags:
+      - Organizations
+      security: []
+      parameters:
+      - in: query
+        name: page
+        required: false
+        schema:
+          format: double
+          type: number
+      - in: query
+        name: pageSize
+        required: false
+        schema:
+          format: double
+          type: number
+      - description: number of members to include
+        in: query
+        name: includeMembers
+        required: false
+        schema:
+          format: double
+          type: number
+      - in: query
+        name: searchQuery
+        required: false
+        schema:
+          type: string
+  /api/v1/org/color-palettes:
+    post:
+      operationId: CreateColorPalette
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiCreatedColorPaletteResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: Create a new color palette
+      summary: Create color palette
+      tags:
+      - Organizations
+      security: []
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateColorPalette'
+    get:
+      operationId: ListColorPalettes
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiColorPalettesResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: List all color palettes in the organization
+      summary: List color palettes
+      tags:
+      - Organizations
+      security: []
+      parameters: []
+  /api/v1/org/color-palettes/{colorPaletteUuid}:
+    patch:
+      operationId: UpdateColorPalette
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiColorPaletteResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: Update a color palette
+      summary: Update color palette
+      tags:
+      - Organizations
+      security: []
+      parameters:
+      - in: path
+        name: colorPaletteUuid
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateColorPalette'
+    delete:
+      operationId: DeleteColorPalette
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiSuccessEmpty'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: Delete a color palette
+      summary: Delete color palette
+      tags:
+      - Organizations
+      security: []
+      parameters:
+      - in: path
+        name: colorPaletteUuid
+        required: true
+        schema:
+          type: string
+  /api/v1/org/color-palettes/{colorPaletteUuid}/active:
+    post:
+      operationId: SetActiveColorPalette
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiColorPaletteResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: Set a color palette as the active palette
+      summary: Set active color palette
+      tags:
+      - Organizations
+      security: []
+      parameters:
+      - in: path
+        name: colorPaletteUuid
+        required: true
+        schema:
+          type: string
+  /api/v1/org/impersonation:
+    get:
+      operationId: GetImpersonationSettings
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiImpersonationOrganizationSettingsResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: Get the impersonation setting for the current organization
+      summary: Get impersonation settings
+      tags:
+      - Organizations
+      security: []
+      parameters: []
+    patch:
+      operationId: UpdateImpersonationSettings
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiImpersonationOrganizationSettingsResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: Update the impersonation setting for the current organization
+      summary: Update impersonation settings
+      tags:
+      - Organizations
+      security: []
+      parameters: []
+      requestBody:
+        description: the new impersonation settings
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateImpersonationOrganizationSettings'
+              description: the new impersonation settings
+components:
+  schemas:
+    ReassignUserSchedulersRequest:
+      properties:
+        newOwnerUserUuid:
+          type: string
+      required:
+      - newOwnerUserUuid
+      type: object
+    ApiSuccess_ImpersonationOrganizationSettings_:
+      properties:
+        results:
+          $ref: '#/components/schemas/ImpersonationOrganizationSettings'
+        status:
+          type: string
+          enum:
+          - ok
+          nullable: false
+      required:
+      - results
+      - status
+      type: object
+    OrganizationMemberRole:
+      enum:
+      - member
+      - viewer
+      - interactive_viewer
+      - editor
+      - developer
+      - admin
+      type: string
+    UpsertOktaSsoConfig:
+      allOf:
+      - properties:
+          extraScopes:
+            type: string
+            nullable: true
+          authorizationServerId:
+            type: string
+            nullable: true
+          oauth2ClientSecret:
+            type: string
+            description: When omitted on update, the stored secret is preserved. Required on create.
+          oauth2ClientId:
+            type: string
+          oktaDomain:
+            type: string
+          oauth2Issuer:
+            type: string
+        required:
+        - oauth2ClientId
+        - oktaDomain
+        - oauth2Issuer
+        type: object
+      - $ref: '#/components/schemas/Partial_OrganizationSsoMethodFlags_'
+    DomainVerificationStatus:
+      allOf:
+      - $ref: '#/components/schemas/Pick_EmailStatusExpiring.otp_'
+      - properties:
+          isVerified:
+            type: boolean
+          domain:
+            type: string
+        required:
+        - isVerified
+        - domain
+        type: object
+      description: 'Verification status of a single domain. Mirrors {@link EmailStatusExpiring}:
+
+        `otp` is present only while a pending one-time passcode challenge exists.'
+    DucklakeDataPathGcs:
+      $ref: '#/components/schemas/Omit_CreateDucklakeDataPathGcs.hmacKeyId-or-hmacSecret_'
+    CreateDucklakeDataPath:
+      anyOf:
+      - $ref: '#/components/schemas/CreateDucklakeDataPathS3'
+      - $ref: '#/components/schemas/CreateDucklakeDataPathGcs'
+      - $ref: '#/components/schemas/CreateDucklakeDataPathAzure'
+      - $ref: '#/components/schemas/CreateDucklakeDataPathLocal'
+    DbtProjectType.GITHUB:
+      enum:
+      - github
+      type: string
+    DbtNoneProjectConfig:
+      properties:
+        type:
+          $ref: '#/components/schemas/DbtProjectType.NONE'
+        target:
+          type: string
+        environment:
+          items:
+            $ref: '#/components/schemas/DbtProjectEnvironmentVariable'
+          type: array
+        selector:
+          type: string
+        hideRefreshButton:
+          type: boolean
+      required:
+      - type
+      type: object
+      additionalProperties: true
+    TrinoCredentials:
+      $ref: '#/components/schemas/Omit_CreateTrinoCredentials.SensitiveCredentialsFieldNames_'
+    Pick_CreateDucklakeDataPathS3.Exclude_keyofCreateDucklakeDataPathS3.accessKeyId-or-secretAccessKey__:
+      properties:
+        type:
+          $ref: '#/components/schemas/DucklakeDataPathType.S3'
+        region:
+          type: string
+        url:
+          type: string
+        endpoint:
+          type: string
+        forcePathStyle:
+          type: boolean
+        useSsl:
+          type: boolean
+      required:
+      - type
+      - url
+      type: object
+      description: From T, pick a set of properties whose keys are in the union K
+    DucklakeCatalogSqlite:
+      $ref: '#/components/schemas/CreateDucklakeCatalogSqlite'
+    ApiOrganizationDesignResponse:
+      $ref: '#/components/schemas/ApiSuccess_ApiOrganizationDesign_'
+    DuckdbDucklakeCredentials:
+      allOf:
+      - $ref: '#/components/schemas/Omit_CreateDuckdbDucklakeCredentials.catalog-or-dataPath_'
+      - properties:
+          dataPath:
+            $ref: '#/components/schemas/DucklakeDataPath'
+          catalog:
+            $ref: '#/components/schemas/DucklakeCatalog'
+        required:
+        - dataPath
+        - catalog
+        type: object
+    Omit_CreateDatabricksCredentials.SensitiveCredentialsFieldNames_:
+      $ref: '#/components/schemas/Pick_CreateDatabricksCredentials.Exclude_keyofCreateDatabricksCredentials.SensitiveCredentialsFieldNames__'
+      description: Construct a type with the properties of T except for those in type K.
+    DucklakeCatalogType.POSTGRES:
+      enum:
+      - postgres
+      type: string
+    ApiErrorPayload:
+      properties:
+        error:
+          properties:
+            data:
+              $ref: '#/components/schemas/AnyType'
+              description: Optional data containing details of the error
+            message:
+              type: string
+              description: A friendly message summarising the error
+            name:
+              type: string
+              description: Unique name for the type of error
+            statusCode:
+              type: number
+              format: integer
+              description: HTTP status code
+          required:
+          - name
+          - statusCode
+          type: object
+        status:
+          type: string
+          enum:
+          - error
+          nullable: false
+      required:
+      - error
+      - status
+      type: object
+      description: 'The Error object is returned from the api any time there is an error.
+
+        The message contains'
+    Omit_CreateDucklakeDataPathAzure.connectionString-or-accountKey_:
+      $ref: '#/components/schemas/Pick_CreateDucklakeDataPathAzure.Exclude_keyofCreateDucklakeDataPathAzure.connectionString-or-accountKey__'
+      description: Construct a type with the properties of T except for those in type K.
+    DbtLocalProjectConfig:
+      properties:
+        type:
+          $ref: '#/components/schemas/DbtProjectType.DBT'
+        target:
+          type: string
+        environment:
+          items:
+            $ref: '#/components/schemas/DbtProjectEnvironmentVariable'
+          type: array
+        selector:
+          type: string
+        profiles_dir:
+          type: string
+        project_dir:
+          type: string
+      required:
+      - type
+      type: object
+      additionalProperties: true
+    WarehouseTypes.BIGQUERY:
+      enum:
+      - bigquery
+      type: string
+    GoogleSsoConfigSummary:
+      $ref: '#/components/schemas/OrganizationSsoMethodFlags'
+    UpdateOrganizationSettings:
+      $ref: '#/components/schemas/Partial_OrganizationSettings_'
+    Pick_Group.name_:
+      properties:
+        name:
+          type: string
+          description: A friendly name for the group
+      required:
+      - name
+      type: object
+      description: From T, pick a set of properties whose keys are in the union K
+    OrganizationSsoMethodFlags:
+      properties:
+        allowPassword:
+          type: boolean
+          description: 'Controls whether email+password sign-in is shown alongside this method
+
+            when it matches a user. When multiple matching SSO methods disagree,
+
+            lenient rule applies (ANY method that allows → show password).'
+        emailDomains:
+          items:
+            type: string
+          type: array
+          description: Strict whitelist (only consulted when `overrideEmailDomains` is true).
+        overrideEmailDomains:
+          type: boolean
+          description: 'When true, the method''s own `emailDomains` list governs discovery.
+
+            When false, the org''s `allowed_email_domains` is used instead.'
+        enabled:
+          type: boolean
+          description: When false the method is hidden from precheck even if discovery would match.
+      required:
+      - allowPassword
+      - emailDomains
+      - overrideEmailDomains
+      - enabled
+      type: object
+      description: 'Per-row flags shared by every SSO method configured at the org level.
+
+        Stored as plain columns alongside the encrypted provider-specific config.'
+    DucklakeDataPathType.AZURE:
+      enum:
+      - azure
+      type: string
+    WarehouseTypes.REDSHIFT:
+      enum:
+      - redshift
+      type: string
+    ApiUpsertGenericOidcSsoConfigResponse:
+      properties:
+        results:
+          $ref: '#/components/schemas/GenericOidcSsoConfigSummary'
+        status:
+          type: string
+          enum:
+          - ok
+          nullable: false
+      required:
+      - results
+      - status
+      type: object
+    ApiOrganizationSettingsResponse:
+      properties:
+        results:
+          $ref: '#/components/schemas/OrganizationSettings'
+        status:
+          type: string
+          enum:
+          - ok
+          nullable: false
+      required:
+      - results
+      - status
+      type: object
+    DbtCloudIDEProjectConfig:
+      properties:
+        type:
+          $ref: '#/components/schemas/DbtProjectType.DBT_CLOUD_IDE'
+        api_key:
+          type: string
+        environment_id:
+          type: string
+        discovery_api_endpoint:
+          type: string
+        tags:
+          items:
+            type: string
+          type: array
+      required:
+      - type
+      - api_key
+      - environment_id
+      type: object
+      additionalProperties: true
+    DucklakeDataPathAzure:
+      $ref: '#/components/schemas/Omit_CreateDucklakeDataPathAzure.connectionString-or-accountKey_'
+    DbtProjectType.BITBUCKET:
+      enum:
+      - bitbucket
+      type: string
+    SnowflakeAuthenticationType:
+      enum:
+      - password
+      - private_key
+      - sso
+      - external_browser
+      - none
+      type: string
+    Organization:
+      properties:
+        createdAt:
+          type: string
+          format: date-time
+        defaultProjectUuid:
+          type: string
+          description: The project a user sees when they first log in to the organization
+        needsProject:
+          type: boolean
+          description: The organization needs a project if it doesn't have at least one project.
+        colorPaletteUuid:
+          type: string
+          description: The active color palette uuid for all projects in the organization
+        chartDarkColors:
+          items:
+            type: string
+          type: array
+          description: The default dark color palette for all projects in the organization
+        chartColors:
+          items:
+            type: string
+          type: array
+          description: The default color palette for all projects in the organization
+        name:
+          type: string
+          description: The name of the organization
+        organizationUuid:
+          type: string
+          description: The unique identifier of the organization
+          format: uuid
+      required:
+      - name
+      - organizationUuid
+      type: object
+      description: Details of a user's Organization
+    Omit_CreateDucklakeCatalogPostgres.user-or-password_:
+      $ref: '#/components/schemas/Pick_CreateDucklakeCatalogPostgres.Exclude_keyofCreateDucklakeCatalogPostgres.user-or-password__'
+      description: Construct a type with the properties of T except for those in type K.
+    ApiCreateProjectResults:
+      properties:
+        contentCopyError:
+          type: string
+        hasContentCopy:
+          type: boolean
+        project:
+          $ref: '#/components/schemas/Project'
+      required:
+      - hasContentCopy
+      - project
+      type: object
+    ProjectMemberRole.VIEWER:
+      enum:
+      - viewer
+      type: string
+    ApiOneLoginSsoConfigResponse:
+      properties:
+        results:
+          allOf:
+          - $ref: '#/components/schemas/OneLoginSsoConfigSummary'
+          nullable: true
+        status:
+          type: string
+          enum:
+          - ok
+          nullable: false
+      required:
+      - results
+      - status
+      type: object
+    CreateProjectOptionalCredentials:
+      allOf:
+      - $ref: '#/components/schemas/Omit_CreateProject.warehouseConnection_'
+      - properties:
+          warehouseConnection:
+            $ref: '#/components/schemas/CreateWarehouseCredentials'
+        type: object
+    BigqueryAuthenticationType:
+      enum:
+      - sso
+      - private_key
+      - adc
+      type: string
+    DucklakeDataPathS3:
+      $ref: '#/components/schemas/Omit_CreateDucklakeDataPathS3.accessKeyId-or-secretAccessKey_'
+    ApiVerifiedDomainsResponse:
+      properties:
+        results:
+          items:
+            $ref: '#/components/schemas/VerifiedDomain'
+          type: array
+        status:
+          type: string
+          enum:
+          - ok
+          nullable: false
+      required:
+      - results
+      - status
+      type: object
+    OrganizationSettings:
+      properties:
+        corsAllowedDomains:
+          items:
+            type: string
+          type: array
+          nullable: true
+          description: 'Exact origins, wildcard subdomain origins, and regex patterns this org
+
+            contributes to the instance CORS allow-list. Regex entries use `/.../`
+
+            syntax.'
+        csvCellsLimit:
+          type: number
+          format: double
+          nullable: true
+          description: 'Max number of cells (rows × columns) a CSV/Excel export may contain for
+
+            this org. Inherits `LIGHTDASH_CSV_CELLS_LIMIT` and is capped by
+
+            `LIGHTDASH_CSV_MAX_LIMIT` (the ceiling); `null` inherits the
+
+            default. Always resolved to an effective number in API responses.'
+        queryLimit:
+          type: number
+          format: double
+          nullable: true
+          description: 'Max number of rows a query may return for this org. Inherits and is
+
+            capped by the instance-wide `LIGHTDASH_QUERY_MAX_LIMIT` (the ceiling);
+
+            `null` inherits it. Always resolved to an effective number in API
+
+            responses so the frontend can display it directly.'
+        scheduledDeliveryExpirationSecondsGoogleChat:
+          type: number
+          format: double
+          nullable: true
+          description: 'Per-channel override (seconds) for Google Chat deliveries; `null` inherits
+
+            the base. Google Chat has no instance env var, so this is an org-only
+
+            override (it still falls back to the base / env base).'
+        scheduledDeliveryExpirationSecondsMsTeams:
+          type: number
+          format: double
+          nullable: true
+          description: 'Per-channel override (seconds) for Microsoft Teams deliveries; `null`
+
+            inherits the base. Overrides `PERSISTENT_DOWNLOAD_URL_EXPIRATION_SECONDS_MSTEAMS`.'
+        scheduledDeliveryExpirationSecondsSlack:
+          type: number
+          format: double
+          nullable: true
+          description: 'Per-channel override (seconds) for Slack deliveries; `null` inherits the
+
+            base. Overrides `PERSISTENT_DOWNLOAD_URL_EXPIRATION_SECONDS_SLACK`.'
+        scheduledDeliveryExpirationSecondsEmail:
+          type: number
+          format: double
+          nullable: true
+          description: 'Per-channel override (seconds) of {@link scheduledDeliveryExpirationSeconds }
+
+            for email deliveries; `null` inherits the base. Unlike the base, this is
+
+            surfaced raw (not resolved) so the UI can distinguish "inherit" from an
+
+            explicit value. Overrides `PERSISTENT_DOWNLOAD_URL_EXPIRATION_SECONDS_EMAIL`.'
+        scheduledDeliveryExpirationSeconds:
+          type: number
+          format: double
+          nullable: true
+          description: 'Base lifetime (seconds) of this org''s scheduled-delivery download links —
+
+            the default every channel inherits. Overrides the instance-wide
+
+            `PERSISTENT_DOWNLOAD_URL_EXPIRATION_SECONDS` env; `null` inherits it. This
+
+            field is always resolved to an effective number in API responses (it
+
+            falls back to the env default), so the frontend can display it directly.
+
+            A value over {@link S3_PRESIGNED_URL_MAX_EXPIRATION_SECONDS} transparently
+
+            switches that delivery to the persistent-download-URL system (the only
+
+            way a link can outlive AWS''s 7-day presigned ceiling).'
+        supportImpersonationEnabled:
+          type: boolean
+          nullable: true
+          description: 'Per-org consent for the Lightdash support team to impersonate users in
+
+            the org while helping with a support request. Unlike the OIDC toggles
+
+            this has no instance/env default — it''s opt-in only, so `null` (or no
+
+            stored row) resolves to `false`.'
+        oidcToEmailLinkingEnabled:
+          type: boolean
+          nullable: true
+          description: 'Auto-link an OIDC identity to an existing user matched by verified
+
+            primary email, regardless of how they signed up (overrides
+
+            `AUTH_ENABLE_OIDC_TO_EMAIL_LINKING`; `null` inherits it).'
+        oidcLinkingEnabled:
+          type: boolean
+          nullable: true
+          description: 'Auto-link a new OIDC identity to an existing user who already has a
+
+            different OIDC identity with the same email (overrides
+
+            `AUTH_ENABLE_OIDC_LINKING`; `null` inherits it).'
+      required:
+      - corsAllowedDomains
+      - csvCellsLimit
+      - queryLimit
+      - scheduledDeliveryExpirationSecondsGoogleChat
+      - scheduledDeliveryExpirationSecondsMsTeams
+      - scheduledDeliveryExpirationSecondsSlack
+      - scheduledDeliveryExpirationSecondsEmail
+      - scheduledDeliveryExpirationSeconds
+      - supportImpersonationEnabled
+      - oidcToEmailLinkingEnabled
+      - oidcLinkingEnabled
+      type: object
+      description: 'Per-organization settings migrated from instance-wide env vars. Surfaced in
+
+        the Pro admin panel and stored in the `organization_settings` table. Starts
+
+        with the OIDC account-linking toggles; designed to grow as more settings
+
+        move org-level.
+
+
+        Each value is tri-state: `null` means "not set — inherit the instance/env
+
+        default", while an explicit `true`/`false` overrides the env. The fallback
+
+        to the env default is resolved in the auth layer, not here.'
+    ApiUserSchedulersSummaryResponse:
+      $ref: '#/components/schemas/ApiSuccess_UserSchedulersSummary_'
+    CreateDuckdbCredentials:
+      anyOf:
+      - $ref: '#/components/schemas/CreateDuckdbMotherduckCredentials'
+      - $ref: '#/components/schemas/CreateDuckdbDucklakeCredentials'
+    GenericOidcSsoConfigSummary:
+      allOf:
+      - $ref: '#/components/schemas/Pick_GenericOidcSsoConfig.clientId-or-metadataDocumentEndpoint-or-scopes_'
+      - $ref: '#/components/schemas/OrganizationSsoMethodFlags'
+      - properties:
+          hasClientSecret:
+            type: boolean
+        required:
+        - hasClientSecret
+        type: object
+    Pick_CreateClickhouseCredentials.Exclude_keyofCreateClickhouseCredentials.SensitiveCredentialsFieldNames__:
+      properties:
+        type:
+          $ref: '#/components/schemas/WarehouseTypes.CLICKHOUSE'
+        requireUserCredentials:
+          type: boolean
+        schema:
+          type: string
+        startOfWeek:
+          allOf:
+          - $ref: '#/components/schemas/WeekDay'
+          nullable: true
+        dataTimezone:
+          type: string
+        timeoutSeconds:
+          type: number
+          format: double
+        host:
+          type: string
+        port:
+          type: number
+          format: double
+        secure:
+          type: boolean
+      required:
+      - type
+      - schema
+      - host
+      - port
+      type: object
+      description: From T, pick a set of properties whose keys are in the union K
+    DbtProjectType.MANIFEST:
+      enum:
+      - manifest
+      type: string
+    AllowedEmailDomainProjectsRole:
+      anyOf:
+      - $ref: '#/components/schemas/ProjectMemberRole.EDITOR'
+      - $ref: '#/components/schemas/ProjectMemberRole.INTERACTIVE_VIEWER'
+      - $ref: '#/components/schemas/ProjectMemberRole.VIEWER'
+    WarehouseTypes.ATHENA:
+      enum:
+      - athena
+      type: string
+    DucklakeCatalogType.SQLITE:
+      enum:
+      - sqlite
+      type: string
+    RedshiftCredentials:
+      $ref: '#/components/schemas/Omit_CreateRedshiftCredentials.SensitiveCredentialsFieldNames_'
+    Omit_CreateDuckdbMotherduckCredentials.SensitiveCredentialsFieldNames_:
+      $ref: '#/components/schemas/Pick_CreateDuckdbMotherduckCredentials.Exclude_keyofCreateDuckdbMotherduckCredentials.SensitiveCredentialsFieldNames__'
+      description: Construct a type with the properties of T except for those in type K.
+    SslConfiguration:
+      properties:
+        sslrootcert:
+          type: string
+          nullable: true
+        sslrootcertFileName:
+          type: string
+        sslkey:
+          type: string
+          nullable: true
+        sslkeyFileName:
+          type: string
+        sslcert:
+          type: string
+          nullable: true
+        sslcertFileName:
+          type: string
+        sslmode:
+          type: string
+      type: object
+    CreateDatabricksCredentials:
+      properties:
+        compute:
+          items:
+            properties:
+              httpPath:
+                type: string
+              name:
+                type: string
+            required:
+            - httpPath
+            - name
+            type: object
+          type: array
+        dataTimezone:
+          type: string
+        startOfWeek:
+          allOf:
+          - $ref: '#/components/schemas/WeekDay'
+          nullable: true
+        requireUserCredentials:
+          type: boolean
+        oauthClientSecret:
+          type: string
+        oauthClientId:
+          type: string
+        token:
+          type: string
+        refreshToken:
+          type: string
+        personalAccessToken:
+          type: string
+        authenticationType:
+          $ref: '#/components/schemas/DatabricksAuthenticationType'
+        httpPath:
+          type: string
+        serverHostName:
+          type: string
+        database:
+          type: string
+        catalog:
+          type: string
+        type:
+          $ref: '#/components/schemas/WarehouseTypes.DATABRICKS'
+      required:
+      - httpPath
+      - serverHostName
+      - database
+      - type
+      type: object
+    UpdateOrganization:
+      $ref: '#/components/schemas/Partial_Omit_Organization.organizationUuid-or-needsProject__'
+    OrganizationProject:
+      properties:
+        expiresAt:
+          type: string
+          format: date-time
+          nullable: true
+        warehouseType:
+          $ref: '#/components/schemas/WarehouseTypes'
+        upstreamProjectUuid:
+          type: string
+          nullable: true
+        createdAt:
+          type: string
+          format: date-time
+        createdByUserName:
+          type: string
+          nullable: true
+        createdByUserUuid:
+          type: string
+          nullable: true
+        type:
+          $ref: '#/components/schemas/ProjectType'
+        name:
+          type: string
+        projectUuid:
+          type: string
+          description: The unique identifier of the project
+          format: uuid
+      required:
+      - expiresAt
+      - upstreamProjectUuid
+      - createdAt
+      - createdByUserName
+      - createdByUserUuid
+      - type
+      - name
+      - projectUuid
+      type: object
+      description: Summary of a project under an organization
+    ConfirmDomainVerification:
+      properties:
+        passcode:
+          type: string
+        domain:
+          type: string
+      required:
+      - passcode
+      - domain
+      type: object
+    DucklakeDataPathType.GCS:
+      enum:
+      - gcs
+      type: string
+    Partial_OrganizationSettings_:
+      properties:
+        oidcLinkingEnabled:
+          type: boolean
+          nullable: true
+          description: 'Auto-link a new OIDC identity to an existing user who already has a
+
+            different OIDC identity with the same email (overrides
+
+            `AUTH_ENABLE_OIDC_LINKING`; `null` inherits it).'
+        oidcToEmailLinkingEnabled:
+          type: boolean
+          nullable: true
+          description: 'Auto-link an OIDC identity to an existing user matched by verified
+
+            primary email, regardless of how they signed up (overrides
+
+            `AUTH_ENABLE_OIDC_TO_EMAIL_LINKING`; `null` inherits it).'
+        supportImpersonationEnabled:
+          type: boolean
+          nullable: true
+          description: 'Per-org consent for the Lightdash support team to impersonate users in
+
+            the org while helping with a support request. Unlike the OIDC toggles
+
+            this has no instance/env default — it''s opt-in only, so `null` (or no
+
+            stored row) resolves to `false`.'
+        scheduledDeliveryExpirationSeconds:
+          type: number
+          format: double
+          nullable: true
+          description: 'Base lifetime (seconds) of this org''s scheduled-delivery download links —
+
+            the default every channel inherits. Overrides the instance-wide
+
+            `PERSISTENT_DOWNLOAD_URL_EXPIRATION_SECONDS` env; `null` inherits it. This
+
+            field is always resolved to an effective number in API responses (it
+
+            falls back to the env default), so the frontend can display it directly.
+
+            A value over {@link S3_PRESIGNED_URL_MAX_EXPIRATION_SECONDS} transparently
+
+            switches that delivery to the persistent-download-URL system (the only
+
+            way a link can outlive AWS''s 7-day presigned ceiling).'
+        scheduledDeliveryExpirationSecondsEmail:
+          type: number
+          format: double
+          nullable: true
+          description: 'Per-channel override (seconds) of {@link scheduledDeliveryExpirationSeconds }
+
+            for email deliveries; `null` inherits the base. Unlike the base, this is
+
+            surfaced raw (not resolved) so the UI can distinguish "inherit" from an
+
+            explicit value. Overrides `PERSISTENT_DOWNLOAD_URL_EXPIRATION_SECONDS_EMAIL`.'
+        scheduledDeliveryExpirationSecondsSlack:
+          type: number
+          format: double
+          nullable: true
+          description: 'Per-channel override (seconds) for Slack deliveries; `null` inherits the
+
+            base. Overrides `PERSISTENT_DOWNLOAD_URL_EXPIRATION_SECONDS_SLACK`.'
+        scheduledDeliveryExpirationSecondsMsTeams:
+          type: number
+          format: double
+          nullable: true
+          description: 'Per-channel override (seconds) for Microsoft Teams deliveries; `null`
+
+            inherits the base. Overrides `PERSISTENT_DOWNLOAD_URL_EXPIRATION_SECONDS_MSTEAMS`.'
+        scheduledDeliveryExpirationSecondsGoogleChat:
+          type: number
+          format: double
+          nullable: true
+          description: 'Per-channel override (seconds) for Google Chat deliveries; `null` inherits
+
+            the base. Google Chat has no instance env var, so this is an org-only
+
+            override (it still falls back to the base / env base).'
+        queryLimit:
+          type: number
+          format: double
+          nullable: true
+          description: 'Max number of rows a query may return for this org. Inherits and is
+
+            capped by the instance-wide `LIGHTDASH_QUERY_MAX_LIMIT` (the ceiling);
+
+            `null` inherits it. Always resolved to an effective number in API
+
+            responses so the frontend can display it directly.'
+        csvCellsLimit:
+          type: number
+          format: double
+          nullable: true
+          description: 'Max number of cells (rows × columns) a CSV/Excel export may contain for
+
+            this org. Inherits `LIGHTDASH_CSV_CELLS_LIMIT` and is capped by
+
+            `LIGHTDASH_CSV_MAX_LIMIT` (the ceiling); `null` inherits the
+
+            default. Always resolved to an effective number in API responses.'
+        corsAllowedDomains:
+          items:
+            type: string
+          type: array
+          nullable: true
+          description: 'Exact origins, wildcard subdomain origins, and regex patterns this org
+
+            contributes to the instance CORS allow-list. Regex entries use `/.../`
+
+            syntax.'
+      type: object
+      description: Make all properties in T optional
+    AthenaCredentials:
+      $ref: '#/components/schemas/Omit_CreateAthenaCredentials.SensitiveCredentialsFieldNames_'
+    DbtAzureDevOpsProjectConfig:
+      properties:
+        type:
+          $ref: '#/components/schemas/DbtProjectType.AZURE_DEVOPS'
+        target:
+          type: string
+        environment:
+          items:
+            $ref: '#/components/schemas/DbtProjectEnvironmentVariable'
+          type: array
+        selector:
+          type: string
+        personal_access_token:
+          type: string
+        organization:
+          type: string
+        project:
+          type: string
+        repository:
+          type: string
+        branch:
+          type: string
+        project_sub_path:
+          type: string
+      required:
+      - type
+      - personal_access_token
+      - organization
+      - project
+      - repository
+      - branch
+      - project_sub_path
+      type: object
+      additionalProperties: true
+    ClickhouseCredentials:
+      $ref: '#/components/schemas/Omit_CreateClickhouseCredentials.SensitiveCredentialsFieldNames_'
+    ApiReassignUserSchedulersResponse:
+      $ref: '#/components/schemas/ApiSuccess__reassignedCount-number__'
+    CreateOrganization:
+      $ref: '#/components/schemas/Pick_Organization.name_'
+    ApiGroupListResponse:
+      properties:
+        results:
+          $ref: '#/components/schemas/KnexPaginatedData_Group-Array-or-GroupWithMembers-Array_'
+        status:
+          type: string
+          enum:
+          - ok
+          nullable: false
+      required:
+      - results
+      - status
+      type: object
+    OneLoginSsoConfigSummary:
+      allOf:
+      - $ref: '#/components/schemas/Pick_OneLoginSsoConfig.oauth2Issuer-or-oauth2ClientId_'
+      - $ref: '#/components/schemas/OrganizationSsoMethodFlags'
+      - properties:
+          hasClientSecret:
+            type: boolean
+        required:
+        - hasClientSecret
+        type: object
+    ApiSuccess__reassignedCount-number__:
+      properties:
+        results:
+          properties:
+            reassignedCount:
+              type: number
+              format: double
+          required:
+          - reassignedCount
+          type: object
+        status:
+          type: string
+          enum:
+          - ok
+          nullable: false
+      required:
+      - results
+      - status
+      type: object
+    Omit_CreateRedshiftCredentials.SensitiveCredentialsFieldNames_:
+      $ref: '#/components/schemas/Pick_CreateRedshiftCredentials.Exclude_keyofCreateRedshiftCredentials.SensitiveCredentialsFieldNames__'
+      description: Construct a type with the properties of T except for those in type K.
+    DbtGithubProjectConfig:
+      properties:
+        type:
+          $ref: '#/components/schemas/DbtProjectType.GITHUB'
+        target:
+          type: string
+        environment:
+          items:
+            $ref: '#/components/schemas/DbtProjectEnvironmentVariable'
+          type: array
+        selector:
+          type: string
+        authorization_method:
+          type: string
+          enum:
+          - personal_access_token
+          - installation_id
+        personal_access_token:
+          type: string
+        installation_id:
+          type: string
+        repository:
+          type: string
+        branch:
+          type: string
+        project_sub_path:
+          type: string
+        host_domain:
+          type: string
+      required:
+      - type
+      - authorization_method
+      - repository
+      - branch
+      - project_sub_path
+      type: object
+      additionalProperties: true
+    DucklakeCatalogDuckdb:
+      $ref: '#/components/schemas/CreateDucklakeCatalogDuckdb'
+    Group:
+      properties:
+        organizationUuid:
+          type: string
+          description: The UUID of the organization that the group belongs to
+        updatedByUserUuid:
+          type: string
+          nullable: true
+          description: The UUID of the user that last updated the group
+        updatedAt:
+          type: string
+          format: date-time
+          description: The time that the group was last updated
+        createdByUserUuid:
+          type: string
+          nullable: true
+          description: The UUID of the user that created the group
+        createdAt:
+          type: string
+          format: date-time
+          description: The time that the group was created
+        name:
+          type: string
+          description: A friendly name for the group
+        uuid:
+          type: string
+          description: The group's UUID
+      required:
+      - organizationUuid
+      - updatedByUserUuid
+      - updatedAt
+      - createdByUserUuid
+      - createdAt
+      - name
+      - uuid
+      type: object
+    ApiDomainVerificationStatusResponse:
+      properties:
+        results:
+          $ref: '#/components/schemas/DomainVerificationStatus'
+        status:
+          type: string
+          enum:
+          - ok
+          nullable: false
+      required:
+      - results
+      - status
+      type: object
+    ApiUpsertOneLoginSsoConfigResponse:
+      properties:
+        results:
+          $ref: '#/components/schemas/OneLoginSsoConfigSummary'
+        status:
+          type: string
+          enum:
+          - ok
+          nullable: false
+      required:
+      - results
+      - status
+      type: object
+    CreateDucklakeDataPathAzure:
+      properties:
+        accountKey:
+          type: string
+        accountName:
+          type: string
+        connectionString:
+          type: string
+        url:
+          type: string
+        type:
+          $ref: '#/components/schemas/DucklakeDataPathType.AZURE'
+      required:
+      - url
+      - type
+      type: object
+    Omit_CreateSnowflakeCredentials.SensitiveCredentialsFieldNames_:
+      $ref: '#/components/schemas/Pick_CreateSnowflakeCredentials.Exclude_keyofCreateSnowflakeCredentials.SensitiveCredentialsFieldNames__'
+      description: Construct a type with the properties of T except for those in type K.
+    DbtProjectConfig:
+      anyOf:
+      - $ref: '#/components/schemas/DbtLocalProjectConfig'
+      - $ref: '#/components/schemas/DbtCloudIDEProjectConfig'
+      - $ref: '#/components/schemas/DbtGithubProjectConfig'
+      - $ref: '#/components/schemas/DbtBitBucketProjectConfig'
+      - $ref: '#/components/schemas/DbtGitlabProjectConfig'
+      - $ref: '#/components/schemas/DbtAzureDevOpsProjectConfig'
+      - $ref: '#/components/schemas/DbtNoneProjectConfig'
+      - $ref: '#/components/schemas/DbtManifestProjectConfig'
+    RequestDomainVerification:
+      properties:
+        challengeEmail:
+          type: string
+        domain:
+          type: string
+      required:
+      - challengeEmail
+      - domain
+      type: object
+      description: 'Request to verify a domain. `challengeEmail` must be an address at `domain`;
+
+        a one-time passcode is sent there and confirmed via
+
+        {@link ConfirmDomainVerification}.'
+    KnexPaginatedData_Group-Array-or-GroupWithMembers-Array_:
+      properties:
+        pagination:
+          allOf:
+          - $ref: '#/components/schemas/KnexPaginateArgs'
+          - properties:
+              totalResults:
+                type: number
+                format: double
+              totalPageCount:
+                type: number
+                format: double
+            required:
+            - totalResults
+            - totalPageCount
+            type: object
+        data:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/Group'
+            type: array
+          - items:
+              $ref: '#/components/schemas/GroupWithMembers'
+            type: array
+      required:
+      - data
+      type: object
+    WarehouseTypes.DATABRICKS:
+      enum:
+      - databricks
+      type: string
+    EmailOneTimePassword:
+      properties:
+        numberOfAttempts:
+          type: number
+          format: double
+          description: Number of times the passcode has been attempted
+        createdAt:
+          type: string
+          format: date-time
+          description: Time that the passcode was created
+      required:
+      - numberOfAttempts
+      - createdAt
+      type: object
+    Pick_CreateDuckdbMotherduckCredentials.Exclude_keyofCreateDuckdbMotherduckCredentials.SensitiveCredentialsFieldNames__:
+      properties:
+        type:
+          $ref: '#/components/schemas/WarehouseTypes.DUCKDB'
+        requireUserCredentials:
+          type: boolean
+        database:
+          type: string
+        schema:
+          type: string
+        threads:
+          type: number
+          format: double
+        startOfWeek:
+          allOf:
+          - $ref: '#/components/schemas/WeekDay'
+          nullable: true
+        dataTimezone:
+          type: string
+        connectionType:
+          $ref: '#/components/schemas/DuckdbConnectionType.MOTHERDUCK'
+      required:
+      - type
+      - database
+      - schema
+      - connectionType
+      type: object
+      description: From T, pick a set of properties whose keys are in the union K
+    CreateColorPalette:
+      properties:
+        darkColors:
+          items:
+            type: string
+          type: array
+        colors:
+          items:
+            type: string
+          type: array
+        name:
+          type: string
+      required:
+      - colors
+      - name
+      type: object
+    Omit_AllowedEmailDomains.organizationUuid_:
+      $ref: '#/components/schemas/Pick_AllowedEmailDomains.Exclude_keyofAllowedEmailDomains.organizationUuid__'
+      description: Construct a type with the properties of T except for those in type K.
+    OrganizationColorPalette:
+      properties:
+        createdAt:
+          type: string
+          format: date-time
+        darkColors:
+          items:
+            type: string
+          type: array
+          nullable: true
+        colors:
+          items:
+            type: string
+          type: array
+        name:
+          type: string
+        organizationUuid:
+          type: string
+        colorPaletteUuid:
+          type: string
+      required:
+      - createdAt
+      - darkColors
+      - colors
+      - name
+      - organizationUuid
+      - colorPaletteUuid
+      type: object
+    Omit_CreateBigqueryCredentials.SensitiveCredentialsFieldNames_:
+      $ref: '#/components/schemas/Pick_CreateBigqueryCredentials.Exclude_keyofCreateBigqueryCredentials.SensitiveCredentialsFieldNames__'
+      description: Construct a type with the properties of T except for those in type K.
+    AthenaAuthenticationType:
+      enum:
+      - access_key
+      - iam_role
+      type: string
+    Pick_GroupMember.userUuid_:
+      properties:
+        userUuid:
+          type: string
+          description: Unique id for the user
+          format: uuid
+      required:
+      - userUuid
+      type: object
+      description: From T, pick a set of properties whose keys are in the union K
+    Pick_AzureAdSsoConfig.oauth2ClientId-or-oauth2TenantId_:
+      properties:
+        oauth2ClientId:
+          type: string
+        oauth2TenantId:
+          type: string
+      required:
+      - oauth2ClientId
+      - oauth2TenantId
+      type: object
+      description: From T, pick a set of properties whose keys are in the union K
+    DbtVersionOptionLatest:
+      enum:
+      - latest
+      type: string
+    Omit_CreateDuckdbDucklakeCredentials.catalog-or-dataPath_:
+      $ref: '#/components/schemas/Pick_CreateDuckdbDucklakeCredentials.Exclude_keyofCreateDuckdbDucklakeCredentials.catalog-or-dataPath__'
+      description: Construct a type with the properties of T except for those in type K.
+    Omit_CreateClickhouseCredentials.SensitiveCredentialsFieldNames_:
+      $ref: '#/components/schemas/Pick_CreateClickhouseCredentials.Exclude_keyofCreateClickhouseCredentials.SensitiveCredentialsFieldNames__'
+      description: Construct a type with the properties of T except for those in type K.
+    Omit_CreateAthenaCredentials.SensitiveCredentialsFieldNames_:
+      $ref: '#/components/schemas/Pick_CreateAthenaCredentials.Exclude_keyofCreateAthenaCredentials.SensitiveCredentialsFieldNames__'
+      description: Construct a type with the properties of T except for those in type K.
+    CreateAthenaCredentials:
+      properties:
+        dataTimezone:
+          type: string
+        startOfWeek:
+          allOf:
+          - $ref: '#/components/schemas/WeekDay'
+          nullable: true
+        requireUserCredentials:
+          type: boolean
+        numRetries:
+          type: number
+          format: double
+        threads:
+          type: number
+          format: double
+        workGroup:
+          type: string
+        assumeRoleExternalId:
+          type: string
+        assumeRoleArn:
+          type: string
+        secretAccessKey:
+          type: string
+        accessKeyId:
+          type: string
+        authenticationType:
+          $ref: '#/components/schemas/AthenaAuthenticationType'
+        s3DataDir:
+          type: string
+        s3StagingDir:
+          type: string
+        schema:
+          type: string
+        database:
+          type: string
+        region:
+          type: string
+        type:
+          $ref: '#/components/schemas/WarehouseTypes.ATHENA'
+      required:
+      - s3StagingDir
+      - schema
+      - database
+      - region
+      - type
+      type: object
+    OktaSsoConfigSummary:
+      allOf:
+      - $ref: '#/components/schemas/Pick_OktaSsoConfig.oauth2Issuer-or-oktaDomain-or-oauth2ClientId-or-authorizationServerId-or-extraScopes_'
+      - $ref: '#/components/schemas/OrganizationSsoMethodFlags'
+      - properties:
+          hasClientSecret:
+            type: boolean
+        required:
+        - hasClientSecret
+        type: object
+    CreateTrinoCredentials:
+      properties:
+        dataTimezone:
+          type: string
+        startOfWeek:
+          allOf:
+          - $ref: '#/components/schemas/WeekDay'
+          nullable: true
+        source:
+          type: string
+        http_scheme:
+          type: string
+        schema:
+          type: string
+        dbname:
+          type: string
+        port:
+          type: number
+          format: double
+        requireUserCredentials:
+          type: boolean
+        password:
+          type: string
+        user:
+          type: string
+        host:
+          type: string
+        type:
+          $ref: '#/components/schemas/WarehouseTypes.TRINO'
+      required:
+      - http_scheme
+      - schema
+      - dbname
+      - port
+      - password
+      - user
+      - host
+      - type
+      type: object
+    DatabricksAuthenticationType:
+      enum:
+      - personal_access_token
+      - oauth_m2m
+      - oauth_u2m
+      type: string
+    AllowedEmailDomains:
+      properties:
+        projects:
+          items:
+            properties:
+              role:
+                $ref: '#/components/schemas/AllowedEmailDomainProjectsRole'
+              projectUuid:
+                type: string
+            required:
+            - role
+            - projectUuid
+            type: object
+          type: array
+        role:
+          $ref: '#/components/schemas/AllowedEmailDomainsRole'
+        emailDomains:
+          items:
+            type: string
+          type: array
+        organizationUuid:
+          type: string
+      required:
+      - projects
+      - role
+      - emailDomains
+      - organizationUuid
+      type: object
+    ApiOrganizationDesignsResponse:
+      $ref: '#/components/schemas/ApiSuccess_ApiOrganizationDesign-Array_'
+    CreateDucklakeCatalogSqlite:
+      properties:
+        path:
+          type: string
+        type:
+          $ref: '#/components/schemas/DucklakeCatalogType.SQLITE'
+      required:
+      - path
+      - type
+      type: object
+    GroupWithMembers:
+      allOf:
+      - $ref: '#/components/schemas/Group'
+      - properties:
+          memberUuids:
+            items:
+              type: string
+            type: array
+          members:
+            items:
+              $ref: '#/components/schemas/GroupMember'
+            type: array
+            description: A list of the group's members.
+        required:
+        - memberUuids
+        - members
+        type: object
+      description: Details for a group including a list of the group's members.
+    CreateWarehouseCredentials:
+      anyOf:
+      - $ref: '#/components/schemas/CreateRedshiftCredentials'
+      - $ref: '#/components/schemas/CreateBigqueryCredentials'
+      - $ref: '#/components/schemas/CreatePostgresCredentials'
+      - $ref: '#/components/schemas/CreateSnowflakeCredentials'
+      - $ref: '#/components/schemas/CreateDatabricksCredentials'
+      - $ref: '#/components/schemas/CreateTrinoCredentials'
+      - $ref: '#/components/schemas/CreateClickhouseCredentials'
+      - $ref: '#/components/schemas/CreateAthenaCredentials'
+      - $ref: '#/components/schemas/CreateDuckdbCredentials'
+    AzureAdSsoConfigSummary:
+      allOf:
+      - $ref: '#/components/schemas/Pick_AzureAdSsoConfig.oauth2ClientId-or-oauth2TenantId_'
+      - $ref: '#/components/schemas/OrganizationSsoMethodFlags'
+      - properties:
+          hasClientSecret:
+            type: boolean
+        required:
+        - hasClientSecret
+        type: object
+    CreateDucklakeCatalogPostgres:
+      properties:
+        password:
+          type: string
+        user:
+          type: string
+        database:
+          type: string
+        port:
+          type: number
+          format: double
+        host:
+          type: string
+        type:
+          $ref: '#/components/schemas/DucklakeCatalogType.POSTGRES'
+      required:
+      - password
+      - user
+      - database
+      - port
+      - host
+      - type
+      type: object
+    Pick_CreateDucklakeDataPathAzure.Exclude_keyofCreateDucklakeDataPathAzure.connectionString-or-accountKey__:
+      properties:
+        type:
+          $ref: '#/components/schemas/DucklakeDataPathType.AZURE'
+        url:
+          type: string
+        accountName:
+          type: string
+      required:
+      - type
+      - url
+      type: object
+      description: From T, pick a set of properties whose keys are in the union K
+    OrganizationMemberRole.MEMBER:
+      enum:
+      - member
+      type: string
+    DbtProjectType.GITLAB:
+      enum:
+      - gitlab
+      type: string
+    Pick_CreateDuckdbDucklakeCredentials.Exclude_keyofCreateDuckdbDucklakeCredentials.catalog-or-dataPath__:
+      properties:
+        type:
+          $ref: '#/components/schemas/WarehouseTypes.DUCKDB'
+        requireUserCredentials:
+          type: boolean
+        schema:
+          type: string
+        threads:
+          type: number
+          format: double
+        startOfWeek:
+          allOf:
+          - $ref: '#/components/schemas/WeekDay'
+          nullable: true
+        dataTimezone:
+          type: string
+        connectionType:
+          $ref: '#/components/schemas/DuckdbConnectionType.DUCKLAKE'
+        catalogAlias:
+          type: string
+      required:
+      - type
+      - schema
+      - connectionType
+      type: object
+      description: From T, pick a set of properties whose keys are in the union K
+    ApiOrganizationDesign:
+      properties:
+        files:
+          items:
+            $ref: '#/components/schemas/ApiOrganizationDesignFile'
+          type: array
+        createdByUserUuid:
+          type: string
+          nullable: true
+        updatedAt:
+          type: string
+          format: date-time
+        createdAt:
+          type: string
+          format: date-time
+        isDefault:
+          type: boolean
+        extraInstructions:
+          type: string
+          nullable: true
+          description: 'Free-text override appended to the agent''s effective skill at build
+
+            time, alongside any uploaded `instruction` markdown files. Empty
+
+            string is normalised to `null` server-side.'
+        description:
+          type: string
+          nullable: true
+        name:
+          type: string
+        organizationUuid:
+          type: string
+        designUuid:
+          type: string
+      required:
+      - files
+      - createdByUserUuid
+      - updatedAt
+      - createdAt
+      - isDefault
+      - extraInstructions
+      - description
+      - name
+      - organizationUuid
+      - designUuid
+      type: object
+    DucklakeDataPathLocal:
+      $ref: '#/components/schemas/CreateDucklakeDataPathLocal'
+    ApiOktaSsoConfigResponse:
+      properties:
+        results:
+          allOf:
+          - $ref: '#/components/schemas/OktaSsoConfigSummary'
+          nullable: true
+        status:
+          type: string
+          enum:
+          - ok
+          nullable: false
+      required:
+      - results
+      - status
+      type: object
+    CreateSnowflakeCredentials:
+      properties:
+        organizationWarehouseCredentialsUuid:
+          type: string
+        override:
+          type: boolean
+        timeoutSeconds:
+          type: number
+          format: double
+        disableTimestampConversion:
+          type: boolean
+        quotedIdentifiersIgnoreCase:
+          type: boolean
+        dataTimezone:
+          type: string
+        startOfWeek:
+          allOf:
+          - $ref: '#/components/schemas/WeekDay'
+          nullable: true
+        accessUrl:
+          type: string
+        queryTag:
+          type: string
+        clientSessionKeepAlive:
+          type: boolean
+        threads:
+          type: number
+          format: double
+        schema:
+          type: string
+        warehouse:
+          type: string
+        database:
+          type: string
+        role:
+          type: string
+        token:
+          type: string
+        refreshToken:
+          type: string
+        authenticationType:
+          $ref: '#/components/schemas/SnowflakeAuthenticationType'
+        privateKeyPass:
+          type: string
+        privateKey:
+          type: string
+        requireUserCredentials:
+          type: boolean
+        password:
+          type: string
+        user:
+          type: string
+        account:
+          type: string
+        type:
+          $ref: '#/components/schemas/WarehouseTypes.SNOWFLAKE'
+      required:
+      - schema
+      - warehouse
+      - database
+      - user
+      - account
+      - type
+      type: object
+    DbtGitlabProjectConfig:
+      properties:
+        type:
+          $ref: '#/components/schemas/DbtProjectType.GITLAB'
+        target:
+          type: string
+        environment:
+          items:
+            $ref: '#/components/schemas/DbtProjectEnvironmentVariable'
+          type: array
+        selector:
+          type: string
+        personal_access_token:
+          type: string
+        repository:
+          type: string
+        branch:
+          type: string
+        project_sub_path:
+          type: string
+        host_domain:
+          type: string
+      required:
+      - type
+      - personal_access_token
+      - repository
+      - branch
+      - project_sub_path
+      type: object
+      additionalProperties: true
+    ProjectMemberRole.EDITOR:
+      enum:
+      - editor
+      type: string
+    ApiSuccess_ApiOrganizationDesignFile_:
+      properties:
+        results:
+          $ref: '#/components/schemas/ApiOrganizationDesignFile'
+        status:
+          type: string
+          enum:
+          - ok
+          nullable: false
+      required:
+      - results
+      - status
+      type: object
+    OrganizationMemberRole.VIEWER:
+      enum:
+      - viewer
+      type: string
+    DbtProjectType.DBT_CLOUD_IDE:
+      enum:
+      - dbt_cloud_ide
+      type: string
+    WarehouseTypes.TRINO:
+      enum:
+      - trino
+      type: string
+    ApiColorPaletteResponse:
+      properties:
+        results:
+          $ref: '#/components/schemas/OrganizationColorPalette'
+        status:
+          type: string
+          enum:
+          - ok
+          nullable: false
+      required:
+      - results
+      - status
+      type: object
+    Pick_CreateSnowflakeCredentials.Exclude_keyofCreateSnowflakeCredentials.SensitiveCredentialsFieldNames__:
+      properties:
+        type:
+          $ref: '#/components/schemas/WarehouseTypes.SNOWFLAKE'
+        account:
+          type: string
+        requireUserCredentials:
+          type: boolean
+        authenticationType:
+          $ref: '#/components/schemas/SnowflakeAuthenticationType'
+        role:
+          type: string
+        database:
+          type: string
+        warehouse:
+          type: string
+        schema:
+          type: string
+        threads:
+          type: number
+          format: double
+        clientSessionKeepAlive:
+          type: boolean
+        queryTag:
+          type: string
+        accessUrl:
+          type: string
+        startOfWeek:
+          allOf:
+          - $ref: '#/components/schemas/WeekDay'
+          nullable: true
+        dataTimezone:
+          type: string
+        quotedIdentifiersIgnoreCase:
+          type: boolean
+        disableTimestampConversion:
+          type: boolean
+        timeoutSeconds:
+          type: number
+          format: double
+        override:
+          type: boolean
+        organizationWarehouseCredentialsUuid:
+          type: string
+      required:
+      - type
+      - account
+      - database
+      - warehouse
+      - schema
+      type: object
+      description: From T, pick a set of properties whose keys are in the union K
+    DbtVersionOption:
+      anyOf:
+      - $ref: '#/components/schemas/SupportedDbtVersions'
+      - $ref: '#/components/schemas/DbtVersionOptionLatest'
+    SupportedDbtVersions:
+      enum:
+      - v1.4
+      - v1.5
+      - v1.6
+      - v1.7
+      - v1.8
+      - v1.9
+      - v1.10
+      - v1.11
+      type: string
+    UpsertOneLoginSsoConfig:
+      allOf:
+      - properties:
+          oauth2ClientSecret:
+            type: string
+            description: When omitted on update, the stored secret is preserved. Required on create.
+          oauth2ClientId:
+            type: string
+          oauth2Issuer:
+            type: string
+        required:
+        - oauth2ClientId
+        - oauth2Issuer
+        type: object
+      - $ref: '#/components/schemas/Partial_OrganizationSsoMethodFlags_'
+    ApiGoogleSsoConfigResponse:
+      properties:
+        results:
+          allOf:
+          - $ref: '#/components/schemas/GoogleSsoConfigSummary'
+          nullable: true
+        status:
+          type: string
+          enum:
+          - ok
+          nullable: false
+      required:
+      - results
+      - status
+      type: object
+    CreateDucklakeCatalogDuckdb:
+      properties:
+        path:
+          type: string
+        type:
+          $ref: '#/components/schemas/DucklakeCatalogType.DUCKDB'
+      required:
+      - path
+      - type
+      type: object
+    AnyType:
+      description: 'This AnyType is an alias for any
+
+        The goal is to make it easier to identify any type in the codebase
+
+        without having to eslint-disable all the time
+
+        These are only used on legacy `any` types, don''t use it for new types.
+
+        This is added on a separate file to avoid circular dependencies.'
+    ApiOrganizationProjects:
+      properties:
+        results:
+          items:
+            $ref: '#/components/schemas/OrganizationProject'
+          type: array
+        status:
+          type: string
+          enum:
+          - ok
+          nullable: false
+      required:
+      - results
+      - status
+      type: object
+      description: List of projects in the current organization
+    CreateDucklakeDataPathS3:
+      properties:
+        useSsl:
+          type: boolean
+        forcePathStyle:
+          type: boolean
+        secretAccessKey:
+          type: string
+        accessKeyId:
+          type: string
+        region:
+          type: string
+        endpoint:
+          type: string
+        url:
+          type: string
+        type:
+          $ref: '#/components/schemas/DucklakeDataPathType.S3'
+      required:
+      - url
+      - type
+      type: object
+    ApiSuccessEmpty:
+      properties:
+        results: {}
+        status:
+          type: string
+          enum:
+          - ok
+          nullable: false
+      required:
+      - status
+      type: object
+    Pick_CreateBigqueryCredentials.Exclude_keyofCreateBigqueryCredentials.SensitiveCredentialsFieldNames__:
+      properties:
+        type:
+          $ref: '#/components/schemas/WarehouseTypes.BIGQUERY'
+        requireUserCredentials:
+          type: boolean
+        authenticationType:
+          $ref: '#/components/schemas/BigqueryAuthenticationType'
+        threads:
+          type: number
+          format: double
+        accessUrl:
+          type: string
+        startOfWeek:
+          allOf:
+          - $ref: '#/components/schemas/WeekDay'
+          nullable: true
+        dataTimezone:
+          type: string
+        timeoutSeconds:
+          type: number
+          format: double
+        project:
+          type: string
+        dataset:
+          type: string
+        priority:
+          type: string
+          enum:
+          - interactive
+          - batch
+        retries:
+          type: number
+          format: double
+        location:
+          type: string
+        maximumBytesBilled:
+          type: number
+          format: double
+        executionProject:
+          type: string
+      required:
+      - type
+      - project
+      - dataset
+      type: object
+      description: From T, pick a set of properties whose keys are in the union K
+    ApiOrganizationMemberProfile:
+      properties:
+        results:
+          $ref: '#/components/schemas/OrganizationMemberProfile'
+        status:
+          type: string
+          enum:
+          - ok
+          nullable: false
+      required:
+      - results
+      - status
+      type: object
+    CreateGroup:
+      allOf:
+      - $ref: '#/components/schemas/Pick_Group.name_'
+      - properties:
+          members:
+            items:
+              $ref: '#/components/schemas/Pick_GroupMember.userUuid_'
+            type: array
+        type: object
+    UpdateOrganizationDesignRequest:
+      properties:
+        extraInstructions:
+          type: string
+          nullable: true
+        description:
+          type: string
+          nullable: true
+        name:
+          type: string
+      type: object
+    OrganizationMemberRole.EDITOR:
+      enum:
+      - editor
+      type: string
+    ApiSuccess_ApiOrganizationDesign_:
+      properties:
+        results:
+          $ref: '#/components/schemas/ApiOrganizationDesign'
+        status:
+          type: string
+          enum:
+          - ok
+          nullable: false
+      required:
+      - results
+      - status
+      type: object
+    ApiSuccess_UserSchedulersSummary_:
+      properties:
+        results:
+          $ref: '#/components/schemas/UserSchedulersSummary'
+        status:
+          type: string
+          enum:
+          - ok
+          nullable: false
+      required:
+      - results
+      - status
+      type: object
+    ApiUpsertAzureAdSsoConfigResponse:
+      properties:
+        results:
+          $ref: '#/components/schemas/AzureAdSsoConfigSummary'
+        status:
+          type: string
+          enum:
+          - ok
+          nullable: false
+      required:
+      - results
+      - status
+      type: object
+    Omit_CreateTrinoCredentials.SensitiveCredentialsFieldNames_:
+      $ref: '#/components/schemas/Pick_CreateTrinoCredentials.Exclude_keyofCreateTrinoCredentials.SensitiveCredentialsFieldNames__'
+      description: Construct a type with the properties of T except for those in type K.
+    DucklakeDataPathType.S3:
+      enum:
+      - s3
+      type: string
+    CreateDucklakeCatalog:
+      anyOf:
+      - $ref: '#/components/schemas/CreateDucklakeCatalogPostgres'
+      - $ref: '#/components/schemas/CreateDucklakeCatalogSqlite'
+      - $ref: '#/components/schemas/CreateDucklakeCatalogDuckdb'
+    DbtProjectType.AZURE_DEVOPS:
+      enum:
+      - azure_devops
+      type: string
+    ApiOrganization:
+      properties:
+        results:
+          $ref: '#/components/schemas/Organization'
+        status:
+          type: string
+          enum:
+          - ok
+          nullable: false
+      required:
+      - results
+      - status
+      type: object
+    Pick_CreateProject.Exclude_keyofCreateProject.warehouseConnection__:
+      properties:
+        name:
+          type: string
+        type:
+          $ref: '#/components/schemas/ProjectType'
+        pinnedListUuid:
+          type: string
+        organizationWarehouseCredentialsUuid:
+          type: string
+        dbtConnection:
+          $ref: '#/components/schemas/DbtProjectConfig'
+        upstreamProjectUuid:
+          type: string
+        dbtVersion:
+          $ref: '#/components/schemas/DbtVersionOption'
+        projectDefaults:
+          $ref: '#/components/schemas/ProjectDefaults'
+        copyWarehouseConnectionFromUpstreamProject:
+          type: boolean
+        tableConfiguration:
+          $ref: '#/components/schemas/CreateProjectTableConfiguration'
+        copyContent:
+          type: boolean
+        expiresInHours:
+          type: number
+          format: double
+      required:
+      - name
+      - type
+      - dbtConnection
+      - dbtVersion
+      type: object
+      description: From T, pick a set of properties whose keys are in the union K
+    CreateOrganizationDesignRequest:
+      properties:
+        description:
+          type: string
+        name:
+          type: string
+      required:
+      - name
+      type: object
+    DuckdbMotherduckCredentials:
+      $ref: '#/components/schemas/Omit_CreateDuckdbMotherduckCredentials.SensitiveCredentialsFieldNames_'
+    Pick_CreateDucklakeDataPathGcs.Exclude_keyofCreateDucklakeDataPathGcs.hmacKeyId-or-hmacSecret__:
+      properties:
+        type:
+          $ref: '#/components/schemas/DucklakeDataPathType.GCS'
+        url:
+          type: string
+      required:
+      - type
+      - url
+      type: object
+      description: From T, pick a set of properties whose keys are in the union K
+    Partial_Omit_Organization.organizationUuid-or-needsProject__:
+      properties:
+        name:
+          type: string
+          description: The name of the organization
+        createdAt:
+          type: string
+          format: date-time
+        colorPaletteUuid:
+          type: string
+          description: The active color palette uuid for all projects in the organization
+        chartColors:
+          items:
+            type: string
+          type: array
+          description: The default color palette for all projects in the organization
+        chartDarkColors:
+          items:
+            type: string
+          type: array
+          description: The default dark color palette for all projects in the organization
+        defaultProjectUuid:
+          type: string
+          description: The project a user sees when they first log in to the organization
+      type: object
+      description: Make all properties in T optional
+    DbtProjectEnvironmentVariable:
+      properties:
+        value:
+          type: string
+        key:
+          type: string
+      required:
+      - value
+      - key
+      type: object
+    KnexPaginatedData_OrganizationMemberProfile-Array_:
+      properties:
+        pagination:
+          allOf:
+          - $ref: '#/components/schemas/KnexPaginateArgs'
+          - properties:
+              totalResults:
+                type: number
+                format: double
+              totalPageCount:
+                type: number
+                format: double
+            required:
+            - totalResults
+            - totalPageCount
+            type: object
+        data:
+          items:
+            $ref: '#/components/schemas/OrganizationMemberProfile'
+          type: array
+      required:
+      - data
+      type: object
+    DbtProjectType.NONE:
+      enum:
+      - none
+      type: string
+    Omit_CreateDucklakeDataPathS3.accessKeyId-or-secretAccessKey_:
+      $ref: '#/components/schemas/Pick_CreateDucklakeDataPathS3.Exclude_keyofCreateDucklakeDataPathS3.accessKeyId-or-secretAccessKey__'
+      description: Construct a type with the properties of T except for those in type K.
+    DucklakeCatalog:
+      anyOf:
+      - $ref: '#/components/schemas/DucklakeCatalogPostgres'
+      - $ref: '#/components/schemas/DucklakeCatalogSqlite'
+      - $ref: '#/components/schemas/DucklakeCatalogDuckdb'
+    CreatePostgresCredentials:
+      allOf:
+      - $ref: '#/components/schemas/SshTunnelConfiguration'
+      - $ref: '#/components/schemas/SslConfiguration'
+      - properties:
+          timeoutSeconds:
+            type: number
+            format: double
+          dataTimezone:
+            type: string
+          startOfWeek:
+            allOf:
+            - $ref: '#/components/schemas/WeekDay'
+            nullable: true
+          role:
+            type: string
+          searchPath:
+            type: string
+          keepalivesIdle:
+            type: number
+            format: double
+          threads:
+            type: number
+            format: double
+          schema:
+            type: string
+          dbname:
+            type: string
+          port:
+            type: number
+            format: double
+          requireUserCredentials:
+            type: boolean
+          password:
+            type: string
+          user:
+            type: string
+          host:
+            type: string
+          type:
+            $ref: '#/components/schemas/WarehouseTypes.POSTGRES'
+        required:
+        - schema
+        - dbname
+        - port
+        - password
+        - user
+        - host
+        - type
+        type: object
+    ApiOrganizationDesignFile:
+      properties:
+        createdAt:
+          type: string
+          format: date-time
+        sizeBytes:
+          type: number
+          format: double
+        contentType:
+          type: string
+        filename:
+          type: string
+        kind:
+          $ref: '#/components/schemas/OrganizationDesignFileKind'
+        fileUuid:
+          type: string
+      required:
+      - createdAt
+      - sizeBytes
+      - contentType
+      - filename
+      - kind
+      - fileUuid
+      type: object
+    UpdateImpersonationOrganizationSettings:
+      properties:
+        impersonationEnabled:
+          type: boolean
+      required:
+      - impersonationEnabled
+      type: object
+    ApiImpersonationOrganizationSettingsResponse:
+      $ref: '#/components/schemas/ApiSuccess_ImpersonationOrganizationSettings_'
+    WarehouseTypes:
+      enum:
+      - bigquery
+      - postgres
+      - redshift
+      - snowflake
+      - databricks
+      - trino
+      - clickhouse
+      - athena
+      - duckdb
+      type: string
+    Pick_CreateTrinoCredentials.Exclude_keyofCreateTrinoCredentials.SensitiveCredentialsFieldNames__:
+      properties:
+        type:
+          $ref: '#/components/schemas/WarehouseTypes.TRINO'
+        requireUserCredentials:
+          type: boolean
+        schema:
+          type: string
+        startOfWeek:
+          allOf:
+          - $ref: '#/components/schemas/WeekDay'
+          nullable: true
+        dataTimezone:
+          type: string
+        host:
+          type: string
+        port:
+          type: number
+          format: double
+        dbname:
+          type: string
+        http_scheme:
+          type: string
+        source:
+          type: string
+      required:
+      - type
+      - schema
+      - host
+      - port
+      - dbname
+      - http_scheme
+      type: object
+      description: From T, pick a set of properties whose keys are in the union K
+    Pick_CreateRedshiftCredentials.Exclude_keyofCreateRedshiftCredentials.SensitiveCredentialsFieldNames__:
+      properties:
+        type:
+          $ref: '#/components/schemas/WarehouseTypes.REDSHIFT'
+        requireUserCredentials:
+          type: boolean
+        schema:
+          type: string
+        threads:
+          type: number
+          format: double
+        startOfWeek:
+          allOf:
+          - $ref: '#/components/schemas/WeekDay'
+          nullable: true
+        dataTimezone:
+          type: string
+        timeoutSeconds:
+          type: number
+          format: double
+        useSshTunnel:
+          type: boolean
+        sshTunnelHost:
+          type: string
+        sshTunnelPort:
+          type: number
+          format: double
+        sshTunnelUser:
+          type: string
+        sshTunnelPublicKey:
+          type: string
+        host:
+          type: string
+        port:
+          type: number
+          format: double
+        dbname:
+          type: string
+        keepalivesIdle:
+          type: number
+          format: double
+        sslmode:
+          type: string
+        ra3Node:
+          type: boolean
+      required:
+      - type
+      - schema
+      - host
+      - port
+      - dbname
+      type: object
+      description: From T, pick a set of properties whose keys are in the union K
+    UpsertGenericOidcSsoConfig:
+      allOf:
+      - properties:
+          scopes:
+            type: string
+            nullable: true
+          metadataDocumentEndpoint:
+            type: string
+          clientSecret:
+            type: string
+            description: When omitted on update, the stored secret is preserved. Required on create.
+          clientId:
+            type: string
+        required:
+        - metadataDocumentEndpoint
+        - clientId
+        type: object
+      - $ref: '#/components/schemas/Partial_OrganizationSsoMethodFlags_'
+    VerifiedDomain:
+      properties:
+        verifiedByUserUuid:
+          type: string
+          nullable: true
+        verifiedAt:
+          type: string
+          format: date-time
+        domain:
+          type: string
+        organizationUuid:
+          type: string
+      required:
+      - verifiedByUserUuid
+      - verifiedAt
+      - domain
+      - organizationUuid
+      type: object
+      description: 'A domain an organization has proven it owns (via a one-time passcode sent to
+
+        an address at the domain). Verified domains are globally unique — the first
+
+        organization to verify a domain owns it.'
+    OrganizationMemberProfile:
+      properties:
+        isPending:
+          type: boolean
+          description: Whether the user doesn't have an authentication method (password or openId)
+        isInviteExpired:
+          type: boolean
+          description: Whether the user's invite to the organization has expired
+        isActive:
+          type: boolean
+          description: Whether the user can login
+        roleUuid:
+          type: string
+        role:
+          $ref: '#/components/schemas/OrganizationMemberRole'
+          description: The role of the user in the organization
+        organizationUuid:
+          type: string
+          description: Unique identifier for the organization the user is a member of
+        email:
+          type: string
+        lastName:
+          type: string
+        firstName:
+          type: string
+        userUpdatedAt:
+          type: string
+          format: date-time
+        userCreatedAt:
+          type: string
+          format: date-time
+        userUuid:
+          type: string
+          description: Unique identifier for the user
+          format: uuid
+      required:
+      - isActive
+      - role
+      - organizationUuid
+      - email
+      - lastName
+      - firstName
+      - userUpdatedAt
+      - userCreatedAt
+      - userUuid
+      type: object
+      description: Profile for a user's membership in an organization
+    DucklakeDataPathType.LOCAL:
+      enum:
+      - local
+      type: string
+    ApiCreatedColorPaletteResponse:
+      properties:
+        results:
+          $ref: '#/components/schemas/OrganizationColorPalette'
+        status:
+          type: string
+          enum:
+          - ok
+          nullable: false
+      required:
+      - results
+      - status
+      type: object
+    DucklakeCatalogType.DUCKDB:
+      enum:
+      - duckdb
+      type: string
+    OrganizationMemberProfileUpdate:
+      properties:
+        role:
+          $ref: '#/components/schemas/OrganizationMemberRole'
+      required:
+      - role
+      type: object
+    WarehouseTypes.SNOWFLAKE:
+      enum:
+      - snowflake
+      type: string
+    CreateDuckdbDucklakeCredentials:
+      properties:
+        dataTimezone:
+          type: string
+        startOfWeek:
+          allOf:
+          - $ref: '#/components/schemas/WeekDay'
+          nullable: true
+        requireUserCredentials:
+          type: boolean
+        threads:
+          type: number
+          format: double
+        catalogAlias:
+          type: string
+        schema:
+          type: string
+        dataPath:
+          $ref: '#/components/schemas/CreateDucklakeDataPath'
+        catalog:
+          $ref: '#/components/schemas/CreateDucklakeCatalog'
+        connectionType:
+          $ref: '#/components/schemas/DuckdbConnectionType.DUCKLAKE'
+        type:
+          $ref: '#/components/schemas/WarehouseTypes.DUCKDB'
+      required:
+      - schema
+      - dataPath
+      - catalog
+      - connectionType
+      - type
+      type: object
+    DucklakeCatalogPostgres:
+      $ref: '#/components/schemas/Omit_CreateDucklakeCatalogPostgres.user-or-password_'
+    CreateBigqueryCredentials:
+      properties:
+        accessUrl:
+          type: string
+        executionProject:
+          type: string
+        dataTimezone:
+          type: string
+        startOfWeek:
+          allOf:
+          - $ref: '#/components/schemas/WeekDay'
+          nullable: true
+        maximumBytesBilled:
+          type: number
+          format: double
+        location:
+          type: string
+        retries:
+          type: number
+          format: double
+        requireUserCredentials:
+          type: boolean
+        keyfileContents:
+          $ref: '#/components/schemas/Record_string.string_'
+        authenticationType:
+          $ref: '#/components/schemas/BigqueryAuthenticationType'
+        priority:
+          type: string
+          enum:
+          - interactive
+          - batch
+        timeoutSeconds:
+          type: number
+          format: double
+        threads:
+          type: number
+          format: double
+        dataset:
+          type: string
+        project:
+          type: string
+        type:
+          $ref: '#/components/schemas/WarehouseTypes.BIGQUERY'
+      required:
+      - keyfileContents
+      - dataset
+      - project
+      - type
+      type: object
+    Omit_CreateDucklakeDataPathGcs.hmacKeyId-or-hmacSecret_:
+      $ref: '#/components/schemas/Pick_CreateDucklakeDataPathGcs.Exclude_keyofCreateDucklakeDataPathGcs.hmacKeyId-or-hmacSecret__'
+      description: Construct a type with the properties of T except for those in type K.
+    ProjectType:
+      enum:
+      - DEFAULT
+      - PREVIEW
+      type: string
+    DuckdbConnectionType.DUCKLAKE:
+      enum:
+      - ducklake
+      type: string
+    ApiSuccess_ApiCreateProjectResults_:
+      properties:
+        results:
+          $ref: '#/components/schemas/ApiCreateProjectResults'
+        status:
+          type: string
+          enum:
+          - ok
+          nullable: false
+      required:
+      - results
+      - status
+      type: object
+    DuckdbCredentials:
+      anyOf:
+      - $ref: '#/components/schemas/DuckdbMotherduckCredentials'
+      - $ref: '#/components/schemas/DuckdbDucklakeCredentials'
+    ApiColorPalettesResponse:
+      properties:
+        results:
+          items:
+            $ref: '#/components/schemas/OrganizationColorPaletteWithIsActive'
+          type: array
+        status:
+          type: string
+          enum:
+          - ok
+          nullable: false
+      required:
+      - results
+      - status
+      type: object
+    CreateRedshiftCredentials:
+      allOf:
+      - $ref: '#/components/schemas/SshTunnelConfiguration'
+      - properties:
+          timeoutSeconds:
+            type: number
+            format: double
+          dataTimezone:
+            type: string
+          startOfWeek:
+            allOf:
+            - $ref: '#/components/schemas/WeekDay'
+            nullable: true
+          ra3Node:
+            type: boolean
+          sslmode:
+            type: string
+          keepalivesIdle:
+            type: number
+            format: double
+          threads:
+            type: number
+            format: double
+          schema:
+            type: string
+          dbname:
+            type: string
+          port:
+            type: number
+            format: double
+          requireUserCredentials:
+            type: boolean
+          password:
+            type: string
+          user:
+            type: string
+          host:
+            type: string
+          type:
+            $ref: '#/components/schemas/WarehouseTypes.REDSHIFT'
+        required:
+        - schema
+        - dbname
+        - port
+        - password
+        - user
+        - host
+        - type
+        type: object
+    Omit_CreatePostgresCredentials.SensitiveCredentialsFieldNames_:
+      $ref: '#/components/schemas/Pick_CreatePostgresCredentials.Exclude_keyofCreatePostgresCredentials.SensitiveCredentialsFieldNames__'
+      description: Construct a type with the properties of T except for those in type K.
+    ApiOrganizationDesignFileResponse:
+      $ref: '#/components/schemas/ApiSuccess_ApiOrganizationDesignFile_'
+    GroupMember:
+      properties:
+        lastName:
+          type: string
+          description: The user's last name
+        firstName:
+          type: string
+          description: The user's first name
+        email:
+          type: string
+          description: Primary email address for the user
+        userUuid:
+          type: string
+          description: Unique id for the user
+          format: uuid
+      required:
+      - lastName
+      - firstName
+      - email
+      - userUuid
+      type: object
+      description: A summary for a Lightdash user within a group
+    OrganizationMemberRole.INTERACTIVE_VIEWER:
+      enum:
+      - interactive_viewer
+      type: string
+    WarehouseTypes.POSTGRES:
+      enum:
+      - postgres
+      type: string
+    DbtManifestProjectConfig:
+      properties:
+        type:
+          $ref: '#/components/schemas/DbtProjectType.MANIFEST'
+        manifest:
+          type: string
+        hideRefreshButton:
+          type: boolean
+      required:
+      - type
+      - manifest
+      - hideRefreshButton
+      type: object
+      additionalProperties: true
+    CreateClickhouseCredentials:
+      properties:
+        timeoutSeconds:
+          type: number
+          format: double
+        dataTimezone:
+          type: string
+        startOfWeek:
+          allOf:
+          - $ref: '#/components/schemas/WeekDay'
+          nullable: true
+        secure:
+          type: boolean
+        schema:
+          type: string
+        port:
+          type: number
+          format: double
+        requireUserCredentials:
+          type: boolean
+        password:
+          type: string
+        user:
+          type: string
+        host:
+          type: string
+        type:
+          $ref: '#/components/schemas/WarehouseTypes.CLICKHOUSE'
+      required:
+      - schema
+      - port
+      - password
+      - user
+      - host
+      - type
+      type: object
+    UpsertAzureAdSsoConfig:
+      allOf:
+      - properties:
+          oauth2TenantId:
+            type: string
+          oauth2ClientSecret:
+            type: string
+            description: When omitted on update, the stored secret is preserved. Required on create.
+          oauth2ClientId:
+            type: string
+        required:
+        - oauth2TenantId
+        - oauth2ClientId
+        type: object
+      - $ref: '#/components/schemas/Partial_OrganizationSsoMethodFlags_'
+    Pick_CreateDatabricksCredentials.Exclude_keyofCreateDatabricksCredentials.SensitiveCredentialsFieldNames__:
+      properties:
+        type:
+          $ref: '#/components/schemas/WarehouseTypes.DATABRICKS'
+        catalog:
+          type: string
+        requireUserCredentials:
+          type: boolean
+        authenticationType:
+          $ref: '#/components/schemas/DatabricksAuthenticationType'
+        database:
+          type: string
+        startOfWeek:
+          allOf:
+          - $ref: '#/components/schemas/WeekDay'
+          nullable: true
+        dataTimezone:
+          type: string
+        serverHostName:
+          type: string
+        httpPath:
+          type: string
+        compute:
+          items:
+            properties:
+              httpPath:
+                type: string
+              name:
+                type: string
+            required:
+            - httpPath
+            - name
+            type: object
+          type: array
+      required:
+      - type
+      - database
+      - serverHostName
+      - httpPath
+      type: object
+      description: From T, pick a set of properties whose keys are in the union K
+    Pick_OneLoginSsoConfig.oauth2Issuer-or-oauth2ClientId_:
+      properties:
+        oauth2ClientId:
+          type: string
+        oauth2Issuer:
+          type: string
+      required:
+      - oauth2ClientId
+      - oauth2Issuer
+      type: object
+      description: From T, pick a set of properties whose keys are in the union K
+    ApiAzureAdSsoConfigResponse:
+      properties:
+        results:
+          allOf:
+          - $ref: '#/components/schemas/AzureAdSsoConfigSummary'
+          nullable: true
+        status:
+          type: string
+          enum:
+          - ok
+          nullable: false
+      required:
+      - results
+      - status
+      type: object
+    WarehouseTypes.CLICKHOUSE:
+      enum:
+      - clickhouse
+      type: string
+    ApiGenericOidcSsoConfigResponse:
+      properties:
+        results:
+          allOf:
+          - $ref: '#/components/schemas/GenericOidcSsoConfigSummary'
+          nullable: true
+        status:
+          type: string
+          enum:
+          - ok
+          nullable: false
+      required:
+      - results
+      - status
+      type: object
+    AllowedEmailDomainsRole:
+      anyOf:
+      - $ref: '#/components/schemas/OrganizationMemberRole.EDITOR'
+      - $ref: '#/components/schemas/OrganizationMemberRole.INTERACTIVE_VIEWER'
+      - $ref: '#/components/schemas/OrganizationMemberRole.VIEWER'
+      - $ref: '#/components/schemas/OrganizationMemberRole.MEMBER'
+    DbtProjectType.DBT:
+      enum:
+      - dbt
+      type: string
+    Pick_CreatePostgresCredentials.Exclude_keyofCreatePostgresCredentials.SensitiveCredentialsFieldNames__:
+      properties:
+        type:
+          $ref: '#/components/schemas/WarehouseTypes.POSTGRES'
+        requireUserCredentials:
+          type: boolean
+        role:
+          type: string
+        schema:
+          type: string
+        threads:
+          type: number
+          format: double
+        startOfWeek:
+          allOf:
+          - $ref: '#/components/schemas/WeekDay'
+          nullable: true
+        dataTimezone:
+          type: string
+        timeoutSeconds:
+          type: number
+          format: double
+        useSshTunnel:
+          type: boolean
+        sshTunnelHost:
+          type: string
+        sshTunnelPort:
+          type: number
+          format: double
+        sshTunnelUser:
+          type: string
+        sshTunnelPublicKey:
+          type: string
+        host:
+          type: string
+        port:
+          type: number
+          format: double
+        dbname:
+          type: string
+        keepalivesIdle:
+          type: number
+          format: double
+        sslmode:
+          type: string
+        sslcertFileName:
+          type: string
+        sslkeyFileName:
+          type: string
+        sslrootcertFileName:
+          type: string
+        searchPath:
+          type: string
+      required:
+      - type
+      - schema
+      - host
+      - port
+      - dbname
+      type: object
+      description: From T, pick a set of properties whose keys are in the union K
+    Project:
+      properties:
+        expiresAt:
+          type: string
+          format: date-time
+          nullable: true
+        colorPaletteUuid:
+          type: string
+          nullable: true
+        projectDefaults:
+          $ref: '#/components/schemas/ProjectDefaults'
+        hasDefaultUserSpaces:
+          type: boolean
+        organizationWarehouseCredentialsUuid:
+          type: string
+        createdByUserUuid:
+          type: string
+          nullable: true
+        schedulerFailureContactOverride:
+          type: string
+          nullable: true
+        schedulerFailureIncludeContact:
+          type: boolean
+        schedulerFailureNotifyRecipients:
+          type: boolean
+        useProjectTimezoneInFilters:
+          type: boolean
+        queryTimezone:
+          type: string
+          nullable: true
+        schedulerTimezone:
+          type: string
+        dbtVersion:
+          $ref: '#/components/schemas/DbtVersionOption'
+        upstreamProjectUuid:
+          type: string
+        pinnedListUuid:
+          type: string
+        warehouseConnection:
+          $ref: '#/components/schemas/WarehouseCredentials'
+        dbtConnection:
+          $ref: '#/components/schemas/DbtProjectConfig'
+        type:
+          $ref: '#/components/schemas/ProjectType'
+        name:
+          type: string
+        projectUuid:
+          type: string
+        organizationUuid:
+          type: string
+      required:
+      - expiresAt
+      - colorPaletteUuid
+      - hasDefaultUserSpaces
+      - createdByUserUuid
+      - schedulerFailureContactOverride
+      - schedulerFailureIncludeContact
+      - schedulerFailureNotifyRecipients
+      - useProjectTimezoneInFilters
+      - queryTimezone
+      - schedulerTimezone
+      - dbtVersion
+      - dbtConnection
+      - type
+      - name
+      - projectUuid
+      - organizationUuid
+      type: object
+    KnexPaginateArgs:
+      properties:
+        page:
+          type: number
+          format: double
+        pageSize:
+          type: number
+          format: double
+      required:
+      - page
+      - pageSize
+      type: object
+    WarehouseCredentials:
+      anyOf:
+      - $ref: '#/components/schemas/SnowflakeCredentials'
+      - $ref: '#/components/schemas/RedshiftCredentials'
+      - $ref: '#/components/schemas/PostgresCredentials'
+      - $ref: '#/components/schemas/BigqueryCredentials'
+      - $ref: '#/components/schemas/DatabricksCredentials'
+      - $ref: '#/components/schemas/TrinoCredentials'
+      - $ref: '#/components/schemas/ClickhouseCredentials'
+      - $ref: '#/components/schemas/AthenaCredentials'
+      - $ref: '#/components/schemas/DuckdbCredentials'
+    CreateDuckdbMotherduckCredentials:
+      properties:
+        dataTimezone:
+          type: string
+        startOfWeek:
+          allOf:
+          - $ref: '#/components/schemas/WeekDay'
+          nullable: true
+        requireUserCredentials:
+          type: boolean
+        threads:
+          type: number
+          format: double
+        token:
+          type: string
+        schema:
+          type: string
+        database:
+          type: string
+        connectionType:
+          $ref: '#/components/schemas/DuckdbConnectionType.MOTHERDUCK'
+        type:
+          $ref: '#/components/schemas/WarehouseTypes.DUCKDB'
+      required:
+      - token
+      - schema
+      - database
+      - connectionType
+      - type
+      type: object
+    Pick_AllowedEmailDomains.Exclude_keyofAllowedEmailDomains.organizationUuid__:
+      properties:
+        role:
+          $ref: '#/components/schemas/AllowedEmailDomainsRole'
+        emailDomains:
+          items:
+            type: string
+          type: array
+        projects:
+          items:
+            properties:
+              role:
+                $ref: '#/components/schemas/AllowedEmailDomainProjectsRole'
+              projectUuid:
+                type: string
+            required:
+            - role
+            - projectUuid
+            type: object
+          type: array
+      required:
+      - role
+      - emailDomains
+      - projects
+      type: object
+      description: From T, pick a set of properties whose keys are in the union K
+    ApiSuccess_ApiOrganizationDesign-Array_:
+      properties:
+        results:
+          items:
+            $ref: '#/components/schemas/ApiOrganizationDesign'
+          type: array
+        status:
+          type: string
+          enum:
+          - ok
+          nullable: false
+      required:
+      - results
+      - status
+      type: object
+    ApiUpsertGoogleSsoConfigResponse:
+      properties:
+        results:
+          $ref: '#/components/schemas/GoogleSsoConfigSummary'
+        status:
+          type: string
+          enum:
+          - ok
+          nullable: false
+      required:
+      - results
+      - status
+      type: object
+    DuckdbConnectionType.MOTHERDUCK:
+      enum:
+      - motherduck
+      type: string
+    PostgresCredentials:
+      $ref: '#/components/schemas/Omit_CreatePostgresCredentials.SensitiveCredentialsFieldNames_'
+    Pick_OktaSsoConfig.oauth2Issuer-or-oktaDomain-or-oauth2ClientId-or-authorizationServerId-or-extraScopes_:
+      properties:
+        oauth2ClientId:
+          type: string
+        oauth2Issuer:
+          type: string
+        oktaDomain:
+          type: string
+        authorizationServerId:
+          type: string
+          nullable: true
+          description: Optional custom authorization server (Okta API Access Management).
+        extraScopes:
+          type: string
+          nullable: true
+          description: Optional extra scopes (space-separated) appended to the auth request.
+      required:
+      - oauth2ClientId
+      - oauth2Issuer
+      - oktaDomain
+      - authorizationServerId
+      - extraScopes
+      type: object
+      description: From T, pick a set of properties whose keys are in the union K
+    Pick_CreateDucklakeCatalogPostgres.Exclude_keyofCreateDucklakeCatalogPostgres.user-or-password__:
+      properties:
+        type:
+          $ref: '#/components/schemas/DucklakeCatalogType.POSTGRES'
+        database:
+          type: string
+        host:
+          type: string
+        port:
+          type: number
+          format: double
+      required:
+      - type
+      - database
+      - host
+      - port
+      type: object
+      description: From T, pick a set of properties whose keys are in the union K
+    SnowflakeCredentials:
+      $ref: '#/components/schemas/Omit_CreateSnowflakeCredentials.SensitiveCredentialsFieldNames_'
+    WarehouseTypes.DUCKDB:
+      enum:
+      - duckdb
+      type: string
+    Omit_CreateProject.warehouseConnection_:
+      $ref: '#/components/schemas/Pick_CreateProject.Exclude_keyofCreateProject.warehouseConnection__'
+      description: Construct a type with the properties of T except for those in type K.
+    UpdateAllowedEmailDomains:
+      $ref: '#/components/schemas/Omit_AllowedEmailDomains.organizationUuid_'
+    ApiOrganizationMemberProfiles:
+      properties:
+        results:
+          $ref: '#/components/schemas/KnexPaginatedData_OrganizationMemberProfile-Array_'
+        status:
+          type: string
+          enum:
+          - ok
+          nullable: false
+      required:
+      - results
+      - status
+      type: object
+    UUID:
+      type: string
+      format: uuid
+      description: 'Stringified UUIDv4.
+
+        See [RFC 4112](https://tools.ietf.org/html/rfc4122)'
+      pattern: '[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-4[0-9A-Fa-f]{3}-[89ABab][0-9A-Fa-f]{3}-[0-9A-Fa-f]{12}'
+    UpsertGoogleSsoConfig:
+      $ref: '#/components/schemas/Partial_OrganizationSsoMethodFlags_'
+    Pick_GenericOidcSsoConfig.clientId-or-metadataDocumentEndpoint-or-scopes_:
+      properties:
+        clientId:
+          type: string
+        metadataDocumentEndpoint:
+          type: string
+          description: OIDC discovery document URL (`.well-known/openid-configuration`).
+        scopes:
+          type: string
+          nullable: true
+          description: Optional extra scopes (space-separated) appended to the auth request.
+      required:
+      - clientId
+      - metadataDocumentEndpoint
+      - scopes
+      type: object
+      description: From T, pick a set of properties whose keys are in the union K
+    Pick_EmailStatusExpiring.otp_:
+      properties:
+        otp:
+          allOf:
+          - $ref: '#/components/schemas/EmailOneTimePassword'
+          - properties:
+              isMaxAttempts:
+                type: boolean
+              isExpired:
+                type: boolean
+              expiresAt:
+                type: string
+                format: date-time
+            required:
+            - isMaxAttempts
+            - isExpired
+            - expiresAt
+            type: object
+          description: 'One time passcode information
+
+            If there is no active passcode, this will be undefined'
+      type: object
+      description: From T, pick a set of properties whose keys are in the union K
+    UserSchedulersSummary:
+      properties:
+        byProject:
+          items:
+            properties:
+              count:
+                type: number
+                format: double
+              projectName:
+                type: string
+              projectUuid:
+                type: string
+            required:
+            - count
+            - projectName
+            - projectUuid
+            type: object
+          type: array
+        hasGsheetsSchedulers:
+          type: boolean
+        totalCount:
+          type: number
+          format: double
+      required:
+      - byProject
+      - hasGsheetsSchedulers
+      - totalCount
+      type: object
+    Record_string.string_:
+      properties: {}
+      additionalProperties:
+        type: string
+      type: object
+      description: Construct a type with a set of properties K of type T
+    BigqueryCredentials:
+      $ref: '#/components/schemas/Omit_CreateBigqueryCredentials.SensitiveCredentialsFieldNames_'
+    ApiOrganizationAllowedEmailDomains:
+      properties:
+        results:
+          $ref: '#/components/schemas/AllowedEmailDomains'
+        status:
+          type: string
+          enum:
+          - ok
+          nullable: false
+      required:
+      - results
+      - status
+      type: object
+    CreateProjectTableConfiguration:
+      enum:
+      - prod
+      - all
+      type: string
+    ProjectDefaults:
+      properties:
+        case_sensitive:
+          type: boolean
+          description: 'Default case sensitivity for string filters across the project.
+
+            When false, all string filters will be case insensitive by default.
+
+            Can be overridden at explore or field level.
+
+            Defaults to true if not specified.'
+      type: object
+      description: Project-wide default settings that can be overridden at explore or field level
+    DatabricksCredentials:
+      $ref: '#/components/schemas/Omit_CreateDatabricksCredentials.SensitiveCredentialsFieldNames_'
+    CreateDucklakeDataPathGcs:
+      properties:
+        hmacSecret:
+          type: string
+        hmacKeyId:
+          type: string
+        url:
+          type: string
+        type:
+          $ref: '#/components/schemas/DucklakeDataPathType.GCS'
+      required:
+      - url
+      - type
+      type: object
+    Pick_Organization.name_:
+      properties:
+        name:
+          type: string
+          description: The name of the organization
+      required:
+      - name
+      type: object
+      description: From T, pick a set of properties whose keys are in the union K
+    DucklakeDataPath:
+      anyOf:
+      - $ref: '#/components/schemas/DucklakeDataPathS3'
+      - $ref: '#/components/schemas/DucklakeDataPathGcs'
+      - $ref: '#/components/schemas/DucklakeDataPathAzure'
+      - $ref: '#/components/schemas/DucklakeDataPathLocal'
+    Partial_OrganizationSsoMethodFlags_:
+      properties:
+        enabled:
+          type: boolean
+          description: When false the method is hidden from precheck even if discovery would match.
+        overrideEmailDomains:
+          type: boolean
+          description: 'When true, the method''s own `emailDomains` list governs discovery.
+
+            When false, the org''s `allowed_email_domains` is used instead.'
+        emailDomains:
+          items:
+            type: string
+          type: array
+          description: Strict whitelist (only consulted when `overrideEmailDomains` is true).
+        allowPassword:
+          type: boolean
+          description: 'Controls whether email+password sign-in is shown alongside this method
+
+            when it matches a user. When multiple matching SSO methods disagree,
+
+            lenient rule applies (ANY method that allows → show password).'
+      type: object
+      description: Make all properties in T optional
+    WeekDay:
+      enum:
+      - 0
+      - 1
+      - 2
+      - 3
+      - 4
+      - 5
+      - 6
+      type: number
+    ApiCreateGroupResponse:
+      properties:
+        results:
+          $ref: '#/components/schemas/GroupWithMembers'
+        status:
+          type: string
+          enum:
+          - ok
+          nullable: false
+      required:
+      - results
+      - status
+      type: object
+    ApiUpsertOktaSsoConfigResponse:
+      properties:
+        results:
+          $ref: '#/components/schemas/OktaSsoConfigSummary'
+        status:
+          type: string
+          enum:
+          - ok
+          nullable: false
+      required:
+      - results
+      - status
+      type: object
+    OrganizationDesignFileKind:
+      type: string
+      enum:
+      - instruction
+      - css
+      - font
+      - image
+    Pick_CreateAthenaCredentials.Exclude_keyofCreateAthenaCredentials.SensitiveCredentialsFieldNames__:
+      properties:
+        type:
+          $ref: '#/components/schemas/WarehouseTypes.ATHENA'
+        requireUserCredentials:
+          type: boolean
+        authenticationType:
+          $ref: '#/components/schemas/AthenaAuthenticationType'
+        database:
+          type: string
+        schema:
+          type: string
+        threads:
+          type: number
+          format: double
+        startOfWeek:
+          allOf:
+          - $ref: '#/components/schemas/WeekDay'
+          nullable: true
+        dataTimezone:
+          type: string
+        region:
+          type: string
+        s3StagingDir:
+          type: string
+        s3DataDir:
+          type: string
+        assumeRoleArn:
+          type: string
+        assumeRoleExternalId:
+          type: string
+        workGroup:
+          type: string
+        numRetries:
+          type: number
+          format: double
+      required:
+      - type
+      - database
+      - schema
+      - region
+      - s3StagingDir
+      type: object
+      description: From T, pick a set of properties whose keys are in the union K
+    ImpersonationOrganizationSettings:
+      properties:
+        impersonationEnabled:
+          type: boolean
+        organizationUuid:
+          type: string
+      required:
+      - impersonationEnabled
+      - organizationUuid
+      type: object
+    UpdateColorPalette:
+      properties:
+        darkColors:
+          items:
+            type: string
+          type: array
+        colors:
+          items:
+            type: string
+          type: array
+        name:
+          type: string
+        uuid:
+          type: string
+      required:
+      - uuid
+      type: object
+    SshTunnelConfiguration:
+      properties:
+        sshTunnelPrivateKey:
+          type: string
+        sshTunnelPublicKey:
+          type: string
+        sshTunnelUser:
+          type: string
+        sshTunnelPort:
+          type: number
+          format: double
+        sshTunnelHost:
+          type: string
+        useSshTunnel:
+          type: boolean
+      type: object
+    ProjectMemberRole.INTERACTIVE_VIEWER:
+      enum:
+      - interactive_viewer
+      type: string
+    CreateDucklakeDataPathLocal:
+      properties:
+        path:
+          type: string
+        type:
+          $ref: '#/components/schemas/DucklakeDataPathType.LOCAL'
+      required:
+      - path
+      - type
+      type: object
+    DbtBitBucketProjectConfig:
+      properties:
+        type:
+          $ref: '#/components/schemas/DbtProjectType.BITBUCKET'
+        target:
+          type: string
+        environment:
+          items:
+            $ref: '#/components/schemas/DbtProjectEnvironmentVariable'
+          type: array
+        selector:
+          type: string
+        username:
+          type: string
+        personal_access_token:
+          type: string
+        repository:
+          type: string
+        branch:
+          type: string
+        project_sub_path:
+          type: string
+        host_domain:
+          type: string
+      required:
+      - type
+      - username
+      - personal_access_token
+      - repository
+      - branch
+      - project_sub_path
+      type: object
+      additionalProperties: true
+    OrganizationColorPaletteWithIsActive:
+      allOf:
+      - $ref: '#/components/schemas/OrganizationColorPalette'
+      - properties:
+          isActive:
+            type: boolean
+        required:
+        - isActive
+        type: object
+  securitySchemes:
+    session_cookie:
+      type: apiKey
+      in: cookie
+      name: connect.sid
+    api_key:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: Value should be 'ApiKey <your key>'

@@ -1,0 +1,211 @@
+openapi: 3.0.0
+info:
+  title: Lightdash AiAgents Spotlight API
+  version: 0.3156.1
+  description: 'Open API documentation for all public Lightdash API endpoints. # Authentication Before you get started, you might need to create a Personal Access Token to authenticate via the API. You can create a token by following this guide: https://docs.lightdash.com/references/personal_tokens
+
+    '
+  license:
+    name: MIT
+  contact:
+    name: Lightdash Support
+    email: support@lightdash.com
+    url: https://docs.lightdash.com/help-and-contact/contact/contact_info/
+servers:
+- url: /
+tags:
+- name: Spotlight
+paths:
+  /api/v1/projects/{projectUuid}/spotlight/table/config:
+    post:
+      operationId: postSpotlightTableConfig
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiSuccessEmpty'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: Create or update spotlight table configuration
+      summary: Update spotlight table config
+      tags:
+      - Spotlight
+      security: []
+      parameters:
+      - in: path
+        name: projectUuid
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Pick_SpotlightTableConfig.columnConfig_'
+    get:
+      operationId: getSpotlightTableConfig
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiGetSpotlightTableConfig'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: Get spotlight table configuration
+      summary: Get spotlight table config
+      tags:
+      - Spotlight
+      security: []
+      parameters:
+      - in: path
+        name: projectUuid
+        required: true
+        schema:
+          type: string
+    delete:
+      operationId: resetSpotlightTableConfig
+      responses:
+        '200':
+          description: Deleted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiSuccessEmpty'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: Reset spotlight table configuration to defaults
+      summary: Reset spotlight table config
+      tags:
+      - Spotlight
+      security: []
+      parameters:
+      - in: path
+        name: projectUuid
+        required: true
+        schema:
+          type: string
+components:
+  schemas:
+    ApiGetSpotlightTableConfig:
+      properties:
+        results:
+          $ref: '#/components/schemas/Pick_SpotlightTableConfig.columnConfig_'
+        status:
+          type: string
+          enum:
+          - ok
+          nullable: false
+      required:
+      - results
+      - status
+      type: object
+    AnyType:
+      description: 'This AnyType is an alias for any
+
+        The goal is to make it easier to identify any type in the codebase
+
+        without having to eslint-disable all the time
+
+        These are only used on legacy `any` types, don''t use it for new types.
+
+        This is added on a separate file to avoid circular dependencies.'
+    ApiErrorPayload:
+      properties:
+        error:
+          properties:
+            data:
+              $ref: '#/components/schemas/AnyType'
+              description: Optional data containing details of the error
+            message:
+              type: string
+              description: A friendly message summarising the error
+            name:
+              type: string
+              description: Unique name for the type of error
+            statusCode:
+              type: number
+              format: integer
+              description: HTTP status code
+          required:
+          - name
+          - statusCode
+          type: object
+        status:
+          type: string
+          enum:
+          - error
+          nullable: false
+      required:
+      - error
+      - status
+      type: object
+      description: 'The Error object is returned from the api any time there is an error.
+
+        The message contains'
+    ApiSuccessEmpty:
+      properties:
+        results: {}
+        status:
+          type: string
+          enum:
+          - ok
+          nullable: false
+      required:
+      - status
+      type: object
+    ColumnConfig:
+      items:
+        properties:
+          isVisible:
+            type: boolean
+          column:
+            $ref: '#/components/schemas/SpotlightTableColumns'
+        required:
+        - isVisible
+        - column
+        type: object
+      type: array
+    SpotlightTableColumns:
+      enum:
+      - label
+      - tableLabel
+      - description
+      - categories
+      - chartUsage
+      - owner
+      type: string
+    Pick_SpotlightTableConfig.columnConfig_:
+      properties:
+        columnConfig:
+          $ref: '#/components/schemas/ColumnConfig'
+      required:
+      - columnConfig
+      type: object
+      description: From T, pick a set of properties whose keys are in the union K
+  securitySchemes:
+    session_cookie:
+      type: apiKey
+      in: cookie
+      name: connect.sid
+    api_key:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: Value should be 'ApiKey <your key>'

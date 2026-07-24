@@ -1,0 +1,440 @@
+openapi: 3.0.0
+info:
+  title: Lightdash AiAgents Custom Roles API
+  version: 0.3156.1
+  description: 'Open API documentation for all public Lightdash API endpoints. # Authentication Before you get started, you might need to create a Personal Access Token to authenticate via the API. You can create a token by following this guide: https://docs.lightdash.com/references/personal_tokens
+
+    '
+  license:
+    name: MIT
+  contact:
+    name: Lightdash Support
+    email: support@lightdash.com
+    url: https://docs.lightdash.com/help-and-contact/contact/contact_info/
+servers:
+- url: /
+tags:
+- name: Custom Roles
+paths:
+  /api/v2/orgs/{orgUuid}/roles:
+    post:
+      operationId: CreateOrganizationRole
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiDefaultRoleResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: Create a new role in organization
+      summary: Create custom role
+      tags:
+      - Custom Roles
+      security: []
+      parameters:
+      - in: path
+        name: orgUuid
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateRole'
+  /api/v2/orgs/{orgUuid}/roles/{roleUuid}:
+    patch:
+      operationId: UpdateOrganizationRole
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiDefaultRoleResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: Update role in organization
+      summary: Update custom role
+      tags:
+      - Custom Roles
+      security: []
+      parameters:
+      - in: path
+        name: orgUuid
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: roleUuid
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateRole'
+    delete:
+      operationId: DeleteOrganizationRole
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiUnassignRoleFromUserResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: Delete role from organization
+      summary: Delete custom role
+      tags:
+      - Custom Roles
+      security: []
+      parameters:
+      - in: path
+        name: orgUuid
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: roleUuid
+        required: true
+        schema:
+          type: string
+  /api/v2/orgs/{orgUuid}/roles/{roleUuid}/assignees:
+    get:
+      operationId: GetOrganizationRoleAssignees
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiRoleAssigneesResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: 'List the users, groups, and service accounts currently assigned to a role.
+
+        Used by the delete-confirmation modal to explain why a role cannot
+
+        be deleted while still in use.'
+      summary: List role assignees
+      tags:
+      - Custom Roles
+      security: []
+      parameters:
+      - in: path
+        name: orgUuid
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: roleUuid
+        required: true
+        schema:
+          type: string
+  /api/v2/orgs/{orgUuid}/roles/{roleUuid}/scopes:
+    post:
+      operationId: AddScopesToRole
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiUnassignRoleFromUserResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: Add scopes to role
+      summary: Add scopes to role
+      tags:
+      - Custom Roles
+      deprecated: true
+      security: []
+      parameters:
+      - in: path
+        name: orgUuid
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: roleUuid
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddScopesToRole'
+  /api/v2/orgs/{orgUuid}/roles/{roleUuid}/scopes/{scopeName}:
+    delete:
+      operationId: RemoveScopeFromRole
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiRemoveScopeFromRoleResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: Remove scope from role
+      summary: Remove scope from role
+      tags:
+      - Custom Roles
+      deprecated: true
+      security: []
+      parameters:
+      - in: path
+        name: orgUuid
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: roleUuid
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: scopeName
+        required: true
+        schema:
+          type: string
+components:
+  schemas:
+    ApiUnassignRoleFromUserResponse:
+      $ref: '#/components/schemas/ApiSuccessEmpty'
+    Role:
+      properties:
+        updatedAt:
+          type: string
+          format: date-time
+          nullable: true
+        createdAt:
+          type: string
+          format: date-time
+          nullable: true
+        createdBy:
+          type: string
+          nullable: true
+        ownerType:
+          type: string
+          enum:
+          - user
+          - system
+        organizationUuid:
+          type: string
+          nullable: true
+        description:
+          type: string
+          nullable: true
+        name:
+          type: string
+        roleUuid:
+          type: string
+      required:
+      - updatedAt
+      - createdAt
+      - createdBy
+      - ownerType
+      - organizationUuid
+      - description
+      - name
+      - roleUuid
+      type: object
+    RoleAssignee:
+      properties:
+        projectName:
+          type: string
+          nullable: true
+        projectUuid:
+          type: string
+          nullable: true
+        assigneeName:
+          type: string
+        assigneeId:
+          type: string
+        kind:
+          $ref: '#/components/schemas/RoleAssigneeKind'
+      required:
+      - projectName
+      - projectUuid
+      - assigneeName
+      - assigneeId
+      - kind
+      type: object
+    AddScopesToRole:
+      properties:
+        scopeNames:
+          items:
+            type: string
+          type: array
+      required:
+      - scopeNames
+      type: object
+    AnyType:
+      description: 'This AnyType is an alias for any
+
+        The goal is to make it easier to identify any type in the codebase
+
+        without having to eslint-disable all the time
+
+        These are only used on legacy `any` types, don''t use it for new types.
+
+        This is added on a separate file to avoid circular dependencies.'
+    ApiErrorPayload:
+      properties:
+        error:
+          properties:
+            data:
+              $ref: '#/components/schemas/AnyType'
+              description: Optional data containing details of the error
+            message:
+              type: string
+              description: A friendly message summarising the error
+            name:
+              type: string
+              description: Unique name for the type of error
+            statusCode:
+              type: number
+              format: integer
+              description: HTTP status code
+          required:
+          - name
+          - statusCode
+          type: object
+        status:
+          type: string
+          enum:
+          - error
+          nullable: false
+      required:
+      - error
+      - status
+      type: object
+      description: 'The Error object is returned from the api any time there is an error.
+
+        The message contains'
+    ApiSuccessEmpty:
+      properties:
+        results: {}
+        status:
+          type: string
+          enum:
+          - ok
+          nullable: false
+      required:
+      - status
+      type: object
+    ApiDefaultRoleResponse:
+      properties:
+        results:
+          $ref: '#/components/schemas/Role'
+        status:
+          type: string
+          enum:
+          - ok
+          nullable: false
+      required:
+      - results
+      - status
+      type: object
+    CreateRole:
+      properties:
+        scopes:
+          items:
+            type: string
+          type: array
+        description:
+          type: string
+        name:
+          type: string
+      required:
+      - name
+      type: object
+    ApiRemoveScopeFromRoleResponse:
+      $ref: '#/components/schemas/ApiSuccessEmpty'
+    RoleAssigneeKind:
+      type: string
+      enum:
+      - organization_user
+      - project_user
+      - project_group
+      - service_account
+    UpdateRole:
+      properties:
+        scopes:
+          properties:
+            remove:
+              items:
+                type: string
+              type: array
+            add:
+              items:
+                type: string
+              type: array
+          required:
+          - remove
+          - add
+          type: object
+        description:
+          type: string
+        name:
+          type: string
+      type: object
+    ApiRoleAssigneesResponse:
+      properties:
+        results:
+          items:
+            $ref: '#/components/schemas/RoleAssignee'
+          type: array
+        status:
+          type: string
+          enum:
+          - ok
+          nullable: false
+      required:
+      - results
+      - status
+      type: object
+  securitySchemes:
+    session_cookie:
+      type: apiKey
+      in: cookie
+      name: connect.sid
+    api_key:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: Value should be 'ApiKey <your key>'

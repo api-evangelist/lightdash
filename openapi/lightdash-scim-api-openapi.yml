@@ -1,0 +1,1716 @@
+openapi: 3.0.0
+info:
+  title: Lightdash AiAgents SCIM API
+  version: 0.3156.1
+  description: 'Open API documentation for all public Lightdash API endpoints. # Authentication Before you get started, you might need to create a Personal Access Token to authenticate via the API. You can create a token by following this guide: https://docs.lightdash.com/references/personal_tokens
+
+    '
+  license:
+    name: MIT
+  contact:
+    name: Lightdash Support
+    email: support@lightdash.com
+    url: https://docs.lightdash.com/help-and-contact/contact/contact_info/
+servers:
+- url: /
+tags:
+- name: SCIM
+paths:
+  /api/v1/scim/v2/Users:
+    get:
+      operationId: GetScimUsers
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScimListResponse_ScimUser_'
+              examples:
+                Example 1:
+                  value:
+                    schemas:
+                    - urn:ietf:params:scim:api:messages:2.0:ListResponse
+                    totalResults: 1
+                    itemsPerPage: 1
+                    startIndex: 1
+                    Resources:
+                    - schemas:
+                      - urn:ietf:params:scim:schemas:core:2.0:User
+                      id: e0dd2003-c291-4e14-b977-7a03b7edc842
+                      userName: demo3@lightdash.com
+                      name:
+                        givenName: Viewer
+                        familyName: User
+                      active: true
+                      emails:
+                      - value: demo3@lightdash.com
+                        primary: true
+                      roles:
+                      - value: viewer
+                        display: Viewer
+                        type: Organization
+                      - value: 3675b69e-8324-4110-bdca-059031aa8da3:editor
+                        display: Jaffle shop - Editor
+                        type: Project - Jaffle shop
+                        primary: false
+                      meta:
+                        resourceType: User
+                        created: '2025-11-03T14:22:18.464Z'
+                        lastModified: '2025-11-05T15:04:02.687Z'
+                        location: https://<tenant>.lightdash.cloud/api/v1/scim/v2/Users/e0dd2003-c291-4e14-b977-7a03b7edc842
+      description: List SCIM users in the organization
+      summary: List users
+      tags:
+      - SCIM
+      security: []
+      parameters:
+      - description: 'SCIM filter string (optional). See: https://bookstack.soffid.com/books/scim/page/scim-query-syntax'
+        in: query
+        name: filter
+        required: false
+        schema:
+          type: string
+      - description: 1-based index of the first result to return (optional)
+        in: query
+        name: startIndex
+        required: false
+        schema:
+          format: double
+          type: number
+      - description: Maximum number of results to return (optional)
+        in: query
+        name: count
+        required: false
+        schema:
+          format: double
+          type: number
+    post:
+      operationId: CreateScimUser
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScimUser'
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScimUser'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScimErrorPayload'
+        '409':
+          description: Conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScimErrorPayload'
+      description: Create a new user
+      summary: Create user
+      tags:
+      - SCIM
+      security: []
+      parameters: []
+      requestBody:
+        description: User to create
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ScimUpsertUser'
+              description: User to create
+  /api/v1/scim/v2/Users/{userUuid}:
+    get:
+      operationId: GetScimUser
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScimUser'
+              examples:
+                Example 1:
+                  value:
+                    schemas:
+                    - urn:ietf:params:scim:schemas:core:2.0:User
+                    id: e0dd2003-c291-4e14-b977-7a03b7edc842
+                    userName: demo3@lightdash.com
+                    name:
+                      givenName: Viewer
+                      familyName: User
+                    active: true
+                    emails:
+                    - value: demo3@lightdash.com
+                      primary: true
+                    roles:
+                    - value: viewer
+                      display: Viewer
+                      type: Organization
+                    - value: 3675b69e-8324-4110-bdca-059031aa8da3:editor
+                      display: Jaffle shop - Editor
+                      type: Project - Jaffle shop
+                      primary: false
+                    meta:
+                      resourceType: User
+                      created: '2025-11-03T14:22:18.464Z'
+                      lastModified: '2025-11-05T15:04:02.687Z'
+                      location: https://<tenant>.lightdash.cloud/api/v1/scim/v2/Users/e0dd2003-c291-4e14-b977-7a03b7edc842
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScimErrorPayload'
+      description: Get a SCIM user by ID
+      summary: Get user
+      tags:
+      - SCIM
+      security: []
+      parameters:
+      - description: Lightdash user UUID - this is used as a unique identifier for SCIM
+        in: path
+        name: userUuid
+        required: true
+        schema:
+          type: string
+    put:
+      operationId: UpdateScimUser
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScimUser'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScimErrorPayload'
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScimErrorPayload'
+      description: Update a user by ID (SCIM PUT)
+      summary: Replace user
+      tags:
+      - SCIM
+      security: []
+      parameters:
+      - description: UUID of the user to update
+        in: path
+        name: userUuid
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: Updated user data
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ScimUpsertUser'
+              description: Updated user data
+    patch:
+      operationId: PatchScimUser
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScimUser'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScimErrorPayload'
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScimErrorPayload'
+      description: Patch a user by ID (SCIM PATCH)
+      summary: Patch user
+      tags:
+      - SCIM
+      security: []
+      parameters:
+      - description: UUID of the user to patch
+        in: path
+        name: userUuid
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: Patch operations to apply
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ScimPatch'
+              description: Patch operations to apply
+    delete:
+      operationId: DeleteScimUser
+      responses:
+        '204':
+          description: No content
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScimErrorPayload'
+      description: Delete a user by ID
+      summary: Delete user
+      tags:
+      - SCIM
+      security: []
+      parameters:
+      - description: UUID of the user to delete
+        in: path
+        name: userUuid
+        required: true
+        schema:
+          type: string
+  /api/v1/scim/v2:
+    get:
+      operationId: GetScimRoot
+      responses:
+        '200':
+          description: Success
+        '204':
+          description: No content
+      description: Root SCIM endpoint for validating SCIM configuration
+      summary: Root check
+      tags:
+      - SCIM
+      security: []
+      parameters: []
+  /api/v1/scim/v2/ServiceProviderConfig:
+    get:
+      operationId: GetScimServiceProviderConfig
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScimServiceProviderConfig'
+      description: Get SCIM service provider configuration
+      summary: Provider config
+      tags:
+      - SCIM
+      security: []
+      parameters: []
+  /api/v1/scim/v2/Schemas:
+    get:
+      operationId: GetScimSchemas
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScimListResponse_ScimSchema_'
+              examples:
+                Example 1:
+                  value:
+                    schemas:
+                    - urn:ietf:params:scim:api:messages:2.0:ListResponse
+                    totalResults: 1
+                    itemsPerPage: 1
+                    startIndex: 1
+                    Resources:
+                    - schemas:
+                      - urn:ietf:params:scim:schemas:core:2.0:Schema
+                      id: urn:ietf:params:scim:schemas:extension:2.0:Role
+                      name: Role
+                      description: Role Schema
+                      attributes:
+                      - name: value
+                        type: string
+                        multiValued: false
+                        description: The value of the role
+                        required: true
+                        caseExact: false
+                        mutability: readOnly
+                        returned: default
+                        uniqueness: none
+                      - name: display
+                        type: string
+                        multiValued: false
+                        description: Human-readable name for the role
+                        required: false
+                        caseExact: false
+                        mutability: readOnly
+                        returned: default
+                        uniqueness: none
+                      - name: type
+                        type: string
+                        multiValued: false
+                        description: Label indicating the role function
+                        required: false
+                        caseExact: false
+                        mutability: readOnly
+                        returned: default
+                        uniqueness: none
+                      - name: supported
+                        type: boolean
+                        multiValued: false
+                        description: Boolean indicating if the role is usable
+                        required: true
+                        caseExact: false
+                        mutability: readOnly
+                        returned: default
+                        uniqueness: none
+      description: Get SCIM schemas
+      summary: List schemas
+      tags:
+      - SCIM
+      security: []
+      parameters: []
+  /api/v1/scim/v2/Schemas/{schemaId}:
+    get:
+      operationId: GetScimSchema
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScimSchema'
+              examples:
+                Example 1:
+                  value:
+                    schemas:
+                    - urn:ietf:params:scim:schemas:core:2.0:Schema
+                    id: urn:ietf:params:scim:schemas:extension:2.0:Role
+                    name: Role
+                    description: Role Schema
+                    attributes:
+                    - name: value
+                      type: string
+                      multiValued: false
+                      description: The value of the role
+                      required: true
+                      caseExact: false
+                      mutability: readOnly
+                      returned: default
+                      uniqueness: none
+                    - name: display
+                      type: string
+                      multiValued: false
+                      description: Human-readable name for the role
+                      required: false
+                      caseExact: false
+                      mutability: readOnly
+                      returned: default
+                      uniqueness: none
+                    - name: type
+                      type: string
+                      multiValued: false
+                      description: Label indicating the role function
+                      required: false
+                      caseExact: false
+                      mutability: readOnly
+                      returned: default
+                      uniqueness: none
+                    - name: supported
+                      type: boolean
+                      multiValued: false
+                      description: Boolean indicating if the role is usable
+                      required: true
+                      caseExact: false
+                      mutability: readOnly
+                      returned: default
+                      uniqueness: none
+      description: Get individual SCIM schema
+      summary: Get schema
+      tags:
+      - SCIM
+      security: []
+      parameters:
+      - description: schema identifier
+        in: path
+        name: schemaId
+        required: true
+        schema:
+          type: string
+  /api/v1/scim/v2/ResourceTypes:
+    get:
+      operationId: GetScimResourceTypes
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScimListResponse_ScimResourceType_'
+              examples:
+                Example 1:
+                  value:
+                    schemas:
+                    - urn:ietf:params:scim:api:messages:2.0:ListResponse
+                    totalResults: 3
+                    itemsPerPage: 3
+                    startIndex: 1
+                    Resources:
+                    - schemas:
+                      - urn:ietf:params:scim:schemas:core:2.0:ResourceType
+                      id: User
+                      name: User
+                      description: User Account
+                      endpoint: /Users
+                      schema: urn:ietf:params:scim:schemas:core:2.0:User
+                      schemaExtensions:
+                      - schema: urn:lightdash:params:scim:schemas:extension:2.0:User
+                        required: false
+                      meta:
+                        resourceType: ResourceType
+                        location: https://<tenant>.lightdash.cloud/api/v1/scim/v2/ResourceTypes/User
+                    - schemas:
+                      - urn:ietf:params:scim:schemas:core:2.0:ResourceType
+                      id: Group
+                      name: Group
+                      description: Group
+                      endpoint: /Groups
+                      schema: urn:ietf:params:scim:schemas:core:2.0:Group
+                      meta:
+                        resourceType: ResourceType
+                        location: https://<tenant>.lightdash.cloud/api/v1/scim/v2/ResourceTypes/Group
+                    - schemas:
+                      - urn:ietf:params:scim:schemas:core:2.0:ResourceType
+                      id: Role
+                      name: Role
+                      description: Role
+                      endpoint: /Roles
+                      schema: urn:ietf:params:scim:schemas:extension:2.0:Role
+                      meta:
+                        resourceType: ResourceType
+                        location: https://<tenant>.lightdash.cloud/api/v1/scim/v2/ResourceTypes/Role
+      description: Get SCIM resource types
+      summary: List resource types
+      tags:
+      - SCIM
+      security: []
+      parameters: []
+  /api/v1/scim/v2/ResourceTypes/{resourceTypeId}:
+    get:
+      operationId: GetScimResourceType
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScimResourceType'
+              examples:
+                Example 1:
+                  value:
+                    schemas:
+                    - urn:ietf:params:scim:schemas:core:2.0:ResourceType
+                    id: User
+                    name: User
+                    description: User Account
+                    endpoint: /Users
+                    schema: urn:ietf:params:scim:schemas:core:2.0:User
+                    schemaExtensions:
+                    - schema: urn:lightdash:params:scim:schemas:extension:2.0:User
+                      required: false
+                    meta:
+                      resourceType: ResourceType
+                      location: https://<tenant>.lightdash.cloud/api/v1/scim/v2/ResourceTypes/User
+      description: Get individual SCIM resource type
+      summary: Get resource type
+      tags:
+      - SCIM
+      security: []
+      parameters:
+      - description: resource type identifier
+        in: path
+        name: resourceTypeId
+        required: true
+        schema:
+          type: string
+  /api/v1/scim/v2/Roles:
+    get:
+      operationId: GetScimRoles
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScimListResponse_ScimRole_'
+              examples:
+                Example 1:
+                  value:
+                    schemas:
+                    - urn:ietf:params:scim:api:messages:2.0:ListResponse
+                    totalResults: 3
+                    itemsPerPage: 3
+                    startIndex: 1
+                    Resources:
+                    - schemas:
+                      - urn:ietf:params:scim:schemas:extension:2.0:Role
+                      id: member
+                      value: member
+                      display: Member
+                      type: Organization
+                      supported: true
+                      meta:
+                        resourceType: Role
+                        location: https://<tenant>.lightdash.cloud/api/v1/scim/v2/Roles/member
+                    - schemas:
+                      - urn:ietf:params:scim:schemas:extension:2.0:Role
+                      id: 3675b69e-8324-4110-bdca-059031aa8da3:viewer
+                      value: 3675b69e-8324-4110-bdca-059031aa8da3:viewer
+                      display: Jaffle shop - Viewer
+                      type: Project - Jaffle shop
+                      supported: true
+                      meta:
+                        resourceType: Role
+                        location: https://<tenant>.lightdash.cloud/api/v1/scim/v2/Roles/3675b69e-8324-4110-bdca-059031aa8da3:viewer
+                    - schemas:
+                      - urn:ietf:params:scim:schemas:extension:2.0:Role
+                      id: 3675b69e-8324-4110-bdca-059031aa8da3:da116e0f-2b96-4af4-93b7-b2636a26853d
+                      value: 3675b69e-8324-4110-bdca-059031aa8da3:da116e0f-2b96-4af4-93b7-b2636a26853d
+                      display: Jaffle shop - test
+                      type: Project - Jaffle shop
+                      supported: true
+                      meta:
+                        resourceType: Role
+                        created: '2025-11-03T17:01:45.447Z'
+                        lastModified: '2025-11-03T17:01:45.447Z'
+                        location: https://<tenant>.lightdash.cloud/api/v1/scim/v2/Roles/3675b69e-8324-4110-bdca-059031aa8da3:da116e0f-2b96-4af4-93b7-b2636a26853d
+      description: Get a list of roles within an organization
+      summary: List roles
+      tags:
+      - SCIM
+      security: []
+      parameters:
+      - description: Filter to apply to the role list (optional)
+        in: query
+        name: filter
+        required: false
+        schema:
+          type: string
+      - description: SCIM 2.0 startIndex (1-based). Defaults to 1.
+        in: query
+        name: startIndex
+        required: false
+        schema:
+          format: double
+          type: number
+      - description: SCIM 2.0 count (page size). Defaults to 100.
+        in: query
+        name: count
+        required: false
+        schema:
+          format: double
+          type: number
+  /api/v1/scim/v2/Roles/{roleId}:
+    get:
+      operationId: GetScimRole
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScimRole'
+              examples:
+                Example 1:
+                  value:
+                    schemas:
+                    - urn:ietf:params:scim:schemas:extension:2.0:Role
+                    id: member
+                    value: member
+                    display: Member
+                    type: Organization
+                    supported: true
+                    meta:
+                      resourceType: Role
+                      location: https://<tenant>.lightdash.cloud/api/v1/scim/v2/Roles/member
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScimErrorPayload'
+      description: Get a SCIM role by ID
+      summary: Get role
+      tags:
+      - SCIM
+      security: []
+      parameters:
+      - description: Role ID - this is used as a unique identifier for SCIM
+        in: path
+        name: roleId
+        required: true
+        schema:
+          type: string
+  /api/v1/scim/v2/Groups:
+    get:
+      operationId: GetScimGroups
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScimListResponse_ScimGroup_'
+              examples:
+                Example 1:
+                  value:
+                    schemas:
+                    - urn:ietf:params:scim:api:messages:2.0:ListResponse
+                    totalResults: 1
+                    itemsPerPage: 1
+                    startIndex: 1
+                    Resources:
+                    - schemas:
+                      - urn:ietf:params:scim:schemas:core:2.0:Group
+                      id: 1456c265-f375-4d64-bd33-105c84ad9b5d
+                      displayName: Org 1 Editor Group
+                      members:
+                      - value: 80fb8b59-d6b7-4ed6-b969-9849310f3e53
+                        display: demo2@lightdash.com
+                      meta:
+                        resourceType: Group
+                        created: '2025-11-03T14:22:24.067Z'
+                        lastModified: '2025-11-03T14:22:24.067Z'
+                        location: https://<tenant>.lightdash.cloud/api/v1/scim/v2/Groups/1456c265-f375-4d64-bd33-105c84ad9b5d
+      description: Get a list of groups within an organization
+      summary: List groups
+      tags:
+      - SCIM
+      security: []
+      parameters:
+      - description: Filter to apply to the group list (optional)
+        in: query
+        name: filter
+        required: false
+        schema:
+          type: string
+      - description: Index of the first group to return (optional)
+        in: query
+        name: startIndex
+        required: false
+        schema:
+          format: double
+          type: number
+      - description: Number of groups to return (optional)
+        in: query
+        name: count
+        required: false
+        schema:
+          format: double
+          type: number
+    post:
+      operationId: CreateScimGroup
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScimGroup'
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScimGroup'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScimErrorPayload'
+        '409':
+          description: Conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScimErrorPayload'
+      description: Create a new group in the SCIM application
+      summary: Create group
+      tags:
+      - SCIM
+      security: []
+      parameters: []
+      requestBody:
+        description: Group to create
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ScimUpsertGroup'
+              description: Group to create
+  /api/v1/scim/v2/Groups/{id}:
+    get:
+      operationId: GetScimGroup
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScimGroup'
+              examples:
+                Example 1:
+                  value:
+                    schemas:
+                    - urn:ietf:params:scim:schemas:core:2.0:Group
+                    id: 1456c265-f375-4d64-bd33-105c84ad9b5d
+                    displayName: Org 1 Editor Group
+                    members:
+                    - value: 80fb8b59-d6b7-4ed6-b969-9849310f3e53
+                      display: demo2@lightdash.com
+                    meta:
+                      resourceType: Group
+                      created: '2025-11-03T14:22:24.067Z'
+                      lastModified: '2025-11-03T14:22:24.067Z'
+                      location: https://<tenant>.lightdash.cloud/api/v1/scim/v2/Groups/1456c265-f375-4d64-bd33-105c84ad9b5d
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScimErrorPayload'
+      description: Get a specific group by its SCIM ID
+      summary: Get group
+      tags:
+      - SCIM
+      security: []
+      parameters:
+      - description: SCIM ID of the group to retrieve
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+    patch:
+      operationId: UpdateScimGroup
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScimGroup'
+        '204':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScimGroup'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScimErrorPayload'
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScimErrorPayload'
+      description: Partially updates a group’s attributes (e.g., add or remove members).
+      summary: Patch group
+      tags:
+      - SCIM
+      security: []
+      parameters:
+      - description: SCIM ID of the group to update
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: Update operations to apply to the group
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ScimPatch'
+              description: Update operations to apply to the group
+    put:
+      operationId: ReplaceScimGroup
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScimGroup'
+        '204':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScimGroup'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScimErrorPayload'
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScimErrorPayload'
+      description: Update a group's attributes completely
+      summary: Replace group
+      tags:
+      - SCIM
+      security: []
+      parameters:
+      - description: SCIM ID of the group to update
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: Group to update
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ScimUpsertGroup'
+              description: Group to update
+    delete:
+      operationId: DeleteScimGroup
+      responses:
+        '204':
+          description: No content
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScimErrorPayload'
+      description: Delete a specific group by its SCIM ID
+      summary: Delete group
+      tags:
+      - SCIM
+      security: []
+      parameters:
+      - description: SCIM ID of the group to delete
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+components:
+  schemas:
+    ScimSchemaType.RESOURCE_TYPE:
+      enum:
+      - urn:ietf:params:scim:schemas:core:2.0:ResourceType
+      type: string
+    ScimSchemaType.SERVICE_PROVIDER_CONFIG:
+      enum:
+      - urn:ietf:params:scim:schemas:core:2.0:ServiceProviderConfig
+      type: string
+    ScimPatchRemoveOperation:
+      properties:
+        op:
+          type: string
+          enum:
+          - remove
+          - Remove
+        path:
+          type: string
+        value: {}
+      required:
+      - op
+      - path
+      type: object
+      additionalProperties: true
+    ScimPatchAddReplaceOperation:
+      properties:
+        op:
+          type: string
+          enum:
+          - add
+          - Add
+          - replace
+          - Replace
+        path:
+          type: string
+        value: {}
+      required:
+      - op
+      type: object
+      additionalProperties: true
+    ScimSchemaType.SCHEMA:
+      enum:
+      - urn:ietf:params:scim:schemas:core:2.0:Schema
+      type: string
+    ScimSchemaType.ERROR:
+      enum:
+      - urn:ietf:params:scim:api:messages:2.0:Error
+      type: string
+    Pick_ScimUser.Exclude_keyofScimUser.id__:
+      properties:
+        urn:lightdash:params:scim:schemas:extension:2.0:User:
+          $ref: '#/components/schemas/LightdashScimExtension'
+        schemas:
+          items:
+            type: string
+          type: array
+        userName:
+          type: string
+        name:
+          properties:
+            familyName:
+              type: string
+            givenName:
+              type: string
+          type: object
+        active:
+          type: boolean
+        emails:
+          items:
+            properties:
+              primary:
+                type: boolean
+              value:
+                type: string
+            required:
+            - value
+            type: object
+          type: array
+        roles:
+          items:
+            $ref: '#/components/schemas/ScimUserRole'
+          type: array
+        meta:
+          properties:
+            version:
+              type: string
+            location:
+              type: string
+            lastModified:
+              type: string
+              format: date-time
+            created:
+              type: string
+              format: date-time
+            resourceType:
+              type: string
+          type: object
+      required:
+      - schemas
+      - userName
+      type: object
+      description: From T, pick a set of properties whose keys are in the union K
+    ScimGroupMember:
+      properties:
+        value:
+          type: string
+        display:
+          type: string
+      required:
+      - value
+      type: object
+      additionalProperties: true
+    ScimListResponse_ScimResourceType_:
+      properties:
+        schemas:
+          items:
+            $ref: '#/components/schemas/ScimSchemaType.LIST_RESPONSE'
+          type: array
+        totalResults:
+          type: number
+          format: double
+        itemsPerPage:
+          type: number
+          format: double
+        startIndex:
+          type: number
+          format: double
+        Resources:
+          items:
+            $ref: '#/components/schemas/ScimResourceType'
+          type: array
+      required:
+      - schemas
+      - totalResults
+      - itemsPerPage
+      - startIndex
+      - Resources
+      type: object
+      additionalProperties: true
+    ScimUpsertGroup:
+      properties:
+        schemas:
+          items:
+            $ref: '#/components/schemas/ScimSchemaType.GROUP'
+          type: array
+        displayName:
+          type: string
+        members:
+          items:
+            $ref: '#/components/schemas/ScimGroupMember'
+          type: array
+      required:
+      - schemas
+      - displayName
+      type: object
+      additionalProperties: true
+    LightdashScimExtension:
+      properties:
+        role:
+          type: string
+          deprecated: true
+      type: object
+      additionalProperties: true
+    ScimUserRole:
+      properties:
+        value:
+          type: string
+        display:
+          type: string
+        type:
+          type: string
+        primary:
+          type: boolean
+      required:
+      - value
+      type: object
+      additionalProperties: true
+    ScimSchemaAttribute:
+      properties:
+        name:
+          type: string
+        type:
+          type: string
+          enum:
+          - string
+          - boolean
+          - decimal
+          - integer
+          - dateTime
+          - reference
+          - complex
+        multiValued:
+          type: boolean
+        description:
+          type: string
+        required:
+          type: boolean
+        canonicalValues:
+          items:
+            type: string
+          type: array
+        caseExact:
+          type: boolean
+        mutability:
+          type: string
+          enum:
+          - readOnly
+          - readWrite
+          - immutable
+          - writeOnly
+        returned:
+          type: string
+          enum:
+          - always
+          - never
+          - default
+          - request
+        uniqueness:
+          type: string
+          enum:
+          - none
+          - server
+          - global
+        subAttributes:
+          items:
+            $ref: '#/components/schemas/ScimSchemaAttribute'
+          type: array
+      required:
+      - name
+      - type
+      - multiValued
+      - required
+      - caseExact
+      - mutability
+      - returned
+      - uniqueness
+      type: object
+      additionalProperties: true
+    ScimErrorPayload:
+      properties:
+        status:
+          type: string
+          description: 'HTTP status code as a string, indicating the status of the response.
+
+            For example: "400" for bad requests, "404" for not found, "500" for server errors.'
+        detail:
+          type: string
+          description: Human-readable description of the error, providing details about why the error occurred.
+        schemas:
+          items:
+            $ref: '#/components/schemas/ScimSchemaType.ERROR'
+          type: array
+          description: 'Array of schema URIs that describe the structure of the SCIM error response.
+
+            Typically includes "urn:ietf:params:scim:api:messages:2.0:Error".'
+        scimType:
+          type: string
+          enum:
+          - invalidFilter
+          - tooMany
+          - uniqueness
+          - mutability
+          - invalidSyntax
+          - invalidPath
+          - noTarget
+          - invalidValue
+          - invalidVers
+          - sensitive
+          description: "NOTE: this is taken from the SCIM spec here: https://datatracker.ietf.org/doc/html/rfc7644#section-3.7.3\nA SCIM-specific error type that provides additional context for the error.\n- 'invalidFilter': The specified filter syntax was invalid or the attribute and comparison combination is not supported.\n  Applicable for GET (Section 3.4.2), POST (Search - Section 3.4.3), PATCH (Path Filter - Section 3.5.2).\n- 'tooMany': The filter yields too many results for the server to process.\n  Applicable for GET (Section 3.4.2), POST (Search - Section 3.4.3).\n- 'uniqueness': One or more attribute values are already in use or reserved.\n  Applicable for POST (Create - Section 3.3), PUT (Section 3.5.1), PATCH (Section 3.5.2).\n- 'mutability': The modification is incompatible with the target attribute's mutability.\n  Applicable for PUT (Section 3.5.1), PATCH (Section 3.5.2).\n- 'invalidSyntax': The request body structure was invalid or did not conform to the schema.\n  Applicable for POST (Search - Section 3.4.3, Create - Section 3.3, Bulk - Section 3.7), PUT (Section 3.5.1).\n- 'invalidPath': The \"path\" attribute was invalid or malformed.\n  Applicable for PATCH (Section 3.5.2).\n- 'noTarget': The specified \"path\" did not yield an attribute that could be operated on.\n  Applicable for PATCH (Section 3.5.2).\n- 'invalidValue': A required value was missing, or the value specified was not compatible with the operation.\n  Applicable for GET (Section 3.4.2), POST (Create - Section 3.3, Query - Section 3.4.3), PUT (Section 3.5.1), PATCH (Section 3.5.2).\n- 'invalidVers': The specified SCIM protocol version is not supported.\n  Applicable for GET (Section 3.4.2), POST (ALL), PUT (Section 3.5.1), PATCH (Section 3.5.2), DELETE (Section 3.6).\n- 'sensitive': The request cannot be completed due to sensitive information passed in the URI.\n  Applicable for GET (Section 3.4.2)."
+      required:
+      - status
+      - detail
+      - schemas
+      type: object
+    ScimPatchSchema:
+      type: string
+      enum:
+      - urn:ietf:params:scim:api:messages:2.0:PatchOp
+      nullable: false
+    ScimUpsertUser:
+      allOf:
+      - $ref: '#/components/schemas/Omit_ScimUser.id_'
+      - properties:
+          title:
+            type: string
+          password:
+            type: string
+        type: object
+    ScimServiceProviderConfig:
+      properties:
+        schemas:
+          items:
+            $ref: '#/components/schemas/ScimSchemaType.SERVICE_PROVIDER_CONFIG'
+          type: array
+        documentationUri:
+          type: string
+        patch:
+          properties:
+            supported:
+              type: boolean
+          required:
+          - supported
+          type: object
+        bulk:
+          properties:
+            maxPayloadSize:
+              type: number
+              format: double
+            maxOperations:
+              type: number
+              format: double
+            supported:
+              type: boolean
+          required:
+          - supported
+          type: object
+        filter:
+          properties:
+            maxResults:
+              type: number
+              format: double
+            supported:
+              type: boolean
+          required:
+          - supported
+          type: object
+        changePassword:
+          properties:
+            supported:
+              type: boolean
+          required:
+          - supported
+          type: object
+        sort:
+          properties:
+            supported:
+              type: boolean
+          required:
+          - supported
+          type: object
+        etag:
+          properties:
+            supported:
+              type: boolean
+          required:
+          - supported
+          type: object
+        authenticationSchemes:
+          items:
+            properties:
+              primary:
+                type: boolean
+              documentationUri:
+                type: string
+              specUri:
+                type: string
+              description:
+                type: string
+              name:
+                type: string
+              type:
+                type: string
+            required:
+            - description
+            - name
+            - type
+            type: object
+          type: array
+      required:
+      - schemas
+      - patch
+      - bulk
+      - filter
+      - changePassword
+      - sort
+      - etag
+      - authenticationSchemes
+      type: object
+      additionalProperties: true
+    ScimResourceType:
+      properties:
+        schemas:
+          items:
+            $ref: '#/components/schemas/ScimSchemaType.RESOURCE_TYPE'
+          type: array
+        id:
+          type: string
+        meta:
+          properties:
+            version:
+              type: string
+            location:
+              type: string
+            lastModified:
+              type: string
+              format: date-time
+            created:
+              type: string
+              format: date-time
+            resourceType:
+              type: string
+          type: object
+        name:
+          type: string
+        description:
+          type: string
+        endpoint:
+          type: string
+        schema:
+          type: string
+        schemaExtensions:
+          items:
+            properties:
+              required:
+                type: boolean
+              schema:
+                type: string
+            required:
+            - required
+            - schema
+            type: object
+          type: array
+      required:
+      - schemas
+      - id
+      - name
+      - endpoint
+      - schema
+      type: object
+      additionalProperties: true
+    ScimListResponse_ScimUser_:
+      properties:
+        schemas:
+          items:
+            $ref: '#/components/schemas/ScimSchemaType.LIST_RESPONSE'
+          type: array
+        totalResults:
+          type: number
+          format: double
+        itemsPerPage:
+          type: number
+          format: double
+        startIndex:
+          type: number
+          format: double
+        Resources:
+          items:
+            $ref: '#/components/schemas/ScimUser'
+          type: array
+      required:
+      - schemas
+      - totalResults
+      - itemsPerPage
+      - startIndex
+      - Resources
+      type: object
+      additionalProperties: true
+    ScimSchema:
+      properties:
+        schemas:
+          items:
+            $ref: '#/components/schemas/ScimSchemaType.SCHEMA'
+          type: array
+        id:
+          type: string
+        meta:
+          properties:
+            version:
+              type: string
+            location:
+              type: string
+            lastModified:
+              type: string
+              format: date-time
+            created:
+              type: string
+              format: date-time
+            resourceType:
+              type: string
+          type: object
+        name:
+          type: string
+        description:
+          type: string
+        attributes:
+          items:
+            $ref: '#/components/schemas/ScimSchemaAttribute'
+          type: array
+      required:
+      - schemas
+      - id
+      - attributes
+      type: object
+      additionalProperties: true
+    ScimGroup:
+      properties:
+        schemas:
+          items:
+            type: string
+          type: array
+        id:
+          type: string
+        meta:
+          allOf:
+          - properties:
+              version:
+                type: string
+              location:
+                type: string
+              lastModified:
+                type: string
+                format: date-time
+              created:
+                type: string
+                format: date-time
+              resourceType:
+                type: string
+            type: object
+          - properties:
+              location:
+                type: string
+              lastModified:
+                type: string
+                format: date-time
+              created:
+                type: string
+                format: date-time
+              resourceType:
+                type: string
+                enum:
+                - Group
+                nullable: false
+            required:
+            - location
+            - lastModified
+            - created
+            - resourceType
+            type: object
+        displayName:
+          type: string
+        members:
+          items:
+            $ref: '#/components/schemas/ScimGroupMember'
+          type: array
+      required:
+      - schemas
+      - id
+      - displayName
+      - meta
+      type: object
+      additionalProperties: true
+    ScimRole:
+      properties:
+        schemas:
+          items:
+            $ref: '#/components/schemas/ScimSchemaType.ROLE'
+          type: array
+        id:
+          type: string
+        meta:
+          allOf:
+          - properties:
+              version:
+                type: string
+              location:
+                type: string
+              lastModified:
+                type: string
+                format: date-time
+              created:
+                type: string
+                format: date-time
+              resourceType:
+                type: string
+            type: object
+          - properties:
+              location:
+                type: string
+              lastModified:
+                type: string
+                format: date-time
+              created:
+                type: string
+                format: date-time
+              resourceType:
+                type: string
+                enum:
+                - Role
+                nullable: false
+            required:
+            - location
+            - resourceType
+            type: object
+        value:
+          type: string
+        display:
+          type: string
+        type:
+          type: string
+        supported:
+          type: boolean
+      required:
+      - schemas
+      - id
+      - value
+      - supported
+      - meta
+      type: object
+      additionalProperties: true
+    ScimPatch:
+      properties:
+        schemas:
+          items:
+            $ref: '#/components/schemas/ScimPatchSchema'
+          type: array
+        Operations:
+          items:
+            $ref: '#/components/schemas/ScimPatchOperation'
+          type: array
+      required:
+      - schemas
+      - Operations
+      type: object
+      additionalProperties: true
+    ScimListResponse_ScimRole_:
+      properties:
+        schemas:
+          items:
+            $ref: '#/components/schemas/ScimSchemaType.LIST_RESPONSE'
+          type: array
+        totalResults:
+          type: number
+          format: double
+        itemsPerPage:
+          type: number
+          format: double
+        startIndex:
+          type: number
+          format: double
+        Resources:
+          items:
+            $ref: '#/components/schemas/ScimRole'
+          type: array
+      required:
+      - schemas
+      - totalResults
+      - itemsPerPage
+      - startIndex
+      - Resources
+      type: object
+      additionalProperties: true
+    ScimListResponse_ScimGroup_:
+      properties:
+        schemas:
+          items:
+            $ref: '#/components/schemas/ScimSchemaType.LIST_RESPONSE'
+          type: array
+        totalResults:
+          type: number
+          format: double
+        itemsPerPage:
+          type: number
+          format: double
+        startIndex:
+          type: number
+          format: double
+        Resources:
+          items:
+            $ref: '#/components/schemas/ScimGroup'
+          type: array
+      required:
+      - schemas
+      - totalResults
+      - itemsPerPage
+      - startIndex
+      - Resources
+      type: object
+      additionalProperties: true
+    ScimSchemaType.ROLE:
+      enum:
+      - urn:ietf:params:scim:schemas:extension:2.0:Role
+      type: string
+    ScimPatchOperation:
+      anyOf:
+      - $ref: '#/components/schemas/ScimPatchRemoveOperation'
+      - $ref: '#/components/schemas/ScimPatchAddReplaceOperation'
+    ScimListResponse_ScimSchema_:
+      properties:
+        schemas:
+          items:
+            $ref: '#/components/schemas/ScimSchemaType.LIST_RESPONSE'
+          type: array
+        totalResults:
+          type: number
+          format: double
+        itemsPerPage:
+          type: number
+          format: double
+        startIndex:
+          type: number
+          format: double
+        Resources:
+          items:
+            $ref: '#/components/schemas/ScimSchema'
+          type: array
+      required:
+      - schemas
+      - totalResults
+      - itemsPerPage
+      - startIndex
+      - Resources
+      type: object
+      additionalProperties: true
+    Omit_ScimUser.id_:
+      $ref: '#/components/schemas/Pick_ScimUser.Exclude_keyofScimUser.id__'
+      description: Construct a type with the properties of T except for those in type K.
+    ScimSchemaType.GROUP:
+      enum:
+      - urn:ietf:params:scim:schemas:core:2.0:Group
+      type: string
+    ScimSchemaType.LIST_RESPONSE:
+      enum:
+      - urn:ietf:params:scim:api:messages:2.0:ListResponse
+      type: string
+    ScimUser:
+      properties:
+        schemas:
+          items:
+            type: string
+          type: array
+        id:
+          type: string
+        meta:
+          properties:
+            version:
+              type: string
+            location:
+              type: string
+            lastModified:
+              type: string
+              format: date-time
+            created:
+              type: string
+              format: date-time
+            resourceType:
+              type: string
+          type: object
+        userName:
+          type: string
+        name:
+          properties:
+            familyName:
+              type: string
+            givenName:
+              type: string
+          type: object
+        active:
+          type: boolean
+        emails:
+          items:
+            properties:
+              primary:
+                type: boolean
+              value:
+                type: string
+            required:
+            - value
+            type: object
+          type: array
+        roles:
+          items:
+            $ref: '#/components/schemas/ScimUserRole'
+          type: array
+        urn:lightdash:params:scim:schemas:extension:2.0:User:
+          $ref: '#/components/schemas/LightdashScimExtension'
+      required:
+      - schemas
+      - id
+      - userName
+      type: object
+      additionalProperties: true
+  securitySchemes:
+    session_cookie:
+      type: apiKey
+      in: cookie
+      name: connect.sid
+    api_key:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: Value should be 'ApiKey <your key>'

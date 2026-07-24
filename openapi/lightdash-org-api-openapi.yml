@@ -1,0 +1,587 @@
+openapi: 3.0.0
+info:
+  title: Lightdash AiAgents Org API
+  version: 0.3156.1
+  description: 'Open API documentation for all public Lightdash API endpoints. # Authentication Before you get started, you might need to create a Personal Access Token to authenticate via the API. You can create a token by following this guide: https://docs.lightdash.com/references/personal_tokens
+
+    '
+  license:
+    name: MIT
+  contact:
+    name: Lightdash Support
+    email: support@lightdash.com
+    url: https://docs.lightdash.com/help-and-contact/contact/contact_info/
+servers:
+- url: /
+tags:
+- name: Org
+paths:
+  /api/v1/org/aiRouter:
+    get:
+      operationId: getAiRouterConfig
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiAiRouterResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: 'Get the AI router configuration for the organization. Returns 404 when the
+
+        router has not been configured yet — clients use this to detect first-use.'
+      summary: Get AI router config
+      security: []
+      parameters: []
+      tags:
+      - Org
+    put:
+      operationId: upsertAiRouterConfig
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiAiRouterResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: Upsert the AI router configuration. Creates the row lazily on first save.
+      summary: Upsert AI router config
+      security: []
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpsertAiRouterRequest'
+      tags:
+      - Org
+  /api/v1/org/aiRouter/instructions/{projectUuid}:
+    get:
+      operationId: getAiRouterInstruction
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiAiRouterInstructionResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: 'Get the active routing instruction for a project. Returns null when no
+
+        instruction has been written for the project yet.'
+      summary: Get AI router instruction
+      security: []
+      parameters:
+      - in: path
+        name: projectUuid
+        required: true
+        schema:
+          type: string
+      tags:
+      - Org
+    put:
+      operationId: upsertAiRouterInstruction
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiAiRouterInstructionResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: 'Write a new routing-instruction version for a project. Versions are
+
+        append-only; the latest one is the active instruction.'
+      summary: Upsert AI router instruction
+      security: []
+      parameters:
+      - in: path
+        name: projectUuid
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpsertAiRouterInstructionRequest'
+      tags:
+      - Org
+  /api/v1/org/aiRouter/route:
+    post:
+      operationId: routeAiAgent
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiAiRouterRouteResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: Route a user prompt to the best candidate agent in the current project.
+      summary: Route prompt
+      security: []
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AiRouterRouteRequest'
+      tags:
+      - Org
+  /api/v1/org/aiRouter/decisions/{decisionUuid}/commit:
+    post:
+      operationId: commitAiRouterDecision
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiAiRouterDecisionCommitResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: 'Commit a router decision once the user has resolved it (router
+
+        auto-routed and the thread is created, or the user picked an agent
+
+        from the picker). Decisions left uncommitted indicate the user
+
+        abandoned the flow.'
+      summary: Commit router decision
+      security: []
+      parameters:
+      - in: path
+        name: decisionUuid
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AiRouterDecisionCommitRequest'
+      tags:
+      - Org
+  /api/v1/org/aiRouter/decisions:
+    get:
+      operationId: listAiRouterDecisions
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiAiRouterDecisionListResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: List recent routing decisions for the org's router.
+      summary: List router decisions
+      security: []
+      parameters:
+      - in: query
+        name: confidence
+        required: false
+        schema:
+          $ref: '#/components/schemas/AiRouterDecisionConfidence'
+      - in: query
+        name: selectionMode
+        required: false
+        schema:
+          $ref: '#/components/schemas/AiRouterSelectionMode'
+      - in: query
+        name: fromDate
+        required: false
+        schema:
+          type: string
+      - in: query
+        name: toDate
+        required: false
+        schema:
+          type: string
+      tags:
+      - Org
+components:
+  schemas:
+    ApiSuccess_AiRouterInstruction-or-null_:
+      properties:
+        results:
+          allOf:
+          - $ref: '#/components/schemas/AiRouterInstruction'
+          nullable: true
+        status:
+          type: string
+          enum:
+          - ok
+          nullable: false
+      required:
+      - results
+      - status
+      type: object
+    ApiAiRouterDecisionCommitResponse:
+      $ref: '#/components/schemas/ApiSuccessEmpty'
+    ApiAiRouterResponse:
+      $ref: '#/components/schemas/ApiSuccess_AiRouter_'
+    ApiSuccess_AiRouterRouteResponseResult_:
+      properties:
+        results:
+          $ref: '#/components/schemas/AiRouterRouteResponseResult'
+        status:
+          type: string
+          enum:
+          - ok
+          nullable: false
+      required:
+      - results
+      - status
+      type: object
+    ApiSuccess_AiRouterDecision-Array_:
+      properties:
+        results:
+          items:
+            $ref: '#/components/schemas/AiRouterDecision'
+          type: array
+        status:
+          type: string
+          enum:
+          - ok
+          nullable: false
+      required:
+      - results
+      - status
+      type: object
+    ApiAiRouterInstructionResponse:
+      $ref: '#/components/schemas/ApiSuccess_AiRouterInstruction-or-null_'
+    AiRouterRouteDecision:
+      properties:
+        candidates:
+          items:
+            $ref: '#/components/schemas/AiRouterDecisionCandidate'
+          type: array
+        reasoning:
+          type: string
+        confidence:
+          $ref: '#/components/schemas/AiRouterDecisionConfidence'
+        suggestedAgentUuid:
+          type: string
+        decisionUuid:
+          type: string
+      required:
+      - candidates
+      - reasoning
+      - confidence
+      - suggestedAgentUuid
+      - decisionUuid
+      type: object
+    AiRouter:
+      properties:
+        updatedAt:
+          type: string
+          format: date-time
+        createdAt:
+          type: string
+          format: date-time
+        projectUuids:
+          items:
+            type: string
+          type: array
+        enabled:
+          type: boolean
+        organizationUuid:
+          type: string
+        routerUuid:
+          type: string
+      required:
+      - updatedAt
+      - createdAt
+      - projectUuids
+      - enabled
+      - organizationUuid
+      - routerUuid
+      type: object
+    AnyType:
+      description: 'This AnyType is an alias for any
+
+        The goal is to make it easier to identify any type in the codebase
+
+        without having to eslint-disable all the time
+
+        These are only used on legacy `any` types, don''t use it for new types.
+
+        This is added on a separate file to avoid circular dependencies.'
+    ApiErrorPayload:
+      properties:
+        error:
+          properties:
+            data:
+              $ref: '#/components/schemas/AnyType'
+              description: Optional data containing details of the error
+            message:
+              type: string
+              description: A friendly message summarising the error
+            name:
+              type: string
+              description: Unique name for the type of error
+            statusCode:
+              type: number
+              format: integer
+              description: HTTP status code
+          required:
+          - name
+          - statusCode
+          type: object
+        status:
+          type: string
+          enum:
+          - error
+          nullable: false
+      required:
+      - error
+      - status
+      type: object
+      description: 'The Error object is returned from the api any time there is an error.
+
+        The message contains'
+    ApiSuccessEmpty:
+      properties:
+        results: {}
+        status:
+          type: string
+          enum:
+          - ok
+          nullable: false
+      required:
+      - status
+      type: object
+    ApiSuccess_AiRouter_:
+      properties:
+        results:
+          $ref: '#/components/schemas/AiRouter'
+        status:
+          type: string
+          enum:
+          - ok
+          nullable: false
+      required:
+      - results
+      - status
+      type: object
+    AiRouterSelectionMode:
+      type: string
+      enum:
+      - auto_routed
+      - manual_pick
+    AiRouterDecision:
+      properties:
+        committedAt:
+          type: string
+          format: date-time
+          nullable: true
+        createdAt:
+          type: string
+          format: date-time
+        selectionMode:
+          allOf:
+          - $ref: '#/components/schemas/AiRouterSelectionMode'
+          nullable: true
+        candidateAgentUuids:
+          items:
+            type: string
+          type: array
+        reasoning:
+          type: string
+        confidence:
+          $ref: '#/components/schemas/AiRouterDecisionConfidence'
+        chosenAgentUuid:
+          type: string
+          nullable: true
+        suggestedAgentUuid:
+          type: string
+        prompt:
+          type: string
+        userUuid:
+          type: string
+        threadUuid:
+          type: string
+          nullable: true
+        routerUuid:
+          type: string
+        decisionUuid:
+          type: string
+      required:
+      - committedAt
+      - createdAt
+      - selectionMode
+      - candidateAgentUuids
+      - reasoning
+      - confidence
+      - chosenAgentUuid
+      - suggestedAgentUuid
+      - prompt
+      - userUuid
+      - threadUuid
+      - routerUuid
+      - decisionUuid
+      type: object
+    AiRouterDecisionCommitRequest:
+      properties:
+        threadUuid:
+          type: string
+        chosenAgentUuid:
+          type: string
+      required:
+      - threadUuid
+      - chosenAgentUuid
+      type: object
+    AiRouterRouteRequest:
+      properties:
+        projectUuid:
+          type: string
+        prompt:
+          type: string
+      required:
+      - projectUuid
+      - prompt
+      type: object
+    AiRouterDecisionCandidate:
+      properties:
+        description:
+          type: string
+          nullable: true
+        name:
+          type: string
+        agentUuid:
+          type: string
+      required:
+      - description
+      - name
+      - agentUuid
+      type: object
+    UpsertAiRouterRequest:
+      properties:
+        projectUuids:
+          items:
+            type: string
+          type: array
+        enabled:
+          type: boolean
+      type: object
+    AiRouterDecisionConfidence:
+      type: string
+      enum:
+      - high
+      - medium
+      - low
+    AiRouterRouteResponseResult:
+      properties:
+        nextAction:
+          $ref: '#/components/schemas/AiRouterRouteNextAction'
+        decision:
+          $ref: '#/components/schemas/AiRouterRouteDecision'
+      required:
+      - nextAction
+      - decision
+      type: object
+    ApiAiRouterRouteResponse:
+      $ref: '#/components/schemas/ApiSuccess_AiRouterRouteResponseResult_'
+    UpsertAiRouterInstructionRequest:
+      properties:
+        taggedAgentUuids:
+          items:
+            type: string
+          type: array
+        instruction:
+          type: string
+      required:
+      - taggedAgentUuids
+      - instruction
+      type: object
+    AiRouterInstruction:
+      properties:
+        createdAt:
+          type: string
+          format: date-time
+        taggedAgentUuids:
+          items:
+            type: string
+          type: array
+        instruction:
+          type: string
+        projectUuid:
+          type: string
+        routerUuid:
+          type: string
+        instructionVersionUuid:
+          type: string
+      required:
+      - createdAt
+      - taggedAgentUuids
+      - instruction
+      - projectUuid
+      - routerUuid
+      - instructionVersionUuid
+      type: object
+      description: 'Per-project routing instructions written by an admin. Versioned append-only
+
+        (like agent instructions): the latest version for a (router, project) pair is
+
+        the active one. `instruction` is free text where tagged agents are embedded as
+
+        `@[Agent Name](agent-uuid)` tokens; `taggedAgentUuids` is the extracted list,
+
+        kept alongside the text so references can be validated and orphans detected.'
+    AiRouterRouteNextAction:
+      type: string
+      enum:
+      - create_thread
+      - show_picker
+    ApiAiRouterDecisionListResponse:
+      $ref: '#/components/schemas/ApiSuccess_AiRouterDecision-Array_'
+  securitySchemes:
+    session_cookie:
+      type: apiKey
+      in: cookie
+      name: connect.sid
+    api_key:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: Value should be 'ApiKey <your key>'

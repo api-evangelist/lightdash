@@ -1,0 +1,1257 @@
+openapi: 3.0.0
+info:
+  title: Lightdash AiAgents Roles & Permissions API
+  version: 0.3156.1
+  description: 'Open API documentation for all public Lightdash API endpoints. # Authentication Before you get started, you might need to create a Personal Access Token to authenticate via the API. You can create a token by following this guide: https://docs.lightdash.com/references/personal_tokens
+
+    '
+  license:
+    name: MIT
+  contact:
+    name: Lightdash Support
+    email: support@lightdash.com
+    url: https://docs.lightdash.com/help-and-contact/contact/contact_info/
+servers:
+- url: /
+tags:
+- name: Roles & Permissions
+  description: These routes allow users to manage roles and permissions for their organization.
+  externalDocs:
+    url: https://docs.lightdash.com/references/roles
+paths:
+  /api/v1/projects/{projectUuid}/spaces/{spaceUuid}:
+    patch:
+      operationId: UpdateSpace
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiSpaceResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: Update a space in a project
+      summary: Update space
+      tags:
+      - Roles & Permissions
+      security: []
+      parameters:
+      - description: The uuid of the space's parent project
+        in: path
+        name: projectUuid
+        required: true
+        schema:
+          type: string
+      - description: The uuid of the space to update
+        in: path
+        name: spaceUuid
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateSpace'
+  /api/v1/projects/{projectUuid}/spaces:
+    post:
+      operationId: CreateSpaceInProject
+      responses:
+        '200':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiSpaceResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: Create a new space inside a project
+      summary: Create space
+      tags:
+      - Roles & Permissions
+      security: []
+      parameters:
+      - description: The uuid of the space's parent project
+        in: path
+        name: projectUuid
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateSpace'
+  /api/v1/projects/{projectUuid}/spaces/{spaceUuid}/share:
+    post:
+      operationId: AddSpaceUserAccess
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiSuccessEmpty'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: Grant a user access to a space
+      summary: Grant user access to space
+      tags:
+      - Roles & Permissions
+      security: []
+      parameters:
+      - description: The uuid of the space's parent project
+        in: path
+        name: projectUuid
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: spaceUuid
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddSpaceUserAccess'
+  /api/v1/projects/{projectUuid}/spaces/{spaceUuid}/share/{userUuid}:
+    delete:
+      operationId: RevokeSpaceAccessForUser
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiSuccessEmpty'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: Remove a user's access to a space
+      summary: Revoke user access to space
+      tags:
+      - Roles & Permissions
+      security: []
+      parameters:
+      - description: The uuid of the space's parent project
+        in: path
+        name: projectUuid
+        required: true
+        schema:
+          type: string
+      - description: The uuid of the space to update
+        in: path
+        name: spaceUuid
+        required: true
+        schema:
+          type: string
+      - description: The uuid of the user to revoke access from
+        in: path
+        name: userUuid
+        required: true
+        schema:
+          type: string
+  /api/v1/projects/{projectUuid}/spaces/{spaceUuid}/group/share:
+    post:
+      operationId: AddSpaceGroupAccess
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiSuccessEmpty'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: Grant a group access to a space
+      summary: Grant group access to space
+      tags:
+      - Roles & Permissions
+      security: []
+      parameters:
+      - description: The uuid of the space's parent project
+        in: path
+        name: projectUuid
+        required: true
+        schema:
+          type: string
+      - description: The uuid of the space to update
+        in: path
+        name: spaceUuid
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddSpaceGroupAccess'
+  /api/v1/projects/{projectUuid}/spaces/{spaceUuid}/group/share/{groupUuid}:
+    delete:
+      operationId: RevokeGroupSpaceAccess
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiSuccessEmpty'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: Remove a group's access to a space
+      summary: Revoke group access to space
+      tags:
+      - Roles & Permissions
+      security: []
+      parameters:
+      - description: The uuid of the space's parent project
+        in: path
+        name: projectUuid
+        required: true
+        schema:
+          type: string
+      - description: The uuid of the space to update
+        in: path
+        name: spaceUuid
+        required: true
+        schema:
+          type: string
+      - description: The uuid of the group to revoke access from
+        in: path
+        name: groupUuid
+        required: true
+        schema:
+          type: string
+  /api/v1/projects/{projectUuid}/access:
+    get:
+      operationId: GetProjectAccessList
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiProjectAccessListResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: 'Get access list for a project. This is a list of users that have been explictly granted access to the project.
+
+        There may be other users that have access to the project via their organization membership.'
+      summary: List project access
+      tags:
+      - Roles & Permissions
+      security: []
+      parameters:
+      - in: path
+        name: projectUuid
+        required: true
+        schema:
+          type: string
+    post:
+      operationId: GrantProjectAccessToUser
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiSuccessEmpty'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: Grant a user access to a project
+      summary: Grant project access to user
+      tags:
+      - Roles & Permissions
+      security: []
+      parameters:
+      - in: path
+        name: projectUuid
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateProjectMember'
+  /api/v1/projects/{projectUuid}/user/{userUuid}:
+    get:
+      operationId: GetProjectMemberAccess
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiGetProjectMemberResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: 'Get a project explicit member''s access.
+
+        There may be users that have access to the project via their organization membership.'
+      summary: Get project member access
+      tags:
+      - Roles & Permissions
+      deprecated: true
+      security: []
+      parameters:
+      - in: path
+        name: projectUuid
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: userUuid
+        required: true
+        schema:
+          type: string
+  /api/v1/projects/{projectUuid}/access/{userUuid}:
+    patch:
+      operationId: UpdateProjectAccessForUser
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiSuccessEmpty'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: Update a user's access to a project
+      summary: Update project access for user
+      tags:
+      - Roles & Permissions
+      deprecated: true
+      security: []
+      parameters:
+      - in: path
+        name: projectUuid
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: userUuid
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateProjectMember'
+    delete:
+      operationId: RevokeProjectAccessForUser
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiSuccessEmpty'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: Remove a user's access to a project
+      summary: Revoke project access for user
+      tags:
+      - Roles & Permissions
+      deprecated: true
+      security: []
+      parameters:
+      - in: path
+        name: projectUuid
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: userUuid
+        required: true
+        schema:
+          type: string
+  /api/v1/org/users/{userUuid}:
+    patch:
+      operationId: UpdateOrganizationMember
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiOrganizationMemberProfile'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: Updates the membership profile for a user in the current user's organization
+      summary: Update organization member
+      tags:
+      - Roles & Permissions
+      deprecated: true
+      security: []
+      parameters:
+      - description: the uuid of the user to update
+        in: path
+        name: userUuid
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: the new membership profile
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrganizationMemberProfileUpdate'
+              description: the new membership profile
+components:
+  schemas:
+    OrganizationMemberRole:
+      enum:
+      - member
+      - viewer
+      - interactive_viewer
+      - editor
+      - developer
+      - admin
+      type: string
+    ChartSummary:
+      allOf:
+      - $ref: '#/components/schemas/Pick_SavedChart.uuid-or-name-or-description-or-spaceName-or-spaceUuid-or-projectUuid-or-organizationUuid-or-pinnedListUuid-or-dashboardUuid-or-dashboardName-or-slug_'
+      - properties:
+          source:
+            $ref: '#/components/schemas/ChartSourceType'
+          chartKind:
+            $ref: '#/components/schemas/ChartKind'
+          chartType:
+            $ref: '#/components/schemas/ChartType'
+        type: object
+    SpaceGroup:
+      properties:
+        spaceRole:
+          $ref: '#/components/schemas/SpaceMemberRole'
+        groupName:
+          type: string
+        groupUuid:
+          type: string
+      required:
+      - spaceRole
+      - groupName
+      - groupUuid
+      type: object
+    UpdateProjectMember:
+      properties:
+        role:
+          $ref: '#/components/schemas/ProjectMemberRole'
+      required:
+      - role
+      type: object
+    ProjectMemberProfile:
+      properties:
+        lastName:
+          type: string
+        firstName:
+          type: string
+        email:
+          type: string
+        roleUuid:
+          type: string
+        role:
+          $ref: '#/components/schemas/ProjectMemberRole'
+        projectUuid:
+          type: string
+        userUuid:
+          type: string
+      required:
+      - lastName
+      - firstName
+      - email
+      - role
+      - projectUuid
+      - userUuid
+      type: object
+    AddSpaceUserAccess:
+      properties:
+        spaceRole:
+          $ref: '#/components/schemas/SpaceMemberRole'
+        userUuid:
+          type: string
+      required:
+      - spaceRole
+      - userUuid
+      type: object
+    CreateProjectMember:
+      properties:
+        sendEmail:
+          type: boolean
+        role:
+          $ref: '#/components/schemas/ProjectMemberRole'
+        email:
+          type: string
+      required:
+      - sendEmail
+      - role
+      - email
+      type: object
+    SpaceMemberRole:
+      enum:
+      - viewer
+      - editor
+      - admin
+      type: string
+    AnyType:
+      description: 'This AnyType is an alias for any
+
+        The goal is to make it easier to identify any type in the codebase
+
+        without having to eslint-disable all the time
+
+        These are only used on legacy `any` types, don''t use it for new types.
+
+        This is added on a separate file to avoid circular dependencies.'
+    Pick_ValidationResponse.error-or-createdAt-or-validationUuid-or-validationId_:
+      properties:
+        createdAt:
+          type: string
+          format: date-time
+        error:
+          type: string
+        validationUuid:
+          type: string
+        validationId:
+          type: number
+          format: double
+          nullable: true
+          deprecated: true
+      required:
+      - createdAt
+      - error
+      - validationUuid
+      - validationId
+      type: object
+      description: From T, pick a set of properties whose keys are in the union K
+    ApiSuccessEmpty:
+      properties:
+        results: {}
+        status:
+          type: string
+          enum:
+          - ok
+          nullable: false
+      required:
+      - status
+      type: object
+    ApiErrorPayload:
+      properties:
+        error:
+          properties:
+            data:
+              $ref: '#/components/schemas/AnyType'
+              description: Optional data containing details of the error
+            message:
+              type: string
+              description: A friendly message summarising the error
+            name:
+              type: string
+              description: Unique name for the type of error
+            statusCode:
+              type: number
+              format: integer
+              description: HTTP status code
+          required:
+          - name
+          - statusCode
+          type: object
+        status:
+          type: string
+          enum:
+          - error
+          nullable: false
+      required:
+      - error
+      - status
+      type: object
+      description: 'The Error object is returned from the api any time there is an error.
+
+        The message contains'
+    ChartSourceType:
+      enum:
+      - dbt_explore
+      - sql
+      type: string
+    ? Pick_Dashboard.uuid-or-name-or-description-or-updatedAt-or-projectUuid-or-updatedByUser-or-organizationUuid-or-spaceUuid-or-views-or-firstViewedAt-or-pinnedListUuid-or-pinnedListOrder_
+    : properties:
+        description:
+          type: string
+        name:
+          type: string
+        projectUuid:
+          type: string
+        organizationUuid:
+          type: string
+        uuid:
+          type: string
+        pinnedListUuid:
+          type: string
+          nullable: true
+        pinnedListOrder:
+          type: number
+          format: double
+          nullable: true
+        updatedAt:
+          type: string
+          format: date-time
+        spaceUuid:
+          type: string
+        updatedByUser:
+          $ref: '#/components/schemas/UpdatedByUser'
+        views:
+          type: number
+          format: double
+        firstViewedAt:
+          anyOf:
+          - type: string
+          - type: string
+            format: date-time
+          nullable: true
+      required:
+      - name
+      - projectUuid
+      - organizationUuid
+      - uuid
+      - pinnedListUuid
+      - pinnedListOrder
+      - updatedAt
+      - spaceUuid
+      - views
+      - firstViewedAt
+      type: object
+      description: From T, pick a set of properties whose keys are in the union K
+    ApiOrganizationMemberProfile:
+      properties:
+        results:
+          $ref: '#/components/schemas/OrganizationMemberProfile'
+        status:
+          type: string
+          enum:
+          - ok
+          nullable: false
+      required:
+      - results
+      - status
+      type: object
+    ValidationSummary:
+      $ref: '#/components/schemas/Pick_ValidationResponse.error-or-createdAt-or-validationUuid-or-validationId_'
+    DashboardBasicDetails:
+      allOf:
+      - $ref: '#/components/schemas/Pick_Dashboard.uuid-or-name-or-description-or-updatedAt-or-projectUuid-or-updatedByUser-or-organizationUuid-or-spaceUuid-or-views-or-firstViewedAt-or-pinnedListUuid-or-pinnedListOrder_'
+      - properties:
+          verification:
+            allOf:
+            - $ref: '#/components/schemas/ContentVerificationInfo'
+            nullable: true
+          validationErrors:
+            items:
+              $ref: '#/components/schemas/ValidationSummary'
+            type: array
+        required:
+        - verification
+        type: object
+    AddSpaceGroupAccess:
+      properties:
+        spaceRole:
+          $ref: '#/components/schemas/SpaceMemberRole'
+        groupUuid:
+          type: string
+      required:
+      - spaceRole
+      - groupUuid
+      type: object
+    SpaceQuery:
+      allOf:
+      - $ref: '#/components/schemas/ChartSummary'
+      - $ref: '#/components/schemas/Pick_SavedChart.updatedAt-or-updatedByUser-or-pinnedListOrder_'
+      - $ref: '#/components/schemas/ViewStatistics'
+      - properties:
+          verification:
+            allOf:
+            - $ref: '#/components/schemas/ContentVerificationInfo'
+            nullable: true
+          validationErrors:
+            items:
+              $ref: '#/components/schemas/ValidationSummary'
+            type: array
+        required:
+        - verification
+        type: object
+    ViewStatistics:
+      properties:
+        firstViewedAt:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: string
+          nullable: true
+        views:
+          type: number
+          format: double
+      required:
+      - firstViewedAt
+      - views
+      type: object
+    Pick_SavedChart.updatedAt-or-updatedByUser-or-pinnedListOrder_:
+      properties:
+        pinnedListOrder:
+          type: number
+          format: double
+          nullable: true
+        updatedAt:
+          type: string
+          format: date-time
+          description: Timestamp when the chart was last updated
+        updatedByUser:
+          $ref: '#/components/schemas/UpdatedByUser'
+      required:
+      - pinnedListOrder
+      - updatedAt
+      type: object
+      description: From T, pick a set of properties whose keys are in the union K
+    ChartType:
+      enum:
+      - cartesian
+      - table
+      - big_number
+      - pie
+      - funnel
+      - treemap
+      - gauge
+      - custom
+      - map
+      - sankey
+      type: string
+    UpdatedByUser:
+      properties:
+        userUuid:
+          type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
+      required:
+      - userUuid
+      - firstName
+      - lastName
+      type: object
+      additionalProperties: true
+    SpaceShare:
+      allOf:
+      - $ref: '#/components/schemas/SpaceAccess'
+      - $ref: '#/components/schemas/SpaceAccessUserMetadata'
+    ProjectMemberRole:
+      enum:
+      - viewer
+      - interactive_viewer
+      - editor
+      - developer
+      - admin
+      type: string
+    ? Pick_Space.organizationUuid-or-projectUuid-or-uuid-or-name-or-inheritParentPermissions-or-projectMemberAccessRole-or-pinnedListUuid-or-pinnedListOrder-or-slug-or-parentSpaceUuid-or-path_
+    : properties:
+        name:
+          type: string
+        projectUuid:
+          type: string
+        organizationUuid:
+          type: string
+        uuid:
+          type: string
+        inheritParentPermissions:
+          type: boolean
+        projectMemberAccessRole:
+          allOf:
+          - $ref: '#/components/schemas/SpaceMemberRole'
+          nullable: true
+        pinnedListUuid:
+          type: string
+          nullable: true
+        pinnedListOrder:
+          type: number
+          format: double
+          nullable: true
+        slug:
+          type: string
+        parentSpaceUuid:
+          type: string
+          nullable: true
+        path:
+          type: string
+      required:
+      - name
+      - projectUuid
+      - organizationUuid
+      - uuid
+      - inheritParentPermissions
+      - projectMemberAccessRole
+      - pinnedListUuid
+      - pinnedListOrder
+      - slug
+      - parentSpaceUuid
+      - path
+      type: object
+      description: From T, pick a set of properties whose keys are in the union K
+    ApiProjectAccessListResponse:
+      properties:
+        results:
+          items:
+            $ref: '#/components/schemas/ProjectMemberProfile'
+          type: array
+        status:
+          type: string
+          enum:
+          - ok
+          nullable: false
+      required:
+      - results
+      - status
+      type: object
+    CreateSpace:
+      properties:
+        parentSpaceUuid:
+          type: string
+        access:
+          items:
+            $ref: '#/components/schemas/Pick_SpaceShare.userUuid-or-role_'
+          type: array
+        inheritParentPermissions:
+          type: boolean
+        name:
+          type: string
+      required:
+      - name
+      type: object
+    ApiSpaceResponse:
+      properties:
+        results:
+          $ref: '#/components/schemas/Space'
+        status:
+          type: string
+          enum:
+          - ok
+          nullable: false
+      required:
+      - results
+      - status
+      type: object
+    Space:
+      properties:
+        breadcrumbs:
+          items:
+            properties:
+              hasAccess:
+                type: boolean
+              uuid:
+                type: string
+              name:
+                type: string
+            required:
+            - hasAccess
+            - uuid
+            - name
+            type: object
+          type: array
+        path:
+          type: string
+        colorPaletteUuid:
+          type: string
+          nullable: true
+        projectMemberAccessRole:
+          allOf:
+          - $ref: '#/components/schemas/SpaceMemberRole'
+          nullable: true
+        inheritParentPermissions:
+          type: boolean
+        parentSpaceUuid:
+          type: string
+          nullable: true
+        childSpaces:
+          items:
+            $ref: '#/components/schemas/SpaceSummaryBase'
+          type: array
+        slug:
+          type: string
+        pinnedListOrder:
+          type: number
+          format: double
+          nullable: true
+        pinnedListUuid:
+          type: string
+          nullable: true
+        groupsAccess:
+          items:
+            $ref: '#/components/schemas/SpaceGroup'
+          type: array
+        access:
+          items:
+            $ref: '#/components/schemas/SpaceShare'
+          type: array
+        dashboards:
+          items:
+            $ref: '#/components/schemas/SpaceDashboard'
+          type: array
+        projectUuid:
+          type: string
+        queries:
+          items:
+            $ref: '#/components/schemas/SpaceQuery'
+          type: array
+        inheritsFromOrgOrProject:
+          type: boolean
+        name:
+          type: string
+        uuid:
+          type: string
+        organizationUuid:
+          type: string
+      required:
+      - path
+      - colorPaletteUuid
+      - projectMemberAccessRole
+      - inheritParentPermissions
+      - parentSpaceUuid
+      - childSpaces
+      - slug
+      - pinnedListOrder
+      - pinnedListUuid
+      - groupsAccess
+      - access
+      - dashboards
+      - projectUuid
+      - queries
+      - inheritsFromOrgOrProject
+      - name
+      - uuid
+      - organizationUuid
+      type: object
+    SpaceDashboard:
+      $ref: '#/components/schemas/DashboardBasicDetails'
+    ? Pick_SavedChart.uuid-or-name-or-description-or-spaceName-or-spaceUuid-or-projectUuid-or-organizationUuid-or-pinnedListUuid-or-dashboardUuid-or-dashboardName-or-slug_
+    : properties:
+        description:
+          type: string
+          description: Optional description of what this chart displays
+        name:
+          type: string
+          description: Display name of the chart
+        projectUuid:
+          type: string
+        organizationUuid:
+          type: string
+        uuid:
+          type: string
+        pinnedListUuid:
+          type: string
+          nullable: true
+        slug:
+          type: string
+          description: Unique identifier slug for this chart
+        spaceUuid:
+          type: string
+        dashboardUuid:
+          type: string
+          nullable: true
+        spaceName:
+          type: string
+        dashboardName:
+          type: string
+          nullable: true
+      required:
+      - name
+      - projectUuid
+      - organizationUuid
+      - uuid
+      - pinnedListUuid
+      - slug
+      - spaceUuid
+      - dashboardUuid
+      - spaceName
+      - dashboardName
+      type: object
+      description: From T, pick a set of properties whose keys are in the union K
+    UpdateSpace:
+      properties:
+        colorPaletteUuid:
+          type: string
+          nullable: true
+        projectMemberAccessRole:
+          allOf:
+          - $ref: '#/components/schemas/SpaceMemberRole'
+          nullable: true
+          description: When set, all project members get this role on the space
+        inheritParentPermissions:
+          type: boolean
+        name:
+          type: string
+      required:
+      - name
+      type: object
+    SpaceSummaryBase:
+      allOf:
+      - $ref: '#/components/schemas/Pick_Space.organizationUuid-or-projectUuid-or-uuid-or-name-or-inheritParentPermissions-or-projectMemberAccessRole-or-pinnedListUuid-or-pinnedListOrder-or-slug-or-parentSpaceUuid-or-path_'
+      - properties:
+          deletedBy:
+            properties:
+              lastName:
+                type: string
+              firstName:
+                type: string
+              userUuid:
+                type: string
+            required:
+            - lastName
+            - firstName
+            - userUuid
+            type: object
+          deletedAt:
+            type: string
+            format: date-time
+          appCount:
+            type: number
+            format: double
+          childSpaceCount:
+            type: number
+            format: double
+          dashboardCount:
+            type: number
+            format: double
+          chartCount:
+            type: number
+            format: double
+        required:
+        - appCount
+        - childSpaceCount
+        - dashboardCount
+        - chartCount
+        type: object
+    Pick_SpaceShare.userUuid-or-role_:
+      properties:
+        userUuid:
+          type: string
+        role:
+          $ref: '#/components/schemas/SpaceMemberRole'
+      required:
+      - userUuid
+      - role
+      type: object
+      description: From T, pick a set of properties whose keys are in the union K
+    ApiGetProjectMemberResponse:
+      properties:
+        results:
+          $ref: '#/components/schemas/ProjectMemberProfile'
+        status:
+          type: string
+          enum:
+          - ok
+          nullable: false
+      required:
+      - results
+      - status
+      type: object
+    OrganizationMemberProfileUpdate:
+      properties:
+        role:
+          $ref: '#/components/schemas/OrganizationMemberRole'
+      required:
+      - role
+      type: object
+    SpaceAccess:
+      properties:
+        inheritedFrom:
+          type: string
+          enum:
+          - organization
+          - project
+          - group
+          - space_group
+          - parent_space
+        inheritedRole:
+          anyOf:
+          - $ref: '#/components/schemas/OrganizationMemberRole'
+          - $ref: '#/components/schemas/ProjectMemberRole'
+        projectRole:
+          $ref: '#/components/schemas/ProjectMemberRole'
+        hasDirectAccess:
+          type: boolean
+        role:
+          $ref: '#/components/schemas/SpaceMemberRole'
+        userUuid:
+          type: string
+      required:
+      - hasDirectAccess
+      - role
+      - userUuid
+      type: object
+    OrganizationMemberProfile:
+      properties:
+        isPending:
+          type: boolean
+          description: Whether the user doesn't have an authentication method (password or openId)
+        isInviteExpired:
+          type: boolean
+          description: Whether the user's invite to the organization has expired
+        isActive:
+          type: boolean
+          description: Whether the user can login
+        roleUuid:
+          type: string
+        role:
+          $ref: '#/components/schemas/OrganizationMemberRole'
+          description: The role of the user in the organization
+        organizationUuid:
+          type: string
+          description: Unique identifier for the organization the user is a member of
+        email:
+          type: string
+        lastName:
+          type: string
+        firstName:
+          type: string
+        userUpdatedAt:
+          type: string
+          format: date-time
+        userCreatedAt:
+          type: string
+          format: date-time
+        userUuid:
+          type: string
+          description: Unique identifier for the user
+          format: uuid
+      required:
+      - isActive
+      - role
+      - organizationUuid
+      - email
+      - lastName
+      - firstName
+      - userUpdatedAt
+      - userCreatedAt
+      - userUuid
+      type: object
+      description: Profile for a user's membership in an organization
+    ChartKind:
+      enum:
+      - line
+      - horizontal_bar
+      - vertical_bar
+      - scatter
+      - area
+      - mixed
+      - pie
+      - table
+      - big_number
+      - funnel
+      - custom
+      - treemap
+      - gauge
+      - map
+      - sankey
+      type: string
+    ContentVerificationInfo:
+      properties:
+        verifiedAt:
+          type: string
+          format: date-time
+        verifiedBy:
+          properties:
+            lastName:
+              type: string
+            firstName:
+              type: string
+            userUuid:
+              type: string
+          required:
+          - lastName
+          - firstName
+          - userUuid
+          type: object
+      required:
+      - verifiedAt
+      - verifiedBy
+      type: object
+    SpaceAccessUserMetadata:
+      properties:
+        isInternal:
+          type: boolean
+        email:
+          type: string
+        lastName:
+          type: string
+        firstName:
+          type: string
+      required:
+      - isInternal
+      - email
+      - lastName
+      - firstName
+      type: object
+  securitySchemes:
+    session_cookie:
+      type: apiKey
+      in: cookie
+      name: connect.sid
+    api_key:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: Value should be 'ApiKey <your key>'

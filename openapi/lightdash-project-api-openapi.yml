@@ -1,0 +1,312 @@
+openapi: 3.0.0
+info:
+  title: Lightdash AiAgents Project API
+  version: 0.3156.1
+  description: 'Open API documentation for all public Lightdash API endpoints. # Authentication Before you get started, you might need to create a Personal Access Token to authenticate via the API. You can create a token by following this guide: https://docs.lightdash.com/references/personal_tokens
+
+    '
+  license:
+    name: MIT
+  contact:
+    name: Lightdash Support
+    email: support@lightdash.com
+    url: https://docs.lightdash.com/help-and-contact/contact/contact_info/
+servers:
+- url: /
+tags:
+- name: Project
+paths:
+  /api/v2/projects/{projectUuid}/deploy:
+    post:
+      operationId: startDeploySession
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiStartDeploySessionResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: Start a new deploy session for batched explore uploads
+      summary: Start deploy session
+      tags:
+      - Project
+      security: []
+      parameters:
+      - in: path
+        name: projectUuid
+        required: true
+        schema:
+          type: string
+  /api/v2/projects/{projectUuid}/deploy/{sessionUuid}/batch:
+    post:
+      operationId: addDeployBatch
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiAddDeployBatchResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: Add a batch of explores to an existing deploy session
+      summary: Add deploy batch
+      tags:
+      - Project
+      security: []
+      parameters:
+      - in: path
+        name: projectUuid
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: sessionUuid
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AnyType'
+  /api/v2/projects/{projectUuid}/deploy/{sessionUuid}/finalize:
+    post:
+      operationId: finalizeDeploySession
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiFinalizeDeployResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: Finalize a deploy session and commit all staged explores to the project
+      summary: Finalize deploy
+      tags:
+      - Project
+      security: []
+      parameters:
+      - in: path
+        name: projectUuid
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: sessionUuid
+        required: true
+        schema:
+          type: string
+components:
+  schemas:
+    ApiFinalizeDeployResponse:
+      properties:
+        results:
+          allOf:
+          - $ref: '#/components/schemas/ApiDeployExploresResults'
+          - properties:
+              status:
+                $ref: '#/components/schemas/DeploySessionStatus'
+            required:
+            - status
+            type: object
+        status:
+          type: string
+          enum:
+          - ok
+          nullable: false
+      required:
+      - results
+      - status
+      type: object
+    Pick_Explore.name_:
+      properties:
+        name:
+          type: string
+      required:
+      - name
+      type: object
+      description: From T, pick a set of properties whose keys are in the union K
+    ExploreWarningReport:
+      properties:
+        exploresWithWarnings:
+          items:
+            $ref: '#/components/schemas/ExploreWarningSummary'
+          type: array
+        warningExploreCount:
+          type: number
+          format: double
+        warningCount:
+          type: number
+          format: double
+      required:
+      - exploresWithWarnings
+      - warningExploreCount
+      - warningCount
+      type: object
+    InlineErrorType:
+      enum:
+      - METADATA_PARSE_ERROR
+      - NO_DIMENSIONS_FOUND
+      - SKIPPED_JOIN
+      - MISSING_TABLE
+      - FIELD_ERROR
+      - SET_VALIDATION_ERROR
+      - INVALID_PARAMETER
+      - DUPLICATE_FIELD_NAME
+      type: string
+    DeploySessionStatus:
+      enum:
+      - uploading
+      - finalizing
+      - completed
+      - failed
+      type: string
+    InlineError:
+      properties:
+        message:
+          type: string
+        type:
+          $ref: '#/components/schemas/InlineErrorType'
+      required:
+      - message
+      - type
+      type: object
+    ExploreWarningSummary:
+      allOf:
+      - $ref: '#/components/schemas/Pick_Explore.name_'
+      - properties:
+          warnings:
+            $ref: '#/components/schemas/NonNullable_Explore-at-warnings_'
+        required:
+        - warnings
+        type: object
+    AnyType:
+      description: 'This AnyType is an alias for any
+
+        The goal is to make it easier to identify any type in the codebase
+
+        without having to eslint-disable all the time
+
+        These are only used on legacy `any` types, don''t use it for new types.
+
+        This is added on a separate file to avoid circular dependencies.'
+    ApiErrorPayload:
+      properties:
+        error:
+          properties:
+            data:
+              $ref: '#/components/schemas/AnyType'
+              description: Optional data containing details of the error
+            message:
+              type: string
+              description: A friendly message summarising the error
+            name:
+              type: string
+              description: Unique name for the type of error
+            statusCode:
+              type: number
+              format: integer
+              description: HTTP status code
+          required:
+          - name
+          - statusCode
+          type: object
+        status:
+          type: string
+          enum:
+          - error
+          nullable: false
+      required:
+      - error
+      - status
+      type: object
+      description: 'The Error object is returned from the api any time there is an error.
+
+        The message contains'
+    ApiAddDeployBatchResponse:
+      properties:
+        results:
+          properties:
+            exploreCount:
+              type: number
+              format: double
+            batchNumber:
+              type: number
+              format: double
+          required:
+          - exploreCount
+          - batchNumber
+          type: object
+        status:
+          type: string
+          enum:
+          - ok
+          nullable: false
+      required:
+      - results
+      - status
+      type: object
+    ApiDeployExploresResults:
+      properties:
+        warnings:
+          $ref: '#/components/schemas/ExploreWarningReport'
+        exploreCount:
+          type: number
+          format: double
+      required:
+      - warnings
+      - exploreCount
+      type: object
+    NonNullable_Explore-at-warnings_:
+      allOf:
+      - items:
+          $ref: '#/components/schemas/InlineError'
+        type: array
+      - properties: {}
+        type: object
+      description: Exclude null and undefined from T
+    ApiStartDeploySessionResponse:
+      properties:
+        results:
+          properties:
+            deploySessionUuid:
+              type: string
+          required:
+          - deploySessionUuid
+          type: object
+        status:
+          type: string
+          enum:
+          - ok
+          nullable: false
+      required:
+      - results
+      - status
+      type: object
+  securitySchemes:
+    session_cookie:
+      type: apiKey
+      in: cookie
+      name: connect.sid
+    api_key:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: Value should be 'ApiKey <your key>'

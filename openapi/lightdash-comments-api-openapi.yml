@@ -1,0 +1,328 @@
+openapi: 3.0.0
+info:
+  title: Lightdash AiAgents Comments API
+  version: 0.3156.1
+  description: 'Open API documentation for all public Lightdash API endpoints. # Authentication Before you get started, you might need to create a Personal Access Token to authenticate via the API. You can create a token by following this guide: https://docs.lightdash.com/references/personal_tokens
+
+    '
+  license:
+    name: MIT
+  contact:
+    name: Lightdash Support
+    email: support@lightdash.com
+    url: https://docs.lightdash.com/help-and-contact/contact/contact_info/
+servers:
+- url: /
+tags:
+- name: Comments
+paths:
+  /api/v1/comments/dashboards/{dashboardUuid}/{dashboardTileUuid}:
+    post:
+      operationId: createComment
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiCreateComment'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: Creates a comment on a dashboard tile
+      summary: Create comment
+      tags:
+      - Comments
+      security: []
+      parameters:
+      - description: the uuid of the dashboard
+        in: path
+        name: dashboardUuid
+        required: true
+        schema:
+          type: string
+      - description: the uuid of the dashboard tile
+        in: path
+        name: dashboardTileUuid
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: the comment to create
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Pick_Comment.text-or-replyTo-or-mentions-or-textHtml_'
+              description: the comment to create
+  /api/v1/comments/dashboards/{dashboardUuidOrSlug}:
+    get:
+      operationId: getComments
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiGetComments'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: Gets all comments for a dashboard
+      summary: Get comments
+      tags:
+      - Comments
+      security: []
+      parameters:
+      - in: path
+        name: dashboardUuidOrSlug
+        required: true
+        schema:
+          type: string
+      - in: query
+        name: resolved
+        required: false
+        schema:
+          type: boolean
+  /api/v1/comments/dashboards/{dashboardUuid}/{commentId}:
+    patch:
+      operationId: resolveComment
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResolveComment'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: Resolves or unresolves a comment on a dashboard
+      summary: Resolve comment
+      tags:
+      - Comments
+      security: []
+      parameters:
+      - description: the uuid of the dashboard
+        in: path
+        name: dashboardUuid
+        required: true
+        schema:
+          type: string
+      - description: the uuid of the comment
+        in: path
+        name: commentId
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: whether the comment should be resolved
+        required: true
+        content:
+          application/json:
+            schema:
+              properties:
+                resolved:
+                  type: boolean
+              required:
+              - resolved
+              type: object
+              description: whether the comment should be resolved
+    delete:
+      operationId: deleteComment
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResolveComment'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: Deletes a comment on a dashboard
+      summary: Delete comment
+      tags:
+      - Comments
+      security: []
+      parameters:
+      - description: the uuid of the dashboard
+        in: path
+        name: dashboardUuid
+        required: true
+        schema:
+          type: string
+      - description: the uuid of the comment
+        in: path
+        name: commentId
+        required: true
+        schema:
+          type: string
+components:
+  schemas:
+    ApiResolveComment:
+      properties:
+        status:
+          type: string
+          enum:
+          - ok
+          nullable: false
+      required:
+      - status
+      type: object
+    ApiGetComments:
+      properties:
+        results:
+          properties: {}
+          additionalProperties:
+            items:
+              $ref: '#/components/schemas/Comment'
+            type: array
+          type: object
+        status:
+          type: string
+          enum:
+          - ok
+          nullable: false
+      required:
+      - results
+      - status
+      type: object
+    AnyType:
+      description: 'This AnyType is an alias for any
+
+        The goal is to make it easier to identify any type in the codebase
+
+        without having to eslint-disable all the time
+
+        These are only used on legacy `any` types, don''t use it for new types.
+
+        This is added on a separate file to avoid circular dependencies.'
+    ApiErrorPayload:
+      properties:
+        error:
+          properties:
+            data:
+              $ref: '#/components/schemas/AnyType'
+              description: Optional data containing details of the error
+            message:
+              type: string
+              description: A friendly message summarising the error
+            name:
+              type: string
+              description: Unique name for the type of error
+            statusCode:
+              type: number
+              format: integer
+              description: HTTP status code
+          required:
+          - name
+          - statusCode
+          type: object
+        status:
+          type: string
+          enum:
+          - error
+          nullable: false
+      required:
+      - error
+      - status
+      type: object
+      description: 'The Error object is returned from the api any time there is an error.
+
+        The message contains'
+    Pick_Comment.text-or-replyTo-or-mentions-or-textHtml_:
+      properties:
+        text:
+          type: string
+        replyTo:
+          type: string
+        mentions:
+          items:
+            type: string
+          type: array
+        textHtml:
+          type: string
+      required:
+      - text
+      - mentions
+      - textHtml
+      type: object
+      description: From T, pick a set of properties whose keys are in the union K
+    Comment:
+      properties:
+        mentions:
+          items:
+            type: string
+          type: array
+        canRemove:
+          type: boolean
+        resolved:
+          type: boolean
+        replies:
+          items:
+            $ref: '#/components/schemas/Comment'
+          type: array
+        replyTo:
+          type: string
+        user:
+          properties:
+            name:
+              type: string
+          required:
+          - name
+          type: object
+        createdAt:
+          type: string
+          format: date-time
+        textHtml:
+          type: string
+        text:
+          type: string
+        commentId:
+          type: string
+      required:
+      - mentions
+      - canRemove
+      - resolved
+      - user
+      - createdAt
+      - textHtml
+      - text
+      - commentId
+      type: object
+    ApiCreateComment:
+      properties:
+        results:
+          type: string
+        status:
+          type: string
+          enum:
+          - ok
+          nullable: false
+      required:
+      - results
+      - status
+      type: object
+  securitySchemes:
+    session_cookie:
+      type: apiKey
+      in: cookie
+      name: connect.sid
+    api_key:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: Value should be 'ApiKey <your key>'

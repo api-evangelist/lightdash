@@ -1,0 +1,372 @@
+openapi: 3.0.0
+info:
+  title: Lightdash AiAgents Project Roles API
+  version: 0.3156.1
+  description: 'Open API documentation for all public Lightdash API endpoints. # Authentication Before you get started, you might need to create a Personal Access Token to authenticate via the API. You can create a token by following this guide: https://docs.lightdash.com/references/personal_tokens
+
+    '
+  license:
+    name: MIT
+  contact:
+    name: Lightdash Support
+    email: support@lightdash.com
+    url: https://docs.lightdash.com/help-and-contact/contact/contact_info/
+servers:
+- url: /
+tags:
+- name: Project Roles
+paths:
+  /api/v2/projects/{projectId}/roles/assignments:
+    get:
+      operationId: GetProjectRoleAssignments
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiRoleAssignmentListResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: List project role assignments
+      summary: List project role assignments
+      tags:
+      - Project Roles
+      security: []
+      parameters:
+      - in: path
+        name: projectId
+        required: true
+        schema:
+          type: string
+  /api/v2/projects/{projectId}/roles/assignments/user/{userId}:
+    post:
+      operationId: UpsertProjectUserRoleAssignment
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiRoleAssignmentResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: Create or update project role assignment for user (upsert)
+      summary: Assign project role to user
+      tags:
+      - Project Roles
+      security: []
+      parameters:
+      - in: path
+        name: projectId
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: userId
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpsertUserRoleAssignmentRequest'
+    delete:
+      operationId: DeleteProjectUserRoleAssignment
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiUnassignRoleFromUserResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: Delete project role assignment for user
+      summary: Remove project role from user
+      tags:
+      - Project Roles
+      security: []
+      parameters:
+      - in: path
+        name: projectId
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: userId
+        required: true
+        schema:
+          type: string
+  /api/v2/projects/{projectId}/roles/assignments/group/{groupId}:
+    post:
+      operationId: UpsertProjectGroupRoleAssignment
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiRoleAssignmentResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: Create or update project role assignment for group (upsert)
+      summary: Assign project role to group
+      tags:
+      - Project Roles
+      security: []
+      parameters:
+      - in: path
+        name: projectId
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: groupId
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpsertUserRoleAssignmentRequest'
+    patch:
+      operationId: UpdateProjectGroupRoleAssignment
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiRoleAssignmentResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: Update project role assignment for group
+      summary: Update project group role
+      tags:
+      - Project Roles
+      security: []
+      parameters:
+      - in: path
+        name: projectId
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: groupId
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateRoleAssignmentRequest'
+    delete:
+      operationId: DeleteProjectGroupRoleAssignment
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiUnassignRoleFromUserResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: Delete project role assignment for group
+      summary: Remove project role from group
+      tags:
+      - Project Roles
+      security: []
+      parameters:
+      - in: path
+        name: projectId
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: groupId
+        required: true
+        schema:
+          type: string
+components:
+  schemas:
+    ApiUnassignRoleFromUserResponse:
+      $ref: '#/components/schemas/ApiSuccessEmpty'
+    RoleAssignment:
+      properties:
+        updatedAt:
+          type: string
+          format: date-time
+        createdAt:
+          type: string
+          format: date-time
+        projectId:
+          type: string
+        organizationId:
+          type: string
+        assigneeName:
+          type: string
+        assigneeId:
+          type: string
+        assigneeType:
+          type: string
+          enum:
+          - user
+          - group
+        ownerType:
+          type: string
+          enum:
+          - user
+          - system
+        roleName:
+          type: string
+        roleId:
+          type: string
+      required:
+      - updatedAt
+      - createdAt
+      - assigneeName
+      - assigneeId
+      - assigneeType
+      - ownerType
+      - roleName
+      - roleId
+      type: object
+    AnyType:
+      description: 'This AnyType is an alias for any
+
+        The goal is to make it easier to identify any type in the codebase
+
+        without having to eslint-disable all the time
+
+        These are only used on legacy `any` types, don''t use it for new types.
+
+        This is added on a separate file to avoid circular dependencies.'
+    ApiErrorPayload:
+      properties:
+        error:
+          properties:
+            data:
+              $ref: '#/components/schemas/AnyType'
+              description: Optional data containing details of the error
+            message:
+              type: string
+              description: A friendly message summarising the error
+            name:
+              type: string
+              description: Unique name for the type of error
+            statusCode:
+              type: number
+              format: integer
+              description: HTTP status code
+          required:
+          - name
+          - statusCode
+          type: object
+        status:
+          type: string
+          enum:
+          - error
+          nullable: false
+      required:
+      - error
+      - status
+      type: object
+      description: 'The Error object is returned from the api any time there is an error.
+
+        The message contains'
+    ApiSuccessEmpty:
+      properties:
+        results: {}
+        status:
+          type: string
+          enum:
+          - ok
+          nullable: false
+      required:
+      - status
+      type: object
+    ApiRoleAssignmentListResponse:
+      properties:
+        results:
+          items:
+            $ref: '#/components/schemas/RoleAssignment'
+          type: array
+        status:
+          type: string
+          enum:
+          - ok
+          nullable: false
+      required:
+      - results
+      - status
+      type: object
+    UpsertUserRoleAssignmentRequest:
+      properties:
+        sendEmail:
+          type: boolean
+        roleId:
+          type: string
+      required:
+      - roleId
+      type: object
+    ApiRoleAssignmentResponse:
+      properties:
+        results:
+          $ref: '#/components/schemas/RoleAssignment'
+        status:
+          type: string
+          enum:
+          - ok
+          nullable: false
+      required:
+      - results
+      - status
+      type: object
+    UpdateRoleAssignmentRequest:
+      properties:
+        roleId:
+          type: string
+      required:
+      - roleId
+      type: object
+  securitySchemes:
+    session_cookie:
+      type: apiKey
+      in: cookie
+      name: connect.sid
+    api_key:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: Value should be 'ApiKey <your key>'

@@ -1,0 +1,414 @@
+openapi: 3.0.0
+info:
+  title: Lightdash AiAgents Organization Roles API
+  version: 0.3156.1
+  description: 'Open API documentation for all public Lightdash API endpoints. # Authentication Before you get started, you might need to create a Personal Access Token to authenticate via the API. You can create a token by following this guide: https://docs.lightdash.com/references/personal_tokens
+
+    '
+  license:
+    name: MIT
+  contact:
+    name: Lightdash Support
+    email: support@lightdash.com
+    url: https://docs.lightdash.com/help-and-contact/contact/contact_info/
+servers:
+- url: /
+tags:
+- name: Organization Roles
+paths:
+  /api/v2/orgs/{orgUuid}/roles:
+    get:
+      operationId: GetOrganizationRoles
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                anyOf:
+                - $ref: '#/components/schemas/ApiGetRolesResponse'
+                - $ref: '#/components/schemas/ApiRoleWithScopesResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: Get roles for organization
+      summary: Get organization roles
+      tags:
+      - Organization Roles
+      security: []
+      parameters:
+      - in: path
+        name: orgUuid
+        required: true
+        schema:
+          type: string
+      - in: query
+        name: load
+        required: false
+        schema:
+          type: string
+      - in: query
+        name: roleTypeFilter
+        required: false
+        schema:
+          type: string
+  /api/v2/orgs/{orgUuid}/roles/{roleUuid}:
+    get:
+      operationId: GetCustomRoleByUuid
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiRoleWithScopesResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: Get custom role by uuid
+      summary: Get custom role
+      tags:
+      - Organization Roles
+      security: []
+      parameters:
+      - in: path
+        name: orgUuid
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: roleUuid
+        required: true
+        schema:
+          type: string
+  /api/v2/orgs/{orgUuid}/roles/assignments:
+    get:
+      operationId: GetOrganizationRoleAssignments
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiRoleAssignmentListResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: List organization role assignments (system roles only)
+      summary: List organization role assignments
+      tags:
+      - Organization Roles
+      security: []
+      parameters:
+      - in: path
+        name: orgUuid
+        required: true
+        schema:
+          type: string
+  /api/v2/orgs/{orgUuid}/roles/assignments/user/{userId}:
+    post:
+      operationId: UpsertOrganizationUserRoleAssignment
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiRoleAssignmentResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: Assign system role to user at organization level
+      summary: Assign organization role to user
+      tags:
+      - Organization Roles
+      security: []
+      parameters:
+      - in: path
+        name: orgUuid
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: userId
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              properties:
+                roleId:
+                  type: string
+              required:
+              - roleId
+              type: object
+  /api/v2/orgs/{orgUuid}/roles/{roleId}/duplicate:
+    post:
+      operationId: DuplicateRole
+      responses:
+        '201':
+          description: Role duplicated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiRoleWithScopesResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: Duplicate a role
+      summary: Duplicate role
+      tags:
+      - Organization Roles
+      security: []
+      parameters:
+      - in: path
+        name: orgUuid
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: roleId
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateRole'
+components:
+  schemas:
+    ApiRoleWithScopesResponse:
+      properties:
+        results:
+          $ref: '#/components/schemas/RoleWithScopes'
+        status:
+          type: string
+          enum:
+          - ok
+          nullable: false
+      required:
+      - results
+      - status
+      type: object
+    Role:
+      properties:
+        updatedAt:
+          type: string
+          format: date-time
+          nullable: true
+        createdAt:
+          type: string
+          format: date-time
+          nullable: true
+        createdBy:
+          type: string
+          nullable: true
+        ownerType:
+          type: string
+          enum:
+          - user
+          - system
+        organizationUuid:
+          type: string
+          nullable: true
+        description:
+          type: string
+          nullable: true
+        name:
+          type: string
+        roleUuid:
+          type: string
+      required:
+      - updatedAt
+      - createdAt
+      - createdBy
+      - ownerType
+      - organizationUuid
+      - description
+      - name
+      - roleUuid
+      type: object
+    RoleAssignment:
+      properties:
+        updatedAt:
+          type: string
+          format: date-time
+        createdAt:
+          type: string
+          format: date-time
+        projectId:
+          type: string
+        organizationId:
+          type: string
+        assigneeName:
+          type: string
+        assigneeId:
+          type: string
+        assigneeType:
+          type: string
+          enum:
+          - user
+          - group
+        ownerType:
+          type: string
+          enum:
+          - user
+          - system
+        roleName:
+          type: string
+        roleId:
+          type: string
+      required:
+      - updatedAt
+      - createdAt
+      - assigneeName
+      - assigneeId
+      - assigneeType
+      - ownerType
+      - roleName
+      - roleId
+      type: object
+    AnyType:
+      description: 'This AnyType is an alias for any
+
+        The goal is to make it easier to identify any type in the codebase
+
+        without having to eslint-disable all the time
+
+        These are only used on legacy `any` types, don''t use it for new types.
+
+        This is added on a separate file to avoid circular dependencies.'
+    ApiErrorPayload:
+      properties:
+        error:
+          properties:
+            data:
+              $ref: '#/components/schemas/AnyType'
+              description: Optional data containing details of the error
+            message:
+              type: string
+              description: A friendly message summarising the error
+            name:
+              type: string
+              description: Unique name for the type of error
+            statusCode:
+              type: number
+              format: integer
+              description: HTTP status code
+          required:
+          - name
+          - statusCode
+          type: object
+        status:
+          type: string
+          enum:
+          - error
+          nullable: false
+      required:
+      - error
+      - status
+      type: object
+      description: 'The Error object is returned from the api any time there is an error.
+
+        The message contains'
+    CreateRole:
+      properties:
+        scopes:
+          items:
+            type: string
+          type: array
+        description:
+          type: string
+        name:
+          type: string
+      required:
+      - name
+      type: object
+    RoleWithScopes:
+      allOf:
+      - $ref: '#/components/schemas/Role'
+      - properties:
+          scopes:
+            items:
+              type: string
+            type: array
+        required:
+        - scopes
+        type: object
+    ApiGetRolesResponse:
+      properties:
+        results:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/Role'
+            type: array
+          - items:
+              $ref: '#/components/schemas/RoleWithScopes'
+            type: array
+        status:
+          type: string
+          enum:
+          - ok
+          nullable: false
+      required:
+      - results
+      - status
+      type: object
+    ApiRoleAssignmentListResponse:
+      properties:
+        results:
+          items:
+            $ref: '#/components/schemas/RoleAssignment'
+          type: array
+        status:
+          type: string
+          enum:
+          - ok
+          nullable: false
+      required:
+      - results
+      - status
+      type: object
+    ApiRoleAssignmentResponse:
+      properties:
+        results:
+          $ref: '#/components/schemas/RoleAssignment'
+        status:
+          type: string
+          enum:
+          - ok
+          nullable: false
+      required:
+      - results
+      - status
+      type: object
+  securitySchemes:
+    session_cookie:
+      type: apiKey
+      in: cookie
+      name: connect.sid
+    api_key:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: Value should be 'ApiKey <your key>'
