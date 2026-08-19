@@ -1,0 +1,473 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Lightdash AiAgents Charts API",
+    "version": "0.3156.1"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Charts",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Run chart query",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v1/saved/:chartUuid/results",
+            "params": [
+              {
+                "name": "chartUuid",
+                "value": "",
+                "type": "path",
+                "description": "chartUuid for the chart to run"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Deprecated — use the v2 Execute saved chart endpoint instead.\n\nThis endpoint was deprecated on 20 March 2025 and is past its sunset date (30 April 2025) — it may be removed at any time. Migrate to the v2 async query flow: Execute saved chart, then Get results."
+        },
+        {
+          "info": {
+            "name": "Get chart and results",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v1/saved/:chartUuid/chart-and-results",
+            "params": [
+              {
+                "name": "chartUuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Deprecated — use the v2 Execute dashboard chart endpoint instead.\n\nThis endpoint was deprecated on 20 March 2025 and is past its sunset date (20 June 2025) — it may be removed at any time. Migrate to the v2 async query flow: Execute dashboard chart, then Get results."
+        },
+        {
+          "info": {
+            "name": "Get chart version history",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/saved/:chartUuid/history",
+            "params": [
+              {
+                "name": "chartUuid",
+                "value": "",
+                "type": "path",
+                "description": "chartUuid for the chart"
+              }
+            ]
+          },
+          "docs": "Get chart version history from last 30 days"
+        },
+        {
+          "info": {
+            "name": "Get chart version",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/saved/:chartUuid/version/:versionUuid",
+            "params": [
+              {
+                "name": "chartUuid",
+                "value": "",
+                "type": "path",
+                "description": "chartUuid for the chart"
+              },
+              {
+                "name": "versionUuid",
+                "value": "",
+                "type": "path",
+                "description": "versionUuid for the chart version"
+              }
+            ]
+          },
+          "docs": "Get chart version"
+        },
+        {
+          "info": {
+            "name": "Get chart version results",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v1/saved/:chartUuid/version/:versionUuid/results",
+            "params": [
+              {
+                "name": "chartUuid",
+                "value": "",
+                "type": "path",
+                "description": "chartUuid for the chart to run"
+              },
+              {
+                "name": "versionUuid",
+                "value": "",
+                "type": "path",
+                "description": "versionUuid for the chart version"
+              }
+            ]
+          },
+          "docs": "Deprecated — use the v2 Execute saved chart endpoint instead.\n\nThis endpoint was deprecated on 20 March 2025 and is past its sunset date (30 April 2025) — it may be removed at any time. Migrate to the v2 async query flow: Execute saved chart, then Get results."
+        },
+        {
+          "info": {
+            "name": "Rollback chart to version",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v1/saved/:chartUuid/rollback/:versionUuid",
+            "params": [
+              {
+                "name": "chartUuid",
+                "value": "",
+                "type": "path",
+                "description": "chartUuid for the chart to run"
+              },
+              {
+                "name": "versionUuid",
+                "value": "",
+                "type": "path",
+                "description": "versionUuid for the chart version"
+              }
+            ]
+          },
+          "docs": "Rollback chart to version"
+        },
+        {
+          "info": {
+            "name": "Calculate total from saved chart",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v1/saved/:chartUuid/calculate-total",
+            "params": [
+              {
+                "name": "chartUuid",
+                "value": "",
+                "type": "path",
+                "description": "chartUuid for the chart to run"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Calculate metric totals from a saved chart"
+        },
+        {
+          "info": {
+            "name": "Promote chart",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v1/saved/:chartUuid/promote",
+            "params": [
+              {
+                "name": "chartUuid",
+                "value": "",
+                "type": "path",
+                "description": "chartUuid for the chart to run"
+              }
+            ]
+          },
+          "docs": "Promote chart to its upstream project"
+        },
+        {
+          "info": {
+            "name": "Get chart promotion diff",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/saved/:chartUuid/promoteDiff",
+            "params": [
+              {
+                "name": "chartUuid",
+                "value": "",
+                "type": "path",
+                "description": "chartUuid for the chart to check diff"
+              }
+            ]
+          },
+          "docs": "Get diff from chart to promote"
+        },
+        {
+          "info": {
+            "name": "List saved chart schedulers",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/saved/:chartUuid/schedulers",
+            "params": [
+              {
+                "name": "chartUuid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get schedulers for a saved chart"
+        },
+        {
+          "info": {
+            "name": "Create saved chart scheduler",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v1/saved/:chartUuid/schedulers",
+            "params": [
+              {
+                "name": "chartUuid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Create a scheduler for a saved chart"
+        },
+        {
+          "info": {
+            "name": "Export chart image",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v1/saved/:chartUuid/export",
+            "params": [
+              {
+                "name": "chartUuid",
+                "value": "",
+                "type": "path",
+                "description": "chartUuid for the chart to export"
+              }
+            ]
+          },
+          "docs": "Export a saved chart as a PNG image"
+        },
+        {
+          "info": {
+            "name": "Verify chart",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v1/saved/:chartUuid/verification",
+            "params": [
+              {
+                "name": "chartUuid",
+                "value": "",
+                "type": "path",
+                "description": "The uuid of the chart to verify"
+              }
+            ]
+          },
+          "docs": "Verify a chart"
+        },
+        {
+          "info": {
+            "name": "Unverify chart",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "/api/v1/saved/:chartUuid/verification",
+            "params": [
+              {
+                "name": "chartUuid",
+                "value": "",
+                "type": "path",
+                "description": "The uuid of the chart to unverify"
+              }
+            ]
+          },
+          "docs": "Remove verification from a chart"
+        },
+        {
+          "info": {
+            "name": "List chart schedulers",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v2/saved/:chartUuid/schedulers",
+            "params": [
+              {
+                "name": "chartUuid",
+                "value": "",
+                "type": "path",
+                "description": "The uuid of the chart"
+              },
+              {
+                "name": "pageSize",
+                "value": "",
+                "type": "query",
+                "description": "number of items per page"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "page number"
+              },
+              {
+                "name": "searchQuery",
+                "value": "",
+                "type": "query",
+                "description": "filter schedulers by name"
+              },
+              {
+                "name": "formats",
+                "value": "",
+                "type": "query",
+                "description": "comma-separated list of scheduler formats to include"
+              },
+              {
+                "name": "includeLatestRun",
+                "value": "",
+                "type": "query",
+                "description": "include the most recent run for each scheduler"
+              }
+            ]
+          },
+          "docs": "Get all schedulers for a saved chart"
+        },
+        {
+          "info": {
+            "name": "List chart scheduler runs",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v2/saved/:chartUuid/schedulers/:schedulerUuid/runs",
+            "params": [
+              {
+                "name": "chartUuid",
+                "value": "",
+                "type": "path",
+                "description": "The uuid of the chart"
+              },
+              {
+                "name": "schedulerUuid",
+                "value": "",
+                "type": "path",
+                "description": "The uuid of the scheduler"
+              },
+              {
+                "name": "pageSize",
+                "value": "",
+                "type": "query",
+                "description": "number of items per page"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "page number"
+              },
+              {
+                "name": "searchQuery",
+                "value": "",
+                "type": "query",
+                "description": "filter runs by scheduler name"
+              },
+              {
+                "name": "sortBy",
+                "value": "",
+                "type": "query",
+                "description": "column to sort by (scheduledTime, createdAt)"
+              },
+              {
+                "name": "sortDirection",
+                "value": "",
+                "type": "query",
+                "description": "sort direction (asc or desc)"
+              },
+              {
+                "name": "statuses",
+                "value": "",
+                "type": "query",
+                "description": "comma-separated list of run statuses to include"
+              },
+              {
+                "name": "destinations",
+                "value": "",
+                "type": "query",
+                "description": "comma-separated list of destination types to include"
+              }
+            ]
+          },
+          "docs": "Get the run history of a single scheduler on a chart"
+        },
+        {
+          "info": {
+            "name": "Get chart",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v2/projects/:projectUuid/saved/:chartUuidOrSlug",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "chartUuidOrSlug",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get a saved chart by uuid or slug within a project"
+        },
+        {
+          "info": {
+            "name": "Delete chart",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "/api/v2/projects/:projectUuid/saved/:chartUuidOrSlug",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "chartUuidOrSlug",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Delete a saved chart by uuid or slug within a project"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

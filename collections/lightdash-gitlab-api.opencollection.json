@@ -1,0 +1,90 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Lightdash AiAgents Gitlab API",
+    "version": "0.3156.1"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Gitlab",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Install GitLab integration",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/gitlab/install",
+            "params": [
+              {
+                "name": "gitlab_instance_url",
+                "value": "",
+                "type": "query",
+                "description": "Custom GitLab instance URL (optional, defaults to gitlab.com)"
+              }
+            ]
+          },
+          "docs": "Initiate GitLab OAuth integration"
+        },
+        {
+          "info": {
+            "name": "GitLab OAuth callback",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/gitlab/oauth/callback",
+            "params": [
+              {
+                "name": "code",
+                "value": "",
+                "type": "query",
+                "description": "Authorization code from GitLab"
+              },
+              {
+                "name": "state",
+                "value": "",
+                "type": "query",
+                "description": "OAuth state parameter for CSRF protection"
+              },
+              {
+                "name": "gitlab_instance_url",
+                "value": "",
+                "type": "query",
+                "description": "GitLab instance URL (for self-hosted instances)"
+              }
+            ]
+          },
+          "docs": "GitLab OAuth callback handler"
+        },
+        {
+          "info": {
+            "name": "Uninstall GitLab integration",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "/api/v1/gitlab/uninstall"
+          },
+          "docs": "Uninstall GitLab integration from the organization"
+        },
+        {
+          "info": {
+            "name": "List GitLab projects",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/gitlab/repos/list"
+          },
+          "docs": "List GitLab projects accessible via the integration"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

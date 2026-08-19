@@ -1,0 +1,549 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Lightdash AiAgents SQL runner API",
+    "version": "0.3156.1"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "SQL runner",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List warehouse tables",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/projects/:projectUuid/sqlRunner/tables",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get warehouse tables for a project"
+        },
+        {
+          "info": {
+            "name": "Get table fields",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/projects/:projectUuid/sqlRunner/fields",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "tableName",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "schemaName",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "databaseName",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Get fields for a warehouse table"
+        },
+        {
+          "info": {
+            "name": "Run SQL query",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v1/projects/:projectUuid/sqlRunner/run",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Run a SQL query"
+        },
+        {
+          "info": {
+            "name": "Run SQL pivot query",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v1/projects/:projectUuid/sqlRunner/runPivotQuery",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Run a SQL pivot query"
+        },
+        {
+          "info": {
+            "name": "Get stored results",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/projects/:projectUuid/sqlRunner/results/:fileId",
+            "params": [
+              {
+                "name": "fileId",
+                "value": "",
+                "type": "path",
+                "description": "the fileId for the file"
+              },
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path",
+                "description": "the uuid for the project"
+              }
+            ]
+          },
+          "docs": "Get results from a file stored locally"
+        },
+        {
+          "info": {
+            "name": "Get SQL chart",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/projects/:projectUuid/sqlRunner/saved/:uuid",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path",
+                "description": "the uuid for the saved sql chart"
+              },
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path",
+                "description": "the uuid for the project"
+              }
+            ]
+          },
+          "docs": "Get saved sql chart"
+        },
+        {
+          "info": {
+            "name": "Update SQL chart",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "/api/v1/projects/:projectUuid/sqlRunner/saved/:uuid",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path",
+                "description": "the uuid for the project"
+              },
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path",
+                "description": "the uuid for the saved sql chart"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update sql chart"
+        },
+        {
+          "info": {
+            "name": "Delete SQL chart",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "/api/v1/projects/:projectUuid/sqlRunner/saved/:uuid",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path",
+                "description": "the uuid for the project"
+              },
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path",
+                "description": "the uuid for the saved sql chart"
+              }
+            ]
+          },
+          "docs": "Delete sql chart"
+        },
+        {
+          "info": {
+            "name": "Get SQL chart by slug",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/projects/:projectUuid/sqlRunner/saved/slug/:slug",
+            "params": [
+              {
+                "name": "slug",
+                "value": "",
+                "type": "path",
+                "description": "the slug for the saved sql chart"
+              },
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path",
+                "description": "the uuid for the project"
+              }
+            ]
+          },
+          "docs": "Get saved sql chart"
+        },
+        {
+          "info": {
+            "name": "Get SQL chart results job",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/projects/:projectUuid/sqlRunner/saved/slug/:slug/results-job",
+            "params": [
+              {
+                "name": "slug",
+                "value": "",
+                "type": "path",
+                "description": "- the slug of the saved chart"
+              },
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path",
+                "description": "- the uuid of the project"
+              }
+            ]
+          },
+          "docs": "Schedules a job to get its results"
+        },
+        {
+          "info": {
+            "name": "Get SQL chart results job by UUID",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/projects/:projectUuid/sqlRunner/saved/:uuid/results-job",
+            "params": [
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path",
+                "description": "- the uuid of the saved chart"
+              },
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path",
+                "description": "- the uuid of the project"
+              }
+            ]
+          },
+          "docs": "Schedules a job to get its results"
+        },
+        {
+          "info": {
+            "name": "Create SQL chart",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v1/projects/:projectUuid/sqlRunner/saved",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path",
+                "description": "the uuid for the project"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create sql chart"
+        },
+        {
+          "info": {
+            "name": "Promote SQL chart",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v1/projects/:projectUuid/sqlRunner/saved/:uuid/promote",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path",
+                "description": "the uuid for the project"
+              },
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path",
+                "description": "the uuid for the saved sql chart"
+              }
+            ]
+          },
+          "docs": "Promote SQL chart to upstream project"
+        },
+        {
+          "info": {
+            "name": "Get SQL chart promotion diff",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/projects/:projectUuid/sqlRunner/saved/:uuid/promoteDiff",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path",
+                "description": "the uuid for the project"
+              },
+              {
+                "name": "uuid",
+                "value": "",
+                "type": "path",
+                "description": "the uuid for the saved sql chart"
+              }
+            ]
+          },
+          "docs": "Get diff from SQL chart to promote"
+        },
+        {
+          "info": {
+            "name": "Refresh catalog cache",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v1/projects/:projectUuid/sqlRunner/refresh-catalog",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Refresh the catalog cache"
+        },
+        {
+          "info": {
+            "name": "Create virtual view",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v1/projects/:projectUuid/sqlRunner/virtual-view",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a virtual-view"
+        },
+        {
+          "info": {
+            "name": "Update virtual view",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "/api/v1/projects/:projectUuid/sqlRunner/virtual-view/:name",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "name",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update a virtual view"
+        },
+        {
+          "info": {
+            "name": "Delete virtual view",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "/api/v1/projects/:projectUuid/sqlRunner/virtual-view/:name",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "name",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Delete a virtual-view"
+        },
+        {
+          "info": {
+            "name": "Preview write back",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v1/projects/:projectUuid/sqlRunner/preview",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Preview write back from SQL runner"
+        },
+        {
+          "info": {
+            "name": "Create write back PR",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v1/projects/:projectUuid/sqlRunner/pull-request",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Write back from SQL runner"
+        },
+        {
+          "info": {
+            "name": "List SQL chart schedulers",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/projects/:projectUuid/sqlRunner/saved/:savedSqlUuid/schedulers",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "savedSqlUuid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get all schedulers for a SQL chart"
+        },
+        {
+          "info": {
+            "name": "Create SQL chart scheduler",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v1/projects/:projectUuid/sqlRunner/saved/:savedSqlUuid/schedulers",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "savedSqlUuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a scheduler for a SQL chart"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

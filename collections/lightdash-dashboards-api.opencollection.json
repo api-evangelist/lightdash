@@ -1,0 +1,410 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Lightdash AiAgents Dashboards API",
+    "version": "0.3156.1"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Dashboards",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Promote dashboard",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v1/dashboards/:dashboardUuid/promote",
+            "params": [
+              {
+                "name": "dashboardUuid",
+                "value": "",
+                "type": "path",
+                "description": "dashboardUuid for the dashboard to run"
+              }
+            ]
+          },
+          "docs": "Promote dashboard to its upstream project"
+        },
+        {
+          "info": {
+            "name": "Get dashboard promotion diff",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/dashboards/:dashboardUuid/promoteDiff",
+            "params": [
+              {
+                "name": "dashboardUuid",
+                "value": "",
+                "type": "path",
+                "description": "dashboardUuid for the dashboard to check diff"
+              }
+            ]
+          },
+          "docs": "Get diff from dashboard to promote"
+        },
+        {
+          "info": {
+            "name": "Get dashboard history",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/dashboards/:dashboardUuid/history",
+            "params": [
+              {
+                "name": "dashboardUuid",
+                "value": "",
+                "type": "path",
+                "description": "dashboardUuid for the dashboard"
+              }
+            ]
+          },
+          "docs": "Get dashboard version history"
+        },
+        {
+          "info": {
+            "name": "Get dashboard version",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/dashboards/:dashboardUuid/version/:versionUuid",
+            "params": [
+              {
+                "name": "dashboardUuid",
+                "value": "",
+                "type": "path",
+                "description": "dashboardUuid for the dashboard"
+              },
+              {
+                "name": "versionUuid",
+                "value": "",
+                "type": "path",
+                "description": "versionUuid for the dashboard version"
+              }
+            ]
+          },
+          "docs": "Get specific dashboard version"
+        },
+        {
+          "info": {
+            "name": "Rollback dashboard version",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v1/dashboards/:dashboardUuid/rollback/:versionUuid",
+            "params": [
+              {
+                "name": "dashboardUuid",
+                "value": "",
+                "type": "path",
+                "description": "dashboardUuid for the dashboard"
+              },
+              {
+                "name": "versionUuid",
+                "value": "",
+                "type": "path",
+                "description": "versionUuid for the dashboard version to rollback to"
+              }
+            ]
+          },
+          "docs": "Rollback dashboard to a previous version"
+        },
+        {
+          "info": {
+            "name": "List dashboard schedulers",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/dashboards/:dashboardUuid/schedulers",
+            "params": [
+              {
+                "name": "dashboardUuid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get schedulers for a dashboard"
+        },
+        {
+          "info": {
+            "name": "Create dashboard scheduler",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v1/dashboards/:dashboardUuid/schedulers",
+            "params": [
+              {
+                "name": "dashboardUuid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Create a scheduler for a dashboard"
+        },
+        {
+          "info": {
+            "name": "Verify dashboard",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v1/dashboards/:dashboardUuid/verification",
+            "params": [
+              {
+                "name": "dashboardUuid",
+                "value": "",
+                "type": "path",
+                "description": "The uuid of the dashboard to verify"
+              }
+            ]
+          },
+          "docs": "Verify a dashboard"
+        },
+        {
+          "info": {
+            "name": "Unverify dashboard",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "/api/v1/dashboards/:dashboardUuid/verification",
+            "params": [
+              {
+                "name": "dashboardUuid",
+                "value": "",
+                "type": "path",
+                "description": "The uuid of the dashboard to unverify"
+              }
+            ]
+          },
+          "docs": "Remove verification from a dashboard"
+        },
+        {
+          "info": {
+            "name": "Get dashboard",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v2/projects/:projectUuid/dashboards/:dashboardUuidOrSlug",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "dashboardUuidOrSlug",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get a dashboard by uuid or slug within a project"
+        },
+        {
+          "info": {
+            "name": "Update dashboard",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "/api/v2/projects/:projectUuid/dashboards/:dashboardUuidOrSlug",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "dashboardUuidOrSlug",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update a dashboard by uuid or slug within a project"
+        },
+        {
+          "info": {
+            "name": "Delete dashboard",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "/api/v2/projects/:projectUuid/dashboards/:dashboardUuidOrSlug",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "dashboardUuidOrSlug",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Delete a dashboard by uuid or slug within a project"
+        },
+        {
+          "info": {
+            "name": "Get comments",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v2/projects/:projectUuid/dashboards/:dashboardUuidOrSlug/comments",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "dashboardUuidOrSlug",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "resolved",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Gets all comments for a dashboard within a project"
+        },
+        {
+          "info": {
+            "name": "List dashboard schedulers",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v2/dashboards/:dashboardUuid/schedulers",
+            "params": [
+              {
+                "name": "dashboardUuid",
+                "value": "",
+                "type": "path",
+                "description": "The uuid of the dashboard"
+              },
+              {
+                "name": "pageSize",
+                "value": "",
+                "type": "query",
+                "description": "number of items per page"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "page number"
+              },
+              {
+                "name": "searchQuery",
+                "value": "",
+                "type": "query",
+                "description": "filter schedulers by name"
+              },
+              {
+                "name": "includeLatestRun",
+                "value": "",
+                "type": "query",
+                "description": "include the most recent run for each scheduler"
+              }
+            ]
+          },
+          "docs": "Get all schedulers for a dashboard"
+        },
+        {
+          "info": {
+            "name": "List dashboard scheduler runs",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v2/dashboards/:dashboardUuid/schedulers/:schedulerUuid/runs",
+            "params": [
+              {
+                "name": "dashboardUuid",
+                "value": "",
+                "type": "path",
+                "description": "The uuid of the dashboard"
+              },
+              {
+                "name": "schedulerUuid",
+                "value": "",
+                "type": "path",
+                "description": "The uuid of the scheduler"
+              },
+              {
+                "name": "pageSize",
+                "value": "",
+                "type": "query",
+                "description": "number of items per page"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "page number"
+              },
+              {
+                "name": "searchQuery",
+                "value": "",
+                "type": "query",
+                "description": "filter runs by scheduler name"
+              },
+              {
+                "name": "sortBy",
+                "value": "",
+                "type": "query",
+                "description": "column to sort by (scheduledTime, createdAt)"
+              },
+              {
+                "name": "sortDirection",
+                "value": "",
+                "type": "query",
+                "description": "sort direction (asc or desc)"
+              },
+              {
+                "name": "statuses",
+                "value": "",
+                "type": "query",
+                "description": "comma-separated list of run statuses to include"
+              },
+              {
+                "name": "destinations",
+                "value": "",
+                "type": "query",
+                "description": "comma-separated list of destination types to include"
+              }
+            ]
+          },
+          "docs": "Get the run history of a single scheduler on a dashboard"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,338 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Lightdash AiAgents Query API",
+    "version": "0.3156.1"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Query",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get results",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v2/projects/:projectUuid/query/:queryUuid",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "queryUuid",
+                "value": "",
+                "type": "path",
+                "description": "The UUID of the async query to retrieve results for"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Page number for pagination (starts at 1)"
+              },
+              {
+                "name": "pageSize",
+                "value": "",
+                "type": "query",
+                "description": "Number of results per page (default: 500, max: 5000)"
+              }
+            ]
+          },
+          "docs": "Retrieves paginated results from a previously executed async query using its UUID"
+        },
+        {
+          "info": {
+            "name": "Cancel query",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v2/projects/:projectUuid/query/:queryUuid/cancel",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "queryUuid",
+                "value": "",
+                "type": "path",
+                "description": "The UUID of the async query to cancel"
+              }
+            ]
+          },
+          "docs": "Cancels a running async query and discards any partial results"
+        },
+        {
+          "info": {
+            "name": "Calculate totals",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v2/projects/:projectUuid/query/:queryUuid/calculate-total",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "queryUuid",
+                "value": "",
+                "type": "path",
+                "description": "The UUID of the previously-executed query to compute totals from"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Calculates totals for a previously-executed query, referenced by its queryUuid. Re-runs the source query's MetricQuery against the warehouse so totals are correct for every metric type (count distinct, average, ratio, etc.) — unlike client-side cell summation, which only works for sum/count. The requested `kind` selects which totals to compute."
+        },
+        {
+          "info": {
+            "name": "Execute metric query",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v2/projects/:projectUuid/query/metric-query",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Executes a metric query asynchronously against your data warehouse using dimensions, metrics, filters, and sorts"
+        },
+        {
+          "info": {
+            "name": "Search field values",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v2/projects/:projectUuid/query/field-values",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Searches for unique field values asynchronously, returning a query UUID to poll for results"
+        },
+        {
+          "info": {
+            "name": "Execute saved chart",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v2/projects/:projectUuid/query/chart",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Executes a saved chart query asynchronously with optional parameter overrides"
+        },
+        {
+          "info": {
+            "name": "Execute dashboard chart",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v2/projects/:projectUuid/query/dashboard-chart",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Executes a chart within a dashboard context asynchronously with inherited dashboard filters"
+        },
+        {
+          "info": {
+            "name": "Execute underlying data",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v2/projects/:projectUuid/query/underlying-data",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Executes a query to retrieve underlying raw data for drilling down into aggregated values"
+        },
+        {
+          "info": {
+            "name": "Execute SQL query",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v2/projects/:projectUuid/query/sql",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Executes a raw SQL query asynchronously against your data warehouse for custom queries"
+        },
+        {
+          "info": {
+            "name": "Execute SQL chart",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v2/projects/:projectUuid/query/sql-chart",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Executes a saved SQL chart query asynchronously with optional chart configurations"
+        },
+        {
+          "info": {
+            "name": "Execute dashboard SQL chart",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v2/projects/:projectUuid/query/dashboard-sql-chart",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Executes a SQL chart within a dashboard context asynchronously with inherited filters"
+        },
+        {
+          "info": {
+            "name": "Download results",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v2/projects/:projectUuid/query/:queryUuid/download",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "queryUuid",
+                "value": "",
+                "type": "path",
+                "description": "The UUID of the completed async query to download"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Downloads query results in various formats with custom formatting options"
+        },
+        {
+          "info": {
+            "name": "Download results",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v2/projects/:projectUuid/query/:queryUuid/schedule-download",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "queryUuid",
+                "value": "",
+                "type": "path",
+                "description": "The UUID of the completed async query to download"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Downloads query results in various formats with custom formatting options"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

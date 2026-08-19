@@ -1,0 +1,155 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Lightdash AiAgents Github API",
+    "version": "0.3156.1"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Github",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Install GitHub App",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/github/install"
+          },
+          "docs": "Install the Lightdash GitHub App and link to an organization"
+        },
+        {
+          "info": {
+            "name": "Link GitHub account",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/github/user/authorize",
+            "params": [
+              {
+                "name": "redirect",
+                "value": "",
+                "type": "query",
+                "description": "Optional path to return to after authorization"
+              }
+            ]
+          },
+          "docs": "Link the authenticated user's personal GitHub account so write-backs\ncan be authored as them instead of the Lightdash GitHub App"
+        },
+        {
+          "info": {
+            "name": "Get linked GitHub account",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/github/user"
+          },
+          "docs": "Get the authenticated user's linked GitHub account, if any"
+        },
+        {
+          "info": {
+            "name": "Unlink GitHub account",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "/api/v1/github/user"
+          },
+          "docs": "Unlink the authenticated user's GitHub account and revoke its token"
+        },
+        {
+          "info": {
+            "name": "Get GitHub App configuration",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/github/config"
+          },
+          "docs": "Get GitHub App configuration for the organization"
+        },
+        {
+          "info": {
+            "name": "GitHub OAuth callback",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/github/oauth/callback",
+            "params": [
+              {
+                "name": "code",
+                "value": "",
+                "type": "query",
+                "description": "authorization code from GitHub"
+              },
+              {
+                "name": "state",
+                "value": "",
+                "type": "query",
+                "description": "oauth state parameter"
+              },
+              {
+                "name": "installation_id",
+                "value": "",
+                "type": "query",
+                "description": "installation id from GitHub"
+              },
+              {
+                "name": "setup_action",
+                "value": "",
+                "type": "query",
+                "description": "setup action from GitHub"
+              }
+            ]
+          },
+          "docs": "Callback URL for GitHub App Authorization also used for GitHub App Installation with combined Authorization"
+        },
+        {
+          "info": {
+            "name": "Uninstall GitHub App",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "/api/v1/github/uninstall"
+          },
+          "docs": "Uninstall the GitHub App from the organization"
+        },
+        {
+          "info": {
+            "name": "List GitHub repositories",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/github/repos/list"
+          },
+          "docs": "List GitHub repositories accessible via the installed app"
+        },
+        {
+          "info": {
+            "name": "Create GitHub repository",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v1/github/repos",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a new GitHub repository via the installed app"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

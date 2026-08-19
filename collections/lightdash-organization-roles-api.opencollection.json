@@ -1,0 +1,141 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Lightdash AiAgents Organization Roles API",
+    "version": "0.3156.1"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Organization Roles",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get organization roles",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v2/orgs/:orgUuid/roles",
+            "params": [
+              {
+                "name": "orgUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "load",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "roleTypeFilter",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Get roles for organization"
+        },
+        {
+          "info": {
+            "name": "Get custom role",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v2/orgs/:orgUuid/roles/:roleUuid",
+            "params": [
+              {
+                "name": "orgUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "roleUuid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get custom role by uuid"
+        },
+        {
+          "info": {
+            "name": "List organization role assignments",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v2/orgs/:orgUuid/roles/assignments",
+            "params": [
+              {
+                "name": "orgUuid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "List organization role assignments (system roles only)"
+        },
+        {
+          "info": {
+            "name": "Assign organization role to user",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v2/orgs/:orgUuid/roles/assignments/user/:userId",
+            "params": [
+              {
+                "name": "orgUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "userId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Assign system role to user at organization level"
+        },
+        {
+          "info": {
+            "name": "Duplicate role",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v2/orgs/:orgUuid/roles/:roleId/duplicate",
+            "params": [
+              {
+                "name": "orgUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "roleId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Duplicate a role"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

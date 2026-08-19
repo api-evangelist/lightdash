@@ -1,0 +1,394 @@
+{
+  "item": [
+    {
+      "id": "70b58b0f-f740-4cb1-9a98-9d2eeee90e85",
+      "name": "Funnel",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "7dcd04fd-1205-43e5-ad1b-d81979d3a6b1",
+          "name": "Get event names",
+          "request": {
+            "name": "Get event names",
+            "description": {
+              "content": "Get distinct event names from a dimension for funnel step selection.\nScans the last 30 days of data to limit query cost.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "projects",
+                ":projectUuid",
+                "funnel",
+                "event-names"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "exploreName",
+                  "value": "<string>",
+                  "description": "(Required) The explore to query"
+                },
+                {
+                  "disabled": false,
+                  "key": "eventDimensionId",
+                  "value": "<string>",
+                  "description": "(Required) The dimension containing event names"
+                },
+                {
+                  "disabled": false,
+                  "key": "timestampFieldId",
+                  "value": "<string>",
+                  "description": "(Required) The timestamp dimension used to filter to last 30 days"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "projectUuid",
+                  "description": "(Required) The project UUID"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "8fcf7b0b-cd54-441f-8862-6f78e1164062",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "projects",
+                    ":projectUuid",
+                    "funnel",
+                    "event-names"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "exploreName",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "eventDimensionId",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "timestampFieldId",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "projectUuid",
+                      "description": "(Required) The project UUID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"results\": [\n    \"string\",\n    \"string\"\n  ],\n  \"status\": \"ok\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "4f9f1712-7fb1-4d3a-908f-f066b6d3c21d",
+              "name": "Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "projects",
+                    ":projectUuid",
+                    "funnel",
+                    "event-names"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "exploreName",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "eventDimensionId",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "timestampFieldId",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "projectUuid",
+                      "description": "(Required) The project UUID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"name\": \"string\",\n    \"statusCode\": 948.0916430512776,\n    \"data\": {},\n    \"message\": \"string\"\n  },\n  \"status\": \"error\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "d2c43532-80e5-4193-89fd-cc47cee62b04",
+          "name": "Run funnel query",
+          "request": {
+            "name": "Run funnel query",
+            "description": {
+              "content": "Execute a funnel analysis query and return conversion metrics",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "projects",
+                ":projectUuid",
+                "funnel",
+                "query"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "projectUuid",
+                  "description": "(Required) The project UUID"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"dateRange\": {\n    \"preset\": \"<string>\",\n    \"type\": \"<string>\"\n  },\n  \"steps\": [\n    {\n      \"eventName\": \"<string>\",\n      \"stepOrder\": \"<double>\"\n    },\n    {\n      \"eventName\": \"<string>\",\n      \"stepOrder\": \"<double>\"\n    }\n  ],\n  \"eventNameFieldId\": \"<string>\",\n  \"userIdFieldId\": \"<string>\",\n  \"timestampFieldId\": \"<string>\",\n  \"exploreName\": \"<string>\",\n  \"breakdownDimensionId\": \"<string>\",\n  \"conversionWindow\": {\n    \"unit\": \"<string>\",\n    \"value\": \"<double>\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "5a7107f1-6612-4429-9dfb-ac529fe2ddaa",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "projects",
+                    ":projectUuid",
+                    "funnel",
+                    "query"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "projectUuid",
+                      "description": "(Required) The project UUID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"dateRange\": {\n    \"preset\": \"<string>\",\n    \"type\": \"<string>\"\n  },\n  \"steps\": [\n    {\n      \"eventName\": \"<string>\",\n      \"stepOrder\": \"<double>\"\n    },\n    {\n      \"eventName\": \"<string>\",\n      \"stepOrder\": \"<double>\"\n    }\n  ],\n  \"eventNameFieldId\": \"<string>\",\n  \"userIdFieldId\": \"<string>\",\n  \"timestampFieldId\": \"<string>\",\n  \"exploreName\": \"<string>\",\n  \"breakdownDimensionId\": \"<string>\",\n  \"conversionWindow\": {\n    \"unit\": \"<string>\",\n    \"value\": \"<double>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"results\": {\n    \"sql\": \"string\",\n    \"steps\": [\n      {\n        \"medianTimeToConvertSeconds\": 1578.015932556198,\n        \"stepConversionRate\": 8007.958711774059,\n        \"conversionRate\": 9770.594044643998,\n        \"totalUsers\": 9551.066464395852,\n        \"stepName\": \"string\",\n        \"stepOrder\": 7396.443533524536,\n        \"breakdownValue\": \"string\"\n      },\n      {\n        \"medianTimeToConvertSeconds\": 3036.507858958352,\n        \"stepConversionRate\": 6863.2006317480045,\n        \"conversionRate\": 7127.924021890778,\n        \"totalUsers\": 9369.723573616975,\n        \"stepName\": \"string\",\n        \"stepOrder\": 5110.726798835242,\n        \"breakdownValue\": \"string\"\n      }\n    ]\n  },\n  \"status\": \"ok\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "3047d598-cc63-4280-8c96-feee8c943f23",
+              "name": "Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "projects",
+                    ":projectUuid",
+                    "funnel",
+                    "query"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "projectUuid",
+                      "description": "(Required) The project UUID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"dateRange\": {\n    \"preset\": \"<string>\",\n    \"type\": \"<string>\"\n  },\n  \"steps\": [\n    {\n      \"eventName\": \"<string>\",\n      \"stepOrder\": \"<double>\"\n    },\n    {\n      \"eventName\": \"<string>\",\n      \"stepOrder\": \"<double>\"\n    }\n  ],\n  \"eventNameFieldId\": \"<string>\",\n  \"userIdFieldId\": \"<string>\",\n  \"timestampFieldId\": \"<string>\",\n  \"exploreName\": \"<string>\",\n  \"breakdownDimensionId\": \"<string>\",\n  \"conversionWindow\": {\n    \"unit\": \"<string>\",\n    \"value\": \"<double>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"name\": \"string\",\n    \"statusCode\": 948.0916430512776,\n    \"data\": {},\n    \"message\": \"string\"\n  },\n  \"status\": \"error\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "/",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "f44581c3-08c9-43cb-904b-3c88a78a850a",
+    "name": "Lightdash AiAgents Funnel API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Open API documentation for all public Lightdash API endpoints. # Authentication Before you get started, you might need to create a Personal Access Token to authenticate via the API. You can create a token by following this guide: https://docs.lightdash.com/references/personal_tokens\n\n\nContact Support:\n Name: Lightdash Support\n Email: support@lightdash.com",
+      "type": "text/plain"
+    }
+  }
+}

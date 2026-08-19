@@ -1,0 +1,3367 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Lightdash AiAgents Projects API",
+    "version": "0.3156.1"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Projects",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Check Snowflake SSO authentication",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/snowflake/sso/is-authenticated"
+          },
+          "docs": "Check if the user is authenticated with Snowflake SSO"
+        },
+        {
+          "info": {
+            "name": "Check Databricks OAuth authentication",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/databricks/sso/is-authenticated"
+          },
+          "docs": "Check if user is authenticated with Databricks OAuth"
+        },
+        {
+          "info": {
+            "name": "listAgents",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/projects/:projectUuid/aiAgents",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          }
+        },
+        {
+          "info": {
+            "name": "createAgent",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v1/projects/:projectUuid/aiAgents",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          }
+        },
+        {
+          "info": {
+            "name": "getUserAgentPreferences",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/projects/:projectUuid/aiAgents/preferences",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          }
+        },
+        {
+          "info": {
+            "name": "updateUserAgentPreferences",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v1/projects/:projectUuid/aiAgents/preferences",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          }
+        },
+        {
+          "info": {
+            "name": "deleteUserAgentPreferences",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "/api/v1/projects/:projectUuid/aiAgents/preferences",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          }
+        },
+        {
+          "info": {
+            "name": "listMcpServers",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/projects/:projectUuid/aiAgents/mcpServers",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          }
+        },
+        {
+          "info": {
+            "name": "createMcpServer",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v1/projects/:projectUuid/aiAgents/mcpServers",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          }
+        },
+        {
+          "info": {
+            "name": "getGithubMcpAvailability",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/projects/:projectUuid/aiAgents/mcpServers/github/availability",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          }
+        },
+        {
+          "info": {
+            "name": "connectGithubMcpServer",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v1/projects/:projectUuid/aiAgents/mcpServers/github/connect",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          }
+        },
+        {
+          "info": {
+            "name": "listMcpServerTools",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/projects/:projectUuid/aiAgents/mcpServers/:mcpServerUuid/tools",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "mcpServerUuid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          }
+        },
+        {
+          "info": {
+            "name": "refreshMcpServerTools",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v1/projects/:projectUuid/aiAgents/mcpServers/:mcpServerUuid/tools/refresh",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "mcpServerUuid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          }
+        },
+        {
+          "info": {
+            "name": "startMcpOAuthConnection",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v1/projects/:projectUuid/aiAgents/mcpServers/:mcpServerUuid/oauth/start",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "mcpServerUuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          }
+        },
+        {
+          "info": {
+            "name": "disconnectMcpOAuthConnection",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v1/projects/:projectUuid/aiAgents/mcpServers/:mcpServerUuid/oauth/disconnect",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "mcpServerUuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          }
+        },
+        {
+          "info": {
+            "name": "listProjectThreads",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/projects/:projectUuid/aiAgents/threads",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "pageSize",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "agentUuid",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "createdFrom",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "search",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          }
+        },
+        {
+          "info": {
+            "name": "getAgent",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/projects/:projectUuid/aiAgents/:agentUuid",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "agentUuid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          }
+        },
+        {
+          "info": {
+            "name": "updateAgent",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "/api/v1/projects/:projectUuid/aiAgents/:agentUuid",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "agentUuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          }
+        },
+        {
+          "info": {
+            "name": "deleteAgent",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "/api/v1/projects/:projectUuid/aiAgents/:agentUuid",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "agentUuid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          }
+        },
+        {
+          "info": {
+            "name": "listAgentMcpServers",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/projects/:projectUuid/aiAgents/:agentUuid/mcpServers",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "agentUuid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          }
+        },
+        {
+          "info": {
+            "name": "listAgentMcpServerTools",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/projects/:projectUuid/aiAgents/:agentUuid/mcpServers/:mcpServerUuid/tools",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "agentUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "mcpServerUuid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          }
+        },
+        {
+          "info": {
+            "name": "updateAgentMcpServerTools",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "/api/v1/projects/:projectUuid/aiAgents/:agentUuid/mcpServers/:mcpServerUuid/tools",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "agentUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "mcpServerUuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          }
+        },
+        {
+          "info": {
+            "name": "getModelOptions",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/projects/:projectUuid/aiAgents/:agentUuid/models",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "agentUuid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          }
+        },
+        {
+          "info": {
+            "name": "getAgentSuggestions",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/projects/:projectUuid/aiAgents/:agentUuid/suggestions",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "agentUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "threadUuid",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "afterMessageUuid",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "enableSqlMode",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          }
+        },
+        {
+          "info": {
+            "name": "evaluateAgentReadiness",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v1/projects/:projectUuid/aiAgents/:agentUuid/evaluateReadiness",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "agentUuid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          }
+        },
+        {
+          "info": {
+            "name": "getVerifiedArtifacts",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/projects/:projectUuid/aiAgents/:agentUuid/verified-artifacts",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "agentUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "pageSize",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          }
+        },
+        {
+          "info": {
+            "name": "getVerifiedQuestions",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/projects/:projectUuid/aiAgents/:agentUuid/verified-questions",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "agentUuid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          }
+        },
+        {
+          "info": {
+            "name": "listAgentThreads",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/projects/:projectUuid/aiAgents/:agentUuid/threads",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "agentUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "allUsers",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          }
+        },
+        {
+          "info": {
+            "name": "createAgentThread",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v1/projects/:projectUuid/aiAgents/:agentUuid/threads",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "agentUuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          }
+        },
+        {
+          "info": {
+            "name": "getAgentThread",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/projects/:projectUuid/aiAgents/:agentUuid/threads/:threadUuid",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "agentUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "threadUuid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          }
+        },
+        {
+          "info": {
+            "name": "Get AI agent thread pull request",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/projects/:projectUuid/aiAgents/:agentUuid/threads/:threadUuid/pull-request",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "agentUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "threadUuid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get the writeback pull request associated with a thread — the PR the\nagent opened in this thread, or the PR a verification thread verifies."
+        },
+        {
+          "info": {
+            "name": "createAgentThreadMessage",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v1/projects/:projectUuid/aiAgents/:agentUuid/threads/:threadUuid/messages",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "agentUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "threadUuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          }
+        },
+        {
+          "info": {
+            "name": "decideAgentSqlApproval",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v1/projects/:projectUuid/aiAgents/:agentUuid/threads/:threadUuid/tool-calls/:toolCallId/sql-approval",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "agentUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "threadUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "toolCallId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          }
+        },
+        {
+          "info": {
+            "name": "streamAgentThreadResponse",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v1/projects/:projectUuid/aiAgents/:agentUuid/threads/:threadUuid/stream",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "agentUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "threadUuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          }
+        },
+        {
+          "info": {
+            "name": "generateAgentThreadResponse",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v1/projects/:projectUuid/aiAgents/:agentUuid/threads/:threadUuid/generate",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "agentUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "threadUuid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          }
+        },
+        {
+          "info": {
+            "name": "generateAgentThreadTitle",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v1/projects/:projectUuid/aiAgents/:agentUuid/threads/:threadUuid/generate-title",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "agentUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "threadUuid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          }
+        },
+        {
+          "info": {
+            "name": "cloneAgentThread",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v1/projects/:projectUuid/aiAgents/:agentUuid/threads/:threadUuid/clone/:promptUuid",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "agentUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "threadUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "promptUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "createdFrom",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          }
+        },
+        {
+          "info": {
+            "name": "updateAgentThreadMessageSavedQuery",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "/api/v1/projects/:projectUuid/aiAgents/:agentUuid/threads/:threadUuid/messages/:messageUuid/savedQuery",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "agentUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "threadUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "messageUuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          }
+        },
+        {
+          "info": {
+            "name": "updatePromptFeedback",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "/api/v1/projects/:projectUuid/aiAgents/:agentUuid/threads/:threadUuid/messages/:messageUuid/feedback",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "agentUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "threadUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "messageUuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          }
+        },
+        {
+          "info": {
+            "name": "getAgentExploreAccessSummary",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v1/projects/:projectUuid/aiAgents/explore-access-summary",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          }
+        },
+        {
+          "info": {
+            "name": "getArtifact",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/projects/:projectUuid/aiAgents/:agentUuid/artifacts/:artifactUuid",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "agentUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "artifactUuid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          }
+        },
+        {
+          "info": {
+            "name": "getArtifactVersion",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/projects/:projectUuid/aiAgents/:agentUuid/artifacts/:artifactUuid/versions/:versionUuid",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "agentUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "artifactUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "versionUuid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          }
+        },
+        {
+          "info": {
+            "name": "getArtifactVizQuery",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/projects/:projectUuid/aiAgents/:agentUuid/artifacts/:artifactUuid/versions/:versionUuid/viz-query",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "agentUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "artifactUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "versionUuid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          }
+        },
+        {
+          "info": {
+            "name": "createAiAgentThreadShare",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v1/projects/:projectUuid/aiAgents/:agentUuid/threads/:threadUuid/shares",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "agentUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "threadUuid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          }
+        },
+        {
+          "info": {
+            "name": "cloneAiAgentThreadShare",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v1/projects/:projectUuid/aiAgents/thread-shares/:aiThreadShareUuid/clone",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "aiThreadShareUuid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          }
+        },
+        {
+          "info": {
+            "name": "getDashboardArtifactChartVizQuery",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/projects/:projectUuid/aiAgents/:agentUuid/artifacts/:artifactUuid/versions/:versionUuid/charts/:chartIndex/viz-query",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "agentUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "artifactUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "versionUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "chartIndex",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          }
+        },
+        {
+          "info": {
+            "name": "updateArtifactVersionSavedDashboard",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "/api/v1/projects/:projectUuid/aiAgents/:agentUuid/artifacts/:artifactUuid/versions/:versionUuid/savedDashboard",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "agentUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "artifactUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "versionUuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          }
+        },
+        {
+          "info": {
+            "name": "setArtifactVersionVerified",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "/api/v1/projects/:projectUuid/aiAgents/:agentUuid/artifacts/:artifactUuid/versions/:versionUuid/verified",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "agentUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "artifactUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "versionUuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          }
+        },
+        {
+          "info": {
+            "name": "getEvaluations",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/projects/:projectUuid/aiAgents/:agentUuid/evaluations",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "agentUuid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          }
+        },
+        {
+          "info": {
+            "name": "createEvaluation",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v1/projects/:projectUuid/aiAgents/:agentUuid/evaluations",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "agentUuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          }
+        },
+        {
+          "info": {
+            "name": "runEvaluation",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v1/projects/:projectUuid/aiAgents/:agentUuid/evaluations/:evalUuid/run",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "agentUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "evalUuid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          }
+        },
+        {
+          "info": {
+            "name": "getEvaluation",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/projects/:projectUuid/aiAgents/:agentUuid/evaluations/:evalUuid",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "agentUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "evalUuid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          }
+        },
+        {
+          "info": {
+            "name": "updateEvaluation",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "/api/v1/projects/:projectUuid/aiAgents/:agentUuid/evaluations/:evalUuid",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "agentUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "evalUuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          }
+        },
+        {
+          "info": {
+            "name": "deleteEvaluation",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "/api/v1/projects/:projectUuid/aiAgents/:agentUuid/evaluations/:evalUuid",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "agentUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "evalUuid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          }
+        },
+        {
+          "info": {
+            "name": "getEvaluationRuns",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/projects/:projectUuid/aiAgents/:agentUuid/evaluations/:evalUuid/runs",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "agentUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "evalUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "pageSize",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          }
+        },
+        {
+          "info": {
+            "name": "getEvaluationRunResults",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/projects/:projectUuid/aiAgents/:agentUuid/evaluations/:evalUuid/runs/:runUuid",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "agentUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "evalUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "runUuid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          }
+        },
+        {
+          "info": {
+            "name": "appendToEvaluation",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v1/projects/:projectUuid/aiAgents/:agentUuid/evaluations/:evalUuid/append",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "agentUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "evalUuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          }
+        },
+        {
+          "info": {
+            "name": "appendInstruction",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v1/projects/:projectUuid/aiAgents/:agentUuid/append-instruction",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "agentUuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          }
+        },
+        {
+          "info": {
+            "name": "revertChange",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v1/projects/:projectUuid/aiAgents/:agentUuid/threads/:threadUuid/messages/:promptUuid/revert-change",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "agentUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "threadUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "promptUuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          }
+        },
+        {
+          "info": {
+            "name": "Get validation results",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/projects/:projectUuid/validate",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path",
+                "description": "the projectId for the validation"
+              },
+              {
+                "name": "fromSettings",
+                "value": "",
+                "type": "query",
+                "description": "boolean to know if this request is made from the settings page, for analytics"
+              },
+              {
+                "name": "jobId",
+                "value": "",
+                "type": "query",
+                "description": "optional jobId to get results for a specific job, used on CLI"
+              }
+            ]
+          },
+          "docs": "Get validation results for a project. This will return the results of the latest validation job."
+        },
+        {
+          "info": {
+            "name": "Validate project",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v1/projects/:projectUuid/validate",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path",
+                "description": "the projectId for the validation"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Validate content inside a project. This will start a validation job and return the job id.\n\nValidation jobs scan all charts and dashboards inside a project to find any broken references\nto metrics or dimensions that aren't available. Results are available after the job is completed."
+        },
+        {
+          "info": {
+            "name": "Dismiss validation error",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "/api/v1/projects/:projectUuid/validate/:validationIdOrUuid",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "validationIdOrUuid",
+                "value": "",
+                "type": "path",
+                "description": "the validation UUID, or a legacy integer id\nfor rows created before the UUID migration (PROD-7386)."
+              }
+            ]
+          },
+          "docs": "Deletes a single validation error."
+        },
+        {
+          "info": {
+            "name": "Validate specific chart",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v1/projects/:projectUuid/validate/chart/:chartUuid",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path",
+                "description": "the project UUID"
+              },
+              {
+                "name": "chartUuid",
+                "value": "",
+                "type": "path",
+                "description": "the chart UUID to validate"
+              }
+            ]
+          },
+          "docs": "Validates a specific chart and updates validation entries in database."
+        },
+        {
+          "info": {
+            "name": "Validate specific dashboard",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v1/projects/:projectUuid/validate/dashboard/:dashboardUuid",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path",
+                "description": "the project UUID"
+              },
+              {
+                "name": "dashboardUuid",
+                "value": "",
+                "type": "path",
+                "description": "the dashboard UUID to validate"
+              }
+            ]
+          },
+          "docs": "Validates a specific dashboard and updates validation entries in database."
+        },
+        {
+          "info": {
+            "name": "Get user activity",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/analytics/user-activity/:projectUuid",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get user activity for a project"
+        },
+        {
+          "info": {
+            "name": "Download user activity CSV",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v1/analytics/user-activity/:projectUuid/download",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Download user activity as CSV"
+        },
+        {
+          "info": {
+            "name": "Get download activity log",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/analytics/user-activity/:projectUuid/download-activity",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "pageSize",
+                "value": "",
+                "type": "query",
+                "description": "number of items per page"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "page number (1-indexed); defaults to 1 if omitted"
+              },
+              {
+                "name": "cursor",
+                "value": "",
+                "type": "query",
+                "description": "opaque cursor from a previous response's `nextCursor`"
+              }
+            ]
+          },
+          "docs": "Get download activity log for a project, ordered by most recent first.\nTwo pagination modes are supported:\n - Offset mode: pass `page` (1-indexed) and `pageSize`. Response includes\n   `page`/`totalResults`/`totalPageCount`.\n - Cursor mode: pass `cursor` (from a previous response's `nextCursor`) and\n   `pageSize`. `page` is ignored when `cursor` is provided. Avoids the count\n   query so `page`/`totalResults`/`totalPageCount` are null in the response."
+        },
+        {
+          "info": {
+            "name": "List spaces in project",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/projects/:projectUuid/spaces",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path",
+                "description": "The uuid of the project to get spaces for"
+              }
+            ]
+          },
+          "docs": "List all spaces in a project"
+        },
+        {
+          "info": {
+            "name": "Rename resources",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v1/projects/:projectUuid/rename",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Rename resources in a project"
+        },
+        {
+          "info": {
+            "name": "Preview rename",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v1/projects/:projectUuid/rename/preview",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Preview which resources would be affected by a bulk rename"
+        },
+        {
+          "info": {
+            "name": "Rename chart",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v1/projects/:projectUuid/rename/chart/:chartUuid",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "chartUuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Rename a chart and its fields"
+        },
+        {
+          "info": {
+            "name": "Get chart fields for rename",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/projects/:projectUuid/rename/chart/:chartUuid/fields",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "chartUuid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get a list of fields for this chart's explore to be used when renaming a chart in the UI"
+        },
+        {
+          "info": {
+            "name": "Rename dashboard filter",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v1/projects/:projectUuid/rename/dashboard/:dashboardUuid",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "dashboardUuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Rename a dashboard filter's field or model reference"
+        },
+        {
+          "info": {
+            "name": "Get dashboard fields for rename",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/projects/:projectUuid/rename/dashboard/:dashboardUuid/fields",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "dashboardUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "table",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Get a list of fields from explores referenced by the dashboard's filters"
+        },
+        {
+          "info": {
+            "name": "Get project",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/projects/:projectUuid",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get a project of an organiztion"
+        },
+        {
+          "info": {
+            "name": "List charts in project",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/projects/:projectUuid/charts",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path",
+                "description": "The uuid of the project to get charts for"
+              }
+            ]
+          },
+          "docs": "List all charts in a project"
+        },
+        {
+          "info": {
+            "name": "List chart summaries in project",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/projects/:projectUuid/chart-summaries",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path",
+                "description": "The uuid of the project to get charts for"
+              },
+              {
+                "name": "excludeChartsSavedInDashboard",
+                "value": "",
+                "type": "query",
+                "description": "Whether to exclude charts that are saved in dashboards"
+              }
+            ]
+          },
+          "docs": "List all charts summaries in a project"
+        },
+        {
+          "info": {
+            "name": "List project access",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/projects/:projectUuid/access",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get access list for a project. This is a list of users that have been explictly granted access to the project.\nThere may be other users that have access to the project via their organization membership."
+        },
+        {
+          "info": {
+            "name": "Grant project access to user",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v1/projects/:projectUuid/access",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Grant a user access to a project"
+        },
+        {
+          "info": {
+            "name": "Get project member access",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/projects/:projectUuid/user/:userUuid",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "userUuid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get a project explicit member's access.\nThere may be users that have access to the project via their organization membership."
+        },
+        {
+          "info": {
+            "name": "Preview data timezone",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v1/projects/preview-data-timezone",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Preview how the warehouse disambiguates \"now\" under a data timezone"
+        },
+        {
+          "info": {
+            "name": "Update project access for user",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "/api/v1/projects/:projectUuid/access/:userUuid",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "userUuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update a user's access to a project"
+        },
+        {
+          "info": {
+            "name": "Revoke project access for user",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "/api/v1/projects/:projectUuid/access/:userUuid",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "userUuid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Remove a user's access to a project"
+        },
+        {
+          "info": {
+            "name": "List project group accesses",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/projects/:projectUuid/groupAccesses",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "List group access for projects"
+        },
+        {
+          "info": {
+            "name": "Run SQL query",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v1/projects/:projectUuid/sqlQuery",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path",
+                "description": "The uuid of the project to run the query against"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Deprecated — use the v2 Execute SQL query endpoint instead.\n\nThis endpoint was deprecated on 17 February 2025 and is past its sunset date (17 May 2025) — it may be removed at any time. Migrate to the v2 async query flow: Execute SQL query, then Get results."
+        },
+        {
+          "info": {
+            "name": "Calculate total from query",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v1/projects/:projectUuid/calculate-total",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path",
+                "description": "The uuid of the project to get charts for"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Calculate all metric totals from a metricQuery"
+        },
+        {
+          "info": {
+            "name": "Calculate subtotals from query",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v1/projects/:projectUuid/calculate-subtotals",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Calculate subtotals from a metricQuery"
+        },
+        {
+          "info": {
+            "name": "Get user warehouse credentials preference",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/projects/:projectUuid/user-credentials",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get the user's warehouse credentials preference for a project"
+        },
+        {
+          "info": {
+            "name": "List project user warehouse credentials",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/projects/:projectUuid/user-warehouse-credentials",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get user warehouse credentials available for a project"
+        },
+        {
+          "info": {
+            "name": "Update user warehouse credentials preference",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "/api/v1/projects/:projectUuid/user-credentials/:userWarehouseCredentialsUuid",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "userWarehouseCredentialsUuid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Update the user's warehouse credentials preference for a project"
+        },
+        {
+          "info": {
+            "name": "List custom metrics",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/projects/:projectUuid/custom-metrics",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get all custom metrics in a project"
+        },
+        {
+          "info": {
+            "name": "Update project metadata",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "/api/v1/projects/:projectUuid/metadata",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update project metadata like upstreamProjectUuid\nwe don't trigger a compile, so not for updating warehouse or credentials"
+        },
+        {
+          "info": {
+            "name": "Update default user spaces setting",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "/api/v1/projects/:projectUuid/hasDefaultUserSpaces",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Toggle default user spaces for a project.\nWhen enabled, creates personal spaces for all eligible users."
+        },
+        {
+          "info": {
+            "name": "Get project color palette",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/projects/:projectUuid/table-groups",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get the resolved color palette for a project, walking the\nchart -> dashboard -> space -> project -> organization fallback chain\n(matches saved-chart resolution). The optional UUIDs let unsaved\nrenderers (Explore, AI viz, sql runner) opt into deeper layers as\nthey become available."
+        },
+        {
+          "info": {
+            "name": "Replace project table groups",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "/api/v1/projects/:projectUuid/table-groups",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Replace project-level table-group definitions. Sent by the CLI on\ndeploy/preview so labels & descriptions from `table_groups` in\n`lightdash.config.yml` are applied. Pass an empty object to clear."
+        },
+        {
+          "info": {
+            "name": "getProjectColorPalette",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/projects/:projectUuid/colorPalette",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "spaceUuid",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "dashboardUuid",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "chartUuid",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          }
+        },
+        {
+          "info": {
+            "name": "Update project color palette",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "/api/v1/projects/:projectUuid/colorPalette",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Set the project's color palette to one of its organization's palettes,\nor null to inherit from the organization's active palette."
+        },
+        {
+          "info": {
+            "name": "List dashboards",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/projects/:projectUuid/dashboards",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get all dashboards in a project"
+        },
+        {
+          "info": {
+            "name": "Create dashboard",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v1/projects/:projectUuid/dashboards",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "duplicateFrom",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a new dashboard in a project"
+        },
+        {
+          "info": {
+            "name": "Update dashboards",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "/api/v1/projects/:projectUuid/dashboards",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update multiple dashboards"
+        },
+        {
+          "info": {
+            "name": "Create dashboard with charts",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v1/projects/:projectUuid/dashboards/with-charts",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a new dashboard with embedded charts"
+        },
+        {
+          "info": {
+            "name": "Create project preview",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v1/projects/:projectUuid/createPreview",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a preview project"
+        },
+        {
+          "info": {
+            "name": "Get upstream diff",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/projects/:projectUuid/upstreamDiff",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Diff a preview project against the project it was copied from, using the\ncatalog index. Detects added/removed fields and label changes; does not\ndetect SQL-only field changes."
+        },
+        {
+          "info": {
+            "name": "Get preview expiration settings",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/projects/:projectUuid/previews-config",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get preview project expiration settings for a project"
+        },
+        {
+          "info": {
+            "name": "Update preview expiration settings",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "/api/v1/projects/:projectUuid/previews-config",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update preview project expiration settings for a project"
+        },
+        {
+          "info": {
+            "name": "Update scheduler settings",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "/api/v1/projects/:projectUuid/schedulerSettings",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update scheduler settings for a project"
+        },
+        {
+          "info": {
+            "name": "Update query timezone settings",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "/api/v1/projects/:projectUuid/queryTimezoneSettings",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update query timezone settings for a project"
+        },
+        {
+          "info": {
+            "name": "List tags",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/projects/:projectUuid/tags",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get all tags in a project"
+        },
+        {
+          "info": {
+            "name": "Create tag",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v1/projects/:projectUuid/tags",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a new tag in a project"
+        },
+        {
+          "info": {
+            "name": "Update tag",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "/api/v1/projects/:projectUuid/tags/:tagUuid",
+            "params": [
+              {
+                "name": "tagUuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update a tag in a project"
+        },
+        {
+          "info": {
+            "name": "Delete tag",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "/api/v1/projects/:projectUuid/tags/:tagUuid",
+            "params": [
+              {
+                "name": "tagUuid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Delete a tag from a project"
+        },
+        {
+          "info": {
+            "name": "Replace YAML tags",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "/api/v1/projects/:projectUuid/tags/yaml",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Replace all YAML-defined tags in a project"
+        },
+        {
+          "info": {
+            "name": "List charts as code",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/projects/:projectUuid/charts/code",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "ids",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "languageMap",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Get charts in code representation"
+        },
+        {
+          "info": {
+            "name": "List dashboards as code",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/projects/:projectUuid/dashboards/code",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "ids",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "languageMap",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Get dashboards in code representation"
+        },
+        {
+          "info": {
+            "name": "Upsert chart as code",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v1/projects/:projectUuid/charts/:slug/code",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "slug",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Upsert a chart from code representation"
+        },
+        {
+          "info": {
+            "name": "Get SQL charts as code",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/projects/:projectUuid/sqlCharts/code",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "ids",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Gets SQL charts in code representation"
+        },
+        {
+          "info": {
+            "name": "Upsert SQL chart as code",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v1/projects/:projectUuid/sqlCharts/:slug/code",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "slug",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Upserts an SQL chart from code representation"
+        },
+        {
+          "info": {
+            "name": "Upsert dashboard as code",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v1/projects/:projectUuid/dashboards/:slug/code",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "slug",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Upsert a dashboard from code representation"
+        },
+        {
+          "info": {
+            "name": "Handle dbt Cloud webhook",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v1/projects/:projectUuid/dbt-cloud/webhook",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Handle dbt Cloud webhook for job completion"
+        },
+        {
+          "info": {
+            "name": "Refresh project",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v1/projects/:projectUuid/refresh",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Refresh a project by recompiling dbt"
+        },
+        {
+          "info": {
+            "name": "Refresh project pre-aggregates",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v1/projects/:projectUuid/pre-aggregates/refresh",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Refresh all pre-aggregates in a project"
+        },
+        {
+          "info": {
+            "name": "Refresh pre-aggregate by definition name",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v1/projects/:projectUuid/pre-aggregates/definitions/:preAggregateDefinitionName/refresh",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "preAggregateDefinitionName",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Refresh a single pre-aggregate by its definition name"
+        },
+        {
+          "info": {
+            "name": "List verified content",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/projects/:projectUuid/content-verification",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "List all verified content (charts and dashboards) in a project"
+        },
+        {
+          "info": {
+            "name": "Get project compilation logs",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/projects/:projectUuid/compile-logs",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "pageSize",
+                "value": "",
+                "type": "query",
+                "description": "number of items per page"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "number of page"
+              },
+              {
+                "name": "sortBy",
+                "value": "",
+                "type": "query",
+                "description": "column to sort by"
+              },
+              {
+                "name": "sortDirection",
+                "value": "",
+                "type": "query",
+                "description": "sort direction (asc or desc)"
+              },
+              {
+                "name": "triggeredByUserUuids",
+                "value": "",
+                "type": "query",
+                "description": "filter by triggered user UUIDs (comma-separated)"
+              },
+              {
+                "name": "source",
+                "value": "",
+                "type": "query",
+                "description": "filter by source (\"cli_deploy\", \"refresh_dbt\")"
+              }
+            ]
+          },
+          "docs": "Get compilation logs for a project"
+        },
+        {
+          "info": {
+            "name": "Get compilation log for a specific job",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/projects/:projectUuid/compile-logs/job/:jobUuid",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path",
+                "description": "The uuid of the project"
+              },
+              {
+                "name": "jobUuid",
+                "value": "",
+                "type": "path",
+                "description": "The uuid of the job"
+              }
+            ]
+          },
+          "docs": "Get compilation log by job UUID"
+        },
+        {
+          "info": {
+            "name": "List explores",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/projects/:projectUuid/explores",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get all explores for a project"
+        },
+        {
+          "info": {
+            "name": "Set explores",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "/api/v1/projects/:projectUuid/explores",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Set explores for a project"
+        },
+        {
+          "info": {
+            "name": "Get explore",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/projects/:projectUuid/explores/:exploreId",
+            "params": [
+              {
+                "name": "exploreId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get a specific explore"
+        },
+        {
+          "info": {
+            "name": "Compile query",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v1/projects/:projectUuid/explores/:exploreId/compileQuery",
+            "params": [
+              {
+                "name": "exploreId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Compile a metric query for an explore"
+        },
+        {
+          "info": {
+            "name": "Check pre-aggregate",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v1/projects/:projectUuid/explores/:exploreId/preAggregateCheck",
+            "params": [
+              {
+                "name": "exploreId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Check pre-aggregate availability for a metric query"
+        },
+        {
+          "info": {
+            "name": "Validate formula",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v1/projects/:projectUuid/explores/:exploreId/validateFormula",
+            "params": [
+              {
+                "name": "exploreId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Validate a spreadsheet formula against the explore's fields"
+        },
+        {
+          "info": {
+            "name": "List charts by explore",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/projects/:projectUuid/explores/:exploreId/charts",
+            "params": [
+              {
+                "name": "exploreId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "List charts referencing a given explore"
+        },
+        {
+          "info": {
+            "name": "Get BigQuery datasets",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/bigquery/sso/datasets",
+            "params": [
+              {
+                "name": "projectId",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Get BigQuery datasets for a project"
+        },
+        {
+          "info": {
+            "name": "Get BigQuery projects",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/bigquery/sso/projects"
+          },
+          "docs": "Get BigQuery projects accessible by the user"
+        },
+        {
+          "info": {
+            "name": "Check BigQuery authentication",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/bigquery/sso/is-authenticated"
+          },
+          "docs": "Check if user is authenticated with BigQuery"
+        },
+        {
+          "info": {
+            "name": "Get project defaults",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v2/projects/:projectUuid/defaults",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get project defaults configuration"
+        },
+        {
+          "info": {
+            "name": "Replace project defaults",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "/api/v2/projects/:projectUuid/defaults",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Replace project defaults configuration"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

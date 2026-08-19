@@ -1,0 +1,78 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Lightdash AiAgents Funnel API",
+    "version": "0.3156.1"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Funnel",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get event names",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/projects/:projectUuid/funnel/event-names",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path",
+                "description": "The project UUID"
+              },
+              {
+                "name": "exploreName",
+                "value": "",
+                "type": "query",
+                "description": "The explore to query"
+              },
+              {
+                "name": "eventDimensionId",
+                "value": "",
+                "type": "query",
+                "description": "The dimension containing event names"
+              },
+              {
+                "name": "timestampFieldId",
+                "value": "",
+                "type": "query",
+                "description": "The timestamp dimension used to filter to last 30 days"
+              }
+            ]
+          },
+          "docs": "Get distinct event names from a dimension for funnel step selection.\nScans the last 30 days of data to limit query cost."
+        },
+        {
+          "info": {
+            "name": "Run funnel query",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v1/projects/:projectUuid/funnel/query",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path",
+                "description": "The project UUID"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Execute a funnel analysis query and return conversion metrics"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,86 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Lightdash AiAgents Project API",
+    "version": "0.3156.1"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Project",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Start deploy session",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v2/projects/:projectUuid/deploy",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Start a new deploy session for batched explore uploads"
+        },
+        {
+          "info": {
+            "name": "Add deploy batch",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v2/projects/:projectUuid/deploy/:sessionUuid/batch",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "sessionUuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Add a batch of explores to an existing deploy session"
+        },
+        {
+          "info": {
+            "name": "Finalize deploy",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v2/projects/:projectUuid/deploy/:sessionUuid/finalize",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "sessionUuid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Finalize a deploy session and commit all staged explores to the project"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

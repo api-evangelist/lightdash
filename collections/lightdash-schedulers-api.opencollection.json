@@ -1,0 +1,512 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Lightdash AiAgents Schedulers API",
+    "version": "0.3156.1"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Schedulers",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get scheduler logs",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/schedulers/:projectUuid/logs",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path",
+                "description": "The uuid of the project"
+              },
+              {
+                "name": "pageSize",
+                "value": "",
+                "type": "query",
+                "description": "number of items per page"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "page number"
+              },
+              {
+                "name": "searchQuery",
+                "value": "",
+                "type": "query",
+                "description": "search query to filter logs by scheduler name"
+              },
+              {
+                "name": "statuses",
+                "value": "",
+                "type": "query",
+                "description": "filter by log statuses (comma-separated)"
+              },
+              {
+                "name": "createdByUserUuids",
+                "value": "",
+                "type": "query",
+                "description": "filter by creator user UUIDs (comma-separated)"
+              },
+              {
+                "name": "destinations",
+                "value": "",
+                "type": "query",
+                "description": "filter by destination types (comma-separated: email, slack, msteams, googlechat)"
+              }
+            ]
+          },
+          "docs": "Get scheduled logs"
+        },
+        {
+          "info": {
+            "name": "List scheduler runs",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/schedulers/:projectUuid/runs",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path",
+                "description": "The uuid of the project"
+              },
+              {
+                "name": "pageSize",
+                "value": "",
+                "type": "query",
+                "description": "number of items per page"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "page number"
+              },
+              {
+                "name": "searchQuery",
+                "value": "",
+                "type": "query",
+                "description": "search query to filter runs by scheduler name"
+              },
+              {
+                "name": "sortBy",
+                "value": "",
+                "type": "query",
+                "description": "column to sort by (scheduledTime, createdAt)"
+              },
+              {
+                "name": "sortDirection",
+                "value": "",
+                "type": "query",
+                "description": "sort direction (asc or desc)"
+              },
+              {
+                "name": "schedulerUuids",
+                "value": "",
+                "type": "query",
+                "description": "filter by specific scheduler UUIDs (comma-separated)"
+              },
+              {
+                "name": "statuses",
+                "value": "",
+                "type": "query",
+                "description": "filter by run statuses (comma-separated: completed, partial_failure, failed, running, scheduled)"
+              },
+              {
+                "name": "createdByUserUuids",
+                "value": "",
+                "type": "query",
+                "description": "filter by creator user UUIDs (comma-separated)"
+              },
+              {
+                "name": "destinations",
+                "value": "",
+                "type": "query",
+                "description": "filter by destination types (comma-separated: email, slack, msteams, googlechat)"
+              },
+              {
+                "name": "resourceType",
+                "value": "",
+                "type": "query",
+                "description": "filter by resource type (chart or dashboard)"
+              },
+              {
+                "name": "resourceUuids",
+                "value": "",
+                "type": "query",
+                "description": "filter by resource UUIDs (comma-separated)"
+              }
+            ]
+          },
+          "docs": "Get paginated scheduler runs with aggregated child job counts"
+        },
+        {
+          "info": {
+            "name": "Get run logs",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/schedulers/runs/:runId/logs",
+            "params": [
+              {
+                "name": "runId",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the run (parent job ID)"
+              }
+            ]
+          },
+          "docs": "Get detailed logs for a specific scheduler run"
+        },
+        {
+          "info": {
+            "name": "List user schedulers",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/schedulers/user-schedulers",
+            "params": [
+              {
+                "name": "pageSize",
+                "value": "",
+                "type": "query",
+                "description": "number of items per page"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "page number"
+              },
+              {
+                "name": "searchQuery",
+                "value": "",
+                "type": "query",
+                "description": "search query to filter schedulers by name"
+              },
+              {
+                "name": "sortBy",
+                "value": "",
+                "type": "query",
+                "description": "column to sort by"
+              },
+              {
+                "name": "sortDirection",
+                "value": "",
+                "type": "query",
+                "description": "sort direction (asc or desc)"
+              },
+              {
+                "name": "formats",
+                "value": "",
+                "type": "query",
+                "description": "filter by scheduler formats (comma-separated)"
+              },
+              {
+                "name": "resourceType",
+                "value": "",
+                "type": "query",
+                "description": "filter by resource type (chart or dashboard)"
+              },
+              {
+                "name": "resourceUuids",
+                "value": "",
+                "type": "query",
+                "description": "filter by resource UUIDs (comma-separated)"
+              },
+              {
+                "name": "destinations",
+                "value": "",
+                "type": "query",
+                "description": "filter by destination types (comma-separated: email, slack, msteams, googlechat)"
+              },
+              {
+                "name": "includeLatestRun",
+                "value": "",
+                "type": "query",
+                "description": "include latest run information for each scheduler"
+              }
+            ]
+          },
+          "docs": "List all schedulers for the current user across all projects with pagination, search, sorting, and filtering"
+        },
+        {
+          "info": {
+            "name": "List schedulers",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/schedulers/:projectUuid/list",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "pageSize",
+                "value": "",
+                "type": "query",
+                "description": "number of items per page"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "page number"
+              },
+              {
+                "name": "searchQuery",
+                "value": "",
+                "type": "query",
+                "description": "search query to filter schedulers by name"
+              },
+              {
+                "name": "sortBy",
+                "value": "",
+                "type": "query",
+                "description": "column to sort by"
+              },
+              {
+                "name": "sortDirection",
+                "value": "",
+                "type": "query",
+                "description": "sort direction (asc or desc)"
+              },
+              {
+                "name": "createdByUserUuids",
+                "value": "",
+                "type": "query",
+                "description": "filter by creator user UUIDs (comma-separated)"
+              },
+              {
+                "name": "formats",
+                "value": "",
+                "type": "query",
+                "description": "filter by scheduler formats (comma-separated)"
+              },
+              {
+                "name": "resourceType",
+                "value": "",
+                "type": "query",
+                "description": "filter by resource type (chart or dashboard)"
+              },
+              {
+                "name": "resourceUuids",
+                "value": "",
+                "type": "query",
+                "description": "filter by resource UUIDs (comma-separated)"
+              },
+              {
+                "name": "destinations",
+                "value": "",
+                "type": "query",
+                "description": "filter by destination types (comma-separated: email, slack, msteams, googlechat)"
+              },
+              {
+                "name": "includeLatestRun",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "List all schedulers with pagination, search, sorting, and filtering"
+        },
+        {
+          "info": {
+            "name": "Get scheduler",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/schedulers/:schedulerUuid",
+            "params": [
+              {
+                "name": "schedulerUuid",
+                "value": "",
+                "type": "path",
+                "description": "The uuid of the scheduler to update"
+              }
+            ]
+          },
+          "docs": "Get a scheduler"
+        },
+        {
+          "info": {
+            "name": "Update scheduler",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "/api/v1/schedulers/:schedulerUuid",
+            "params": [
+              {
+                "name": "schedulerUuid",
+                "value": "",
+                "type": "path",
+                "description": "The uuid of the scheduler to update"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update a scheduler"
+        },
+        {
+          "info": {
+            "name": "Delete scheduler",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "/api/v1/schedulers/:schedulerUuid",
+            "params": [
+              {
+                "name": "schedulerUuid",
+                "value": "",
+                "type": "path",
+                "description": "The uuid of the scheduler to delete"
+              }
+            ]
+          },
+          "docs": "Delete a scheduler"
+        },
+        {
+          "info": {
+            "name": "Update scheduler enabled status",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "/api/v1/schedulers/:schedulerUuid/enabled",
+            "params": [
+              {
+                "name": "schedulerUuid",
+                "value": "",
+                "type": "path",
+                "description": "The uuid of the scheduler to update"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Set scheduler enabled"
+        },
+        {
+          "info": {
+            "name": "Reassign scheduler owner",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "/api/v1/schedulers/:projectUuid/reassign-owner",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path",
+                "description": "The uuid of the project"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Reassign ownership of multiple schedulers"
+        },
+        {
+          "info": {
+            "name": "Get scheduled jobs",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/schedulers/:schedulerUuid/jobs",
+            "params": [
+              {
+                "name": "schedulerUuid",
+                "value": "",
+                "type": "path",
+                "description": "The uuid of the scheduler to update"
+              }
+            ]
+          },
+          "docs": "Get scheduled jobs"
+        },
+        {
+          "info": {
+            "name": "Get scheduler job status",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/schedulers/job/:jobId/status",
+            "params": [
+              {
+                "name": "jobId",
+                "value": "",
+                "type": "path",
+                "description": "the jobId for the status to check"
+              }
+            ]
+          },
+          "docs": "Get a generic job status\nThis method can be used when polling from the frontend"
+        },
+        {
+          "info": {
+            "name": "Send scheduler",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v1/schedulers/send",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Send a scheduler now before saving it"
+        },
+        {
+          "info": {
+            "name": "Send scheduler by uuid",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v1/schedulers/:schedulerUuid/send",
+            "params": [
+              {
+                "name": "schedulerUuid",
+                "value": "",
+                "type": "path",
+                "description": "The uuid of the scheduler to send now"
+              }
+            ]
+          },
+          "docs": "Send an existing scheduler now by its uuid"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

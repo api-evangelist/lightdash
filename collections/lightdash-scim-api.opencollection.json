@@ -1,0 +1,410 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Lightdash AiAgents SCIM API",
+    "version": "0.3156.1"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "SCIM",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List users",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/scim/v2/Users",
+            "params": [
+              {
+                "name": "filter",
+                "value": "",
+                "type": "query",
+                "description": "SCIM filter string (optional). See: https://bookstack.soffid.com/books/scim/page/scim-query-syntax"
+              },
+              {
+                "name": "startIndex",
+                "value": "",
+                "type": "query",
+                "description": "1-based index of the first result to return (optional)"
+              },
+              {
+                "name": "count",
+                "value": "",
+                "type": "query",
+                "description": "Maximum number of results to return (optional)"
+              }
+            ]
+          },
+          "docs": "List SCIM users in the organization"
+        },
+        {
+          "info": {
+            "name": "Create user",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v1/scim/v2/Users",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a new user"
+        },
+        {
+          "info": {
+            "name": "Get user",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/scim/v2/Users/:userUuid",
+            "params": [
+              {
+                "name": "userUuid",
+                "value": "",
+                "type": "path",
+                "description": "Lightdash user UUID - this is used as a unique identifier for SCIM"
+              }
+            ]
+          },
+          "docs": "Get a SCIM user by ID"
+        },
+        {
+          "info": {
+            "name": "Replace user",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "/api/v1/scim/v2/Users/:userUuid",
+            "params": [
+              {
+                "name": "userUuid",
+                "value": "",
+                "type": "path",
+                "description": "UUID of the user to update"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update a user by ID (SCIM PUT)"
+        },
+        {
+          "info": {
+            "name": "Patch user",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "/api/v1/scim/v2/Users/:userUuid",
+            "params": [
+              {
+                "name": "userUuid",
+                "value": "",
+                "type": "path",
+                "description": "UUID of the user to patch"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Patch a user by ID (SCIM PATCH)"
+        },
+        {
+          "info": {
+            "name": "Delete user",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "/api/v1/scim/v2/Users/:userUuid",
+            "params": [
+              {
+                "name": "userUuid",
+                "value": "",
+                "type": "path",
+                "description": "UUID of the user to delete"
+              }
+            ]
+          },
+          "docs": "Delete a user by ID"
+        },
+        {
+          "info": {
+            "name": "Root check",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/scim/v2"
+          },
+          "docs": "Root SCIM endpoint for validating SCIM configuration"
+        },
+        {
+          "info": {
+            "name": "Provider config",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/scim/v2/ServiceProviderConfig"
+          },
+          "docs": "Get SCIM service provider configuration"
+        },
+        {
+          "info": {
+            "name": "List schemas",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/scim/v2/Schemas"
+          },
+          "docs": "Get SCIM schemas"
+        },
+        {
+          "info": {
+            "name": "Get schema",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/scim/v2/Schemas/:schemaId",
+            "params": [
+              {
+                "name": "schemaId",
+                "value": "",
+                "type": "path",
+                "description": "schema identifier"
+              }
+            ]
+          },
+          "docs": "Get individual SCIM schema"
+        },
+        {
+          "info": {
+            "name": "List resource types",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/scim/v2/ResourceTypes"
+          },
+          "docs": "Get SCIM resource types"
+        },
+        {
+          "info": {
+            "name": "Get resource type",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/scim/v2/ResourceTypes/:resourceTypeId",
+            "params": [
+              {
+                "name": "resourceTypeId",
+                "value": "",
+                "type": "path",
+                "description": "resource type identifier"
+              }
+            ]
+          },
+          "docs": "Get individual SCIM resource type"
+        },
+        {
+          "info": {
+            "name": "List roles",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/scim/v2/Roles",
+            "params": [
+              {
+                "name": "filter",
+                "value": "",
+                "type": "query",
+                "description": "Filter to apply to the role list (optional)"
+              },
+              {
+                "name": "startIndex",
+                "value": "",
+                "type": "query",
+                "description": "SCIM 2.0 startIndex (1-based). Defaults to 1."
+              },
+              {
+                "name": "count",
+                "value": "",
+                "type": "query",
+                "description": "SCIM 2.0 count (page size). Defaults to 100."
+              }
+            ]
+          },
+          "docs": "Get a list of roles within an organization"
+        },
+        {
+          "info": {
+            "name": "Get role",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/scim/v2/Roles/:roleId",
+            "params": [
+              {
+                "name": "roleId",
+                "value": "",
+                "type": "path",
+                "description": "Role ID - this is used as a unique identifier for SCIM"
+              }
+            ]
+          },
+          "docs": "Get a SCIM role by ID"
+        },
+        {
+          "info": {
+            "name": "List groups",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/scim/v2/Groups",
+            "params": [
+              {
+                "name": "filter",
+                "value": "",
+                "type": "query",
+                "description": "Filter to apply to the group list (optional)"
+              },
+              {
+                "name": "startIndex",
+                "value": "",
+                "type": "query",
+                "description": "Index of the first group to return (optional)"
+              },
+              {
+                "name": "count",
+                "value": "",
+                "type": "query",
+                "description": "Number of groups to return (optional)"
+              }
+            ]
+          },
+          "docs": "Get a list of groups within an organization"
+        },
+        {
+          "info": {
+            "name": "Create group",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v1/scim/v2/Groups",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a new group in the SCIM application"
+        },
+        {
+          "info": {
+            "name": "Get group",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/scim/v2/Groups/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "SCIM ID of the group to retrieve"
+              }
+            ]
+          },
+          "docs": "Get a specific group by its SCIM ID"
+        },
+        {
+          "info": {
+            "name": "Replace group",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "/api/v1/scim/v2/Groups/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "SCIM ID of the group to update"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update a group's attributes completely"
+        },
+        {
+          "info": {
+            "name": "Patch group",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "/api/v1/scim/v2/Groups/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "SCIM ID of the group to update"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Partially updates a group’s attributes (e.g., add or remove members)."
+        },
+        {
+          "info": {
+            "name": "Delete group",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "/api/v1/scim/v2/Groups/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "SCIM ID of the group to delete"
+              }
+            ]
+          },
+          "docs": "Delete a specific group by its SCIM ID"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

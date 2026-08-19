@@ -1,0 +1,264 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Lightdash AiAgents Spaces API",
+    "version": "0.3156.1"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Spaces",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get space",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/projects/:projectUuid/spaces/:spaceUuid",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path",
+                "description": "The uuid of the space's parent project"
+              },
+              {
+                "name": "spaceUuid",
+                "value": "",
+                "type": "path",
+                "description": "The uuid of the space to get"
+              }
+            ]
+          },
+          "docs": "Get details for a space in a project"
+        },
+        {
+          "info": {
+            "name": "Update space",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "/api/v1/projects/:projectUuid/spaces/:spaceUuid",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path",
+                "description": "The uuid of the space's parent project"
+              },
+              {
+                "name": "spaceUuid",
+                "value": "",
+                "type": "path",
+                "description": "The uuid of the space to update"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update a space in a project"
+        },
+        {
+          "info": {
+            "name": "Delete space",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "/api/v1/projects/:projectUuid/spaces/:spaceUuid",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path",
+                "description": "The uuid of the space's parent project"
+              },
+              {
+                "name": "spaceUuid",
+                "value": "",
+                "type": "path",
+                "description": "The uuid of the space to delete"
+              }
+            ]
+          },
+          "docs": "Delete a space from a project"
+        },
+        {
+          "info": {
+            "name": "Get delete impact",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/projects/:projectUuid/spaces/:spaceUuid/delete-impact",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path",
+                "description": "The uuid of the space's parent project"
+              },
+              {
+                "name": "spaceUuid",
+                "value": "",
+                "type": "path",
+                "description": "The uuid of the space to check"
+              }
+            ]
+          },
+          "docs": "Get the impact of deleting a space (affected child spaces, charts, dashboards)"
+        },
+        {
+          "info": {
+            "name": "Create space",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v1/projects/:projectUuid/spaces",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path",
+                "description": "The uuid of the space's parent project"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a new space inside a project"
+        },
+        {
+          "info": {
+            "name": "Grant user access to space",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v1/projects/:projectUuid/spaces/:spaceUuid/share",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path",
+                "description": "The uuid of the space's parent project"
+              },
+              {
+                "name": "spaceUuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Grant a user access to a space"
+        },
+        {
+          "info": {
+            "name": "Revoke user access to space",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "/api/v1/projects/:projectUuid/spaces/:spaceUuid/share/:userUuid",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path",
+                "description": "The uuid of the space's parent project"
+              },
+              {
+                "name": "spaceUuid",
+                "value": "",
+                "type": "path",
+                "description": "The uuid of the space to update"
+              },
+              {
+                "name": "userUuid",
+                "value": "",
+                "type": "path",
+                "description": "The uuid of the user to revoke access from"
+              }
+            ]
+          },
+          "docs": "Remove a user's access to a space"
+        },
+        {
+          "info": {
+            "name": "Grant group access to space",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v1/projects/:projectUuid/spaces/:spaceUuid/group/share",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path",
+                "description": "The uuid of the space's parent project"
+              },
+              {
+                "name": "spaceUuid",
+                "value": "",
+                "type": "path",
+                "description": "The uuid of the space to update"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Grant a group access to a space"
+        },
+        {
+          "info": {
+            "name": "Revoke group access to space",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "/api/v1/projects/:projectUuid/spaces/:spaceUuid/group/share/:groupUuid",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path",
+                "description": "The uuid of the space's parent project"
+              },
+              {
+                "name": "spaceUuid",
+                "value": "",
+                "type": "path",
+                "description": "The uuid of the space to update"
+              },
+              {
+                "name": "groupUuid",
+                "value": "",
+                "type": "path",
+                "description": "The uuid of the group to revoke access from"
+              }
+            ]
+          },
+          "docs": "Remove a group's access to a space"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

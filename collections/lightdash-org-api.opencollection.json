@@ -1,0 +1,154 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Lightdash AiAgents Org API",
+    "version": "0.3156.1"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Org",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get AI router config",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/org/aiRouter"
+          },
+          "docs": "Get the AI router configuration for the organization. Returns 404 when the\nrouter has not been configured yet — clients use this to detect first-use."
+        },
+        {
+          "info": {
+            "name": "Upsert AI router config",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "/api/v1/org/aiRouter",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Upsert the AI router configuration. Creates the row lazily on first save."
+        },
+        {
+          "info": {
+            "name": "Get AI router instruction",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/org/aiRouter/instructions/:projectUuid",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get the active routing instruction for a project. Returns null when no\ninstruction has been written for the project yet."
+        },
+        {
+          "info": {
+            "name": "Upsert AI router instruction",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "/api/v1/org/aiRouter/instructions/:projectUuid",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Write a new routing-instruction version for a project. Versions are\nappend-only; the latest one is the active instruction."
+        },
+        {
+          "info": {
+            "name": "Route prompt",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v1/org/aiRouter/route",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Route a user prompt to the best candidate agent in the current project."
+        },
+        {
+          "info": {
+            "name": "Commit router decision",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v1/org/aiRouter/decisions/:decisionUuid/commit",
+            "params": [
+              {
+                "name": "decisionUuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Commit a router decision once the user has resolved it (router\nauto-routed and the thread is created, or the user picked an agent\nfrom the picker). Decisions left uncommitted indicate the user\nabandoned the flow."
+        },
+        {
+          "info": {
+            "name": "List router decisions",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/org/aiRouter/decisions",
+            "params": [
+              {
+                "name": "confidence",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "selectionMode",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "fromDate",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "toDate",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "List recent routing decisions for the org's router."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

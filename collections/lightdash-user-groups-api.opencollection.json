@@ -1,0 +1,235 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Lightdash AiAgents User Groups API",
+    "version": "0.3156.1"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "User Groups",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get group",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/groups/:groupUuid",
+            "params": [
+              {
+                "name": "groupUuid",
+                "value": "",
+                "type": "path",
+                "description": "unique id of the group"
+              },
+              {
+                "name": "includeMembers",
+                "value": "",
+                "type": "query",
+                "description": "number of members to include"
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query",
+                "description": "offset of members to include"
+              }
+            ]
+          },
+          "docs": "Get group details"
+        },
+        {
+          "info": {
+            "name": "Update group",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "/api/v1/groups/:groupUuid",
+            "params": [
+              {
+                "name": "groupUuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update a group"
+        },
+        {
+          "info": {
+            "name": "Delete group",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "/api/v1/groups/:groupUuid",
+            "params": [
+              {
+                "name": "groupUuid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Delete a group"
+        },
+        {
+          "info": {
+            "name": "Add user to group",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "/api/v1/groups/:groupUuid/members/:userUuid",
+            "params": [
+              {
+                "name": "groupUuid",
+                "value": "",
+                "type": "path",
+                "description": "the UUID for the group to add the user to"
+              },
+              {
+                "name": "userUuid",
+                "value": "",
+                "type": "path",
+                "description": "the UUID for the user to add to the group"
+              }
+            ]
+          },
+          "docs": "Add a Lightdash user to a group"
+        },
+        {
+          "info": {
+            "name": "Remove user from group",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "/api/v1/groups/:groupUuid/members/:userUuid",
+            "params": [
+              {
+                "name": "groupUuid",
+                "value": "",
+                "type": "path",
+                "description": "the UUID for the group to remove the user from"
+              },
+              {
+                "name": "userUuid",
+                "value": "",
+                "type": "path",
+                "description": "the UUID for the user to remove from the group"
+              }
+            ]
+          },
+          "docs": "Remove a user from a group"
+        },
+        {
+          "info": {
+            "name": "Get group members",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/groups/:groupUuid/members",
+            "params": [
+              {
+                "name": "groupUuid",
+                "value": "",
+                "type": "path",
+                "description": "the UUID for the group to view the members of"
+              }
+            ]
+          },
+          "docs": "View members of a group"
+        },
+        {
+          "info": {
+            "name": "Add project access to group",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v1/groups/:groupUuid/projects/:projectUuid",
+            "params": [
+              {
+                "name": "groupUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Add project access to a group"
+        },
+        {
+          "info": {
+            "name": "Update project access for group",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "/api/v1/groups/:groupUuid/projects/:projectUuid",
+            "params": [
+              {
+                "name": "groupUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update project access for a group"
+        },
+        {
+          "info": {
+            "name": "Remove project access from group",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "/api/v1/groups/:groupUuid/projects/:projectUuid",
+            "params": [
+              {
+                "name": "groupUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Remove project access from a group"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

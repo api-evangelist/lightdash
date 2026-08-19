@@ -1,0 +1,168 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Lightdash AiAgents Custom Roles API",
+    "version": "0.3156.1"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Custom Roles",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Create custom role",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v2/orgs/:orgUuid/roles",
+            "params": [
+              {
+                "name": "orgUuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a new role in organization"
+        },
+        {
+          "info": {
+            "name": "Update custom role",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "/api/v2/orgs/:orgUuid/roles/:roleUuid",
+            "params": [
+              {
+                "name": "orgUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "roleUuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update role in organization"
+        },
+        {
+          "info": {
+            "name": "Delete custom role",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "/api/v2/orgs/:orgUuid/roles/:roleUuid",
+            "params": [
+              {
+                "name": "orgUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "roleUuid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Delete role from organization"
+        },
+        {
+          "info": {
+            "name": "List role assignees",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v2/orgs/:orgUuid/roles/:roleUuid/assignees",
+            "params": [
+              {
+                "name": "orgUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "roleUuid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "List the users, groups, and service accounts currently assigned to a role.\nUsed by the delete-confirmation modal to explain why a role cannot\nbe deleted while still in use."
+        },
+        {
+          "info": {
+            "name": "Add scopes to role",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v2/orgs/:orgUuid/roles/:roleUuid/scopes",
+            "params": [
+              {
+                "name": "orgUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "roleUuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Add scopes to role"
+        },
+        {
+          "info": {
+            "name": "Remove scope from role",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "/api/v2/orgs/:orgUuid/roles/:roleUuid/scopes/:scopeName",
+            "params": [
+              {
+                "name": "orgUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "roleUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "scopeName",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Remove scope from role"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,124 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Lightdash AiAgents Comments API",
+    "version": "0.3156.1"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Comments",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Create comment",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v1/comments/dashboards/:dashboardUuid/:dashboardTileUuid",
+            "params": [
+              {
+                "name": "dashboardUuid",
+                "value": "",
+                "type": "path",
+                "description": "the uuid of the dashboard"
+              },
+              {
+                "name": "dashboardTileUuid",
+                "value": "",
+                "type": "path",
+                "description": "the uuid of the dashboard tile"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a comment on a dashboard tile"
+        },
+        {
+          "info": {
+            "name": "Get comments",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/comments/dashboards/:dashboardUuidOrSlug",
+            "params": [
+              {
+                "name": "dashboardUuidOrSlug",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "resolved",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Gets all comments for a dashboard"
+        },
+        {
+          "info": {
+            "name": "Resolve comment",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "/api/v1/comments/dashboards/:dashboardUuid/:commentId",
+            "params": [
+              {
+                "name": "dashboardUuid",
+                "value": "",
+                "type": "path",
+                "description": "the uuid of the dashboard"
+              },
+              {
+                "name": "commentId",
+                "value": "",
+                "type": "path",
+                "description": "the uuid of the comment"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Resolves or unresolves a comment on a dashboard"
+        },
+        {
+          "info": {
+            "name": "Delete comment",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "/api/v1/comments/dashboards/:dashboardUuid/:commentId",
+            "params": [
+              {
+                "name": "dashboardUuid",
+                "value": "",
+                "type": "path",
+                "description": "the uuid of the dashboard"
+              },
+              {
+                "name": "commentId",
+                "value": "",
+                "type": "path",
+                "description": "the uuid of the comment"
+              }
+            ]
+          },
+          "docs": "Deletes a comment on a dashboard"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,100 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Lightdash AiAgents Changesets API",
+    "version": "0.3156.1"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Changesets",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List changesets",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/projects/:projectUuid/changesets",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get active changeset for a project"
+        },
+        {
+          "info": {
+            "name": "Get change",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/projects/:projectUuid/changesets/changes/:changeUuid",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "changeUuid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get a specific change by UUID"
+        },
+        {
+          "info": {
+            "name": "Revert change",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v1/projects/:projectUuid/changesets/changes/:changeUuid/revert",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "changeUuid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Revert a specific change"
+        },
+        {
+          "info": {
+            "name": "Revert all changes",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v1/projects/:projectUuid/changesets/revert-all",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Revert all changes in the active changeset"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

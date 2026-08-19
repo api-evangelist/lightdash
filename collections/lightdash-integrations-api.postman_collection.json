@@ -1,0 +1,1464 @@
+{
+  "item": [
+    {
+      "id": "f25a38b3-deaf-4cd0-9006-86002bec37c0",
+      "name": "Integrations",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "88374c1f-eb3d-4837-a2bc-366732099e99",
+          "name": "Get Slack channels",
+          "request": {
+            "name": "Get Slack channels",
+            "description": {
+              "content": "Get slack channels",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "slack",
+                "channels"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "search",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "excludeArchived",
+                  "value": "<boolean>"
+                },
+                {
+                  "disabled": false,
+                  "key": "excludeDms",
+                  "value": "<boolean>"
+                },
+                {
+                  "disabled": false,
+                  "key": "excludeGroups",
+                  "value": "<boolean>"
+                },
+                {
+                  "disabled": false,
+                  "key": "forceRefresh",
+                  "value": "<boolean>"
+                },
+                {
+                  "disabled": false,
+                  "key": "includeChannelIds",
+                  "value": "<string>"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "8a0a85e0-1e0a-4c97-9708-8090408ce7c1",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "slack",
+                    "channels"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "search",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "excludeArchived",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "excludeDms",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "excludeGroups",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "forceRefresh",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "includeChannelIds",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": \"ok\",\n  \"results\": [\n    {\n      \"name\": \"string\",\n      \"id\": \"string\"\n    },\n    {\n      \"name\": \"string\",\n      \"id\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e77367c4-8070-469c-a8f8-fcd5f90050a0",
+              "name": "Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "slack",
+                    "channels"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "search",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "excludeArchived",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "excludeDms",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "excludeGroups",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "forceRefresh",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "includeChannelIds",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"name\": \"string\",\n    \"statusCode\": 4988.486568295213,\n    \"data\": {},\n    \"message\": \"string\"\n  },\n  \"status\": \"error\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "2c419689-c07d-481e-bea1-5812e4190fc9",
+          "name": "Lookup channel",
+          "request": {
+            "name": "Lookup channel",
+            "description": {
+              "content": "Look up a single Slack channel by ID. Used for on-demand fetching when\nuser pastes a channel ID not in the cache.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "slack",
+                "channels",
+                ":channelId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "channelId",
+                  "description": "(Required) Slack channel ID (e.g., C01234567)"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "3407494f-ecc3-4ce5-94e5-c05154eafd16",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "slack",
+                    "channels",
+                    ":channelId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "channelId",
+                      "description": "(Required) Slack channel ID (e.g., C01234567)"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"results\": {\n    \"name\": \"string\",\n    \"id\": \"string\"\n  },\n  \"status\": \"ok\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "2dbaa7d2-9643-4291-950e-b4167ee569fc",
+              "name": "Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "slack",
+                    "channels",
+                    ":channelId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "channelId",
+                      "description": "(Required) Slack channel ID (e.g., C01234567)"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"name\": \"string\",\n    \"statusCode\": 4988.486568295213,\n    \"data\": {},\n    \"message\": \"string\"\n  },\n  \"status\": \"error\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "4ba06876-28ed-45c2-88c9-2bdd3cf5d23b",
+          "name": "Update Slack custom settings",
+          "request": {
+            "name": "Update Slack custom settings",
+            "description": {
+              "content": "Update slack notification channel to send notifications to scheduled jobs fail",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "slack",
+                "custom-settings"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"appProfilePhotoUrl\": \"<string>\",\n  \"notificationChannel\": \"<string>\",\n  \"unfurlsEnabled\": \"<boolean>\",\n  \"aiMultiAgentProjectUuids\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"aiMultiAgentChannelId\": \"<string>\",\n  \"aiRequireOAuth\": \"<boolean>\",\n  \"aiThreadAccessConsent\": \"<boolean>\",\n  \"slackChannelProjectMappings\": [\n    {\n      \"availableTags\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"slackChannelId\": \"<string>\",\n      \"projectUuid\": \"<string>\"\n    },\n    {\n      \"availableTags\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"slackChannelId\": \"<string>\",\n      \"projectUuid\": \"<string>\"\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "53cf4938-4d58-40b8-b5a2-9860ae9b0a52",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "slack",
+                    "custom-settings"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"appProfilePhotoUrl\": \"<string>\",\n  \"notificationChannel\": \"<string>\",\n  \"unfurlsEnabled\": \"<boolean>\",\n  \"aiMultiAgentProjectUuids\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"aiMultiAgentChannelId\": \"<string>\",\n  \"aiRequireOAuth\": \"<boolean>\",\n  \"aiThreadAccessConsent\": \"<boolean>\",\n  \"slackChannelProjectMappings\": [\n    {\n      \"availableTags\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"slackChannelId\": \"<string>\",\n      \"projectUuid\": \"<string>\"\n    },\n    {\n      \"availableTags\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"slackChannelId\": \"<string>\",\n      \"projectUuid\": \"<string>\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": \"ok\",\n  \"results\": \"\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "06cbc7d1-dd2e-4052-8f80-3360617b5715",
+              "name": "Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "slack",
+                    "custom-settings"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"appProfilePhotoUrl\": \"<string>\",\n  \"notificationChannel\": \"<string>\",\n  \"unfurlsEnabled\": \"<boolean>\",\n  \"aiMultiAgentProjectUuids\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"aiMultiAgentChannelId\": \"<string>\",\n  \"aiRequireOAuth\": \"<boolean>\",\n  \"aiThreadAccessConsent\": \"<boolean>\",\n  \"slackChannelProjectMappings\": [\n    {\n      \"availableTags\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"slackChannelId\": \"<string>\",\n      \"projectUuid\": \"<string>\"\n    },\n    {\n      \"availableTags\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"slackChannelId\": \"<string>\",\n      \"projectUuid\": \"<string>\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"name\": \"string\",\n    \"statusCode\": 4988.486568295213,\n    \"data\": {},\n    \"message\": \"string\"\n  },\n  \"status\": \"error\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "c72686a7-d9a8-4c13-b402-3bce0f2a96f0",
+          "name": "Check Slack OpenID link status",
+          "request": {
+            "name": "Check Slack OpenID link status",
+            "description": {
+              "content": "Check if the user has an OpenID identity for Slack",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "slack",
+                "is-authenticated"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "a5625e3d-d3a3-481f-90f4-71f2754f866c",
+              "name": "Ok",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "slack",
+                    "is-authenticated"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": \"ok\",\n  \"results\": \"\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "2cfc2cbb-e9d4-4bca-af36-a300737f6bc5",
+              "name": "Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "slack",
+                    "is-authenticated"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"name\": \"string\",\n    \"statusCode\": 4988.486568295213,\n    \"data\": {},\n    \"message\": \"string\"\n  },\n  \"status\": \"error\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "a34a749a-9fdb-4c0f-a6b6-346035248288",
+          "name": "Get Slack installation",
+          "request": {
+            "name": "Get Slack installation",
+            "description": {
+              "content": "Get Slack installation details for the organization",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "slack"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "24082925-79d7-4938-855b-9af0e3d6e823",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "slack"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": \"ok\",\n  \"results\": {\n    \"hasRequiredScopes\": true,\n    \"scopes\": [\n      \"string\",\n      \"string\"\n    ],\n    \"createdAt\": \"1990-02-04T17:50:24.384Z\",\n    \"slackTeamName\": \"string\",\n    \"organizationUuid\": \"string\",\n    \"unfurlsEnabled\": false,\n    \"aiMultiAgentProjectUuids\": [\n      \"string\",\n      \"string\"\n    ],\n    \"aiMultiAgentChannelId\": \"string\",\n    \"aiRequireOAuth\": true,\n    \"aiThreadAccessConsent\": true,\n    \"slackChannelProjectMappings\": [\n      {\n        \"availableTags\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"slackChannelId\": \"<string>\",\n        \"projectUuid\": \"<string>\"\n      },\n      {\n        \"availableTags\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"slackChannelId\": \"<string>\",\n        \"projectUuid\": \"<string>\"\n      }\n    ],\n    \"appProfilePhotoUrl\": \"string\",\n    \"notificationChannel\": \"string\",\n    \"token\": \"string\",\n    \"appName\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "2632aa96-a09c-4ad4-a987-8e17666f817f",
+              "name": "Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "slack"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"name\": \"string\",\n    \"statusCode\": 4988.486568295213,\n    \"data\": {},\n    \"message\": \"string\"\n  },\n  \"status\": \"error\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "c83b2722-ca28-440a-9634-2b42a66ef528",
+          "name": "Delete Slack installation",
+          "request": {
+            "name": "Delete Slack installation",
+            "description": {
+              "content": "Delete the Slack installation for the organization",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "slack"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "10067094-3f78-4b02-911e-89e719ec87ae",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "slack"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": \"ok\",\n  \"results\": \"\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "89b86232-028d-43f5-909e-cf95472c0f5a",
+              "name": "Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "slack"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"name\": \"string\",\n    \"statusCode\": 4988.486568295213,\n    \"data\": {},\n    \"message\": \"string\"\n  },\n  \"status\": \"error\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "f5de2b5e-ac15-47a3-8b95-7c10f381ba6d",
+          "name": "Get Slack image",
+          "request": {
+            "name": "Get Slack image",
+            "description": {
+              "content": "Get a Slack image by nanoId",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "slack",
+                "image",
+                ":nanoId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "d4f54e77-c8fc-4b0c-b8ca-9cfef573ac3f",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "slack",
+                    "image",
+                    ":nanoId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "\"string\"",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "10bdd59a-d01d-4d1b-9c5d-5933cc73b02f",
+              "name": "Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "slack",
+                    "image",
+                    ":nanoId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"name\": \"string\",\n    \"statusCode\": 4988.486568295213,\n    \"data\": {},\n    \"message\": \"string\"\n  },\n  \"status\": \"error\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "99bf1a8e-3789-4b7c-b2d2-e7a189f28db8",
+          "name": "Get Slack preview",
+          "request": {
+            "name": "Get Slack preview",
+            "description": {
+              "content": "Get a Slack unfurl preview image via redirect to a fresh signed URL.\nFalls back to a placeholder image if the preview is not found.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "slack",
+                "preview",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "c21d031e-707a-41a6-8e69-a916f44e8817",
+              "name": "Redirect",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "slack",
+                    "preview",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Found",
+              "code": 302,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "560bb973-483f-4c27-8580-d5245cdb6d8b",
+              "name": "Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "slack",
+                    "preview",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"name\": \"string\",\n    \"statusCode\": 4988.486568295213,\n    \"data\": {},\n    \"message\": \"string\"\n  },\n  \"status\": \"error\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "eaeef347-d4ad-4e61-b56a-95947fe18944",
+          "name": "Install Slack",
+          "request": {
+            "name": "Install Slack",
+            "description": {
+              "content": "Start the Slack installation flow",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "slack",
+                "install"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "676f7659-10de-4a4f-8a81-376363d7af68",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "slack",
+                    "install"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "5b69cb0a-3a07-4b08-b1c6-05015dbb9ea2",
+              "name": "Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "slack",
+                    "install"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"name\": \"string\",\n    \"statusCode\": 4988.486568295213,\n    \"data\": {},\n    \"message\": \"string\"\n  },\n  \"status\": \"error\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "c227e4ed-02f4-4807-98d0-a9627f2750dc",
+          "name": "Get Google Drive access token",
+          "request": {
+            "name": "Get Google Drive access token",
+            "description": {
+              "content": "Get access token for google drive",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "gdrive",
+                "get-access-token"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "a8a3947e-8c49-4979-9c57-8ac13a05c5be",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "gdrive",
+                    "get-access-token"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"results\": \"string\",\n  \"status\": \"ok\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "67188119-0d07-4785-9b0c-911125db00e8",
+              "name": "Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "gdrive",
+                    "get-access-token"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"name\": \"string\",\n    \"statusCode\": 4988.486568295213,\n    \"data\": {},\n    \"message\": \"string\"\n  },\n  \"status\": \"error\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "be8a5d65-6f89-44cb-b629-50a8a62a7f36",
+          "name": "Upload to Google Sheet",
+          "request": {
+            "name": "Upload to Google Sheet",
+            "description": {
+              "content": "Upload results from query to Google Sheet",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "gdrive",
+                "upload-gsheet"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"columnOrder\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"showTableNames\": \"<boolean>\",\n  \"metricQuery\": {\n    \"tableCalculations\": [\n      {\n        \"displayName\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"name\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"sql\": \"<string>\",\n        \"type\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"format\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"index\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      },\n      {\n        \"displayName\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"name\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"sql\": \"<string>\",\n        \"type\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"format\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"index\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      }\n    ],\n    \"limit\": \"<double>\",\n    \"sorts\": [\n      {\n        \"descending\": \"<boolean>\",\n        \"fieldId\": \"<string>\",\n        \"pivotValues\": [\n          {\n            \"value\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"reference\": \"<string>\"\n          },\n          {\n            \"value\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"reference\": \"<string>\"\n          }\n        ],\n        \"nullsFirst\": \"<boolean>\"\n      },\n      {\n        \"descending\": \"<boolean>\",\n        \"fieldId\": \"<string>\",\n        \"pivotValues\": [\n          {\n            \"value\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"reference\": \"<string>\"\n          },\n          {\n            \"value\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"reference\": \"<string>\"\n          }\n        ],\n        \"nullsFirst\": \"<boolean>\"\n      }\n    ],\n    \"filters\": {\n      \"tableCalculations\": {\n        \"or\": [\n          {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        ],\n        \"id\": \"<string>\"\n      },\n      \"metrics\": {\n        \"or\": [\n          {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        ],\n        \"id\": \"<string>\"\n      },\n      \"dimensions\": {\n        \"or\": [\n          {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        ],\n        \"id\": \"<string>\"\n      }\n    },\n    \"metrics\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"dimensions\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"exploreName\": \"<string>\",\n    \"metadata\": {\n      \"hasADateDimension\": {\n        \"name\": \"<string>\",\n        \"label\": \"<string>\",\n        \"table\": \"<string>\"\n      }\n    },\n    \"customDimensions\": [\n      {\n        \"id\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"name\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"table\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"type\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"dimensionId\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"binType\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"binNumber\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      },\n      {\n        \"id\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"name\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"table\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"type\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"dimensionId\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"binType\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"binNumber\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      }\n    ],\n    \"additionalMetrics\": [\n      {\n        \"type\": \"<string>\",\n        \"sql\": \"<string>\",\n        \"table\": \"<string>\",\n        \"name\": \"<string>\",\n        \"label\": \"<string>\",\n        \"description\": \"<string>\",\n        \"hidden\": \"<boolean>\",\n        \"round\": \"<double>\",\n        \"compact\": \"<string>\",\n        \"format\": \"<string>\",\n        \"separator\": \"<string>\",\n        \"index\": \"<double>\",\n        \"filters\": [\n          {\n            \"operator\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"id\": \"<string>\",\n            \"target\": {\n              \"fieldRef\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            \"values\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ],\n            \"settings\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"disabled\": \"<boolean>\",\n            \"required\": \"<boolean>\",\n            \"caseSensitive\": \"<boolean>\"\n          },\n          {\n            \"operator\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"id\": \"<string>\",\n            \"target\": {\n              \"fieldRef\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            \"values\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ],\n            \"settings\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"disabled\": \"<boolean>\",\n            \"required\": \"<boolean>\",\n            \"caseSensitive\": \"<boolean>\"\n          }\n        ],\n        \"baseDimensionName\": \"<string>\",\n        \"uuid\": \"<string>\",\n        \"percentile\": \"<double>\",\n        \"distinctKeys\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"formatOptions\": {\n          \"type\": \"<string>\",\n          \"round\": \"<double>\",\n          \"separator\": \"<string>\",\n          \"currency\": \"<string>\",\n          \"compact\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"prefix\": \"<string>\",\n          \"suffix\": \"<string>\",\n          \"timeInterval\": \"<string>\",\n          \"custom\": \"<string>\"\n        },\n        \"generationType\": \"<string>\",\n        \"baseMetricId\": \"<string>\",\n        \"timeDimensionId\": \"<string>\",\n        \"granularity\": \"<string>\",\n        \"periodOffset\": \"<double>\"\n      },\n      {\n        \"type\": \"<string>\",\n        \"sql\": \"<string>\",\n        \"table\": \"<string>\",\n        \"name\": \"<string>\",\n        \"label\": \"<string>\",\n        \"description\": \"<string>\",\n        \"hidden\": \"<boolean>\",\n        \"round\": \"<double>\",\n        \"compact\": \"<string>\",\n        \"format\": \"<string>\",\n        \"separator\": \"<string>\",\n        \"index\": \"<double>\",\n        \"filters\": [\n          {\n            \"operator\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"id\": \"<string>\",\n            \"target\": {\n              \"fieldRef\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            \"values\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ],\n            \"settings\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"disabled\": \"<boolean>\",\n            \"required\": \"<boolean>\",\n            \"caseSensitive\": \"<boolean>\"\n          },\n          {\n            \"operator\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"id\": \"<string>\",\n            \"target\": {\n              \"fieldRef\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            \"values\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ],\n            \"settings\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"disabled\": \"<boolean>\",\n            \"required\": \"<boolean>\",\n            \"caseSensitive\": \"<boolean>\"\n          }\n        ],\n        \"baseDimensionName\": \"<string>\",\n        \"uuid\": \"<string>\",\n        \"percentile\": \"<double>\",\n        \"distinctKeys\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"formatOptions\": {\n          \"type\": \"<string>\",\n          \"round\": \"<double>\",\n          \"separator\": \"<string>\",\n          \"currency\": \"<string>\",\n          \"compact\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"prefix\": \"<string>\",\n          \"suffix\": \"<string>\",\n          \"timeInterval\": \"<string>\",\n          \"custom\": \"<string>\"\n        },\n        \"generationType\": \"<string>\",\n        \"baseMetricId\": \"<string>\",\n        \"timeDimensionId\": \"<string>\",\n        \"granularity\": \"<string>\",\n        \"periodOffset\": \"<double>\"\n      }\n    ]\n  },\n  \"exploreId\": \"<string>\",\n  \"projectUuid\": \"<string>\",\n  \"pivotConfig\": {\n    \"metricsAsRows\": \"<boolean>\",\n    \"pivotDimensions\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"hiddenDimensionFieldIds\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"rowTotals\": \"<boolean>\",\n    \"columnTotals\": \"<boolean>\",\n    \"visibleMetricFieldIds\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"hiddenMetricFieldIds\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"columnOrder\": [\n      \"<string>\",\n      \"<string>\"\n    ]\n  },\n  \"hiddenFields\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"customLabels\": {\n    \"key_0\": \"<string>\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "3293bc4f-4735-4d03-82f9-91a438d817e7",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "gdrive",
+                    "upload-gsheet"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"columnOrder\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"showTableNames\": \"<boolean>\",\n  \"metricQuery\": {\n    \"tableCalculations\": [\n      {\n        \"displayName\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"name\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"sql\": \"<string>\",\n        \"type\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"format\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"index\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      },\n      {\n        \"displayName\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"name\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"sql\": \"<string>\",\n        \"type\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"format\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"index\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      }\n    ],\n    \"limit\": \"<double>\",\n    \"sorts\": [\n      {\n        \"descending\": \"<boolean>\",\n        \"fieldId\": \"<string>\",\n        \"pivotValues\": [\n          {\n            \"value\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"reference\": \"<string>\"\n          },\n          {\n            \"value\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"reference\": \"<string>\"\n          }\n        ],\n        \"nullsFirst\": \"<boolean>\"\n      },\n      {\n        \"descending\": \"<boolean>\",\n        \"fieldId\": \"<string>\",\n        \"pivotValues\": [\n          {\n            \"value\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"reference\": \"<string>\"\n          },\n          {\n            \"value\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"reference\": \"<string>\"\n          }\n        ],\n        \"nullsFirst\": \"<boolean>\"\n      }\n    ],\n    \"filters\": {\n      \"tableCalculations\": {\n        \"or\": [\n          {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        ],\n        \"id\": \"<string>\"\n      },\n      \"metrics\": {\n        \"or\": [\n          {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        ],\n        \"id\": \"<string>\"\n      },\n      \"dimensions\": {\n        \"or\": [\n          {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        ],\n        \"id\": \"<string>\"\n      }\n    },\n    \"metrics\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"dimensions\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"exploreName\": \"<string>\",\n    \"metadata\": {\n      \"hasADateDimension\": {\n        \"name\": \"<string>\",\n        \"label\": \"<string>\",\n        \"table\": \"<string>\"\n      }\n    },\n    \"customDimensions\": [\n      {\n        \"id\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"name\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"table\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"type\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"dimensionId\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"binType\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"binNumber\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      },\n      {\n        \"id\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"name\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"table\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"type\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"dimensionId\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"binType\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"binNumber\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      }\n    ],\n    \"additionalMetrics\": [\n      {\n        \"type\": \"<string>\",\n        \"sql\": \"<string>\",\n        \"table\": \"<string>\",\n        \"name\": \"<string>\",\n        \"label\": \"<string>\",\n        \"description\": \"<string>\",\n        \"hidden\": \"<boolean>\",\n        \"round\": \"<double>\",\n        \"compact\": \"<string>\",\n        \"format\": \"<string>\",\n        \"separator\": \"<string>\",\n        \"index\": \"<double>\",\n        \"filters\": [\n          {\n            \"operator\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"id\": \"<string>\",\n            \"target\": {\n              \"fieldRef\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            \"values\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ],\n            \"settings\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"disabled\": \"<boolean>\",\n            \"required\": \"<boolean>\",\n            \"caseSensitive\": \"<boolean>\"\n          },\n          {\n            \"operator\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"id\": \"<string>\",\n            \"target\": {\n              \"fieldRef\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            \"values\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ],\n            \"settings\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"disabled\": \"<boolean>\",\n            \"required\": \"<boolean>\",\n            \"caseSensitive\": \"<boolean>\"\n          }\n        ],\n        \"baseDimensionName\": \"<string>\",\n        \"uuid\": \"<string>\",\n        \"percentile\": \"<double>\",\n        \"distinctKeys\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"formatOptions\": {\n          \"type\": \"<string>\",\n          \"round\": \"<double>\",\n          \"separator\": \"<string>\",\n          \"currency\": \"<string>\",\n          \"compact\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"prefix\": \"<string>\",\n          \"suffix\": \"<string>\",\n          \"timeInterval\": \"<string>\",\n          \"custom\": \"<string>\"\n        },\n        \"generationType\": \"<string>\",\n        \"baseMetricId\": \"<string>\",\n        \"timeDimensionId\": \"<string>\",\n        \"granularity\": \"<string>\",\n        \"periodOffset\": \"<double>\"\n      },\n      {\n        \"type\": \"<string>\",\n        \"sql\": \"<string>\",\n        \"table\": \"<string>\",\n        \"name\": \"<string>\",\n        \"label\": \"<string>\",\n        \"description\": \"<string>\",\n        \"hidden\": \"<boolean>\",\n        \"round\": \"<double>\",\n        \"compact\": \"<string>\",\n        \"format\": \"<string>\",\n        \"separator\": \"<string>\",\n        \"index\": \"<double>\",\n        \"filters\": [\n          {\n            \"operator\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"id\": \"<string>\",\n            \"target\": {\n              \"fieldRef\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            \"values\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ],\n            \"settings\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"disabled\": \"<boolean>\",\n            \"required\": \"<boolean>\",\n            \"caseSensitive\": \"<boolean>\"\n          },\n          {\n            \"operator\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"id\": \"<string>\",\n            \"target\": {\n              \"fieldRef\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            \"values\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ],\n            \"settings\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"disabled\": \"<boolean>\",\n            \"required\": \"<boolean>\",\n            \"caseSensitive\": \"<boolean>\"\n          }\n        ],\n        \"baseDimensionName\": \"<string>\",\n        \"uuid\": \"<string>\",\n        \"percentile\": \"<double>\",\n        \"distinctKeys\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"formatOptions\": {\n          \"type\": \"<string>\",\n          \"round\": \"<double>\",\n          \"separator\": \"<string>\",\n          \"currency\": \"<string>\",\n          \"compact\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"prefix\": \"<string>\",\n          \"suffix\": \"<string>\",\n          \"timeInterval\": \"<string>\",\n          \"custom\": \"<string>\"\n        },\n        \"generationType\": \"<string>\",\n        \"baseMetricId\": \"<string>\",\n        \"timeDimensionId\": \"<string>\",\n        \"granularity\": \"<string>\",\n        \"periodOffset\": \"<double>\"\n      }\n    ]\n  },\n  \"exploreId\": \"<string>\",\n  \"projectUuid\": \"<string>\",\n  \"pivotConfig\": {\n    \"metricsAsRows\": \"<boolean>\",\n    \"pivotDimensions\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"hiddenDimensionFieldIds\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"rowTotals\": \"<boolean>\",\n    \"columnTotals\": \"<boolean>\",\n    \"visibleMetricFieldIds\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"hiddenMetricFieldIds\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"columnOrder\": [\n      \"<string>\",\n      \"<string>\"\n    ]\n  },\n  \"hiddenFields\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"customLabels\": {\n    \"key_0\": \"<string>\",\n    \"key_1\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"results\": {\n    \"jobId\": \"string\"\n  },\n  \"status\": \"ok\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "4f3d2104-7d5a-4501-bbb5-35068f285aa3",
+              "name": "Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "gdrive",
+                    "upload-gsheet"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"columnOrder\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"showTableNames\": \"<boolean>\",\n  \"metricQuery\": {\n    \"tableCalculations\": [\n      {\n        \"displayName\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"name\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"sql\": \"<string>\",\n        \"type\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"format\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"index\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      },\n      {\n        \"displayName\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"name\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"sql\": \"<string>\",\n        \"type\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"format\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"index\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      }\n    ],\n    \"limit\": \"<double>\",\n    \"sorts\": [\n      {\n        \"descending\": \"<boolean>\",\n        \"fieldId\": \"<string>\",\n        \"pivotValues\": [\n          {\n            \"value\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"reference\": \"<string>\"\n          },\n          {\n            \"value\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"reference\": \"<string>\"\n          }\n        ],\n        \"nullsFirst\": \"<boolean>\"\n      },\n      {\n        \"descending\": \"<boolean>\",\n        \"fieldId\": \"<string>\",\n        \"pivotValues\": [\n          {\n            \"value\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"reference\": \"<string>\"\n          },\n          {\n            \"value\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"reference\": \"<string>\"\n          }\n        ],\n        \"nullsFirst\": \"<boolean>\"\n      }\n    ],\n    \"filters\": {\n      \"tableCalculations\": {\n        \"or\": [\n          {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        ],\n        \"id\": \"<string>\"\n      },\n      \"metrics\": {\n        \"or\": [\n          {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        ],\n        \"id\": \"<string>\"\n      },\n      \"dimensions\": {\n        \"or\": [\n          {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        ],\n        \"id\": \"<string>\"\n      }\n    },\n    \"metrics\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"dimensions\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"exploreName\": \"<string>\",\n    \"metadata\": {\n      \"hasADateDimension\": {\n        \"name\": \"<string>\",\n        \"label\": \"<string>\",\n        \"table\": \"<string>\"\n      }\n    },\n    \"customDimensions\": [\n      {\n        \"id\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"name\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"table\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"type\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"dimensionId\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"binType\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"binNumber\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      },\n      {\n        \"id\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"name\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"table\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"type\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"dimensionId\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"binType\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"binNumber\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      }\n    ],\n    \"additionalMetrics\": [\n      {\n        \"type\": \"<string>\",\n        \"sql\": \"<string>\",\n        \"table\": \"<string>\",\n        \"name\": \"<string>\",\n        \"label\": \"<string>\",\n        \"description\": \"<string>\",\n        \"hidden\": \"<boolean>\",\n        \"round\": \"<double>\",\n        \"compact\": \"<string>\",\n        \"format\": \"<string>\",\n        \"separator\": \"<string>\",\n        \"index\": \"<double>\",\n        \"filters\": [\n          {\n            \"operator\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"id\": \"<string>\",\n            \"target\": {\n              \"fieldRef\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            \"values\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ],\n            \"settings\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"disabled\": \"<boolean>\",\n            \"required\": \"<boolean>\",\n            \"caseSensitive\": \"<boolean>\"\n          },\n          {\n            \"operator\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"id\": \"<string>\",\n            \"target\": {\n              \"fieldRef\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            \"values\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ],\n            \"settings\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"disabled\": \"<boolean>\",\n            \"required\": \"<boolean>\",\n            \"caseSensitive\": \"<boolean>\"\n          }\n        ],\n        \"baseDimensionName\": \"<string>\",\n        \"uuid\": \"<string>\",\n        \"percentile\": \"<double>\",\n        \"distinctKeys\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"formatOptions\": {\n          \"type\": \"<string>\",\n          \"round\": \"<double>\",\n          \"separator\": \"<string>\",\n          \"currency\": \"<string>\",\n          \"compact\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"prefix\": \"<string>\",\n          \"suffix\": \"<string>\",\n          \"timeInterval\": \"<string>\",\n          \"custom\": \"<string>\"\n        },\n        \"generationType\": \"<string>\",\n        \"baseMetricId\": \"<string>\",\n        \"timeDimensionId\": \"<string>\",\n        \"granularity\": \"<string>\",\n        \"periodOffset\": \"<double>\"\n      },\n      {\n        \"type\": \"<string>\",\n        \"sql\": \"<string>\",\n        \"table\": \"<string>\",\n        \"name\": \"<string>\",\n        \"label\": \"<string>\",\n        \"description\": \"<string>\",\n        \"hidden\": \"<boolean>\",\n        \"round\": \"<double>\",\n        \"compact\": \"<string>\",\n        \"format\": \"<string>\",\n        \"separator\": \"<string>\",\n        \"index\": \"<double>\",\n        \"filters\": [\n          {\n            \"operator\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"id\": \"<string>\",\n            \"target\": {\n              \"fieldRef\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            \"values\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ],\n            \"settings\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"disabled\": \"<boolean>\",\n            \"required\": \"<boolean>\",\n            \"caseSensitive\": \"<boolean>\"\n          },\n          {\n            \"operator\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"id\": \"<string>\",\n            \"target\": {\n              \"fieldRef\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            \"values\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ],\n            \"settings\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"disabled\": \"<boolean>\",\n            \"required\": \"<boolean>\",\n            \"caseSensitive\": \"<boolean>\"\n          }\n        ],\n        \"baseDimensionName\": \"<string>\",\n        \"uuid\": \"<string>\",\n        \"percentile\": \"<double>\",\n        \"distinctKeys\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"formatOptions\": {\n          \"type\": \"<string>\",\n          \"round\": \"<double>\",\n          \"separator\": \"<string>\",\n          \"currency\": \"<string>\",\n          \"compact\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"prefix\": \"<string>\",\n          \"suffix\": \"<string>\",\n          \"timeInterval\": \"<string>\",\n          \"custom\": \"<string>\"\n        },\n        \"generationType\": \"<string>\",\n        \"baseMetricId\": \"<string>\",\n        \"timeDimensionId\": \"<string>\",\n        \"granularity\": \"<string>\",\n        \"periodOffset\": \"<double>\"\n      }\n    ]\n  },\n  \"exploreId\": \"<string>\",\n  \"projectUuid\": \"<string>\",\n  \"pivotConfig\": {\n    \"metricsAsRows\": \"<boolean>\",\n    \"pivotDimensions\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"hiddenDimensionFieldIds\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"rowTotals\": \"<boolean>\",\n    \"columnTotals\": \"<boolean>\",\n    \"visibleMetricFieldIds\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"hiddenMetricFieldIds\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"columnOrder\": [\n      \"<string>\",\n      \"<string>\"\n    ]\n  },\n  \"hiddenFields\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"customLabels\": {\n    \"key_0\": \"<string>\",\n    \"key_1\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"name\": \"string\",\n    \"statusCode\": 4988.486568295213,\n    \"data\": {},\n    \"message\": \"string\"\n  },\n  \"status\": \"error\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "/",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "f682d813-b0b4-48b6-ad86-b84688090062",
+    "name": "Lightdash AiAgents Integrations API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Open API documentation for all public Lightdash API endpoints. # Authentication Before you get started, you might need to create a Personal Access Token to authenticate via the API. You can create a token by following this guide: https://docs.lightdash.com/references/personal_tokens\n\n\nContact Support:\n Name: Lightdash Support\n Email: support@lightdash.com",
+      "type": "text/plain"
+    }
+  }
+}

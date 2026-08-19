@@ -1,0 +1,1678 @@
+{
+  "item": [
+    {
+      "id": "2da70d42-8218-49a4-ac87-244956d302a4",
+      "name": "Spaces",
+      "description": {
+        "content": "Spaces allow you to organize charts and dashboards within a project. They also allow granular access to content by allowing you to create private spaces, which are only accessible to the creator and admins.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "d4be9364-7c63-479c-ba96-a8d7e2d6428a",
+          "name": "Get space",
+          "request": {
+            "name": "Get space",
+            "description": {
+              "content": "Get details for a space in a project",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "projects",
+                ":projectUuid",
+                "spaces",
+                ":spaceUuid"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "projectUuid",
+                  "description": "(Required) The uuid of the space's parent project"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "spaceUuid",
+                  "description": "(Required) The uuid of the space to get"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "4a0af2f3-20cb-48ba-a7ed-07e5e0a00e27",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "projects",
+                    ":projectUuid",
+                    "spaces",
+                    ":spaceUuid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "projectUuid",
+                      "description": "(Required) The uuid of the space's parent project"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "spaceUuid",
+                      "description": "(Required) The uuid of the space to get"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"results\": {\n    \"path\": \"string\",\n    \"colorPaletteUuid\": \"string\",\n    \"projectMemberAccessRole\": \"admin\",\n    \"inheritParentPermissions\": true,\n    \"parentSpaceUuid\": \"string\",\n    \"childSpaces\": [\n      {\n        \"appCount\": 7163.3877420751605,\n        \"chartCount\": 3337.373445255938,\n        \"childSpaceCount\": 4169.565741140008,\n        \"dashboardCount\": 2659.464095717294,\n        \"inheritParentPermissions\": true,\n        \"name\": \"string\",\n        \"organizationUuid\": \"string\",\n        \"parentSpaceUuid\": \"string\",\n        \"path\": \"string\",\n        \"pinnedListOrder\": 2954.9035766603183,\n        \"pinnedListUuid\": \"string\",\n        \"projectMemberAccessRole\": {\n          \"nullable\": true,\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"projectUuid\": \"string\",\n        \"slug\": \"string\",\n        \"uuid\": \"string\",\n        \"deletedBy\": {\n          \"lastName\": \"string\",\n          \"firstName\": \"string\",\n          \"userUuid\": \"string\"\n        },\n        \"deletedAt\": \"1971-04-19T09:47:39.843Z\"\n      },\n      {\n        \"appCount\": 6890.735310722367,\n        \"chartCount\": 6866.29480506596,\n        \"childSpaceCount\": 2756.1254035754337,\n        \"dashboardCount\": 1298.104570137749,\n        \"inheritParentPermissions\": true,\n        \"name\": \"string\",\n        \"organizationUuid\": \"string\",\n        \"parentSpaceUuid\": \"string\",\n        \"path\": \"string\",\n        \"pinnedListOrder\": 9279.521038065122,\n        \"pinnedListUuid\": \"string\",\n        \"projectMemberAccessRole\": {\n          \"nullable\": true,\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"projectUuid\": \"string\",\n        \"slug\": \"string\",\n        \"uuid\": \"string\",\n        \"deletedBy\": {\n          \"lastName\": \"string\",\n          \"firstName\": \"string\",\n          \"userUuid\": \"string\"\n        },\n        \"deletedAt\": \"1957-02-21T21:58:58.333Z\"\n      }\n    ],\n    \"slug\": \"string\",\n    \"pinnedListOrder\": 1148.8641539449086,\n    \"pinnedListUuid\": \"string\",\n    \"groupsAccess\": [\n      {\n        \"spaceRole\": \"viewer\",\n        \"groupName\": \"string\",\n        \"groupUuid\": \"string\"\n      },\n      {\n        \"spaceRole\": \"viewer\",\n        \"groupName\": \"string\",\n        \"groupUuid\": \"string\"\n      }\n    ],\n    \"access\": [\n      {\n        \"email\": \"string\",\n        \"firstName\": \"string\",\n        \"hasDirectAccess\": false,\n        \"isInternal\": false,\n        \"lastName\": \"string\",\n        \"role\": \"viewer\",\n        \"userUuid\": \"string\",\n        \"inheritedFrom\": \"space_group\",\n        \"inheritedRole\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"projectRole\": \"editor\"\n      },\n      {\n        \"email\": \"string\",\n        \"firstName\": \"string\",\n        \"hasDirectAccess\": true,\n        \"isInternal\": false,\n        \"lastName\": \"string\",\n        \"role\": \"admin\",\n        \"userUuid\": \"string\",\n        \"inheritedFrom\": \"parent_space\",\n        \"inheritedRole\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"projectRole\": \"viewer\"\n      }\n    ],\n    \"dashboards\": [\n      {\n        \"firstViewedAt\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"name\": \"string\",\n        \"organizationUuid\": \"string\",\n        \"pinnedListOrder\": 9035.816823790099,\n        \"pinnedListUuid\": \"string\",\n        \"projectUuid\": \"string\",\n        \"spaceUuid\": \"string\",\n        \"updatedAt\": \"1977-10-21T06:36:30.525Z\",\n        \"uuid\": \"string\",\n        \"verification\": {\n          \"nullable\": true,\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"views\": 1148.4953798515862,\n        \"description\": \"string\",\n        \"updatedByUser\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"validationErrors\": [\n          {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        ]\n      },\n      {\n        \"firstViewedAt\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"name\": \"string\",\n        \"organizationUuid\": \"string\",\n        \"pinnedListOrder\": 548.1229576195001,\n        \"pinnedListUuid\": \"string\",\n        \"projectUuid\": \"string\",\n        \"spaceUuid\": \"string\",\n        \"updatedAt\": \"1966-05-31T08:43:02.843Z\",\n        \"uuid\": \"string\",\n        \"verification\": {\n          \"nullable\": true,\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"views\": 1790.638188299738,\n        \"description\": \"string\",\n        \"updatedByUser\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"validationErrors\": [\n          {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        ]\n      }\n    ],\n    \"projectUuid\": \"string\",\n    \"queries\": [\n      {\n        \"dashboardName\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"dashboardUuid\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"firstViewedAt\": \"1961-11-16T07:11:12.502Z\",\n        \"name\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"organizationUuid\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"pinnedListOrder\": 5819.0508937206605,\n        \"pinnedListUuid\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"projectUuid\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"slug\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"spaceName\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"spaceUuid\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"updatedAt\": \"1953-08-18T05:37:26.479Z\",\n        \"uuid\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"verification\": {\n          \"verifiedAt\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"verifiedBy\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"views\": 4372.4397111772705,\n        \"description\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"source\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"chartKind\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"chartType\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"updatedByUser\": {\n          \"userUuid\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"firstName\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"lastName\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"validationErrors\": [\n          {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        ]\n      },\n      {\n        \"dashboardName\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"dashboardUuid\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"firstViewedAt\": \"2013-10-03T19:59:59.995Z\",\n        \"name\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"organizationUuid\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"pinnedListOrder\": 1683.92220749925,\n        \"pinnedListUuid\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"projectUuid\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"slug\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"spaceName\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"spaceUuid\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"updatedAt\": \"1950-10-17T08:25:02.955Z\",\n        \"uuid\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"verification\": {\n          \"verifiedAt\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"verifiedBy\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"views\": 6432.178805473686,\n        \"description\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"source\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"chartKind\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"chartType\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"updatedByUser\": {\n          \"userUuid\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"firstName\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"lastName\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"validationErrors\": [\n          {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        ]\n      }\n    ],\n    \"inheritsFromOrgOrProject\": false,\n    \"name\": \"string\",\n    \"uuid\": \"string\",\n    \"organizationUuid\": \"string\",\n    \"breadcrumbs\": [\n      {\n        \"hasAccess\": false,\n        \"uuid\": \"string\",\n        \"name\": \"string\"\n      },\n      {\n        \"hasAccess\": false,\n        \"uuid\": \"string\",\n        \"name\": \"string\"\n      }\n    ]\n  },\n  \"status\": \"ok\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f1da4244-6ed9-423d-81ac-175350c60016",
+              "name": "Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "projects",
+                    ":projectUuid",
+                    "spaces",
+                    ":spaceUuid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "projectUuid",
+                      "description": "(Required) The uuid of the space's parent project"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "spaceUuid",
+                      "description": "(Required) The uuid of the space to get"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"name\": \"string\",\n    \"statusCode\": 6171.278381514526,\n    \"data\": {},\n    \"message\": \"string\"\n  },\n  \"status\": \"error\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "c0b76617-3983-46a6-970d-96cb2615d331",
+          "name": "Delete space",
+          "request": {
+            "name": "Delete space",
+            "description": {
+              "content": "Delete a space from a project",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "projects",
+                ":projectUuid",
+                "spaces",
+                ":spaceUuid"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "projectUuid",
+                  "description": "(Required) The uuid of the space's parent project"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "spaceUuid",
+                  "description": "(Required) The uuid of the space to delete"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "a1ab2aa2-8644-41c5-b1a6-65f8161437b2",
+              "name": "Deleted",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "projects",
+                    ":projectUuid",
+                    "spaces",
+                    ":spaceUuid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "projectUuid",
+                      "description": "(Required) The uuid of the space's parent project"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "spaceUuid",
+                      "description": "(Required) The uuid of the space to delete"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": \"ok\",\n  \"results\": \"\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d3d61e9c-c662-4d1b-a1e4-d088773646da",
+              "name": "Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "projects",
+                    ":projectUuid",
+                    "spaces",
+                    ":spaceUuid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "projectUuid",
+                      "description": "(Required) The uuid of the space's parent project"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "spaceUuid",
+                      "description": "(Required) The uuid of the space to delete"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"name\": \"string\",\n    \"statusCode\": 6171.278381514526,\n    \"data\": {},\n    \"message\": \"string\"\n  },\n  \"status\": \"error\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "4fb7343d-7d63-4d86-a69f-03e2e4b4b27c",
+          "name": "Update space",
+          "request": {
+            "name": "Update space",
+            "description": {
+              "content": "Update a space in a project",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "projects",
+                ":projectUuid",
+                "spaces",
+                ":spaceUuid"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "projectUuid",
+                  "description": "(Required) The uuid of the space's parent project"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "spaceUuid",
+                  "description": "(Required) The uuid of the space to update"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PATCH",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"<string>\",\n  \"colorPaletteUuid\": \"<string>\",\n  \"projectMemberAccessRole\": \"<string>\",\n  \"inheritParentPermissions\": \"<boolean>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "7d503518-dd50-42a9-9616-ce2408c18892",
+              "name": "Updated",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "projects",
+                    ":projectUuid",
+                    "spaces",
+                    ":spaceUuid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "projectUuid",
+                      "description": "(Required) The uuid of the space's parent project"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "spaceUuid",
+                      "description": "(Required) The uuid of the space to update"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"colorPaletteUuid\": \"<string>\",\n  \"projectMemberAccessRole\": \"<string>\",\n  \"inheritParentPermissions\": \"<boolean>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"results\": {\n    \"path\": \"string\",\n    \"colorPaletteUuid\": \"string\",\n    \"projectMemberAccessRole\": \"<string>\",\n    \"inheritParentPermissions\": true,\n    \"parentSpaceUuid\": \"string\",\n    \"childSpaces\": [\n      {\n        \"appCount\": 1014.474933782481,\n        \"chartCount\": 8826.579678835502,\n        \"childSpaceCount\": 3076.915662771961,\n        \"dashboardCount\": 254.28509078960326,\n        \"inheritParentPermissions\": true,\n        \"name\": \"string\",\n        \"organizationUuid\": \"string\",\n        \"parentSpaceUuid\": \"string\",\n        \"path\": \"string\",\n        \"pinnedListOrder\": 2747.9741396396917,\n        \"pinnedListUuid\": \"string\",\n        \"projectMemberAccessRole\": {\n          \"nullable\": true,\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"projectUuid\": \"string\",\n        \"slug\": \"string\",\n        \"uuid\": \"string\",\n        \"deletedBy\": {\n          \"lastName\": \"string\",\n          \"firstName\": \"string\",\n          \"userUuid\": \"string\"\n        },\n        \"deletedAt\": \"1963-08-28T14:38:31.112Z\"\n      },\n      {\n        \"appCount\": 1264.9186663834134,\n        \"chartCount\": 9059.223625568811,\n        \"childSpaceCount\": 8822.99098378777,\n        \"dashboardCount\": 6745.697932679989,\n        \"inheritParentPermissions\": false,\n        \"name\": \"string\",\n        \"organizationUuid\": \"string\",\n        \"parentSpaceUuid\": \"string\",\n        \"path\": \"string\",\n        \"pinnedListOrder\": 2335.634483956317,\n        \"pinnedListUuid\": \"string\",\n        \"projectMemberAccessRole\": {\n          \"nullable\": true,\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"projectUuid\": \"string\",\n        \"slug\": \"string\",\n        \"uuid\": \"string\",\n        \"deletedBy\": {\n          \"lastName\": \"string\",\n          \"firstName\": \"string\",\n          \"userUuid\": \"string\"\n        },\n        \"deletedAt\": \"1984-04-27T07:20:36.823Z\"\n      }\n    ],\n    \"slug\": \"string\",\n    \"pinnedListOrder\": 6559.746562651994,\n    \"pinnedListUuid\": \"string\",\n    \"groupsAccess\": [\n      {\n        \"spaceRole\": \"<string>\",\n        \"groupName\": \"string\",\n        \"groupUuid\": \"string\"\n      },\n      {\n        \"spaceRole\": \"<string>\",\n        \"groupName\": \"string\",\n        \"groupUuid\": \"string\"\n      }\n    ],\n    \"access\": [\n      {\n        \"email\": \"string\",\n        \"firstName\": \"string\",\n        \"hasDirectAccess\": false,\n        \"isInternal\": false,\n        \"lastName\": \"string\",\n        \"role\": \"<string>\",\n        \"userUuid\": \"string\",\n        \"inheritedFrom\": \"group\",\n        \"inheritedRole\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"projectRole\": \"editor\"\n      },\n      {\n        \"email\": \"string\",\n        \"firstName\": \"string\",\n        \"hasDirectAccess\": false,\n        \"isInternal\": false,\n        \"lastName\": \"string\",\n        \"role\": \"<string>\",\n        \"userUuid\": \"string\",\n        \"inheritedFrom\": \"parent_space\",\n        \"inheritedRole\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"projectRole\": \"interactive_viewer\"\n      }\n    ],\n    \"dashboards\": [\n      {\n        \"firstViewedAt\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"name\": \"string\",\n        \"organizationUuid\": \"string\",\n        \"pinnedListOrder\": 8211.233949654319,\n        \"pinnedListUuid\": \"string\",\n        \"projectUuid\": \"string\",\n        \"spaceUuid\": \"string\",\n        \"updatedAt\": \"1980-09-04T23:02:42.752Z\",\n        \"uuid\": \"string\",\n        \"verification\": {\n          \"nullable\": true,\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"views\": 375.9258809872523,\n        \"description\": \"string\",\n        \"updatedByUser\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"validationErrors\": [\n          {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        ]\n      },\n      {\n        \"firstViewedAt\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"name\": \"string\",\n        \"organizationUuid\": \"string\",\n        \"pinnedListOrder\": 1356.3316148155336,\n        \"pinnedListUuid\": \"string\",\n        \"projectUuid\": \"string\",\n        \"spaceUuid\": \"string\",\n        \"updatedAt\": \"1957-06-09T15:42:53.118Z\",\n        \"uuid\": \"string\",\n        \"verification\": {\n          \"nullable\": true,\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"views\": 3900.6829214306094,\n        \"description\": \"string\",\n        \"updatedByUser\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"validationErrors\": [\n          {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        ]\n      }\n    ],\n    \"projectUuid\": \"string\",\n    \"queries\": [\n      {\n        \"dashboardName\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"dashboardUuid\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"firstViewedAt\": \"2001-06-01T12:52:53.384Z\",\n        \"name\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"organizationUuid\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"pinnedListOrder\": 9431.613156614068,\n        \"pinnedListUuid\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"projectUuid\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"slug\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"spaceName\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"spaceUuid\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"updatedAt\": \"1951-03-18T08:11:18.779Z\",\n        \"uuid\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"verification\": {\n          \"verifiedAt\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"verifiedBy\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"views\": 8074.983485982147,\n        \"description\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"source\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"chartKind\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"chartType\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"updatedByUser\": {\n          \"userUuid\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"firstName\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"lastName\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"validationErrors\": [\n          {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        ]\n      },\n      {\n        \"dashboardName\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"dashboardUuid\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"firstViewedAt\": \"2011-08-25T17:49:02.464Z\",\n        \"name\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"organizationUuid\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"pinnedListOrder\": 6936.2514630379965,\n        \"pinnedListUuid\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"projectUuid\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"slug\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"spaceName\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"spaceUuid\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"updatedAt\": \"2013-10-13T12:08:05.841Z\",\n        \"uuid\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"verification\": {\n          \"verifiedAt\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"verifiedBy\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"views\": 8502.208594110916,\n        \"description\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"source\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"chartKind\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"chartType\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"updatedByUser\": {\n          \"userUuid\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"firstName\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"lastName\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"validationErrors\": [\n          {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        ]\n      }\n    ],\n    \"inheritsFromOrgOrProject\": true,\n    \"name\": \"string\",\n    \"uuid\": \"string\",\n    \"organizationUuid\": \"string\",\n    \"breadcrumbs\": [\n      {\n        \"hasAccess\": true,\n        \"uuid\": \"string\",\n        \"name\": \"string\"\n      },\n      {\n        \"hasAccess\": false,\n        \"uuid\": \"string\",\n        \"name\": \"string\"\n      }\n    ]\n  },\n  \"status\": \"ok\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "964c9760-e36e-4349-a54a-d23cc0aaf9d3",
+              "name": "Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "projects",
+                    ":projectUuid",
+                    "spaces",
+                    ":spaceUuid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "projectUuid",
+                      "description": "(Required) The uuid of the space's parent project"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "spaceUuid",
+                      "description": "(Required) The uuid of the space to update"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"colorPaletteUuid\": \"<string>\",\n  \"projectMemberAccessRole\": \"<string>\",\n  \"inheritParentPermissions\": \"<boolean>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"name\": \"string\",\n    \"statusCode\": 6171.278381514526,\n    \"data\": {},\n    \"message\": \"string\"\n  },\n  \"status\": \"error\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "cebe5b86-ff8b-42c9-8370-95cb5eeb66e1",
+          "name": "Get delete impact",
+          "request": {
+            "name": "Get delete impact",
+            "description": {
+              "content": "Get the impact of deleting a space (affected child spaces, charts, dashboards)",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "projects",
+                ":projectUuid",
+                "spaces",
+                ":spaceUuid",
+                "delete-impact"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "projectUuid",
+                  "description": "(Required) The uuid of the space's parent project"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "spaceUuid",
+                  "description": "(Required) The uuid of the space to check"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "c3df2b73-c65c-4b33-bdca-b13fb67e8bcc",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "projects",
+                    ":projectUuid",
+                    "spaces",
+                    ":spaceUuid",
+                    "delete-impact"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "projectUuid",
+                      "description": "(Required) The uuid of the space's parent project"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "spaceUuid",
+                      "description": "(Required) The uuid of the space to check"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"results\": {\n    \"appCount\": 9127.929434879601,\n    \"dashboardCount\": 8101.341932702931,\n    \"chartCount\": 7166.812143654006,\n    \"apps\": [\n      {\n        \"spaceUuid\": \"string\",\n        \"uuid\": \"string\"\n      },\n      {\n        \"spaceUuid\": \"string\",\n        \"uuid\": \"string\"\n      }\n    ],\n    \"dashboards\": [\n      {\n        \"spaceUuid\": \"string\",\n        \"name\": \"string\",\n        \"uuid\": \"string\"\n      },\n      {\n        \"spaceUuid\": \"string\",\n        \"name\": \"string\",\n        \"uuid\": \"string\"\n      }\n    ],\n    \"charts\": [\n      {\n        \"spaceUuid\": \"string\",\n        \"name\": \"string\",\n        \"uuid\": \"string\"\n      },\n      {\n        \"spaceUuid\": \"string\",\n        \"name\": \"string\",\n        \"uuid\": \"string\"\n      }\n    ],\n    \"spaces\": [\n      {\n        \"appCount\": 5984.976561457941,\n        \"dashboardCount\": 8917.285243688333,\n        \"chartCount\": 1389.479688620323,\n        \"parentSpaceUuid\": \"string\",\n        \"name\": \"string\",\n        \"uuid\": \"string\"\n      },\n      {\n        \"appCount\": 8449.042325387662,\n        \"dashboardCount\": 6161.457957117304,\n        \"chartCount\": 5892.572637104214,\n        \"parentSpaceUuid\": \"string\",\n        \"name\": \"string\",\n        \"uuid\": \"string\"\n      }\n    ]\n  },\n  \"status\": \"ok\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b58ec191-7413-4aff-a4dc-feea6d1eadff",
+              "name": "Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "projects",
+                    ":projectUuid",
+                    "spaces",
+                    ":spaceUuid",
+                    "delete-impact"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "projectUuid",
+                      "description": "(Required) The uuid of the space's parent project"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "spaceUuid",
+                      "description": "(Required) The uuid of the space to check"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"name\": \"string\",\n    \"statusCode\": 6171.278381514526,\n    \"data\": {},\n    \"message\": \"string\"\n  },\n  \"status\": \"error\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "05726d11-4b5a-44d9-af5f-c988b4d11e2f",
+          "name": "Create space",
+          "request": {
+            "name": "Create space",
+            "description": {
+              "content": "Create a new space inside a project",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "projects",
+                ":projectUuid",
+                "spaces"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "projectUuid",
+                  "description": "(Required) The uuid of the space's parent project"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"<string>\",\n  \"parentSpaceUuid\": \"<string>\",\n  \"access\": [\n    {\n      \"userUuid\": \"<string>\",\n      \"role\": \"<string>\"\n    },\n    {\n      \"userUuid\": \"<string>\",\n      \"role\": \"<string>\"\n    }\n  ],\n  \"inheritParentPermissions\": \"<boolean>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "241aed19-b587-4895-a0b4-a2c66fc31478",
+              "name": "Created",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "projects",
+                    ":projectUuid",
+                    "spaces"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "projectUuid",
+                      "description": "(Required) The uuid of the space's parent project"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"parentSpaceUuid\": \"<string>\",\n  \"access\": [\n    {\n      \"userUuid\": \"<string>\",\n      \"role\": \"<string>\"\n    },\n    {\n      \"userUuid\": \"<string>\",\n      \"role\": \"<string>\"\n    }\n  ],\n  \"inheritParentPermissions\": \"<boolean>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"results\": {\n    \"path\": \"string\",\n    \"colorPaletteUuid\": \"string\",\n    \"projectMemberAccessRole\": \"<string>\",\n    \"inheritParentPermissions\": true,\n    \"parentSpaceUuid\": \"string\",\n    \"childSpaces\": [\n      {\n        \"appCount\": 1014.474933782481,\n        \"chartCount\": 8826.579678835502,\n        \"childSpaceCount\": 3076.915662771961,\n        \"dashboardCount\": 254.28509078960326,\n        \"inheritParentPermissions\": true,\n        \"name\": \"string\",\n        \"organizationUuid\": \"string\",\n        \"parentSpaceUuid\": \"string\",\n        \"path\": \"string\",\n        \"pinnedListOrder\": 2747.9741396396917,\n        \"pinnedListUuid\": \"string\",\n        \"projectMemberAccessRole\": {\n          \"nullable\": true,\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"projectUuid\": \"string\",\n        \"slug\": \"string\",\n        \"uuid\": \"string\",\n        \"deletedBy\": {\n          \"lastName\": \"string\",\n          \"firstName\": \"string\",\n          \"userUuid\": \"string\"\n        },\n        \"deletedAt\": \"1963-08-28T14:38:31.112Z\"\n      },\n      {\n        \"appCount\": 1264.9186663834134,\n        \"chartCount\": 9059.223625568811,\n        \"childSpaceCount\": 8822.99098378777,\n        \"dashboardCount\": 6745.697932679989,\n        \"inheritParentPermissions\": false,\n        \"name\": \"string\",\n        \"organizationUuid\": \"string\",\n        \"parentSpaceUuid\": \"string\",\n        \"path\": \"string\",\n        \"pinnedListOrder\": 2335.634483956317,\n        \"pinnedListUuid\": \"string\",\n        \"projectMemberAccessRole\": {\n          \"nullable\": true,\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"projectUuid\": \"string\",\n        \"slug\": \"string\",\n        \"uuid\": \"string\",\n        \"deletedBy\": {\n          \"lastName\": \"string\",\n          \"firstName\": \"string\",\n          \"userUuid\": \"string\"\n        },\n        \"deletedAt\": \"1984-04-27T07:20:36.823Z\"\n      }\n    ],\n    \"slug\": \"string\",\n    \"pinnedListOrder\": 6559.746562651994,\n    \"pinnedListUuid\": \"string\",\n    \"groupsAccess\": [\n      {\n        \"spaceRole\": \"<string>\",\n        \"groupName\": \"string\",\n        \"groupUuid\": \"string\"\n      },\n      {\n        \"spaceRole\": \"<string>\",\n        \"groupName\": \"string\",\n        \"groupUuid\": \"string\"\n      }\n    ],\n    \"access\": [\n      {\n        \"email\": \"string\",\n        \"firstName\": \"string\",\n        \"hasDirectAccess\": false,\n        \"isInternal\": false,\n        \"lastName\": \"string\",\n        \"role\": \"<string>\",\n        \"userUuid\": \"string\",\n        \"inheritedFrom\": \"group\",\n        \"inheritedRole\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"projectRole\": \"editor\"\n      },\n      {\n        \"email\": \"string\",\n        \"firstName\": \"string\",\n        \"hasDirectAccess\": false,\n        \"isInternal\": false,\n        \"lastName\": \"string\",\n        \"role\": \"<string>\",\n        \"userUuid\": \"string\",\n        \"inheritedFrom\": \"parent_space\",\n        \"inheritedRole\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"projectRole\": \"interactive_viewer\"\n      }\n    ],\n    \"dashboards\": [\n      {\n        \"firstViewedAt\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"name\": \"string\",\n        \"organizationUuid\": \"string\",\n        \"pinnedListOrder\": 8211.233949654319,\n        \"pinnedListUuid\": \"string\",\n        \"projectUuid\": \"string\",\n        \"spaceUuid\": \"string\",\n        \"updatedAt\": \"1980-09-04T23:02:42.752Z\",\n        \"uuid\": \"string\",\n        \"verification\": {\n          \"nullable\": true,\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"views\": 375.9258809872523,\n        \"description\": \"string\",\n        \"updatedByUser\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"validationErrors\": [\n          {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        ]\n      },\n      {\n        \"firstViewedAt\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"name\": \"string\",\n        \"organizationUuid\": \"string\",\n        \"pinnedListOrder\": 1356.3316148155336,\n        \"pinnedListUuid\": \"string\",\n        \"projectUuid\": \"string\",\n        \"spaceUuid\": \"string\",\n        \"updatedAt\": \"1957-06-09T15:42:53.118Z\",\n        \"uuid\": \"string\",\n        \"verification\": {\n          \"nullable\": true,\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"views\": 3900.6829214306094,\n        \"description\": \"string\",\n        \"updatedByUser\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"validationErrors\": [\n          {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        ]\n      }\n    ],\n    \"projectUuid\": \"string\",\n    \"queries\": [\n      {\n        \"dashboardName\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"dashboardUuid\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"firstViewedAt\": \"2001-06-01T12:52:53.384Z\",\n        \"name\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"organizationUuid\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"pinnedListOrder\": 9431.613156614068,\n        \"pinnedListUuid\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"projectUuid\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"slug\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"spaceName\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"spaceUuid\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"updatedAt\": \"1951-03-18T08:11:18.779Z\",\n        \"uuid\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"verification\": {\n          \"verifiedAt\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"verifiedBy\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"views\": 8074.983485982147,\n        \"description\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"source\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"chartKind\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"chartType\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"updatedByUser\": {\n          \"userUuid\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"firstName\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"lastName\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"validationErrors\": [\n          {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        ]\n      },\n      {\n        \"dashboardName\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"dashboardUuid\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"firstViewedAt\": \"2011-08-25T17:49:02.464Z\",\n        \"name\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"organizationUuid\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"pinnedListOrder\": 6936.2514630379965,\n        \"pinnedListUuid\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"projectUuid\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"slug\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"spaceName\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"spaceUuid\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"updatedAt\": \"2013-10-13T12:08:05.841Z\",\n        \"uuid\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"verification\": {\n          \"verifiedAt\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"verifiedBy\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"views\": 8502.208594110916,\n        \"description\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"source\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"chartKind\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"chartType\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"updatedByUser\": {\n          \"userUuid\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"firstName\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"lastName\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"validationErrors\": [\n          {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        ]\n      }\n    ],\n    \"inheritsFromOrgOrProject\": true,\n    \"name\": \"string\",\n    \"uuid\": \"string\",\n    \"organizationUuid\": \"string\",\n    \"breadcrumbs\": [\n      {\n        \"hasAccess\": true,\n        \"uuid\": \"string\",\n        \"name\": \"string\"\n      },\n      {\n        \"hasAccess\": false,\n        \"uuid\": \"string\",\n        \"name\": \"string\"\n      }\n    ]\n  },\n  \"status\": \"ok\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "1e475a62-60b2-4b9c-81f0-aabad55a0233",
+              "name": "Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "projects",
+                    ":projectUuid",
+                    "spaces"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "projectUuid",
+                      "description": "(Required) The uuid of the space's parent project"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"parentSpaceUuid\": \"<string>\",\n  \"access\": [\n    {\n      \"userUuid\": \"<string>\",\n      \"role\": \"<string>\"\n    },\n    {\n      \"userUuid\": \"<string>\",\n      \"role\": \"<string>\"\n    }\n  ],\n  \"inheritParentPermissions\": \"<boolean>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"name\": \"string\",\n    \"statusCode\": 6171.278381514526,\n    \"data\": {},\n    \"message\": \"string\"\n  },\n  \"status\": \"error\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "45228b92-fb86-47aa-94db-bf30c034c5cf",
+          "name": "Grant user access to space",
+          "request": {
+            "name": "Grant user access to space",
+            "description": {
+              "content": "Grant a user access to a space",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "projects",
+                ":projectUuid",
+                "spaces",
+                ":spaceUuid",
+                "share"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "projectUuid",
+                  "description": "(Required) The uuid of the space's parent project"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "spaceUuid",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"spaceRole\": \"<string>\",\n  \"userUuid\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "367de126-3a15-41a9-928f-487d2ca2b1fb",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "projects",
+                    ":projectUuid",
+                    "spaces",
+                    ":spaceUuid",
+                    "share"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "projectUuid",
+                      "description": "(Required) The uuid of the space's parent project"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "spaceUuid",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"spaceRole\": \"<string>\",\n  \"userUuid\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": \"ok\",\n  \"results\": \"\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f56a46ab-296a-4de5-a0f2-719b2f1f00f7",
+              "name": "Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "projects",
+                    ":projectUuid",
+                    "spaces",
+                    ":spaceUuid",
+                    "share"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "projectUuid",
+                      "description": "(Required) The uuid of the space's parent project"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "spaceUuid",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"spaceRole\": \"<string>\",\n  \"userUuid\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"name\": \"string\",\n    \"statusCode\": 6171.278381514526,\n    \"data\": {},\n    \"message\": \"string\"\n  },\n  \"status\": \"error\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "188d3b9a-2add-4f2f-a6fd-8c0b78016fed",
+          "name": "Revoke user access to space",
+          "request": {
+            "name": "Revoke user access to space",
+            "description": {
+              "content": "Remove a user's access to a space",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "projects",
+                ":projectUuid",
+                "spaces",
+                ":spaceUuid",
+                "share",
+                ":userUuid"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "projectUuid",
+                  "description": "(Required) The uuid of the space's parent project"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "spaceUuid",
+                  "description": "(Required) The uuid of the space to update"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "userUuid",
+                  "description": "(Required) The uuid of the user to revoke access from"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "6a722843-8b27-4085-b311-94aa3384ba01",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "projects",
+                    ":projectUuid",
+                    "spaces",
+                    ":spaceUuid",
+                    "share",
+                    ":userUuid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "projectUuid",
+                      "description": "(Required) The uuid of the space's parent project"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "spaceUuid",
+                      "description": "(Required) The uuid of the space to update"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "userUuid",
+                      "description": "(Required) The uuid of the user to revoke access from"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": \"ok\",\n  \"results\": \"\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "2953d6a6-235f-4abd-a3b9-9ca1423f4ed0",
+              "name": "Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "projects",
+                    ":projectUuid",
+                    "spaces",
+                    ":spaceUuid",
+                    "share",
+                    ":userUuid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "projectUuid",
+                      "description": "(Required) The uuid of the space's parent project"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "spaceUuid",
+                      "description": "(Required) The uuid of the space to update"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "userUuid",
+                      "description": "(Required) The uuid of the user to revoke access from"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"name\": \"string\",\n    \"statusCode\": 6171.278381514526,\n    \"data\": {},\n    \"message\": \"string\"\n  },\n  \"status\": \"error\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "052b4874-072c-4099-9115-b2f3c147cf42",
+          "name": "Grant group access to space",
+          "request": {
+            "name": "Grant group access to space",
+            "description": {
+              "content": "Grant a group access to a space",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "projects",
+                ":projectUuid",
+                "spaces",
+                ":spaceUuid",
+                "group",
+                "share"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "projectUuid",
+                  "description": "(Required) The uuid of the space's parent project"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "spaceUuid",
+                  "description": "(Required) The uuid of the space to update"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"spaceRole\": \"<string>\",\n  \"groupUuid\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "ad6aad0f-3504-4bb8-8b1b-7ec8084c8624",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "projects",
+                    ":projectUuid",
+                    "spaces",
+                    ":spaceUuid",
+                    "group",
+                    "share"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "projectUuid",
+                      "description": "(Required) The uuid of the space's parent project"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "spaceUuid",
+                      "description": "(Required) The uuid of the space to update"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"spaceRole\": \"<string>\",\n  \"groupUuid\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": \"ok\",\n  \"results\": \"\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "57ad4cd3-3afa-4cc5-872a-ea2f77048229",
+              "name": "Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "projects",
+                    ":projectUuid",
+                    "spaces",
+                    ":spaceUuid",
+                    "group",
+                    "share"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "projectUuid",
+                      "description": "(Required) The uuid of the space's parent project"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "spaceUuid",
+                      "description": "(Required) The uuid of the space to update"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"spaceRole\": \"<string>\",\n  \"groupUuid\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"name\": \"string\",\n    \"statusCode\": 6171.278381514526,\n    \"data\": {},\n    \"message\": \"string\"\n  },\n  \"status\": \"error\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "b76995c7-b645-4e01-beea-ced086b5eff3",
+          "name": "Revoke group access to space",
+          "request": {
+            "name": "Revoke group access to space",
+            "description": {
+              "content": "Remove a group's access to a space",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "projects",
+                ":projectUuid",
+                "spaces",
+                ":spaceUuid",
+                "group",
+                "share",
+                ":groupUuid"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "projectUuid",
+                  "description": "(Required) The uuid of the space's parent project"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "spaceUuid",
+                  "description": "(Required) The uuid of the space to update"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "groupUuid",
+                  "description": "(Required) The uuid of the group to revoke access from"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "b2e7bb02-9fbf-47d7-bc13-107ff6b78096",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "projects",
+                    ":projectUuid",
+                    "spaces",
+                    ":spaceUuid",
+                    "group",
+                    "share",
+                    ":groupUuid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "projectUuid",
+                      "description": "(Required) The uuid of the space's parent project"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "spaceUuid",
+                      "description": "(Required) The uuid of the space to update"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "groupUuid",
+                      "description": "(Required) The uuid of the group to revoke access from"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": \"ok\",\n  \"results\": \"\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "eb1db52c-4f20-48c7-aaae-f2b6e2e3d3e8",
+              "name": "Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "projects",
+                    ":projectUuid",
+                    "spaces",
+                    ":spaceUuid",
+                    "group",
+                    "share",
+                    ":groupUuid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "projectUuid",
+                      "description": "(Required) The uuid of the space's parent project"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "spaceUuid",
+                      "description": "(Required) The uuid of the space to update"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "groupUuid",
+                      "description": "(Required) The uuid of the group to revoke access from"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"name\": \"string\",\n    \"statusCode\": 6171.278381514526,\n    \"data\": {},\n    \"message\": \"string\"\n  },\n  \"status\": \"error\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "/",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "cac2c606-9b85-4d55-9035-80e3506186f4",
+    "name": "Lightdash AiAgents Spaces API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Open API documentation for all public Lightdash API endpoints. # Authentication Before you get started, you might need to create a Personal Access Token to authenticate via the API. You can create a token by following this guide: https://docs.lightdash.com/references/personal_tokens\n\n\nContact Support:\n Name: Lightdash Support\n Email: support@lightdash.com",
+      "type": "text/plain"
+    }
+  }
+}

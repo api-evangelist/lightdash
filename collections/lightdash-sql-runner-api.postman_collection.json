@@ -1,0 +1,3839 @@
+{
+  "item": [
+    {
+      "id": "b451a688-5399-4561-b20f-2899825cdce0",
+      "name": "SQL runner",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "768a00a4-bd15-43cc-90a9-b676a9ce2e86",
+          "name": "List warehouse tables",
+          "request": {
+            "name": "List warehouse tables",
+            "description": {
+              "content": "Get warehouse tables for a project",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "projects",
+                ":projectUuid",
+                "sqlRunner",
+                "tables"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "projectUuid",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "a668a3e2-8412-437d-bb98-41e93f0201a8",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "projects",
+                    ":projectUuid",
+                    "sqlRunner",
+                    "tables"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "projectUuid",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"results\": {\n    \"key_0\": {\n      \"key_0\": {\n        \"key_0\": {\n          \"partitionColumn\": {\n            \"field\": \"string\",\n            \"partitionType\": \"DATE\"\n          }\n        },\n        \"key_1\": {\n          \"partitionColumn\": {\n            \"field\": \"string\",\n            \"partitionType\": \"DATE\"\n          }\n        }\n      }\n    },\n    \"key_1\": {\n      \"key_0\": {\n        \"key_0\": {\n          \"partitionColumn\": {\n            \"field\": \"string\",\n            \"partitionType\": \"RANGE\"\n          }\n        },\n        \"key_1\": {\n          \"partitionColumn\": {\n            \"field\": \"string\",\n            \"partitionType\": \"DATE\"\n          }\n        }\n      },\n      \"key_1\": {\n        \"key_0\": {\n          \"partitionColumn\": {\n            \"field\": \"string\",\n            \"partitionType\": \"RANGE\"\n          }\n        },\n        \"key_1\": {\n          \"partitionColumn\": {\n            \"field\": \"string\",\n            \"partitionType\": \"RANGE\"\n          }\n        }\n      }\n    },\n    \"key_2\": {\n      \"key_0\": {\n        \"key_0\": {\n          \"partitionColumn\": {\n            \"field\": \"string\",\n            \"partitionType\": \"DATE\"\n          }\n        },\n        \"key_1\": {\n          \"partitionColumn\": {\n            \"field\": \"string\",\n            \"partitionType\": \"DATE\"\n          }\n        },\n        \"key_2\": {\n          \"partitionColumn\": {\n            \"field\": \"string\",\n            \"partitionType\": \"RANGE\"\n          }\n        }\n      }\n    }\n  },\n  \"status\": \"ok\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "81ae740b-f28c-4e65-9168-c5cf406c0059",
+              "name": "Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "projects",
+                    ":projectUuid",
+                    "sqlRunner",
+                    "tables"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "projectUuid",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"name\": \"string\",\n    \"statusCode\": 8760.69419265481,\n    \"data\": {},\n    \"message\": \"string\"\n  },\n  \"status\": \"error\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "026e8298-c00e-4ce3-881c-e72e81e7d5ea",
+          "name": "Get table fields",
+          "request": {
+            "name": "Get table fields",
+            "description": {
+              "content": "Get fields for a warehouse table",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "projects",
+                ":projectUuid",
+                "sqlRunner",
+                "fields"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "tableName",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "schemaName",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "databaseName",
+                  "value": "<string>"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "projectUuid",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "c77cd08d-3691-4589-a840-5f858851180a",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "projects",
+                    ":projectUuid",
+                    "sqlRunner",
+                    "fields"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "tableName",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "schemaName",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "databaseName",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "projectUuid",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"results\": {\n    \"key_0\": \"number\",\n    \"key_1\": \"boolean\"\n  },\n  \"status\": \"ok\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "0da957f2-9629-4896-b74d-df544bb9c6e3",
+              "name": "Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "projects",
+                    ":projectUuid",
+                    "sqlRunner",
+                    "fields"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "tableName",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "schemaName",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "databaseName",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "projectUuid",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"name\": \"string\",\n    \"statusCode\": 8760.69419265481,\n    \"data\": {},\n    \"message\": \"string\"\n  },\n  \"status\": \"error\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "6b112ff2-cd33-49ec-9480-f9dcf86e4ea4",
+          "name": "Run SQL query",
+          "request": {
+            "name": "Run SQL query",
+            "description": {
+              "content": "Run a SQL query",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "projects",
+                ":projectUuid",
+                "sqlRunner",
+                "run"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "projectUuid",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"sql\": \"<string>\",\n  \"limit\": \"<double>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "26695b09-abb8-4049-87db-5a0c878e0a5b",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "projects",
+                    ":projectUuid",
+                    "sqlRunner",
+                    "run"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "projectUuid",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"sql\": \"<string>\",\n  \"limit\": \"<double>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"results\": {\n    \"jobId\": \"string\"\n  },\n  \"status\": \"ok\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ff6e30c8-c436-441c-b18a-62e2189d9e4f",
+              "name": "Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "projects",
+                    ":projectUuid",
+                    "sqlRunner",
+                    "run"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "projectUuid",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"sql\": \"<string>\",\n  \"limit\": \"<double>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"name\": \"string\",\n    \"statusCode\": 8760.69419265481,\n    \"data\": {},\n    \"message\": \"string\"\n  },\n  \"status\": \"error\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "32a50ccc-b140-484e-9206-0dabea9d6682",
+          "name": "Run SQL pivot query",
+          "request": {
+            "name": "Run SQL pivot query",
+            "description": {
+              "content": "Run a SQL pivot query",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "projects",
+                ":projectUuid",
+                "sqlRunner",
+                "runPivotQuery"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "projectUuid",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"sql\": \"<string>\",\n  \"valuesColumns\": [\n    {\n      \"aggregation\": \"<string>\",\n      \"reference\": \"<string>\"\n    },\n    {\n      \"aggregation\": \"<string>\",\n      \"reference\": \"<string>\"\n    }\n  ],\n  \"limit\": \"<double>\",\n  \"pivotColumnsOrder\": [\n    {\n      \"reference\": \"<string>\"\n    },\n    {\n      \"reference\": \"<string>\"\n    }\n  ],\n  \"passthroughDimensions\": [\n    {\n      \"reference\": \"<string>\"\n    },\n    {\n      \"reference\": \"<string>\"\n    }\n  ],\n  \"sortOnlyDimensions\": [\n    {\n      \"reference\": \"<string>\"\n    },\n    {\n      \"reference\": \"<string>\"\n    }\n  ],\n  \"sortOnlyColumns\": [\n    {\n      \"aggregation\": \"<string>\",\n      \"reference\": \"<string>\"\n    },\n    {\n      \"aggregation\": \"<string>\",\n      \"reference\": \"<string>\"\n    }\n  ],\n  \"metricsAsRows\": \"<boolean>\",\n  \"sortBy\": [\n    {\n      \"direction\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"reference\": \"<string>\",\n      \"pivotValues\": [\n        {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      ],\n      \"nullsFirst\": \"<boolean>\"\n    },\n    {\n      \"direction\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"reference\": \"<string>\",\n      \"pivotValues\": [\n        {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      ],\n      \"nullsFirst\": \"<boolean>\"\n    }\n  ],\n  \"groupByColumns\": [\n    {\n      \"reference\": \"<string>\"\n    },\n    {\n      \"reference\": \"<string>\"\n    }\n  ],\n  \"indexColumn\": {\n    \"type\": \"<string>\",\n    \"reference\": \"<string>\"\n  },\n  \"savedSqlUuid\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "955baceb-1d64-4d99-a4e8-5c5e2343550d",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "projects",
+                    ":projectUuid",
+                    "sqlRunner",
+                    "runPivotQuery"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "projectUuid",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"sql\": \"<string>\",\n  \"valuesColumns\": [\n    {\n      \"aggregation\": \"<string>\",\n      \"reference\": \"<string>\"\n    },\n    {\n      \"aggregation\": \"<string>\",\n      \"reference\": \"<string>\"\n    }\n  ],\n  \"limit\": \"<double>\",\n  \"pivotColumnsOrder\": [\n    {\n      \"reference\": \"<string>\"\n    },\n    {\n      \"reference\": \"<string>\"\n    }\n  ],\n  \"passthroughDimensions\": [\n    {\n      \"reference\": \"<string>\"\n    },\n    {\n      \"reference\": \"<string>\"\n    }\n  ],\n  \"sortOnlyDimensions\": [\n    {\n      \"reference\": \"<string>\"\n    },\n    {\n      \"reference\": \"<string>\"\n    }\n  ],\n  \"sortOnlyColumns\": [\n    {\n      \"aggregation\": \"<string>\",\n      \"reference\": \"<string>\"\n    },\n    {\n      \"aggregation\": \"<string>\",\n      \"reference\": \"<string>\"\n    }\n  ],\n  \"metricsAsRows\": \"<boolean>\",\n  \"sortBy\": [\n    {\n      \"direction\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"reference\": \"<string>\",\n      \"pivotValues\": [\n        {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      ],\n      \"nullsFirst\": \"<boolean>\"\n    },\n    {\n      \"direction\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"reference\": \"<string>\",\n      \"pivotValues\": [\n        {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      ],\n      \"nullsFirst\": \"<boolean>\"\n    }\n  ],\n  \"groupByColumns\": [\n    {\n      \"reference\": \"<string>\"\n    },\n    {\n      \"reference\": \"<string>\"\n    }\n  ],\n  \"indexColumn\": {\n    \"type\": \"<string>\",\n    \"reference\": \"<string>\"\n  },\n  \"savedSqlUuid\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"results\": {\n    \"jobId\": \"string\"\n  },\n  \"status\": \"ok\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "669a0d6b-0264-4fa5-904f-c8ce96d73e34",
+              "name": "Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "projects",
+                    ":projectUuid",
+                    "sqlRunner",
+                    "runPivotQuery"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "projectUuid",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"sql\": \"<string>\",\n  \"valuesColumns\": [\n    {\n      \"aggregation\": \"<string>\",\n      \"reference\": \"<string>\"\n    },\n    {\n      \"aggregation\": \"<string>\",\n      \"reference\": \"<string>\"\n    }\n  ],\n  \"limit\": \"<double>\",\n  \"pivotColumnsOrder\": [\n    {\n      \"reference\": \"<string>\"\n    },\n    {\n      \"reference\": \"<string>\"\n    }\n  ],\n  \"passthroughDimensions\": [\n    {\n      \"reference\": \"<string>\"\n    },\n    {\n      \"reference\": \"<string>\"\n    }\n  ],\n  \"sortOnlyDimensions\": [\n    {\n      \"reference\": \"<string>\"\n    },\n    {\n      \"reference\": \"<string>\"\n    }\n  ],\n  \"sortOnlyColumns\": [\n    {\n      \"aggregation\": \"<string>\",\n      \"reference\": \"<string>\"\n    },\n    {\n      \"aggregation\": \"<string>\",\n      \"reference\": \"<string>\"\n    }\n  ],\n  \"metricsAsRows\": \"<boolean>\",\n  \"sortBy\": [\n    {\n      \"direction\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"reference\": \"<string>\",\n      \"pivotValues\": [\n        {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      ],\n      \"nullsFirst\": \"<boolean>\"\n    },\n    {\n      \"direction\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"reference\": \"<string>\",\n      \"pivotValues\": [\n        {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      ],\n      \"nullsFirst\": \"<boolean>\"\n    }\n  ],\n  \"groupByColumns\": [\n    {\n      \"reference\": \"<string>\"\n    },\n    {\n      \"reference\": \"<string>\"\n    }\n  ],\n  \"indexColumn\": {\n    \"type\": \"<string>\",\n    \"reference\": \"<string>\"\n  },\n  \"savedSqlUuid\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"name\": \"string\",\n    \"statusCode\": 8760.69419265481,\n    \"data\": {},\n    \"message\": \"string\"\n  },\n  \"status\": \"error\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "3b116e89-0965-40be-9566-7d98b9a36501",
+          "name": "Get stored results",
+          "request": {
+            "name": "Get stored results",
+            "description": {
+              "content": "Get results from a file stored locally",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "projects",
+                ":projectUuid",
+                "sqlRunner",
+                "results",
+                ":fileId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "fileId",
+                  "description": "(Required) the fileId for the file"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "projectUuid",
+                  "description": "(Required) the uuid for the project"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "baed75b7-0ea8-4b8a-8072-530460545a5e",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "projects",
+                    ":projectUuid",
+                    "sqlRunner",
+                    "results",
+                    ":fileId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "fileId",
+                      "description": "(Required) the fileId for the file"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "projectUuid",
+                      "description": "(Required) the uuid for the project"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "026b1166-86b5-48da-875c-617035bf53f3",
+              "name": "Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "projects",
+                    ":projectUuid",
+                    "sqlRunner",
+                    "results",
+                    ":fileId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "fileId",
+                      "description": "(Required) the fileId for the file"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "projectUuid",
+                      "description": "(Required) the uuid for the project"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"name\": \"string\",\n    \"statusCode\": 8760.69419265481,\n    \"data\": {},\n    \"message\": \"string\"\n  },\n  \"status\": \"error\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "a07b8d7f-9064-4bfb-9709-5f05b9a9933a",
+          "name": "Get SQL chart",
+          "request": {
+            "name": "Get SQL chart",
+            "description": {
+              "content": "Get saved sql chart",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "projects",
+                ":projectUuid",
+                "sqlRunner",
+                "saved",
+                ":uuid"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "uuid",
+                  "description": "(Required) the uuid for the saved sql chart"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "projectUuid",
+                  "description": "(Required) the uuid for the project"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "9ef2c2e5-bcd6-48b9-8199-11b2d8b60a8a",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "projects",
+                    ":projectUuid",
+                    "sqlRunner",
+                    "saved",
+                    ":uuid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "uuid",
+                      "description": "(Required) the uuid for the saved sql chart"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "projectUuid",
+                      "description": "(Required) the uuid for the project"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"results\": {\n    \"resolvedColorPalette\": {\n      \"source\": {\n        \"type\": \"config\"\n      },\n      \"paletteName\": \"string\",\n      \"paletteUuid\": \"string\",\n      \"darkColors\": [\n        \"string\",\n        \"string\"\n      ],\n      \"colors\": [\n        \"string\",\n        \"string\"\n      ]\n    },\n    \"lastViewedAt\": \"2010-03-19T06:47:06.767Z\",\n    \"firstViewedAt\": \"1961-07-10T13:25:22.608Z\",\n    \"views\": 2958.397196671182,\n    \"organization\": {\n      \"organizationUuid\": \"33b9a1ba-75a7-b0cc-8415-0c42b2e8fdc2\"\n    },\n    \"project\": {\n      \"projectUuid\": \"string\"\n    },\n    \"dashboard\": {\n      \"name\": \"string\",\n      \"uuid\": \"string\"\n    },\n    \"space\": {\n      \"name\": \"string\",\n      \"uuid\": \"string\",\n      \"userAccess\": {\n        \"hasDirectAccess\": true,\n        \"role\": \"viewer\",\n        \"userUuid\": \"string\",\n        \"inheritedFrom\": \"group\",\n        \"inheritedRole\": \"developer\",\n        \"projectRole\": \"editor\"\n      }\n    },\n    \"lastUpdatedBy\": {},\n    \"lastUpdatedAt\": \"1959-08-24T03:39:10.873Z\",\n    \"createdBy\": {},\n    \"createdAt\": \"1971-08-08T08:24:14.835Z\",\n    \"chartKind\": \"horizontal_bar\",\n    \"config\": {\n      \"type\": \"treemap\",\n      \"metadata\": {\n        \"version\": 3607.41382859983\n      },\n      \"display\": {\n        \"stack\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"legend\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"series\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"yAxis\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"xAxis\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      },\n      \"fieldConfig\": {\n        \"y\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"stack\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"sortBy\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"groupBy\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"x\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      }\n    },\n    \"limit\": 4677.0525780069265,\n    \"sql\": \"string\",\n    \"slug\": \"string\",\n    \"description\": \"string\",\n    \"name\": \"string\",\n    \"savedSqlUuid\": \"string\"\n  },\n  \"status\": \"ok\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "560345c7-f5ee-44e8-b35f-c4e9cc2db602",
+              "name": "Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "projects",
+                    ":projectUuid",
+                    "sqlRunner",
+                    "saved",
+                    ":uuid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "uuid",
+                      "description": "(Required) the uuid for the saved sql chart"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "projectUuid",
+                      "description": "(Required) the uuid for the project"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"name\": \"string\",\n    \"statusCode\": 8760.69419265481,\n    \"data\": {},\n    \"message\": \"string\"\n  },\n  \"status\": \"error\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "85e94866-6bc6-4d86-b619-ab8a123a0987",
+          "name": "Update SQL chart",
+          "request": {
+            "name": "Update SQL chart",
+            "description": {
+              "content": "Update sql chart",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "projects",
+                ":projectUuid",
+                "sqlRunner",
+                "saved",
+                ":uuid"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "projectUuid",
+                  "description": "(Required) the uuid for the project"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "uuid",
+                  "description": "(Required) the uuid for the saved sql chart"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PATCH",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"versionedData\": {\n    \"config\": {\n      \"metadata\": {\n        \"version\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      },\n      \"type\": \"<string>\",\n      \"display\": {\n        \"stack\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"legend\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"series\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"yAxis\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"xAxis\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      },\n      \"fieldConfig\": {\n        \"y\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"stack\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"sortBy\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"groupBy\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"x\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      }\n    },\n    \"limit\": \"<double>\",\n    \"sql\": \"<string>\"\n  },\n  \"unversionedData\": {\n    \"spaceUuid\": \"<string>\",\n    \"description\": \"<string>\",\n    \"name\": \"<string>\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "0ec7e1cb-3ab7-48e3-9e01-c35fe6e63c40",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "projects",
+                    ":projectUuid",
+                    "sqlRunner",
+                    "saved",
+                    ":uuid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "projectUuid",
+                      "description": "(Required) the uuid for the project"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "uuid",
+                      "description": "(Required) the uuid for the saved sql chart"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"versionedData\": {\n    \"config\": {\n      \"metadata\": {\n        \"version\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      },\n      \"type\": \"<string>\",\n      \"display\": {\n        \"stack\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"legend\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"series\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"yAxis\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"xAxis\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      },\n      \"fieldConfig\": {\n        \"y\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"stack\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"sortBy\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"groupBy\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"x\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      }\n    },\n    \"limit\": \"<double>\",\n    \"sql\": \"<string>\"\n  },\n  \"unversionedData\": {\n    \"spaceUuid\": \"<string>\",\n    \"description\": \"<string>\",\n    \"name\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"results\": {\n    \"savedSqlVersionUuid\": \"string\",\n    \"savedSqlUuid\": \"string\"\n  },\n  \"status\": \"ok\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "74690e9e-2c8b-41f9-8ec8-bdcfa0b993e9",
+              "name": "Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "projects",
+                    ":projectUuid",
+                    "sqlRunner",
+                    "saved",
+                    ":uuid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "projectUuid",
+                      "description": "(Required) the uuid for the project"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "uuid",
+                      "description": "(Required) the uuid for the saved sql chart"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"versionedData\": {\n    \"config\": {\n      \"metadata\": {\n        \"version\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      },\n      \"type\": \"<string>\",\n      \"display\": {\n        \"stack\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"legend\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"series\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"yAxis\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"xAxis\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      },\n      \"fieldConfig\": {\n        \"y\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"stack\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"sortBy\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"groupBy\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"x\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      }\n    },\n    \"limit\": \"<double>\",\n    \"sql\": \"<string>\"\n  },\n  \"unversionedData\": {\n    \"spaceUuid\": \"<string>\",\n    \"description\": \"<string>\",\n    \"name\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"name\": \"string\",\n    \"statusCode\": 8760.69419265481,\n    \"data\": {},\n    \"message\": \"string\"\n  },\n  \"status\": \"error\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "412f8c74-e02c-4b88-a7d3-2bb41b1db9a9",
+          "name": "Delete SQL chart",
+          "request": {
+            "name": "Delete SQL chart",
+            "description": {
+              "content": "Delete sql chart",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "projects",
+                ":projectUuid",
+                "sqlRunner",
+                "saved",
+                ":uuid"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "projectUuid",
+                  "description": "(Required) the uuid for the project"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "uuid",
+                  "description": "(Required) the uuid for the saved sql chart"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "6130a817-57ff-4cbb-afb2-d3c5a79b748f",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "projects",
+                    ":projectUuid",
+                    "sqlRunner",
+                    "saved",
+                    ":uuid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "projectUuid",
+                      "description": "(Required) the uuid for the project"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "uuid",
+                      "description": "(Required) the uuid for the saved sql chart"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": \"ok\",\n  \"results\": \"\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "3251c12e-a9fe-4a47-b172-fc76522d823a",
+              "name": "Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "projects",
+                    ":projectUuid",
+                    "sqlRunner",
+                    "saved",
+                    ":uuid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "projectUuid",
+                      "description": "(Required) the uuid for the project"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "uuid",
+                      "description": "(Required) the uuid for the saved sql chart"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"name\": \"string\",\n    \"statusCode\": 8760.69419265481,\n    \"data\": {},\n    \"message\": \"string\"\n  },\n  \"status\": \"error\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "79a72024-2ac3-4962-9bee-15ed47b6ab65",
+          "name": "Get SQL chart by slug",
+          "request": {
+            "name": "Get SQL chart by slug",
+            "description": {
+              "content": "Get saved sql chart",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "projects",
+                ":projectUuid",
+                "sqlRunner",
+                "saved",
+                "slug",
+                ":slug"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "slug",
+                  "description": "(Required) the slug for the saved sql chart"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "projectUuid",
+                  "description": "(Required) the uuid for the project"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "a6f938ae-a083-4cc9-bbc7-b5876aa4669f",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "projects",
+                    ":projectUuid",
+                    "sqlRunner",
+                    "saved",
+                    "slug",
+                    ":slug"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "slug",
+                      "description": "(Required) the slug for the saved sql chart"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "projectUuid",
+                      "description": "(Required) the uuid for the project"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"results\": {\n    \"resolvedColorPalette\": {\n      \"source\": {\n        \"type\": \"config\"\n      },\n      \"paletteName\": \"string\",\n      \"paletteUuid\": \"string\",\n      \"darkColors\": [\n        \"string\",\n        \"string\"\n      ],\n      \"colors\": [\n        \"string\",\n        \"string\"\n      ]\n    },\n    \"lastViewedAt\": \"2017-02-20T07:09:38.221Z\",\n    \"firstViewedAt\": \"1959-12-02T14:03:29.615Z\",\n    \"views\": 457.95495133419075,\n    \"organization\": {\n      \"organizationUuid\": \"0043523e-679d-531b-b2ae-78ef21e5c010\"\n    },\n    \"project\": {\n      \"projectUuid\": \"string\"\n    },\n    \"dashboard\": {\n      \"name\": \"string\",\n      \"uuid\": \"string\"\n    },\n    \"space\": {\n      \"name\": \"string\",\n      \"uuid\": \"string\",\n      \"userAccess\": {\n        \"hasDirectAccess\": false,\n        \"role\": \"admin\",\n        \"userUuid\": \"string\",\n        \"inheritedFrom\": \"organization\",\n        \"inheritedRole\": \"editor\",\n        \"projectRole\": \"editor\"\n      }\n    },\n    \"lastUpdatedBy\": {},\n    \"lastUpdatedAt\": \"1972-03-24T07:02:10.543Z\",\n    \"createdBy\": {},\n    \"createdAt\": \"1963-03-06T16:38:40.011Z\",\n    \"chartKind\": \"table\",\n    \"config\": {\n      \"type\": \"area\",\n      \"metadata\": {\n        \"version\": 9672.927943611458\n      },\n      \"display\": {\n        \"stack\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"legend\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"series\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"yAxis\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"xAxis\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      },\n      \"fieldConfig\": {\n        \"y\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"stack\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"sortBy\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"groupBy\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"x\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      }\n    },\n    \"limit\": 5685.002912561261,\n    \"sql\": \"string\",\n    \"slug\": \"string\",\n    \"description\": \"string\",\n    \"name\": \"string\",\n    \"savedSqlUuid\": \"string\"\n  },\n  \"status\": \"ok\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "1724a60f-359e-4590-87e5-8ad9d276e2de",
+              "name": "Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "projects",
+                    ":projectUuid",
+                    "sqlRunner",
+                    "saved",
+                    "slug",
+                    ":slug"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "slug",
+                      "description": "(Required) the slug for the saved sql chart"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "projectUuid",
+                      "description": "(Required) the uuid for the project"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"name\": \"string\",\n    \"statusCode\": 8760.69419265481,\n    \"data\": {},\n    \"message\": \"string\"\n  },\n  \"status\": \"error\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "c567f444-a9d2-457e-b14e-c6df61c3a1f7",
+          "name": "Get SQL chart results job",
+          "request": {
+            "name": "Get SQL chart results job",
+            "description": {
+              "content": "Schedules a job to get its results",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "projects",
+                ":projectUuid",
+                "sqlRunner",
+                "saved",
+                "slug",
+                ":slug",
+                "results-job"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "slug",
+                  "description": "(Required) - the slug of the saved chart"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "projectUuid",
+                  "description": "(Required) - the uuid of the project"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "7048553f-6392-4bf9-a290-a28b57f153b2",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "projects",
+                    ":projectUuid",
+                    "sqlRunner",
+                    "saved",
+                    "slug",
+                    ":slug",
+                    "results-job"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "slug",
+                      "description": "(Required) - the slug of the saved chart"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "projectUuid",
+                      "description": "(Required) - the uuid of the project"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"results\": {\n    \"jobId\": \"string\"\n  },\n  \"status\": \"ok\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "bcd4e80a-7b51-4409-aabd-ac40e02c760a",
+              "name": "Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "projects",
+                    ":projectUuid",
+                    "sqlRunner",
+                    "saved",
+                    "slug",
+                    ":slug",
+                    "results-job"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "slug",
+                      "description": "(Required) - the slug of the saved chart"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "projectUuid",
+                      "description": "(Required) - the uuid of the project"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"name\": \"string\",\n    \"statusCode\": 8760.69419265481,\n    \"data\": {},\n    \"message\": \"string\"\n  },\n  \"status\": \"error\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "8d9701d9-a265-4023-82f2-684aa5ff6df7",
+          "name": "Get SQL chart results job by UUID",
+          "request": {
+            "name": "Get SQL chart results job by UUID",
+            "description": {
+              "content": "Schedules a job to get its results",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "projects",
+                ":projectUuid",
+                "sqlRunner",
+                "saved",
+                ":uuid",
+                "results-job"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "uuid",
+                  "description": "(Required) - the uuid of the saved chart"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "projectUuid",
+                  "description": "(Required) - the uuid of the project"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "c46c4750-3bfe-4480-a387-de13d2e174aa",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "projects",
+                    ":projectUuid",
+                    "sqlRunner",
+                    "saved",
+                    ":uuid",
+                    "results-job"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "uuid",
+                      "description": "(Required) - the uuid of the saved chart"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "projectUuid",
+                      "description": "(Required) - the uuid of the project"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"results\": {\n    \"jobId\": \"string\"\n  },\n  \"status\": \"ok\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d2de3cba-4a36-4109-bc04-289c40c3ae11",
+              "name": "Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "projects",
+                    ":projectUuid",
+                    "sqlRunner",
+                    "saved",
+                    ":uuid",
+                    "results-job"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "uuid",
+                      "description": "(Required) - the uuid of the saved chart"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "projectUuid",
+                      "description": "(Required) - the uuid of the project"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"name\": \"string\",\n    \"statusCode\": 8760.69419265481,\n    \"data\": {},\n    \"message\": \"string\"\n  },\n  \"status\": \"error\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "76d8db21-5b41-4efa-9af5-8f08cb904cc4",
+          "name": "Create SQL chart",
+          "request": {
+            "name": "Create SQL chart",
+            "description": {
+              "content": "Create sql chart",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "projects",
+                ":projectUuid",
+                "sqlRunner",
+                "saved"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "projectUuid",
+                  "description": "(Required) the uuid for the project"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"spaceUuid\": \"<string>\",\n  \"config\": {\n    \"metadata\": {\n      \"version\": \"<double>\"\n    },\n    \"type\": \"<string>\",\n    \"display\": {\n      \"stack\": \"<boolean>\",\n      \"legend\": {\n        \"align\": \"<string>\",\n        \"position\": \"<string>\"\n      },\n      \"series\": {\n        \"key_0\": {\n          \"whichYAxis\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"valueLabelPosition\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"type\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"color\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"yAxisIndex\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"format\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"label\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"key_1\": {\n          \"whichYAxis\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"valueLabelPosition\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"type\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"color\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"yAxisIndex\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"format\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"label\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        }\n      },\n      \"yAxis\": [\n        {\n          \"format\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"position\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"label\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        {\n          \"format\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"position\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"label\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        }\n      ],\n      \"xAxis\": {\n        \"dateFormat\": \"<string>\",\n        \"type\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"label\": \"<string>\"\n      }\n    },\n    \"fieldConfig\": {\n      \"y\": [\n        {\n          \"aggregation\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"reference\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        {\n          \"aggregation\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"reference\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        }\n      ],\n      \"stack\": \"<boolean>\",\n      \"sortBy\": [\n        {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      ],\n      \"groupBy\": [\n        {\n          \"reference\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        {\n          \"reference\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        }\n      ],\n      \"x\": {\n        \"type\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"reference\": \"<string>\"\n      }\n    }\n  },\n  \"limit\": \"<double>\",\n  \"sql\": \"<string>\",\n  \"description\": \"<string>\",\n  \"name\": \"<string>\",\n  \"slug\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "e055d879-fee4-49f2-8f68-13d149761fff",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "projects",
+                    ":projectUuid",
+                    "sqlRunner",
+                    "saved"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "projectUuid",
+                      "description": "(Required) the uuid for the project"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"spaceUuid\": \"<string>\",\n  \"config\": {\n    \"metadata\": {\n      \"version\": \"<double>\"\n    },\n    \"type\": \"<string>\",\n    \"display\": {\n      \"stack\": \"<boolean>\",\n      \"legend\": {\n        \"align\": \"<string>\",\n        \"position\": \"<string>\"\n      },\n      \"series\": {\n        \"key_0\": {\n          \"whichYAxis\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"valueLabelPosition\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"type\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"color\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"yAxisIndex\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"format\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"label\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"key_1\": {\n          \"whichYAxis\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"valueLabelPosition\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"type\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"color\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"yAxisIndex\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"format\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"label\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        }\n      },\n      \"yAxis\": [\n        {\n          \"format\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"position\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"label\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        {\n          \"format\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"position\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"label\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        }\n      ],\n      \"xAxis\": {\n        \"dateFormat\": \"<string>\",\n        \"type\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"label\": \"<string>\"\n      }\n    },\n    \"fieldConfig\": {\n      \"y\": [\n        {\n          \"aggregation\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"reference\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        {\n          \"aggregation\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"reference\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        }\n      ],\n      \"stack\": \"<boolean>\",\n      \"sortBy\": [\n        {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      ],\n      \"groupBy\": [\n        {\n          \"reference\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        {\n          \"reference\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        }\n      ],\n      \"x\": {\n        \"type\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"reference\": \"<string>\"\n      }\n    }\n  },\n  \"limit\": \"<double>\",\n  \"sql\": \"<string>\",\n  \"description\": \"<string>\",\n  \"name\": \"<string>\",\n  \"slug\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"results\": {\n    \"slug\": \"string\",\n    \"savedSqlUuid\": \"string\"\n  },\n  \"status\": \"ok\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "812f696a-0465-412a-b946-00bd426d3f97",
+              "name": "Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "projects",
+                    ":projectUuid",
+                    "sqlRunner",
+                    "saved"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "projectUuid",
+                      "description": "(Required) the uuid for the project"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"spaceUuid\": \"<string>\",\n  \"config\": {\n    \"metadata\": {\n      \"version\": \"<double>\"\n    },\n    \"type\": \"<string>\",\n    \"display\": {\n      \"stack\": \"<boolean>\",\n      \"legend\": {\n        \"align\": \"<string>\",\n        \"position\": \"<string>\"\n      },\n      \"series\": {\n        \"key_0\": {\n          \"whichYAxis\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"valueLabelPosition\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"type\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"color\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"yAxisIndex\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"format\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"label\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"key_1\": {\n          \"whichYAxis\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"valueLabelPosition\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"type\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"color\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"yAxisIndex\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"format\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"label\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        }\n      },\n      \"yAxis\": [\n        {\n          \"format\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"position\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"label\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        {\n          \"format\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"position\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"label\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        }\n      ],\n      \"xAxis\": {\n        \"dateFormat\": \"<string>\",\n        \"type\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"label\": \"<string>\"\n      }\n    },\n    \"fieldConfig\": {\n      \"y\": [\n        {\n          \"aggregation\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"reference\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        {\n          \"aggregation\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"reference\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        }\n      ],\n      \"stack\": \"<boolean>\",\n      \"sortBy\": [\n        {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      ],\n      \"groupBy\": [\n        {\n          \"reference\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        {\n          \"reference\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        }\n      ],\n      \"x\": {\n        \"type\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"reference\": \"<string>\"\n      }\n    }\n  },\n  \"limit\": \"<double>\",\n  \"sql\": \"<string>\",\n  \"description\": \"<string>\",\n  \"name\": \"<string>\",\n  \"slug\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"name\": \"string\",\n    \"statusCode\": 8760.69419265481,\n    \"data\": {},\n    \"message\": \"string\"\n  },\n  \"status\": \"error\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "92a004f6-27ac-4aac-b5da-fa4ca75f7eb4",
+          "name": "Promote SQL chart",
+          "request": {
+            "name": "Promote SQL chart",
+            "description": {
+              "content": "Promote SQL chart to upstream project",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "projects",
+                ":projectUuid",
+                "sqlRunner",
+                "saved",
+                ":uuid",
+                "promote"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "projectUuid",
+                  "description": "(Required) the uuid for the project"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "uuid",
+                  "description": "(Required) the uuid for the saved sql chart"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "40925487-c7fa-499d-b298-923a84686653",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "projects",
+                    ":projectUuid",
+                    "sqlRunner",
+                    "saved",
+                    ":uuid",
+                    "promote"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "projectUuid",
+                      "description": "(Required) the uuid for the project"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "uuid",
+                      "description": "(Required) the uuid for the saved sql chart"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"results\": {\n    \"resolvedColorPalette\": {\n      \"source\": {\n        \"type\": \"config\"\n      },\n      \"paletteName\": \"string\",\n      \"paletteUuid\": \"string\",\n      \"darkColors\": [\n        \"string\",\n        \"string\"\n      ],\n      \"colors\": [\n        \"string\",\n        \"string\"\n      ]\n    },\n    \"lastViewedAt\": \"1965-11-12T23:07:45.839Z\",\n    \"firstViewedAt\": \"2012-09-07T00:18:16.319Z\",\n    \"views\": 5057.590217367416,\n    \"organization\": {\n      \"organizationUuid\": \"8b4565e5-5b15-bf44-f625-31389d5562fe\"\n    },\n    \"project\": {\n      \"projectUuid\": \"string\"\n    },\n    \"dashboard\": {\n      \"name\": \"string\",\n      \"uuid\": \"string\"\n    },\n    \"space\": {\n      \"name\": \"string\",\n      \"uuid\": \"string\",\n      \"userAccess\": {\n        \"hasDirectAccess\": true,\n        \"role\": \"viewer\",\n        \"userUuid\": \"string\",\n        \"inheritedFrom\": \"space_group\",\n        \"inheritedRole\": \"developer\",\n        \"projectRole\": \"viewer\"\n      }\n    },\n    \"lastUpdatedBy\": {},\n    \"lastUpdatedAt\": \"1975-02-16T21:52:19.017Z\",\n    \"createdBy\": {},\n    \"createdAt\": \"1976-03-17T08:31:58.179Z\",\n    \"chartKind\": \"<string>\",\n    \"config\": {\n      \"type\": \"<string>\",\n      \"metadata\": {\n        \"version\": \"<double>\"\n      },\n      \"display\": {\n        \"stack\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"legend\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"series\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"yAxis\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"xAxis\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      },\n      \"fieldConfig\": {\n        \"y\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"stack\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"sortBy\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"groupBy\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"x\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      }\n    },\n    \"limit\": 9869.764502581904,\n    \"sql\": \"string\",\n    \"slug\": \"string\",\n    \"description\": \"string\",\n    \"name\": \"string\",\n    \"savedSqlUuid\": \"string\"\n  },\n  \"status\": \"ok\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "65eb785b-cb8e-4afe-b918-21d3656a8532",
+              "name": "Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "projects",
+                    ":projectUuid",
+                    "sqlRunner",
+                    "saved",
+                    ":uuid",
+                    "promote"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "projectUuid",
+                      "description": "(Required) the uuid for the project"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "uuid",
+                      "description": "(Required) the uuid for the saved sql chart"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"name\": \"string\",\n    \"statusCode\": 8760.69419265481,\n    \"data\": {},\n    \"message\": \"string\"\n  },\n  \"status\": \"error\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "4a167ad0-4d8c-4d39-b074-8c2df317b5d3",
+          "name": "Get SQL chart promotion diff",
+          "request": {
+            "name": "Get SQL chart promotion diff",
+            "description": {
+              "content": "Get diff from SQL chart to promote",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "projects",
+                ":projectUuid",
+                "sqlRunner",
+                "saved",
+                ":uuid",
+                "promoteDiff"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "projectUuid",
+                  "description": "(Required) the uuid for the project"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "uuid",
+                  "description": "(Required) the uuid for the saved sql chart"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "2bd950af-ac5d-44a8-bccc-bdbd48ff9d08",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "projects",
+                    ":projectUuid",
+                    "sqlRunner",
+                    "saved",
+                    ":uuid",
+                    "promoteDiff"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "projectUuid",
+                      "description": "(Required) the uuid for the project"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "uuid",
+                      "description": "(Required) the uuid for the saved sql chart"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"results\": {\n    \"charts\": [\n      {\n        \"data\": {\n          \"oldUuid\": \"string\",\n          \"spacePath\": \"string\",\n          \"spaceSlug\": \"string\"\n        },\n        \"action\": \"delete\"\n      },\n      {\n        \"data\": {\n          \"oldUuid\": \"string\",\n          \"spacePath\": \"string\",\n          \"spaceSlug\": \"string\"\n        },\n        \"action\": \"update\"\n      }\n    ],\n    \"dashboards\": [\n      {\n        \"data\": {\n          \"spacePath\": \"string\",\n          \"spaceSlug\": \"string\"\n        },\n        \"action\": \"create\"\n      },\n      {\n        \"data\": {\n          \"spacePath\": \"string\",\n          \"spaceSlug\": \"string\"\n        },\n        \"action\": \"create\"\n      }\n    ],\n    \"spaces\": [\n      {\n        \"data\": {\n          \"appCount\": 6801.301971477695,\n          \"chartCount\": 7887.976312981682,\n          \"childSpaceCount\": 7917.69123586624,\n          \"dashboardCount\": 167.01251862913603,\n          \"inheritParentPermissions\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"name\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"organizationUuid\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"parentSpaceUuid\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"path\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"pinnedListOrder\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"pinnedListUuid\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"projectMemberAccessRole\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"projectUuid\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"slug\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"uuid\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"deletedBy\": {\n            \"lastName\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"firstName\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"userUuid\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          \"deletedAt\": \"1974-06-15T03:58:51.293Z\"\n        },\n        \"action\": \"create\"\n      },\n      {\n        \"data\": {\n          \"appCount\": 7294.792865712293,\n          \"chartCount\": 1523.3712556779687,\n          \"childSpaceCount\": 2343.4740905685835,\n          \"dashboardCount\": 1360.5973222974067,\n          \"inheritParentPermissions\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"name\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"organizationUuid\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"parentSpaceUuid\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"path\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"pinnedListOrder\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"pinnedListUuid\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"projectMemberAccessRole\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"projectUuid\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"slug\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"uuid\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"deletedBy\": {\n            \"lastName\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"firstName\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"userUuid\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          \"deletedAt\": \"2025-11-24T12:23:41.787Z\"\n        },\n        \"action\": \"delete\"\n      }\n    ],\n    \"dataApps\": [\n      {\n        \"data\": {\n          \"name\": \"string\",\n          \"uuid\": \"string\"\n        },\n        \"action\": \"no changes\"\n      },\n      {\n        \"data\": {\n          \"name\": \"string\",\n          \"uuid\": \"string\"\n        },\n        \"action\": \"create\"\n      }\n    ],\n    \"sqlCharts\": [\n      {\n        \"data\": {\n          \"spacePath\": \"string\",\n          \"spaceSlug\": \"string\",\n          \"description\": \"string\",\n          \"name\": \"string\",\n          \"projectUuid\": \"string\",\n          \"slug\": \"string\",\n          \"oldUuid\": \"string\",\n          \"uuid\": \"string\"\n        },\n        \"action\": \"no changes\"\n      },\n      {\n        \"data\": {\n          \"spacePath\": \"string\",\n          \"spaceSlug\": \"string\",\n          \"description\": \"string\",\n          \"name\": \"string\",\n          \"projectUuid\": \"string\",\n          \"slug\": \"string\",\n          \"oldUuid\": \"string\",\n          \"uuid\": \"string\"\n        },\n        \"action\": \"update\"\n      }\n    ]\n  },\n  \"status\": \"ok\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "518711f2-bda1-49c2-8c20-5fd72aa66c22",
+              "name": "Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "projects",
+                    ":projectUuid",
+                    "sqlRunner",
+                    "saved",
+                    ":uuid",
+                    "promoteDiff"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "projectUuid",
+                      "description": "(Required) the uuid for the project"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "uuid",
+                      "description": "(Required) the uuid for the saved sql chart"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"name\": \"string\",\n    \"statusCode\": 8760.69419265481,\n    \"data\": {},\n    \"message\": \"string\"\n  },\n  \"status\": \"error\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "cbf81cd9-2d1b-4152-bf43-37396bd8d59c",
+          "name": "Refresh catalog cache",
+          "request": {
+            "name": "Refresh catalog cache",
+            "description": {
+              "content": "Refresh the catalog cache",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "projects",
+                ":projectUuid",
+                "sqlRunner",
+                "refresh-catalog"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "projectUuid",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "c045e3e7-9c4d-4946-b4db-c2196a942a0a",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "projects",
+                    ":projectUuid",
+                    "sqlRunner",
+                    "refresh-catalog"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "projectUuid",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": \"ok\",\n  \"results\": \"\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "2ca7ab9d-9e91-4d97-87af-1d6a7616e4fe",
+              "name": "Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "projects",
+                    ":projectUuid",
+                    "sqlRunner",
+                    "refresh-catalog"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "projectUuid",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"name\": \"string\",\n    \"statusCode\": 8760.69419265481,\n    \"data\": {},\n    \"message\": \"string\"\n  },\n  \"status\": \"error\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "51e296a0-fba8-4565-8bf5-0e23ab6a38b5",
+          "name": "Create virtual view",
+          "request": {
+            "name": "Create virtual view",
+            "description": {
+              "content": "Create a virtual-view",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "projects",
+                ":projectUuid",
+                "sqlRunner",
+                "virtual-view"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "projectUuid",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"columns\": [\n    {\n      \"reference\": \"<string>\",\n      \"type\": \"<string>\"\n    },\n    {\n      \"reference\": \"<string>\",\n      \"type\": \"<string>\"\n    }\n  ],\n  \"sql\": \"<string>\",\n  \"name\": \"<string>\",\n  \"parameterValues\": {\n    \"key_0\": \"<string>\",\n    \"key_1\": \"<string>\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "7f63c667-6e31-4bd4-af04-343315cf96d9",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "projects",
+                    ":projectUuid",
+                    "sqlRunner",
+                    "virtual-view"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "projectUuid",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"columns\": [\n    {\n      \"reference\": \"<string>\",\n      \"type\": \"<string>\"\n    },\n    {\n      \"reference\": \"<string>\",\n      \"type\": \"<string>\"\n    }\n  ],\n  \"sql\": \"<string>\",\n  \"name\": \"<string>\",\n  \"parameterValues\": {\n    \"key_0\": \"<string>\",\n    \"key_1\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"results\": {\n    \"name\": \"string\"\n  },\n  \"status\": \"ok\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c5210ed0-7b58-4554-806e-83f6cb316488",
+              "name": "Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "projects",
+                    ":projectUuid",
+                    "sqlRunner",
+                    "virtual-view"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "projectUuid",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"columns\": [\n    {\n      \"reference\": \"<string>\",\n      \"type\": \"<string>\"\n    },\n    {\n      \"reference\": \"<string>\",\n      \"type\": \"<string>\"\n    }\n  ],\n  \"sql\": \"<string>\",\n  \"name\": \"<string>\",\n  \"parameterValues\": {\n    \"key_0\": \"<string>\",\n    \"key_1\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"name\": \"string\",\n    \"statusCode\": 8760.69419265481,\n    \"data\": {},\n    \"message\": \"string\"\n  },\n  \"status\": \"error\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "fb6a0df5-60f4-4280-84b9-6b019cebcace",
+          "name": "Update virtual view",
+          "request": {
+            "name": "Update virtual view",
+            "description": {
+              "content": "Update a virtual view",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "projects",
+                ":projectUuid",
+                "sqlRunner",
+                "virtual-view",
+                ":name"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "projectUuid",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "name",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"columns\": [\n    {\n      \"reference\": \"<string>\",\n      \"type\": \"<string>\"\n    },\n    {\n      \"reference\": \"<string>\",\n      \"type\": \"<string>\"\n    }\n  ],\n  \"sql\": \"<string>\",\n  \"name\": \"<string>\",\n  \"parameterValues\": {\n    \"key_0\": \"<string>\",\n    \"key_1\": \"<string>\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "e74764f2-ad1f-4460-9740-fcc4407da164",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "projects",
+                    ":projectUuid",
+                    "sqlRunner",
+                    "virtual-view",
+                    ":name"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "projectUuid",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "name",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"columns\": [\n    {\n      \"reference\": \"<string>\",\n      \"type\": \"<string>\"\n    },\n    {\n      \"reference\": \"<string>\",\n      \"type\": \"<string>\"\n    }\n  ],\n  \"sql\": \"<string>\",\n  \"name\": \"<string>\",\n  \"parameterValues\": {\n    \"key_0\": \"<string>\",\n    \"key_1\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"results\": {\n    \"name\": \"string\"\n  },\n  \"status\": \"ok\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "7accbda3-28e7-44cf-93d4-dcf456a56c8c",
+              "name": "Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "projects",
+                    ":projectUuid",
+                    "sqlRunner",
+                    "virtual-view",
+                    ":name"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "projectUuid",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "name",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"columns\": [\n    {\n      \"reference\": \"<string>\",\n      \"type\": \"<string>\"\n    },\n    {\n      \"reference\": \"<string>\",\n      \"type\": \"<string>\"\n    }\n  ],\n  \"sql\": \"<string>\",\n  \"name\": \"<string>\",\n  \"parameterValues\": {\n    \"key_0\": \"<string>\",\n    \"key_1\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"name\": \"string\",\n    \"statusCode\": 8760.69419265481,\n    \"data\": {},\n    \"message\": \"string\"\n  },\n  \"status\": \"error\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "e76d2239-36f6-41fc-a4fc-ab6688b74948",
+          "name": "Delete virtual view",
+          "request": {
+            "name": "Delete virtual view",
+            "description": {
+              "content": "Delete a virtual-view",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "projects",
+                ":projectUuid",
+                "sqlRunner",
+                "virtual-view",
+                ":name"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "projectUuid",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "name",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "a628f37f-620a-46dc-9f7f-08189a0a5309",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "projects",
+                    ":projectUuid",
+                    "sqlRunner",
+                    "virtual-view",
+                    ":name"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "projectUuid",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "name",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": \"ok\",\n  \"results\": \"\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "362e9bb5-b238-4c88-bc59-8a8955f1c1f4",
+              "name": "Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "projects",
+                    ":projectUuid",
+                    "sqlRunner",
+                    "virtual-view",
+                    ":name"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "projectUuid",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "name",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"name\": \"string\",\n    \"statusCode\": 8760.69419265481,\n    \"data\": {},\n    \"message\": \"string\"\n  },\n  \"status\": \"error\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "6726c3bd-a670-4054-b5b8-ea493acb7e33",
+          "name": "Preview write back",
+          "request": {
+            "name": "Preview write back",
+            "description": {
+              "content": "Preview write back from SQL runner",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "projects",
+                ":projectUuid",
+                "sqlRunner",
+                "preview"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "projectUuid",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"columns\": [\n    {\n      \"reference\": \"<string>\",\n      \"type\": \"<string>\"\n    },\n    {\n      \"reference\": \"<string>\",\n      \"type\": \"<string>\"\n    }\n  ],\n  \"sql\": \"<string>\",\n  \"name\": \"<string>\",\n  \"parameterValues\": {\n    \"key_0\": \"<string>\",\n    \"key_1\": \"<string>\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "76881192-aab9-415d-b5fd-90e6787e1b7b",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "projects",
+                    ":projectUuid",
+                    "sqlRunner",
+                    "preview"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "projectUuid",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"columns\": [\n    {\n      \"reference\": \"<string>\",\n      \"type\": \"<string>\"\n    },\n    {\n      \"reference\": \"<string>\",\n      \"type\": \"<string>\"\n    }\n  ],\n  \"sql\": \"<string>\",\n  \"name\": \"<string>\",\n  \"parameterValues\": {\n    \"key_0\": \"<string>\",\n    \"key_1\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"results\": {\n    \"owner\": \"string\",\n    \"files\": [\n      \"string\",\n      \"string\"\n    ],\n    \"path\": \"string\",\n    \"repo\": \"string\",\n    \"url\": \"string\"\n  },\n  \"status\": \"ok\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "4782dc12-271e-4211-a94d-227fb0c629f1",
+              "name": "Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "projects",
+                    ":projectUuid",
+                    "sqlRunner",
+                    "preview"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "projectUuid",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"columns\": [\n    {\n      \"reference\": \"<string>\",\n      \"type\": \"<string>\"\n    },\n    {\n      \"reference\": \"<string>\",\n      \"type\": \"<string>\"\n    }\n  ],\n  \"sql\": \"<string>\",\n  \"name\": \"<string>\",\n  \"parameterValues\": {\n    \"key_0\": \"<string>\",\n    \"key_1\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"name\": \"string\",\n    \"statusCode\": 8760.69419265481,\n    \"data\": {},\n    \"message\": \"string\"\n  },\n  \"status\": \"error\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "c17da65e-0ede-4032-ad7c-e8da5d2317f2",
+          "name": "Create write back PR",
+          "request": {
+            "name": "Create write back PR",
+            "description": {
+              "content": "Write back from SQL runner",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "projects",
+                ":projectUuid",
+                "sqlRunner",
+                "pull-request"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "projectUuid",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"columns\": [\n    {\n      \"reference\": \"<string>\",\n      \"type\": \"<string>\"\n    },\n    {\n      \"reference\": \"<string>\",\n      \"type\": \"<string>\"\n    }\n  ],\n  \"sql\": \"<string>\",\n  \"name\": \"<string>\",\n  \"parameterValues\": {\n    \"key_0\": \"<string>\",\n    \"key_1\": \"<string>\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "05fb9848-2eec-4fb6-85b7-6ead282cee70",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "projects",
+                    ":projectUuid",
+                    "sqlRunner",
+                    "pull-request"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "projectUuid",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"columns\": [\n    {\n      \"reference\": \"<string>\",\n      \"type\": \"<string>\"\n    },\n    {\n      \"reference\": \"<string>\",\n      \"type\": \"<string>\"\n    }\n  ],\n  \"sql\": \"<string>\",\n  \"name\": \"<string>\",\n  \"parameterValues\": {\n    \"key_0\": \"<string>\",\n    \"key_1\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"results\": {\n    \"prUrl\": \"string\",\n    \"prTitle\": \"string\"\n  },\n  \"status\": \"ok\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b891681d-482a-4dbe-9959-47ad270514c2",
+              "name": "Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "projects",
+                    ":projectUuid",
+                    "sqlRunner",
+                    "pull-request"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "projectUuid",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"columns\": [\n    {\n      \"reference\": \"<string>\",\n      \"type\": \"<string>\"\n    },\n    {\n      \"reference\": \"<string>\",\n      \"type\": \"<string>\"\n    }\n  ],\n  \"sql\": \"<string>\",\n  \"name\": \"<string>\",\n  \"parameterValues\": {\n    \"key_0\": \"<string>\",\n    \"key_1\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"name\": \"string\",\n    \"statusCode\": 8760.69419265481,\n    \"data\": {},\n    \"message\": \"string\"\n  },\n  \"status\": \"error\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "9a3fc894-6f1b-4f29-ae53-1bb127c8a001",
+          "name": "List SQL chart schedulers",
+          "request": {
+            "name": "List SQL chart schedulers",
+            "description": {
+              "content": "Get all schedulers for a SQL chart",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "projects",
+                ":projectUuid",
+                "sqlRunner",
+                "saved",
+                ":savedSqlUuid",
+                "schedulers"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "projectUuid",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "savedSqlUuid",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "551e3874-8dba-4646-bab8-871a704aae31",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "projects",
+                    ":projectUuid",
+                    "sqlRunner",
+                    "saved",
+                    ":savedSqlUuid",
+                    "schedulers"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "projectUuid",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "savedSqlUuid",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"results\": [\n    {\n      \"appName\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"appUuid\": null,\n      \"createdAt\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"createdBy\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"createdByName\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"cron\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"dashboardName\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"dashboardUuid\": null,\n      \"enabled\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"format\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"includeLinks\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"name\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"options\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"savedChartName\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"savedChartUuid\": \"string\",\n      \"savedSqlName\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"savedSqlUuid\": null,\n      \"schedulerUuid\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"targets\": [\n        {\n          \"channel\": \"string\",\n          \"schedulerUuid\": \"string\",\n          \"updatedAt\": \"2015-12-08T06:02:54.747Z\",\n          \"createdAt\": \"1971-09-05T22:00:29.703Z\",\n          \"schedulerSlackTargetUuid\": \"string\"\n        },\n        {\n          \"channel\": \"string\",\n          \"schedulerUuid\": \"string\",\n          \"updatedAt\": \"2018-03-30T20:13:50.679Z\",\n          \"createdAt\": \"1998-10-09T06:39:39.789Z\",\n          \"schedulerSlackTargetUuid\": \"string\"\n        }\n      ],\n      \"updatedAt\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"projectName\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"projectUuid\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"notificationFrequency\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"thresholds\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"projectSchedulerTimezone\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"timezone\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"message\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"latestRun\": {\n        \"format\": \"csv\",\n        \"createdByUserName\": \"string\",\n        \"createdByUserUuid\": \"string\",\n        \"resourceName\": \"string\",\n        \"resourceUuid\": \"string\",\n        \"resourceType\": \"chart\",\n        \"logCounts\": {\n          \"error\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"completed\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"started\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"scheduled\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"total\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"details\": {\n          \"nullable\": true,\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"createdAt\": \"1974-07-25T16:55:42.049Z\",\n        \"runStatus\": \"scheduled\",\n        \"status\": \"error\",\n        \"scheduledTime\": \"1982-09-10T19:28:22.510Z\",\n        \"schedulerName\": \"string\",\n        \"schedulerUuid\": \"string\",\n        \"runId\": \"string\"\n      }\n    },\n    {\n      \"appName\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"appUuid\": null,\n      \"createdAt\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"createdBy\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"createdByName\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"cron\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"dashboardName\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"dashboardUuid\": null,\n      \"enabled\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"format\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"includeLinks\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"name\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"options\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"savedChartName\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"savedChartUuid\": \"string\",\n      \"savedSqlName\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"savedSqlUuid\": null,\n      \"schedulerUuid\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"targets\": [\n        {\n          \"channel\": \"string\",\n          \"schedulerUuid\": \"string\",\n          \"updatedAt\": \"2014-08-05T06:08:37.628Z\",\n          \"createdAt\": \"2023-02-28T22:59:32.794Z\",\n          \"schedulerSlackTargetUuid\": \"string\"\n        },\n        {\n          \"channel\": \"string\",\n          \"schedulerUuid\": \"string\",\n          \"updatedAt\": \"2021-12-15T02:52:56.335Z\",\n          \"createdAt\": \"1961-02-26T12:09:42.264Z\",\n          \"schedulerSlackTargetUuid\": \"string\"\n        }\n      ],\n      \"updatedAt\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"projectName\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"projectUuid\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"notificationFrequency\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"thresholds\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"projectSchedulerTimezone\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"timezone\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"message\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"latestRun\": {\n        \"format\": \"csv\",\n        \"createdByUserName\": \"string\",\n        \"createdByUserUuid\": \"string\",\n        \"resourceName\": \"string\",\n        \"resourceUuid\": \"string\",\n        \"resourceType\": \"chart\",\n        \"logCounts\": {\n          \"error\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"completed\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"started\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"scheduled\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"total\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"details\": {\n          \"nullable\": true,\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"createdAt\": \"1983-02-20T01:11:48.598Z\",\n        \"runStatus\": \"failed\",\n        \"status\": \"scheduled\",\n        \"scheduledTime\": \"1960-09-18T16:39:24.225Z\",\n        \"schedulerName\": \"string\",\n        \"schedulerUuid\": \"string\",\n        \"runId\": \"string\"\n      }\n    }\n  ],\n  \"status\": \"ok\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "7c714b99-2d57-4b49-b46f-c69541adf41a",
+              "name": "Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "projects",
+                    ":projectUuid",
+                    "sqlRunner",
+                    "saved",
+                    ":savedSqlUuid",
+                    "schedulers"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "projectUuid",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "savedSqlUuid",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"name\": \"string\",\n    \"statusCode\": 8760.69419265481,\n    \"data\": {},\n    \"message\": \"string\"\n  },\n  \"status\": \"error\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "6b35c193-7613-46f1-9a9c-77402b1e87b9",
+          "name": "Create SQL chart scheduler",
+          "request": {
+            "name": "Create SQL chart scheduler",
+            "description": {
+              "content": "Create a scheduler for a SQL chart",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "projects",
+                ":projectUuid",
+                "sqlRunner",
+                "saved",
+                ":savedSqlUuid",
+                "schedulers"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "projectUuid",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "savedSqlUuid",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"<string>\",\n  \"cron\": \"<string>\",\n  \"enabled\": \"<boolean>\",\n  \"format\": \"<string>\",\n  \"appUuid\": \"<string>\",\n  \"appName\": \"<string>\",\n  \"options\": {\n    \"limit\": \"<double>\",\n    \"formatted\": \"<boolean>\",\n    \"exportPivotedData\": \"<boolean>\",\n    \"asAttachment\": \"<boolean>\"\n  },\n  \"includeLinks\": \"<boolean>\",\n  \"targets\": [\n    {\n      \"channel\": \"<string>\"\n    },\n    {\n      \"channel\": \"<string>\"\n    }\n  ],\n  \"projectUuid\": \"<string>\",\n  \"timezone\": \"<string>\",\n  \"message\": \"<string>\",\n  \"projectSchedulerTimezone\": \"<string>\",\n  \"thresholds\": [\n    {\n      \"value\": \"<double>\",\n      \"fieldId\": \"<string>\",\n      \"operator\": \"<string>\"\n    },\n    {\n      \"value\": \"<double>\",\n      \"fieldId\": \"<string>\",\n      \"operator\": \"<string>\"\n    }\n  ],\n  \"notificationFrequency\": \"<string>\",\n  \"projectName\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "63e92b44-ef80-42e6-b6d1-c7e421357135",
+              "name": "Created",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "projects",
+                    ":projectUuid",
+                    "sqlRunner",
+                    "saved",
+                    ":savedSqlUuid",
+                    "schedulers"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "projectUuid",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "savedSqlUuid",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"cron\": \"<string>\",\n  \"enabled\": \"<boolean>\",\n  \"format\": \"<string>\",\n  \"appUuid\": \"<string>\",\n  \"appName\": \"<string>\",\n  \"options\": {\n    \"limit\": \"<double>\",\n    \"formatted\": \"<boolean>\",\n    \"exportPivotedData\": \"<boolean>\",\n    \"asAttachment\": \"<boolean>\"\n  },\n  \"includeLinks\": \"<boolean>\",\n  \"targets\": [\n    {\n      \"channel\": \"<string>\"\n    },\n    {\n      \"channel\": \"<string>\"\n    }\n  ],\n  \"projectUuid\": \"<string>\",\n  \"timezone\": \"<string>\",\n  \"message\": \"<string>\",\n  \"projectSchedulerTimezone\": \"<string>\",\n  \"thresholds\": [\n    {\n      \"value\": \"<double>\",\n      \"fieldId\": \"<string>\",\n      \"operator\": \"<string>\"\n    },\n    {\n      \"value\": \"<double>\",\n      \"fieldId\": \"<string>\",\n      \"operator\": \"<string>\"\n    }\n  ],\n  \"notificationFrequency\": \"<string>\",\n  \"projectName\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"results\": {\n    \"targets\": [\n      {\n        \"channel\": \"string\",\n        \"schedulerUuid\": \"string\",\n        \"updatedAt\": \"2004-07-20T17:59:07.312Z\",\n        \"createdAt\": \"1976-11-20T23:59:33.444Z\",\n        \"schedulerSlackTargetUuid\": \"string\"\n      },\n      {\n        \"channel\": \"string\",\n        \"schedulerUuid\": \"string\",\n        \"updatedAt\": \"1963-12-06T05:07:09.265Z\",\n        \"createdAt\": \"1956-09-04T13:16:01.681Z\",\n        \"schedulerSlackTargetUuid\": \"string\"\n      }\n    ],\n    \"latestRun\": {\n      \"format\": \"<string>\",\n      \"createdByUserName\": \"string\",\n      \"createdByUserUuid\": \"string\",\n      \"resourceName\": \"string\",\n      \"resourceUuid\": \"string\",\n      \"resourceType\": \"app\",\n      \"logCounts\": {\n        \"error\": 8471.822721481023,\n        \"completed\": 576.0076743801645,\n        \"started\": 5611.38272383128,\n        \"scheduled\": 0.17710911157431397,\n        \"total\": 2026.43735956347\n      },\n      \"details\": {\n        \"key_0\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      },\n      \"createdAt\": \"1955-05-12T02:11:36.978Z\",\n      \"runStatus\": \"failed\",\n      \"status\": \"completed\",\n      \"scheduledTime\": \"1975-03-10T11:53:20.130Z\",\n      \"schedulerName\": \"string\",\n      \"schedulerUuid\": \"string\",\n      \"runId\": \"string\"\n    }\n  },\n  \"status\": \"ok\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "1df119c9-0b2c-4a5a-92f3-b40df9c472eb",
+              "name": "Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "projects",
+                    ":projectUuid",
+                    "sqlRunner",
+                    "saved",
+                    ":savedSqlUuid",
+                    "schedulers"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "projectUuid",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "savedSqlUuid",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"cron\": \"<string>\",\n  \"enabled\": \"<boolean>\",\n  \"format\": \"<string>\",\n  \"appUuid\": \"<string>\",\n  \"appName\": \"<string>\",\n  \"options\": {\n    \"limit\": \"<double>\",\n    \"formatted\": \"<boolean>\",\n    \"exportPivotedData\": \"<boolean>\",\n    \"asAttachment\": \"<boolean>\"\n  },\n  \"includeLinks\": \"<boolean>\",\n  \"targets\": [\n    {\n      \"channel\": \"<string>\"\n    },\n    {\n      \"channel\": \"<string>\"\n    }\n  ],\n  \"projectUuid\": \"<string>\",\n  \"timezone\": \"<string>\",\n  \"message\": \"<string>\",\n  \"projectSchedulerTimezone\": \"<string>\",\n  \"thresholds\": [\n    {\n      \"value\": \"<double>\",\n      \"fieldId\": \"<string>\",\n      \"operator\": \"<string>\"\n    },\n    {\n      \"value\": \"<double>\",\n      \"fieldId\": \"<string>\",\n      \"operator\": \"<string>\"\n    }\n  ],\n  \"notificationFrequency\": \"<string>\",\n  \"projectName\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"name\": \"string\",\n    \"statusCode\": 8760.69419265481,\n    \"data\": {},\n    \"message\": \"string\"\n  },\n  \"status\": \"error\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "/",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "30f1f21f-175c-494d-8004-d6e376295c6c",
+    "name": "Lightdash AiAgents SQL runner API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Open API documentation for all public Lightdash API endpoints. # Authentication Before you get started, you might need to create a Personal Access Token to authenticate via the API. You can create a token by following this guide: https://docs.lightdash.com/references/personal_tokens\n\n\nContact Support:\n Name: Lightdash Support\n Email: support@lightdash.com",
+      "type": "text/plain"
+    }
+  }
+}

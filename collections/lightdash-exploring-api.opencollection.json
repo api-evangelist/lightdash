@@ -1,0 +1,99 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Lightdash AiAgents Exploring API",
+    "version": "0.3156.1"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Exploring",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Run underlying data query",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v1/projects/:projectUuid/explores/:exploreId/runUnderlyingDataQuery",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path",
+                "description": "The uuid of the project"
+              },
+              {
+                "name": "exploreId",
+                "value": "",
+                "type": "path",
+                "description": "table name"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Deprecated — use the v2 Execute underlying data endpoint instead.\n\nThis endpoint was deprecated on 20 March 2025 and is past its sunset date (30 April 2025) — it may be removed at any time. Migrate to the v2 async query flow: Execute underlying data, then Get results."
+        },
+        {
+          "info": {
+            "name": "Run metric query",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v1/projects/:projectUuid/explores/:exploreId/runQuery",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path",
+                "description": "The uuid of the project"
+              },
+              {
+                "name": "exploreId",
+                "value": "",
+                "type": "path",
+                "description": "table name"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Deprecated — use the v2 Execute metric query endpoint instead.\n\nThis endpoint was deprecated on 20 March 2025 and is past its sunset date (30 April 2025) — it may be removed at any time. Migrate to the v2 async query flow: Execute metric query, then Get results."
+        },
+        {
+          "info": {
+            "name": "Run SQL query",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v1/projects/:projectUuid/sqlQuery",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path",
+                "description": "The uuid of the project to run the query against"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Deprecated — use the v2 Execute SQL query endpoint instead.\n\nThis endpoint was deprecated on 17 February 2025 and is past its sunset date (17 May 2025) — it may be removed at any time. Migrate to the v2 async query flow: Execute SQL query, then Get results."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

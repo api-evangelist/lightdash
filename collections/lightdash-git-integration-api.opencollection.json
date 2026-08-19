@@ -1,0 +1,130 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Lightdash AiAgents Git Integration API",
+    "version": "0.3156.1"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Git Integration",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Create PR for custom metrics",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v1/projects/:projectUuid/git-integration/pull-requests/custom-metrics",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a pull request for custom metrics"
+        },
+        {
+          "info": {
+            "name": "Create PR for custom dimensions",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v1/projects/:projectUuid/git-integration/pull-requests/custom-dimensions",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a pull request for custom dimensions"
+        },
+        {
+          "info": {
+            "name": "Get explore file",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/projects/:projectUuid/git-integration/explores/:exploreName/files",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "exploreName",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get the YAML file for an explore's base table"
+        },
+        {
+          "info": {
+            "name": "Get explore file path",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/projects/:projectUuid/git-integration/explores/:exploreName/file-path",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "exploreName",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get the file path for an explore's YAML file (without fetching content)"
+        },
+        {
+          "info": {
+            "name": "Create file PR",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v1/projects/:projectUuid/git-integration/pull-requests/file-change",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a pull request with arbitrary file changes"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

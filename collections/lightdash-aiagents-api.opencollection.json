@@ -1,0 +1,334 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Lightdash AiAgents API",
+    "version": "0.3156.1"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "AiAgents",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "listAiAgentDocuments",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/aiAgents/documents",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          }
+        },
+        {
+          "info": {
+            "name": "createAiAgentDocument",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v1/aiAgents/documents",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          }
+        },
+        {
+          "info": {
+            "name": "deleteAiAgentDocument",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "/api/v1/aiAgents/documents/:documentUuid",
+            "params": [
+              {
+                "name": "documentUuid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          }
+        },
+        {
+          "info": {
+            "name": "List AI agent threads",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/aiAgents/admin/threads",
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "pageSize",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "projectUuids",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "agentUuids",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "userUuids",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "createdFrom",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "humanScore",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "dateFrom",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "dateTo",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "search",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "sortField",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "sortDirection",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Get all AI agent threads for admin"
+        },
+        {
+          "info": {
+            "name": "List AI agents",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/aiAgents/admin/agents"
+          },
+          "docs": "Get all AI agents for admin"
+        },
+        {
+          "info": {
+            "name": "List AI agent review items",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/aiAgents/admin/review-items",
+            "params": [
+              {
+                "name": "status",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Get AI agent classifier review items for admin"
+        },
+        {
+          "info": {
+            "name": "List AI agent review signals",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/aiAgents/admin/review-items/:fingerprint",
+            "params": [
+              {
+                "name": "fingerprint",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get AI agent classifier review signals for admin debugging"
+        },
+        {
+          "info": {
+            "name": "Update AI agent review item status",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "/api/v1/aiAgents/admin/review-items/:fingerprint",
+            "params": [
+              {
+                "name": "fingerprint",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update the status of an AI agent review item (e.g. dismiss it)"
+        },
+        {
+          "info": {
+            "name": "Get AI agent review item activity",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/aiAgents/admin/review-items/:fingerprint/activity",
+            "params": [
+              {
+                "name": "fingerprint",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get the remediation activity feed for a review item"
+        },
+        {
+          "info": {
+            "name": "Get AI agent review item PR diff",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/aiAgents/admin/review-items/:fingerprint/pr-diff",
+            "params": [
+              {
+                "name": "fingerprint",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get the file diff of the pull request linked to a review item"
+        },
+        {
+          "info": {
+            "name": "Get AI agent review item by preview thread",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/aiAgents/admin/review-items/by-preview-thread/:threadUuid",
+            "params": [
+              {
+                "name": "threadUuid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get the review item linked to a remediation preview work thread"
+        },
+        {
+          "info": {
+            "name": "Create AI agent review item writeback PR",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v1/aiAgents/admin/review-items/:fingerprint/writeback",
+            "params": [
+              {
+                "name": "fingerprint",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Open a writeback pull request for a review item (semantic-layer or\nproject-context root cause)"
+        },
+        {
+          "info": {
+            "name": "Preview AI agent review item writeback diff",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/aiAgents/admin/review-items/:fingerprint/writeback-preview",
+            "params": [
+              {
+                "name": "fingerprint",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Preview the file change a writeback PR would make, without opening it.\nOnly project_context findings have a deterministic diff."
+        },
+        {
+          "info": {
+            "name": "getAiAgentReviewSignals",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/aiAgents/admin/review-signals"
+          }
+        },
+        {
+          "info": {
+            "name": "Get AI settings",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/aiAgents/admin/settings"
+          },
+          "docs": "Get AI organization settings"
+        },
+        {
+          "info": {
+            "name": "Update AI settings",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "/api/v1/aiAgents/admin/settings",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update AI organization settings"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

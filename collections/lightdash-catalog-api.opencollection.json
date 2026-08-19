@@ -1,0 +1,759 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Lightdash AiAgents Catalog API",
+    "version": "0.3156.1"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Catalog",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get catalog",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/projects/:projectUuid/dataCatalog",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "search",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "type",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "filter",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Get catalog items"
+        },
+        {
+          "info": {
+            "name": "List metrics trees",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/projects/:projectUuid/dataCatalog/metrics/trees",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Page number (1-indexed)"
+              },
+              {
+                "name": "pageSize",
+                "value": "",
+                "type": "query",
+                "description": "Number of trees per page"
+              }
+            ]
+          },
+          "docs": "List saved metrics trees for a project"
+        },
+        {
+          "info": {
+            "name": "Create metrics tree",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v1/projects/:projectUuid/dataCatalog/metrics/trees",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a new saved metrics tree with nodes and edges"
+        },
+        {
+          "info": {
+            "name": "Get metrics tree details",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/projects/:projectUuid/dataCatalog/metrics/trees/:metricsTreeUuidOrSlug",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "metricsTreeUuidOrSlug",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get details of a saved metrics tree including nodes and edges"
+        },
+        {
+          "info": {
+            "name": "Update metrics tree",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "/api/v1/projects/:projectUuid/dataCatalog/metrics/trees/:metricsTreeUuid",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "metricsTreeUuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update a saved metrics tree including nodes and edges"
+        },
+        {
+          "info": {
+            "name": "Delete metrics tree",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "/api/v1/projects/:projectUuid/dataCatalog/metrics/trees/:metricsTreeUuid",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "metricsTreeUuid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Delete a saved metrics tree and its associated nodes"
+        },
+        {
+          "info": {
+            "name": "Acquire tree lock",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v1/projects/:projectUuid/dataCatalog/metrics/trees/:metricsTreeUuid/lock",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "metricsTreeUuid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Acquire an edit lock on a metrics tree"
+        },
+        {
+          "info": {
+            "name": "Release tree lock",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "/api/v1/projects/:projectUuid/dataCatalog/metrics/trees/:metricsTreeUuid/lock",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "metricsTreeUuid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Release an edit lock on a metrics tree"
+        },
+        {
+          "info": {
+            "name": "Refresh tree lock heartbeat",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "/api/v1/projects/:projectUuid/dataCatalog/metrics/trees/:metricsTreeUuid/lock/heartbeat",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "metricsTreeUuid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Refresh the heartbeat on an edit lock to keep it alive"
+        },
+        {
+          "info": {
+            "name": "Get table metadata",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/projects/:projectUuid/dataCatalog/:table/metadata",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "table",
+                "value": "",
+                "type": "path",
+                "description": "Table name to get metadata for"
+              }
+            ]
+          },
+          "docs": "Get catalog metadata for tables"
+        },
+        {
+          "info": {
+            "name": "Get table analytics",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/projects/:projectUuid/dataCatalog/:table/analytics",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "table",
+                "value": "",
+                "type": "path",
+                "description": "Table name to get analytics for"
+              }
+            ]
+          },
+          "docs": "Get catalog analytics for tables"
+        },
+        {
+          "info": {
+            "name": "Get field analytics",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/projects/:projectUuid/dataCatalog/:table/analytics/:field",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "table",
+                "value": "",
+                "type": "path",
+                "description": "Table where this field belongs"
+              },
+              {
+                "name": "field",
+                "value": "",
+                "type": "path",
+                "description": "Field name to get analytics for"
+              }
+            ]
+          },
+          "docs": "Get catalog analytics for fields"
+        },
+        {
+          "info": {
+            "name": "List metrics in catalog",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/projects/:projectUuid/dataCatalog/metrics",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "search",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "pageSize",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "sort",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "order",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "categories",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "categoriesFilterMode",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "tables",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "ownerUserUuids",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Get metrics catalog"
+        },
+        {
+          "info": {
+            "name": "Get all metrics tree edges",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/projects/:projectUuid/dataCatalog/metrics/tree/edges",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get all edges in the metrics tree for a project"
+        },
+        {
+          "info": {
+            "name": "Create metrics tree edge",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v1/projects/:projectUuid/dataCatalog/metrics/tree/edges",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create an edge in the metrics tree"
+        },
+        {
+          "info": {
+            "name": "Get metric",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/projects/:projectUuid/dataCatalog/metrics/:tableName/:metricName",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "tableName",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "metricName",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get metric by table and metric name"
+        },
+        {
+          "info": {
+            "name": "Get metrics with time dimensions",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/projects/:projectUuid/dataCatalog/metrics-with-time-dimensions",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "tableName",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Get metrics with time dimensions"
+        },
+        {
+          "info": {
+            "name": "Get filter dimensions",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/projects/:projectUuid/dataCatalog/:tableName/filter-dimensions",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "tableName",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get dimensions that can be used to filter metrics"
+        },
+        {
+          "info": {
+            "name": "Get segment dimensions",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/projects/:projectUuid/dataCatalog/:tableName/segment-dimensions",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "tableName",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get dimensions that can be used to segment metrics"
+        },
+        {
+          "info": {
+            "name": "Add category to catalog item",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v1/projects/:projectUuid/dataCatalog/:catalogSearchUuid/categories",
+            "params": [
+              {
+                "name": "catalogSearchUuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Add a category to a catalog item"
+        },
+        {
+          "info": {
+            "name": "Remove category from catalog item",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "/api/v1/projects/:projectUuid/dataCatalog/:catalogSearchUuid/categories/:tagUuid",
+            "params": [
+              {
+                "name": "catalogSearchUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "tagUuid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Remove a category from a catalog item"
+        },
+        {
+          "info": {
+            "name": "Update catalog item icon",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "/api/v1/projects/:projectUuid/dataCatalog/:catalogSearchUuid/icon",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "catalogSearchUuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update the icon for a catalog item"
+        },
+        {
+          "info": {
+            "name": "Get metrics tree",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/projects/:projectUuid/dataCatalog/metrics/tree",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "metricUuids",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Get the metrics tree structure (deprecated, use POST instead)"
+        },
+        {
+          "info": {
+            "name": "Get metrics tree",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v1/projects/:projectUuid/dataCatalog/metrics/tree",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Get the metrics tree structure"
+        },
+        {
+          "info": {
+            "name": "Delete metrics tree edge",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "/api/v1/projects/:projectUuid/dataCatalog/metrics/tree/edges/:sourceCatalogSearchUuid/:targetCatalogSearchUuid",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "sourceCatalogSearchUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "targetCatalogSearchUuid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Delete an edge from the metrics tree"
+        },
+        {
+          "info": {
+            "name": "Check if metrics exist in catalog",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/projects/:projectUuid/dataCatalog/metrics/has",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Check if there are any metrics in catalog"
+        },
+        {
+          "info": {
+            "name": "List metric owners",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/projects/:projectUuid/dataCatalog/metrics/owners",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get distinct metric owners for filter dropdown"
+        },
+        {
+          "info": {
+            "name": "List metrics with time dimensions",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v2/projects/:projectUuid/dataCatalog/metrics-with-time-dimensions",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "pageSize",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "sort",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "order",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "tableName",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "categories",
+                "value": "",
+                "type": "query",
+                "description": "Spotlight category yaml references to filter by (OR mode)"
+              },
+              {
+                "name": "tags",
+                "value": "",
+                "type": "query",
+                "description": "dbt tag names to filter by (OR mode)"
+              }
+            ]
+          },
+          "docs": "Get paginated metrics that have time dimensions available"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,194 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Lightdash AiAgents Integrations API",
+    "version": "0.3156.1"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Integrations",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get Slack channels",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/slack/channels",
+            "params": [
+              {
+                "name": "search",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "excludeArchived",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "excludeDms",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "excludeGroups",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "forceRefresh",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "includeChannelIds",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Get slack channels"
+        },
+        {
+          "info": {
+            "name": "Lookup channel",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/slack/channels/:channelId",
+            "params": [
+              {
+                "name": "channelId",
+                "value": "",
+                "type": "path",
+                "description": "Slack channel ID (e.g., C01234567)"
+              }
+            ]
+          },
+          "docs": "Look up a single Slack channel by ID. Used for on-demand fetching when\nuser pastes a channel ID not in the cache."
+        },
+        {
+          "info": {
+            "name": "Update Slack custom settings",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "/api/v1/slack/custom-settings",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update slack notification channel to send notifications to scheduled jobs fail"
+        },
+        {
+          "info": {
+            "name": "Check Slack OpenID link status",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/slack/is-authenticated"
+          },
+          "docs": "Check if the user has an OpenID identity for Slack"
+        },
+        {
+          "info": {
+            "name": "Get Slack installation",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/slack"
+          },
+          "docs": "Get Slack installation details for the organization"
+        },
+        {
+          "info": {
+            "name": "Delete Slack installation",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "/api/v1/slack"
+          },
+          "docs": "Delete the Slack installation for the organization"
+        },
+        {
+          "info": {
+            "name": "Get Slack image",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/slack/image/:nanoId"
+          },
+          "docs": "Get a Slack image by nanoId"
+        },
+        {
+          "info": {
+            "name": "Get Slack preview",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/slack/preview/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get a Slack unfurl preview image via redirect to a fresh signed URL.\nFalls back to a placeholder image if the preview is not found."
+        },
+        {
+          "info": {
+            "name": "Install Slack",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/slack/install"
+          },
+          "docs": "Start the Slack installation flow"
+        },
+        {
+          "info": {
+            "name": "Get Google Drive access token",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/gdrive/get-access-token"
+          },
+          "docs": "Get access token for google drive"
+        },
+        {
+          "info": {
+            "name": "Upload to Google Sheet",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v1/gdrive/upload-gsheet",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Upload results from query to Google Sheet"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

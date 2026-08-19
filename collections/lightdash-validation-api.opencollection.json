@@ -1,0 +1,116 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Lightdash AiAgents Validation API",
+    "version": "0.3156.1"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Validation",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List validation results",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v2/projects/:projectUuid/validate",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path",
+                "description": "the projectId for the validation"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "page number (1-indexed)"
+              },
+              {
+                "name": "pageSize",
+                "value": "",
+                "type": "query",
+                "description": "number of results per page"
+              },
+              {
+                "name": "searchQuery",
+                "value": "",
+                "type": "query",
+                "description": "search string to filter by name or error message"
+              },
+              {
+                "name": "sortBy",
+                "value": "",
+                "type": "query",
+                "description": "field to sort by"
+              },
+              {
+                "name": "sortDirection",
+                "value": "",
+                "type": "query",
+                "description": "sort direction"
+              },
+              {
+                "name": "sourceTypes",
+                "value": "",
+                "type": "query",
+                "description": "comma-separated list of source types to filter by"
+              },
+              {
+                "name": "errorTypes",
+                "value": "",
+                "type": "query",
+                "description": "comma-separated list of error types to filter by"
+              },
+              {
+                "name": "includeChartConfigWarnings",
+                "value": "",
+                "type": "query",
+                "description": "whether to include chart configuration warnings"
+              },
+              {
+                "name": "fromSettings",
+                "value": "",
+                "type": "query",
+                "description": "boolean for analytics tracking"
+              }
+            ]
+          },
+          "docs": "Get paginated validation results for a project with search, filter, and sort support."
+        },
+        {
+          "info": {
+            "name": "Get validation result",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v2/projects/:projectUuid/validate/:validationIdOrUuid",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path",
+                "description": "the projectId for the validation"
+              },
+              {
+                "name": "validationIdOrUuid",
+                "value": "",
+                "type": "path",
+                "description": "the validation UUID, or a legacy integer id\nfor rows created before the UUID migration (PROD-7386)."
+              }
+            ]
+          },
+          "docs": "Get a single validation result."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,37 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Lightdash AiAgents Files API",
+    "version": "0.3156.1"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Files",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get file",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/file/:fileId",
+            "params": [
+              {
+                "name": "fileId",
+                "value": "",
+                "type": "path",
+                "description": "the persistent file nanoid"
+              }
+            ]
+          },
+          "docs": "Get a persistent file download. Streams the file body through the\nbackend so self-hosted deployments don't need to expose their internal\nS3-compatible storage endpoint to browsers."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

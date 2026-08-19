@@ -1,0 +1,202 @@
+{
+  "item": [
+    {
+      "id": "6776cbaf-f7ff-45e8-a6f5-92149b19627a",
+      "name": "Pull Requests",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "178d5d64-e075-48e7-a27f-04e4be19904e",
+          "name": "List pull requests",
+          "request": {
+            "name": "List pull requests",
+            "description": {
+              "content": "List the pull requests that have been created by write-backs for a project",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "projects",
+                ":projectUuid",
+                "pull-requests"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "<double>"
+                },
+                {
+                  "disabled": false,
+                  "key": "pageSize",
+                  "value": "<double>"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "projectUuid",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "00019e84-0c3f-4e6a-8a5b-95d318bbb92b",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "projects",
+                    ":projectUuid",
+                    "pull-requests"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "<double>"
+                    },
+                    {
+                      "key": "pageSize",
+                      "value": "<double>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "projectUuid",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"results\": {\n    \"data\": [\n      {\n        \"aiAgentUuid\": \"string\",\n        \"aiThreadUuid\": \"string\",\n        \"createdAt\": \"1968-10-09T20:36:55.448Z\",\n        \"createdByUserUuid\": \"string\",\n        \"organizationUuid\": \"string\",\n        \"owner\": \"string\",\n        \"prNumber\": 4085.065094109076,\n        \"prUrl\": \"string\",\n        \"projectUuid\": \"string\",\n        \"provider\": \"github\",\n        \"pullRequestUuid\": \"string\",\n        \"repo\": \"string\",\n        \"reviewContext\": {\n          \"nullable\": true,\n          \"description\": \"Source review context for AI review remediation PRs. Present when the PR\\nwas opened to address a review finding.\",\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"source\": \"sql_runner\",\n        \"state\": \"open\",\n        \"summary\": \"string\",\n        \"title\": \"string\"\n      },\n      {\n        \"aiAgentUuid\": \"string\",\n        \"aiThreadUuid\": \"string\",\n        \"createdAt\": \"2003-05-27T18:20:54.164Z\",\n        \"createdByUserUuid\": \"string\",\n        \"organizationUuid\": \"string\",\n        \"owner\": \"string\",\n        \"prNumber\": 4239.326854182007,\n        \"prUrl\": \"string\",\n        \"projectUuid\": \"string\",\n        \"provider\": \"github\",\n        \"pullRequestUuid\": \"string\",\n        \"repo\": \"string\",\n        \"reviewContext\": {\n          \"nullable\": true,\n          \"description\": \"Source review context for AI review remediation PRs. Present when the PR\\nwas opened to address a review finding.\",\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"source\": \"custom_metric\",\n        \"state\": \"open\",\n        \"summary\": \"string\",\n        \"title\": \"string\"\n      }\n    ],\n    \"pagination\": {\n      \"page\": 3130.4440785627276,\n      \"pageSize\": 2429.700561882163,\n      \"totalPageCount\": 5728.859027066344,\n      \"totalResults\": 3612.2830463559876\n    }\n  },\n  \"status\": \"ok\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b6360f54-58a8-4e53-b24c-ef9eef7983a4",
+              "name": "Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "projects",
+                    ":projectUuid",
+                    "pull-requests"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "<double>"
+                    },
+                    {
+                      "key": "pageSize",
+                      "value": "<double>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "projectUuid",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"name\": \"string\",\n    \"statusCode\": 5942.270110697699,\n    \"data\": {},\n    \"message\": \"string\"\n  },\n  \"status\": \"error\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "/",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "2e0916a2-4fd7-45a5-ab5e-c7574c366d28",
+    "name": "Lightdash AiAgents Pull Requests API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Open API documentation for all public Lightdash API endpoints. # Authentication Before you get started, you might need to create a Personal Access Token to authenticate via the API. You can create a token by following this guide: https://docs.lightdash.com/references/personal_tokens\n\n\nContact Support:\n Name: Lightdash Support\n Email: support@lightdash.com",
+      "type": "text/plain"
+    }
+  }
+}

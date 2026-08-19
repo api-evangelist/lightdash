@@ -1,0 +1,1738 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Lightdash AiAgents v2 API",
+    "version": "0.3156.1"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "v2",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get pre-aggregate stats",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v2/projects/:projectUuid/pre-aggregates/stats",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "days",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "pageSize",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "exploreName",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "queryType",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Retrieves aggregated pre-aggregate hit/miss statistics for a project"
+        },
+        {
+          "info": {
+            "name": "Get dashboard pre-aggregate audit",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v2/projects/:projectUuid/pre-aggregates/dashboards/:dashboardUuidOrSlug/audit",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "dashboardUuidOrSlug",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Audits pre-aggregate hit/miss coverage for every tile on a dashboard\nwithout executing the queries. Returns a per-tile breakdown grouped\nby tab, suitable for CI coverage checks and pre-aggregate tuning."
+        },
+        {
+          "info": {
+            "name": "Run dashboard pre-aggregate audit",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v2/projects/:projectUuid/pre-aggregates/dashboards/:dashboardUuidOrSlug/audit",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "dashboardUuidOrSlug",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Audit pre-aggregate hit/miss coverage with runtime filter overrides"
+        },
+        {
+          "info": {
+            "name": "Get pre-aggregate materializations",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v2/projects/:projectUuid/pre-aggregates/materializations",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "pageSize",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Retrieves pre-aggregate definitions with their latest materialization status"
+        },
+        {
+          "info": {
+            "name": "Get organization roles",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v2/orgs/:orgUuid/roles",
+            "params": [
+              {
+                "name": "orgUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "load",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "roleTypeFilter",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Get roles for organization"
+        },
+        {
+          "info": {
+            "name": "Create custom role",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v2/orgs/:orgUuid/roles",
+            "params": [
+              {
+                "name": "orgUuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a new role in organization"
+        },
+        {
+          "info": {
+            "name": "Get custom role",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v2/orgs/:orgUuid/roles/:roleUuid",
+            "params": [
+              {
+                "name": "orgUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "roleUuid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get custom role by uuid"
+        },
+        {
+          "info": {
+            "name": "Update custom role",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "/api/v2/orgs/:orgUuid/roles/:roleUuid",
+            "params": [
+              {
+                "name": "orgUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "roleUuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update role in organization"
+        },
+        {
+          "info": {
+            "name": "Delete custom role",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "/api/v2/orgs/:orgUuid/roles/:roleUuid",
+            "params": [
+              {
+                "name": "orgUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "roleUuid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Delete role from organization"
+        },
+        {
+          "info": {
+            "name": "List role assignees",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v2/orgs/:orgUuid/roles/:roleUuid/assignees",
+            "params": [
+              {
+                "name": "orgUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "roleUuid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "List the users, groups, and service accounts currently assigned to a role.\nUsed by the delete-confirmation modal to explain why a role cannot\nbe deleted while still in use."
+        },
+        {
+          "info": {
+            "name": "Add scopes to role",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v2/orgs/:orgUuid/roles/:roleUuid/scopes",
+            "params": [
+              {
+                "name": "orgUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "roleUuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Add scopes to role"
+        },
+        {
+          "info": {
+            "name": "Remove scope from role",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "/api/v2/orgs/:orgUuid/roles/:roleUuid/scopes/:scopeName",
+            "params": [
+              {
+                "name": "orgUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "roleUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "scopeName",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Remove scope from role"
+        },
+        {
+          "info": {
+            "name": "List project role assignments",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v2/projects/:projectId/roles/assignments",
+            "params": [
+              {
+                "name": "projectId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "List project role assignments"
+        },
+        {
+          "info": {
+            "name": "Assign project role to user",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v2/projects/:projectId/roles/assignments/user/:userId",
+            "params": [
+              {
+                "name": "projectId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "userId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create or update project role assignment for user (upsert)"
+        },
+        {
+          "info": {
+            "name": "Remove project role from user",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "/api/v2/projects/:projectId/roles/assignments/user/:userId",
+            "params": [
+              {
+                "name": "projectId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "userId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Delete project role assignment for user"
+        },
+        {
+          "info": {
+            "name": "Assign project role to group",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v2/projects/:projectId/roles/assignments/group/:groupId",
+            "params": [
+              {
+                "name": "projectId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "groupId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create or update project role assignment for group (upsert)"
+        },
+        {
+          "info": {
+            "name": "Update project group role",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "/api/v2/projects/:projectId/roles/assignments/group/:groupId",
+            "params": [
+              {
+                "name": "projectId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "groupId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update project role assignment for group"
+        },
+        {
+          "info": {
+            "name": "Remove project role from group",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "/api/v2/projects/:projectId/roles/assignments/group/:groupId",
+            "params": [
+              {
+                "name": "projectId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "groupId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Delete project role assignment for group"
+        },
+        {
+          "info": {
+            "name": "List organization role assignments",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v2/orgs/:orgUuid/roles/assignments",
+            "params": [
+              {
+                "name": "orgUuid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "List organization role assignments (system roles only)"
+        },
+        {
+          "info": {
+            "name": "Assign organization role to user",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v2/orgs/:orgUuid/roles/assignments/user/:userId",
+            "params": [
+              {
+                "name": "orgUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "userId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Assign system role to user at organization level"
+        },
+        {
+          "info": {
+            "name": "Duplicate role",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v2/orgs/:orgUuid/roles/:roleId/duplicate",
+            "params": [
+              {
+                "name": "orgUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "roleId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Duplicate a role"
+        },
+        {
+          "info": {
+            "name": "List validation results",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v2/projects/:projectUuid/validate",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path",
+                "description": "the projectId for the validation"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "page number (1-indexed)"
+              },
+              {
+                "name": "pageSize",
+                "value": "",
+                "type": "query",
+                "description": "number of results per page"
+              },
+              {
+                "name": "searchQuery",
+                "value": "",
+                "type": "query",
+                "description": "search string to filter by name or error message"
+              },
+              {
+                "name": "sortBy",
+                "value": "",
+                "type": "query",
+                "description": "field to sort by"
+              },
+              {
+                "name": "sortDirection",
+                "value": "",
+                "type": "query",
+                "description": "sort direction"
+              },
+              {
+                "name": "sourceTypes",
+                "value": "",
+                "type": "query",
+                "description": "comma-separated list of source types to filter by"
+              },
+              {
+                "name": "errorTypes",
+                "value": "",
+                "type": "query",
+                "description": "comma-separated list of error types to filter by"
+              },
+              {
+                "name": "includeChartConfigWarnings",
+                "value": "",
+                "type": "query",
+                "description": "whether to include chart configuration warnings"
+              },
+              {
+                "name": "fromSettings",
+                "value": "",
+                "type": "query",
+                "description": "boolean for analytics tracking"
+              }
+            ]
+          },
+          "docs": "Get paginated validation results for a project with search, filter, and sort support."
+        },
+        {
+          "info": {
+            "name": "Get validation result",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v2/projects/:projectUuid/validate/:validationIdOrUuid",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path",
+                "description": "the projectId for the validation"
+              },
+              {
+                "name": "validationIdOrUuid",
+                "value": "",
+                "type": "path",
+                "description": "the validation UUID, or a legacy integer id\nfor rows created before the UUID migration (PROD-7386)."
+              }
+            ]
+          },
+          "docs": "Get a single validation result."
+        },
+        {
+          "info": {
+            "name": "List chart schedulers",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v2/saved/:chartUuid/schedulers",
+            "params": [
+              {
+                "name": "chartUuid",
+                "value": "",
+                "type": "path",
+                "description": "The uuid of the chart"
+              },
+              {
+                "name": "pageSize",
+                "value": "",
+                "type": "query",
+                "description": "number of items per page"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "page number"
+              },
+              {
+                "name": "searchQuery",
+                "value": "",
+                "type": "query",
+                "description": "filter schedulers by name"
+              },
+              {
+                "name": "formats",
+                "value": "",
+                "type": "query",
+                "description": "comma-separated list of scheduler formats to include"
+              },
+              {
+                "name": "includeLatestRun",
+                "value": "",
+                "type": "query",
+                "description": "include the most recent run for each scheduler"
+              }
+            ]
+          },
+          "docs": "Get all schedulers for a saved chart"
+        },
+        {
+          "info": {
+            "name": "List chart scheduler runs",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v2/saved/:chartUuid/schedulers/:schedulerUuid/runs",
+            "params": [
+              {
+                "name": "chartUuid",
+                "value": "",
+                "type": "path",
+                "description": "The uuid of the chart"
+              },
+              {
+                "name": "schedulerUuid",
+                "value": "",
+                "type": "path",
+                "description": "The uuid of the scheduler"
+              },
+              {
+                "name": "pageSize",
+                "value": "",
+                "type": "query",
+                "description": "number of items per page"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "page number"
+              },
+              {
+                "name": "searchQuery",
+                "value": "",
+                "type": "query",
+                "description": "filter runs by scheduler name"
+              },
+              {
+                "name": "sortBy",
+                "value": "",
+                "type": "query",
+                "description": "column to sort by (scheduledTime, createdAt)"
+              },
+              {
+                "name": "sortDirection",
+                "value": "",
+                "type": "query",
+                "description": "sort direction (asc or desc)"
+              },
+              {
+                "name": "statuses",
+                "value": "",
+                "type": "query",
+                "description": "comma-separated list of run statuses to include"
+              },
+              {
+                "name": "destinations",
+                "value": "",
+                "type": "query",
+                "description": "comma-separated list of destination types to include"
+              }
+            ]
+          },
+          "docs": "Get the run history of a single scheduler on a chart"
+        },
+        {
+          "info": {
+            "name": "Get results",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v2/projects/:projectUuid/query/:queryUuid",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "queryUuid",
+                "value": "",
+                "type": "path",
+                "description": "The UUID of the async query to retrieve results for"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Page number for pagination (starts at 1)"
+              },
+              {
+                "name": "pageSize",
+                "value": "",
+                "type": "query",
+                "description": "Number of results per page (default: 500, max: 5000)"
+              }
+            ]
+          },
+          "docs": "Retrieves paginated results from a previously executed async query using its UUID"
+        },
+        {
+          "info": {
+            "name": "Cancel query",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v2/projects/:projectUuid/query/:queryUuid/cancel",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "queryUuid",
+                "value": "",
+                "type": "path",
+                "description": "The UUID of the async query to cancel"
+              }
+            ]
+          },
+          "docs": "Cancels a running async query and discards any partial results"
+        },
+        {
+          "info": {
+            "name": "Calculate totals",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v2/projects/:projectUuid/query/:queryUuid/calculate-total",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "queryUuid",
+                "value": "",
+                "type": "path",
+                "description": "The UUID of the previously-executed query to compute totals from"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Calculates totals for a previously-executed query, referenced by its queryUuid. Re-runs the source query's MetricQuery against the warehouse so totals are correct for every metric type (count distinct, average, ratio, etc.) — unlike client-side cell summation, which only works for sum/count. The requested `kind` selects which totals to compute."
+        },
+        {
+          "info": {
+            "name": "Execute metric query",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v2/projects/:projectUuid/query/metric-query",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Executes a metric query asynchronously against your data warehouse using dimensions, metrics, filters, and sorts"
+        },
+        {
+          "info": {
+            "name": "Search field values",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v2/projects/:projectUuid/query/field-values",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Searches for unique field values asynchronously, returning a query UUID to poll for results"
+        },
+        {
+          "info": {
+            "name": "Execute saved chart",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v2/projects/:projectUuid/query/chart",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Executes a saved chart query asynchronously with optional parameter overrides"
+        },
+        {
+          "info": {
+            "name": "Execute dashboard chart",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v2/projects/:projectUuid/query/dashboard-chart",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Executes a chart within a dashboard context asynchronously with inherited dashboard filters"
+        },
+        {
+          "info": {
+            "name": "Execute underlying data",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v2/projects/:projectUuid/query/underlying-data",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Executes a query to retrieve underlying raw data for drilling down into aggregated values"
+        },
+        {
+          "info": {
+            "name": "Execute SQL query",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v2/projects/:projectUuid/query/sql",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Executes a raw SQL query asynchronously against your data warehouse for custom queries"
+        },
+        {
+          "info": {
+            "name": "Execute SQL chart",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v2/projects/:projectUuid/query/sql-chart",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Executes a saved SQL chart query asynchronously with optional chart configurations"
+        },
+        {
+          "info": {
+            "name": "Execute dashboard SQL chart",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v2/projects/:projectUuid/query/dashboard-sql-chart",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Executes a SQL chart within a dashboard context asynchronously with inherited filters"
+        },
+        {
+          "info": {
+            "name": "Download results",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v2/projects/:projectUuid/query/:queryUuid/download",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "queryUuid",
+                "value": "",
+                "type": "path",
+                "description": "The UUID of the completed async query to download"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Downloads query results in various formats with custom formatting options"
+        },
+        {
+          "info": {
+            "name": "Download results",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v2/projects/:projectUuid/query/:queryUuid/schedule-download",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "queryUuid",
+                "value": "",
+                "type": "path",
+                "description": "The UUID of the completed async query to download"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Downloads query results in various formats with custom formatting options"
+        },
+        {
+          "info": {
+            "name": "Get chart",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v2/projects/:projectUuid/saved/:chartUuidOrSlug",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "chartUuidOrSlug",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get a saved chart by uuid or slug within a project"
+        },
+        {
+          "info": {
+            "name": "Delete chart",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "/api/v2/projects/:projectUuid/saved/:chartUuidOrSlug",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "chartUuidOrSlug",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Delete a saved chart by uuid or slug within a project"
+        },
+        {
+          "info": {
+            "name": "Get project defaults",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v2/projects/:projectUuid/defaults",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get project defaults configuration"
+        },
+        {
+          "info": {
+            "name": "Replace project defaults",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "/api/v2/projects/:projectUuid/defaults",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Replace project defaults configuration"
+        },
+        {
+          "info": {
+            "name": "Get dashboard",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v2/projects/:projectUuid/dashboards/:dashboardUuidOrSlug",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "dashboardUuidOrSlug",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get a dashboard by uuid or slug within a project"
+        },
+        {
+          "info": {
+            "name": "Update dashboard",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "/api/v2/projects/:projectUuid/dashboards/:dashboardUuidOrSlug",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "dashboardUuidOrSlug",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update a dashboard by uuid or slug within a project"
+        },
+        {
+          "info": {
+            "name": "Delete dashboard",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "/api/v2/projects/:projectUuid/dashboards/:dashboardUuidOrSlug",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "dashboardUuidOrSlug",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Delete a dashboard by uuid or slug within a project"
+        },
+        {
+          "info": {
+            "name": "Get comments",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v2/projects/:projectUuid/dashboards/:dashboardUuidOrSlug/comments",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "dashboardUuidOrSlug",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "resolved",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Gets all comments for a dashboard within a project"
+        },
+        {
+          "info": {
+            "name": "List project parameters",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v2/projects/:projectUuid/parameters/list",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "search",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "sortBy",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "sortOrder",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "pageSize",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Get a paginated list of project parameters with search and sorting capabilities."
+        },
+        {
+          "info": {
+            "name": "Get project parameters",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v2/projects/:projectUuid/parameters",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "names",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Get project parameters by names"
+        },
+        {
+          "info": {
+            "name": "Replace project parameters",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "/api/v2/projects/:projectUuid/parameters",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Replace all project parameters"
+        },
+        {
+          "info": {
+            "name": "Get feature flag",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v2/feature-flag/:featureFlagId",
+            "params": [
+              {
+                "name": "featureFlagId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get feature flag"
+        },
+        {
+          "info": {
+            "name": "List dashboard schedulers",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v2/dashboards/:dashboardUuid/schedulers",
+            "params": [
+              {
+                "name": "dashboardUuid",
+                "value": "",
+                "type": "path",
+                "description": "The uuid of the dashboard"
+              },
+              {
+                "name": "pageSize",
+                "value": "",
+                "type": "query",
+                "description": "number of items per page"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "page number"
+              },
+              {
+                "name": "searchQuery",
+                "value": "",
+                "type": "query",
+                "description": "filter schedulers by name"
+              },
+              {
+                "name": "includeLatestRun",
+                "value": "",
+                "type": "query",
+                "description": "include the most recent run for each scheduler"
+              }
+            ]
+          },
+          "docs": "Get all schedulers for a dashboard"
+        },
+        {
+          "info": {
+            "name": "List dashboard scheduler runs",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v2/dashboards/:dashboardUuid/schedulers/:schedulerUuid/runs",
+            "params": [
+              {
+                "name": "dashboardUuid",
+                "value": "",
+                "type": "path",
+                "description": "The uuid of the dashboard"
+              },
+              {
+                "name": "schedulerUuid",
+                "value": "",
+                "type": "path",
+                "description": "The uuid of the scheduler"
+              },
+              {
+                "name": "pageSize",
+                "value": "",
+                "type": "query",
+                "description": "number of items per page"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "page number"
+              },
+              {
+                "name": "searchQuery",
+                "value": "",
+                "type": "query",
+                "description": "filter runs by scheduler name"
+              },
+              {
+                "name": "sortBy",
+                "value": "",
+                "type": "query",
+                "description": "column to sort by (scheduledTime, createdAt)"
+              },
+              {
+                "name": "sortDirection",
+                "value": "",
+                "type": "query",
+                "description": "sort direction (asc or desc)"
+              },
+              {
+                "name": "statuses",
+                "value": "",
+                "type": "query",
+                "description": "comma-separated list of run statuses to include"
+              },
+              {
+                "name": "destinations",
+                "value": "",
+                "type": "query",
+                "description": "comma-separated list of destination types to include"
+              }
+            ]
+          },
+          "docs": "Get the run history of a single scheduler on a dashboard"
+        },
+        {
+          "info": {
+            "name": "List content",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v2/content",
+            "params": [
+              {
+                "name": "projectUuids",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "spaceUuids",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "parentSpaceUuid",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "contentTypes",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "pageSize",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "search",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "sortBy",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "sortDirection",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Get content (charts, dashboards, spaces)"
+        },
+        {
+          "info": {
+            "name": "Move content",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v2/content/:projectUuid/move",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Move a single item (Chart, Dashboard, Space) to another space"
+        },
+        {
+          "info": {
+            "name": "Bulk move content",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v2/content/bulk-action/:projectUuid/move",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Move multiple items (Charts, Dashboards, Spaces) to another space"
+        },
+        {
+          "info": {
+            "name": "List deleted content",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v2/content/deleted",
+            "params": [
+              {
+                "name": "projectUuids",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "pageSize",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "search",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "contentTypes",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "deletedByUserUuids",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Get deleted content (soft-deleted charts, dashboards, etc.)"
+        },
+        {
+          "info": {
+            "name": "Restore content",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v2/content/:projectUuid/restore",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Restore a soft-deleted item (chart, dashboard, etc.)"
+        },
+        {
+          "info": {
+            "name": "Permanently delete content",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "/api/v2/content/:projectUuid/permanent",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Permanently delete a soft-deleted item (chart, dashboard, etc.)"
+        },
+        {
+          "info": {
+            "name": "List metrics with time dimensions",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v2/projects/:projectUuid/dataCatalog/metrics-with-time-dimensions",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "pageSize",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "sort",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "order",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "tableName",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "categories",
+                "value": "",
+                "type": "query",
+                "description": "Spotlight category yaml references to filter by (OR mode)"
+              },
+              {
+                "name": "tags",
+                "value": "",
+                "type": "query",
+                "description": "dbt tag names to filter by (OR mode)"
+              }
+            ]
+          },
+          "docs": "Get paginated metrics that have time dimensions available"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

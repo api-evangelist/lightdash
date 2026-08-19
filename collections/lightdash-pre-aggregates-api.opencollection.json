@@ -1,0 +1,139 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Lightdash AiAgents Pre-Aggregates API",
+    "version": "0.3156.1"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Pre-Aggregates",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get pre-aggregate stats",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v2/projects/:projectUuid/pre-aggregates/stats",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "days",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "pageSize",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "exploreName",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "queryType",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Retrieves aggregated pre-aggregate hit/miss statistics for a project"
+        },
+        {
+          "info": {
+            "name": "Get dashboard pre-aggregate audit",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v2/projects/:projectUuid/pre-aggregates/dashboards/:dashboardUuidOrSlug/audit",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "dashboardUuidOrSlug",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Audits pre-aggregate hit/miss coverage for every tile on a dashboard\nwithout executing the queries. Returns a per-tile breakdown grouped\nby tab, suitable for CI coverage checks and pre-aggregate tuning."
+        },
+        {
+          "info": {
+            "name": "Run dashboard pre-aggregate audit",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v2/projects/:projectUuid/pre-aggregates/dashboards/:dashboardUuidOrSlug/audit",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "dashboardUuidOrSlug",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Audit pre-aggregate hit/miss coverage with runtime filter overrides"
+        },
+        {
+          "info": {
+            "name": "Get pre-aggregate materializations",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v2/projects/:projectUuid/pre-aggregates/materializations",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "pageSize",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Retrieves pre-aggregate definitions with their latest materialization status"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

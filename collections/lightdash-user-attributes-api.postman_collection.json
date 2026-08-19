@@ -1,0 +1,600 @@
+{
+  "item": [
+    {
+      "id": "b25a6461-6f7f-4bb1-bc4f-7b615ceb3ac5",
+      "name": "User attributes",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "4956e497-304f-4ee2-8daa-80d3a325ca22",
+          "name": "List user attributes",
+          "request": {
+            "name": "List user attributes",
+            "description": {
+              "content": "Get all user attributes",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "org",
+                "attributes"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "1d38db95-1e6e-4840-a04a-abc80825db39",
+              "name": "Ok",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "org",
+                    "attributes"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"results\": [\n    {\n      \"attributeDefault\": \"string\",\n      \"groups\": [\n        {\n          \"value\": \"string\",\n          \"groupUuid\": \"string\"\n        },\n        {\n          \"value\": \"string\",\n          \"groupUuid\": \"string\"\n        }\n      ],\n      \"users\": [\n        {\n          \"value\": \"string\",\n          \"email\": \"string\",\n          \"userUuid\": \"string\"\n        },\n        {\n          \"value\": \"string\",\n          \"email\": \"string\",\n          \"userUuid\": \"string\"\n        }\n      ],\n      \"organizationUuid\": \"string\",\n      \"name\": \"string\",\n      \"createdAt\": \"1970-08-02T09:38:58.412Z\",\n      \"uuid\": \"string\",\n      \"description\": \"string\"\n    },\n    {\n      \"attributeDefault\": \"string\",\n      \"groups\": [\n        {\n          \"value\": \"string\",\n          \"groupUuid\": \"string\"\n        },\n        {\n          \"value\": \"string\",\n          \"groupUuid\": \"string\"\n        }\n      ],\n      \"users\": [\n        {\n          \"value\": \"string\",\n          \"email\": \"string\",\n          \"userUuid\": \"string\"\n        },\n        {\n          \"value\": \"string\",\n          \"email\": \"string\",\n          \"userUuid\": \"string\"\n        }\n      ],\n      \"organizationUuid\": \"string\",\n      \"name\": \"string\",\n      \"createdAt\": \"2008-04-06T11:33:29.813Z\",\n      \"uuid\": \"string\",\n      \"description\": \"string\"\n    }\n  ],\n  \"status\": \"ok\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "fe77e3c8-a425-4b7a-9323-56ed641148e0",
+              "name": "Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "org",
+                    "attributes"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"name\": \"string\",\n    \"statusCode\": 3047.3236470698407,\n    \"data\": {},\n    \"message\": \"string\"\n  },\n  \"status\": \"error\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "04e471fd-b316-4113-9159-d76ac163e075",
+          "name": "Create user attribute",
+          "request": {
+            "name": "Create user attribute",
+            "description": {
+              "content": "Creates new user attribute",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "org",
+                "attributes"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"attributeDefault\": \"<string>\",\n  \"groups\": [\n    {\n      \"value\": \"<string>\",\n      \"groupUuid\": \"<string>\"\n    },\n    {\n      \"value\": \"<string>\",\n      \"groupUuid\": \"<string>\"\n    }\n  ],\n  \"name\": \"<string>\",\n  \"users\": [\n    {\n      \"userUuid\": \"<string>\",\n      \"value\": \"<string>\"\n    },\n    {\n      \"userUuid\": \"<string>\",\n      \"value\": \"<string>\"\n    }\n  ],\n  \"description\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "b753997e-09f0-40d6-a7ac-15ee5d0c260e",
+              "name": "Ok",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "org",
+                    "attributes"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"attributeDefault\": \"<string>\",\n  \"groups\": [\n    {\n      \"value\": \"<string>\",\n      \"groupUuid\": \"<string>\"\n    },\n    {\n      \"value\": \"<string>\",\n      \"groupUuid\": \"<string>\"\n    }\n  ],\n  \"name\": \"<string>\",\n  \"users\": [\n    {\n      \"userUuid\": \"<string>\",\n      \"value\": \"<string>\"\n    },\n    {\n      \"userUuid\": \"<string>\",\n      \"value\": \"<string>\"\n    }\n  ],\n  \"description\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"results\": {\n    \"attributeDefault\": \"string\",\n    \"groups\": [\n      {\n        \"value\": \"<string>\",\n        \"groupUuid\": \"<string>\"\n      },\n      {\n        \"value\": \"<string>\",\n        \"groupUuid\": \"<string>\"\n      }\n    ],\n    \"users\": [\n      {\n        \"value\": \"string\",\n        \"email\": \"string\",\n        \"userUuid\": \"string\"\n      },\n      {\n        \"value\": \"string\",\n        \"email\": \"string\",\n        \"userUuid\": \"string\"\n      }\n    ],\n    \"organizationUuid\": \"string\",\n    \"name\": \"string\",\n    \"createdAt\": \"1989-05-16T08:48:13.678Z\",\n    \"uuid\": \"string\",\n    \"description\": \"string\"\n  },\n  \"status\": \"ok\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "0d4acdb1-e98b-498e-b7e7-95d391b95355",
+              "name": "Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "org",
+                    "attributes"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"attributeDefault\": \"<string>\",\n  \"groups\": [\n    {\n      \"value\": \"<string>\",\n      \"groupUuid\": \"<string>\"\n    },\n    {\n      \"value\": \"<string>\",\n      \"groupUuid\": \"<string>\"\n    }\n  ],\n  \"name\": \"<string>\",\n  \"users\": [\n    {\n      \"userUuid\": \"<string>\",\n      \"value\": \"<string>\"\n    },\n    {\n      \"userUuid\": \"<string>\",\n      \"value\": \"<string>\"\n    }\n  ],\n  \"description\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"name\": \"string\",\n    \"statusCode\": 3047.3236470698407,\n    \"data\": {},\n    \"message\": \"string\"\n  },\n  \"status\": \"error\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "11f48f4d-f869-4908-8b5a-f5e51eb6b3dc",
+          "name": "Update user attribute",
+          "request": {
+            "name": "Update user attribute",
+            "description": {
+              "content": "Updates a user attribute",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "org",
+                "attributes",
+                ":userAttributeUuid"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "userAttributeUuid",
+                  "description": "(Required) the UUID for the group to add the user to"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"attributeDefault\": \"<string>\",\n  \"groups\": [\n    {\n      \"value\": \"<string>\",\n      \"groupUuid\": \"<string>\"\n    },\n    {\n      \"value\": \"<string>\",\n      \"groupUuid\": \"<string>\"\n    }\n  ],\n  \"name\": \"<string>\",\n  \"users\": [\n    {\n      \"userUuid\": \"<string>\",\n      \"value\": \"<string>\"\n    },\n    {\n      \"userUuid\": \"<string>\",\n      \"value\": \"<string>\"\n    }\n  ],\n  \"description\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "66b67c29-6032-48fc-9587-d7051c7562e5",
+              "name": "Ok",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "org",
+                    "attributes",
+                    ":userAttributeUuid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "userAttributeUuid",
+                      "description": "(Required) the UUID for the group to add the user to"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"attributeDefault\": \"<string>\",\n  \"groups\": [\n    {\n      \"value\": \"<string>\",\n      \"groupUuid\": \"<string>\"\n    },\n    {\n      \"value\": \"<string>\",\n      \"groupUuid\": \"<string>\"\n    }\n  ],\n  \"name\": \"<string>\",\n  \"users\": [\n    {\n      \"userUuid\": \"<string>\",\n      \"value\": \"<string>\"\n    },\n    {\n      \"userUuid\": \"<string>\",\n      \"value\": \"<string>\"\n    }\n  ],\n  \"description\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"results\": {\n    \"attributeDefault\": \"string\",\n    \"groups\": [\n      {\n        \"value\": \"<string>\",\n        \"groupUuid\": \"<string>\"\n      },\n      {\n        \"value\": \"<string>\",\n        \"groupUuid\": \"<string>\"\n      }\n    ],\n    \"users\": [\n      {\n        \"value\": \"string\",\n        \"email\": \"string\",\n        \"userUuid\": \"string\"\n      },\n      {\n        \"value\": \"string\",\n        \"email\": \"string\",\n        \"userUuid\": \"string\"\n      }\n    ],\n    \"organizationUuid\": \"string\",\n    \"name\": \"string\",\n    \"createdAt\": \"1989-05-16T08:48:13.678Z\",\n    \"uuid\": \"string\",\n    \"description\": \"string\"\n  },\n  \"status\": \"ok\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "3fbc7321-91d5-4b1b-a5c4-a1419f39804f",
+              "name": "Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "org",
+                    "attributes",
+                    ":userAttributeUuid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "userAttributeUuid",
+                      "description": "(Required) the UUID for the group to add the user to"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"attributeDefault\": \"<string>\",\n  \"groups\": [\n    {\n      \"value\": \"<string>\",\n      \"groupUuid\": \"<string>\"\n    },\n    {\n      \"value\": \"<string>\",\n      \"groupUuid\": \"<string>\"\n    }\n  ],\n  \"name\": \"<string>\",\n  \"users\": [\n    {\n      \"userUuid\": \"<string>\",\n      \"value\": \"<string>\"\n    },\n    {\n      \"userUuid\": \"<string>\",\n      \"value\": \"<string>\"\n    }\n  ],\n  \"description\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"name\": \"string\",\n    \"statusCode\": 3047.3236470698407,\n    \"data\": {},\n    \"message\": \"string\"\n  },\n  \"status\": \"error\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "a12549fd-5756-444b-b0dc-99720ca8ee7f",
+          "name": "Delete user attribute",
+          "request": {
+            "name": "Delete user attribute",
+            "description": {
+              "content": "Remove a user attribute",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "org",
+                "attributes",
+                ":userAttributeUuid"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "userAttributeUuid",
+                  "description": "(Required) the user attribute UUID to remove"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "164c5ac5-0cc0-4771-b068-5ad73ab10133",
+              "name": "Ok",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "org",
+                    "attributes",
+                    ":userAttributeUuid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "userAttributeUuid",
+                      "description": "(Required) the user attribute UUID to remove"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": \"ok\",\n  \"results\": \"\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "6fbfb59a-a8a7-4810-9737-fd2692c3bd30",
+              "name": "Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "org",
+                    "attributes",
+                    ":userAttributeUuid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "userAttributeUuid",
+                      "description": "(Required) the user attribute UUID to remove"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"name\": \"string\",\n    \"statusCode\": 3047.3236470698407,\n    \"data\": {},\n    \"message\": \"string\"\n  },\n  \"status\": \"error\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "/",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "45cc189f-de16-48e1-9f2b-8d3cdbc8f865",
+    "name": "Lightdash AiAgents User attributes API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Open API documentation for all public Lightdash API endpoints. # Authentication Before you get started, you might need to create a Personal Access Token to authenticate via the API. You can create a token by following this guide: https://docs.lightdash.com/references/personal_tokens\n\n\nContact Support:\n Name: Lightdash Support\n Email: support@lightdash.com",
+      "type": "text/plain"
+    }
+  }
+}

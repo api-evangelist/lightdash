@@ -1,0 +1,86 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Lightdash AiAgents User attributes API",
+    "version": "0.3156.1"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "User attributes",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List user attributes",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/org/attributes"
+          },
+          "docs": "Get all user attributes"
+        },
+        {
+          "info": {
+            "name": "Create user attribute",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v1/org/attributes",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates new user attribute"
+        },
+        {
+          "info": {
+            "name": "Update user attribute",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "/api/v1/org/attributes/:userAttributeUuid",
+            "params": [
+              {
+                "name": "userAttributeUuid",
+                "value": "",
+                "type": "path",
+                "description": "the UUID for the group to add the user to"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates a user attribute"
+        },
+        {
+          "info": {
+            "name": "Delete user attribute",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "/api/v1/org/attributes/:userAttributeUuid",
+            "params": [
+              {
+                "name": "userAttributeUuid",
+                "value": "",
+                "type": "path",
+                "description": "the user attribute UUID to remove"
+              }
+            ]
+          },
+          "docs": "Remove a user attribute"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

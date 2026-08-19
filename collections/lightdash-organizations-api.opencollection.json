@@ -1,0 +1,912 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Lightdash AiAgents Organizations API",
+    "version": "0.3156.1"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Organizations",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get Azure AD SSO configuration",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/org/sso/azuread"
+          },
+          "docs": "Returns the current organization's Azure AD SSO configuration (sensitive\nfields are not included)."
+        },
+        {
+          "info": {
+            "name": "Upsert Azure AD SSO configuration",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "/api/v1/org/sso/azuread",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates or updates the current organization's Azure AD SSO configuration.\nOmit `oauth2ClientSecret` to preserve the previously stored secret on\nupdates."
+        },
+        {
+          "info": {
+            "name": "Delete Azure AD SSO configuration",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "/api/v1/org/sso/azuread"
+          },
+          "docs": "Removes the current organization's Azure AD SSO configuration."
+        },
+        {
+          "info": {
+            "name": "Get Okta SSO configuration",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/org/sso/okta"
+          },
+          "docs": "Returns the current organization's Okta SSO configuration (sensitive\nfields are not included)."
+        },
+        {
+          "info": {
+            "name": "Upsert Okta SSO configuration",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "/api/v1/org/sso/okta",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates or updates the current organization's Okta SSO configuration.\nOmit `oauth2ClientSecret` to preserve the previously stored secret on\nupdates."
+        },
+        {
+          "info": {
+            "name": "Delete Okta SSO configuration",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "/api/v1/org/sso/okta"
+          },
+          "docs": "Removes the current organization's Okta SSO configuration."
+        },
+        {
+          "info": {
+            "name": "Get generic OIDC SSO configuration",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/org/sso/oidc"
+          },
+          "docs": "Returns the current organization's generic OIDC SSO configuration\n(sensitive fields are not included)."
+        },
+        {
+          "info": {
+            "name": "Upsert generic OIDC SSO configuration",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "/api/v1/org/sso/oidc",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates or updates the current organization's generic OIDC SSO\nconfiguration. Omit `clientSecret` to preserve the previously stored\nsecret on updates."
+        },
+        {
+          "info": {
+            "name": "Delete generic OIDC SSO configuration",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "/api/v1/org/sso/oidc"
+          },
+          "docs": "Removes the current organization's generic OIDC SSO configuration."
+        },
+        {
+          "info": {
+            "name": "Get OneLogin SSO configuration",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/org/sso/oneLogin"
+          },
+          "docs": "Returns the current organization's OneLogin SSO configuration (sensitive\nfields are not included)."
+        },
+        {
+          "info": {
+            "name": "Upsert OneLogin SSO configuration",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "/api/v1/org/sso/oneLogin",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates or updates the current organization's OneLogin SSO\nconfiguration. Omit `oauth2ClientSecret` to preserve the previously\nstored secret on updates."
+        },
+        {
+          "info": {
+            "name": "Delete OneLogin SSO configuration",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "/api/v1/org/sso/oneLogin"
+          },
+          "docs": "Removes the current organization's OneLogin SSO configuration."
+        },
+        {
+          "info": {
+            "name": "Get Google SSO configuration",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/org/sso/google"
+          },
+          "docs": "Returns the current organization's Google SSO policy. Google is enabled\nby default using the shared instance OAuth app; a configuration only\nexists when the org has set an explicit policy (e.g. disabled Google).\n`null` means no explicit policy — Google follows the instance default."
+        },
+        {
+          "info": {
+            "name": "Upsert Google SSO configuration",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "/api/v1/org/sso/google",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates or updates the current organization's Google SSO policy. Google\nhas no per-org credentials — only the `enabled` / domain / password\nflags are stored."
+        },
+        {
+          "info": {
+            "name": "Delete Google SSO configuration",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "/api/v1/org/sso/google"
+          },
+          "docs": "Removes the current organization's Google SSO policy, reverting to the\ninstance default (Google enabled)."
+        },
+        {
+          "info": {
+            "name": "List verified domains",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/org/domains"
+          },
+          "docs": "Lists the domains the current organization has verified ownership of."
+        },
+        {
+          "info": {
+            "name": "Request domain verification",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v1/org/domains/verify",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Sends a one-time passcode to an address at the domain to begin verifying\nownership. The domain must not be a public email provider and must not\nalready be verified by another organization."
+        },
+        {
+          "info": {
+            "name": "Confirm domain verification",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v1/org/domains/confirm",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Confirms a domain verification passcode. On success the domain is marked\nverified for the organization."
+        },
+        {
+          "info": {
+            "name": "Delete verified domain",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "/api/v1/org/domains/:domain",
+            "params": [
+              {
+                "name": "domain",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Removes a verified domain and strips it from any SSO provider that routed\nto it."
+        },
+        {
+          "info": {
+            "name": "Get organization settings",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/org/settings"
+          },
+          "docs": "Returns the current organization's settings. Defaults are returned when\nno settings have been saved."
+        },
+        {
+          "info": {
+            "name": "Update organization settings",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "/api/v1/org/settings",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates the current organization's settings. Only the provided fields\nare changed."
+        },
+        {
+          "info": {
+            "name": "List organization designs",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/org/designs"
+          },
+          "docs": "List all organization design assets."
+        },
+        {
+          "info": {
+            "name": "Create organization design",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v1/org/designs",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a new organization design. Starts empty — upload files separately."
+        },
+        {
+          "info": {
+            "name": "Get organization design",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/org/designs/:designUuid",
+            "params": [
+              {
+                "name": "designUuid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get a single organization design with its files."
+        },
+        {
+          "info": {
+            "name": "Update organization design",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "/api/v1/org/designs/:designUuid",
+            "params": [
+              {
+                "name": "designUuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update an organization design's name or description."
+        },
+        {
+          "info": {
+            "name": "Delete organization design",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "/api/v1/org/designs/:designUuid",
+            "params": [
+              {
+                "name": "designUuid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Delete an organization design and all its files (cascades S3)."
+        },
+        {
+          "info": {
+            "name": "Clear default organization design",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "/api/v1/org/designs/default"
+          },
+          "docs": "Clear whichever design is currently the organization default. Idempotent\n— succeeds when no default is set.\n\nNOTE: This literal `/default` route MUST stay registered before\n`Delete('/{designUuid}')` below so Express routes a request to\n`DELETE /api/v1/org/designs/default` here rather than treating\n\"default\" as a `designUuid` path param."
+        },
+        {
+          "info": {
+            "name": "Set default organization design",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v1/org/designs/:designUuid/default",
+            "params": [
+              {
+                "name": "designUuid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Mark this design as the organization's default. Clears any previous default."
+        },
+        {
+          "info": {
+            "name": "Upload file to organization design",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v1/org/designs/:designUuid/files",
+            "params": [
+              {
+                "name": "designUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "kind",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "filename",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Upload a file into a design. Send raw bytes as the body with the\nappropriate Content-Type and Content-Length headers. Pass `kind`\nand `filename` as query parameters. Mirrors the data-app image\nupload pattern — no multipart wrapping required."
+        },
+        {
+          "info": {
+            "name": "Download file from organization design",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/org/designs/:designUuid/files/:fileUuid",
+            "params": [
+              {
+                "name": "designUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "fileUuid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Download a single file from an organization design. Streams the\nS3 object body back with the stored Content-Type and a sensible\nContent-Disposition."
+        },
+        {
+          "info": {
+            "name": "Delete file from organization design",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "/api/v1/org/designs/:designUuid/files/:fileUuid",
+            "params": [
+              {
+                "name": "designUuid",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "fileUuid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Delete a single file from an organization design."
+        },
+        {
+          "info": {
+            "name": "Get current organization",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/org"
+          },
+          "docs": "Get the current user's organization"
+        },
+        {
+          "info": {
+            "name": "Create organization",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "/api/v1/org",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new organization, the current user becomes the Admin of the new organization.\nThis is only available to users that are not already in an organization."
+        },
+        {
+          "info": {
+            "name": "Update current organization",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "/api/v1/org",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update the current user's organization"
+        },
+        {
+          "info": {
+            "name": "Delete organization",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "/api/v1/org/:organizationUuid",
+            "params": [
+              {
+                "name": "organizationUuid",
+                "value": "",
+                "type": "path",
+                "description": "the uuid of the organization to delete"
+              }
+            ]
+          },
+          "docs": "Deletes an organization and all users inside that organization"
+        },
+        {
+          "info": {
+            "name": "List organization projects",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/org/projects"
+          },
+          "docs": "Gets all projects of the current user's organization"
+        },
+        {
+          "info": {
+            "name": "Create project",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v1/org/projects",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a new project in the organization"
+        },
+        {
+          "info": {
+            "name": "List organization members",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/org/users",
+            "params": [
+              {
+                "name": "includeGroups",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "pageSize",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "searchQuery",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "query",
+                "description": "filter users who can view this project"
+              },
+              {
+                "name": "googleOidcOnly",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Gets all the members of the current user's organization"
+        },
+        {
+          "info": {
+            "name": "Get organization member by UUID",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/org/users/:userUuid",
+            "params": [
+              {
+                "name": "userUuid",
+                "value": "",
+                "type": "path",
+                "description": "the uuid of the user"
+              }
+            ]
+          },
+          "docs": "Get the member profile for a user in the current user's organization by uuid"
+        },
+        {
+          "info": {
+            "name": "Update organization member",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "/api/v1/org/users/:userUuid",
+            "params": [
+              {
+                "name": "userUuid",
+                "value": "",
+                "type": "path",
+                "description": "the uuid of the user to update"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates the membership profile for a user in the current user's organization"
+        },
+        {
+          "info": {
+            "name": "Get organization member by email",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/org/users/email/:email",
+            "params": [
+              {
+                "name": "email",
+                "value": "",
+                "type": "path",
+                "description": "the email of the user"
+              }
+            ]
+          },
+          "docs": "Get the member profile for a user in the current user's organization by email"
+        },
+        {
+          "info": {
+            "name": "Delete organization member",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "/api/v1/org/user/:userUuid",
+            "params": [
+              {
+                "name": "userUuid",
+                "value": "",
+                "type": "path",
+                "description": "the uuid of the user to delete"
+              }
+            ]
+          },
+          "docs": "Deletes a user from the current user's organization"
+        },
+        {
+          "info": {
+            "name": "Get user schedulers",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/org/user/:userUuid/schedulers-summary",
+            "params": [
+              {
+                "name": "userUuid",
+                "value": "",
+                "type": "path",
+                "description": "the uuid of the user"
+              }
+            ]
+          },
+          "docs": "Gets a summary of scheduled deliveries owned by a user across all projects"
+        },
+        {
+          "info": {
+            "name": "Reassign schedulers",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "/api/v1/org/user/:userUuid/reassign-schedulers",
+            "params": [
+              {
+                "name": "userUuid",
+                "value": "",
+                "type": "path",
+                "description": "the uuid of the user whose schedulers will be reassigned"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Reassigns all scheduled deliveries from one user to another"
+        },
+        {
+          "info": {
+            "name": "List allowed email domains",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/org/allowedEmailDomains"
+          },
+          "docs": "Gets the allowed email domains for the current user's organization"
+        },
+        {
+          "info": {
+            "name": "Update allowed email domains",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "/api/v1/org/allowedEmailDomains",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates the allowed email domains for the current user's organization"
+        },
+        {
+          "info": {
+            "name": "List organization groups",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/org/groups",
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "pageSize",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "includeMembers",
+                "value": "",
+                "type": "query",
+                "description": "number of members to include"
+              },
+              {
+                "name": "searchQuery",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Gets all the groups in the current user's organization"
+        },
+        {
+          "info": {
+            "name": "Create group",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v1/org/groups",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new group in the current user's organization"
+        },
+        {
+          "info": {
+            "name": "List color palettes",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/org/color-palettes"
+          },
+          "docs": "List all color palettes in the organization"
+        },
+        {
+          "info": {
+            "name": "Create color palette",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v1/org/color-palettes",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a new color palette"
+        },
+        {
+          "info": {
+            "name": "Update color palette",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "/api/v1/org/color-palettes/:colorPaletteUuid",
+            "params": [
+              {
+                "name": "colorPaletteUuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update a color palette"
+        },
+        {
+          "info": {
+            "name": "Delete color palette",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "/api/v1/org/color-palettes/:colorPaletteUuid",
+            "params": [
+              {
+                "name": "colorPaletteUuid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Delete a color palette"
+        },
+        {
+          "info": {
+            "name": "Set active color palette",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v1/org/color-palettes/:colorPaletteUuid/active",
+            "params": [
+              {
+                "name": "colorPaletteUuid",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Set a color palette as the active palette"
+        },
+        {
+          "info": {
+            "name": "Get impersonation settings",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/org/impersonation"
+          },
+          "docs": "Get the impersonation setting for the current organization"
+        },
+        {
+          "info": {
+            "name": "Update impersonation settings",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "/api/v1/org/impersonation",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update the impersonation setting for the current organization"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

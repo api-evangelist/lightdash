@@ -1,0 +1,303 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Lightdash AiAgents Content API",
+    "version": "0.3156.1"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Content",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get pinned items",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/projects/:projectUuid/pinned-lists/:pinnedListUuid/items",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path",
+                "description": "project uuid"
+              },
+              {
+                "name": "pinnedListUuid",
+                "value": "",
+                "type": "path",
+                "description": "the list uuid for the pinned items"
+              }
+            ]
+          },
+          "docs": "Get pinned items"
+        },
+        {
+          "info": {
+            "name": "Update pinned items order",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "/api/v1/projects/:projectUuid/pinned-lists/:pinnedListUuid/items/order",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path",
+                "description": "project uuid"
+              },
+              {
+                "name": "pinnedListUuid",
+                "value": "",
+                "type": "path",
+                "description": "the list uuid for the pinned items"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update pinned items order"
+        },
+        {
+          "info": {
+            "name": "Get favorites",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/projects/:projectUuid/favorites",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path",
+                "description": "project uuid"
+              }
+            ]
+          },
+          "docs": "Get the current user's favorite items in a project"
+        },
+        {
+          "info": {
+            "name": "Toggle favorite",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "/api/v1/projects/:projectUuid/favorites",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path",
+                "description": "project uuid"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Toggle a favorite item for the current user"
+        },
+        {
+          "info": {
+            "name": "List content",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v2/content",
+            "params": [
+              {
+                "name": "projectUuids",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "spaceUuids",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "parentSpaceUuid",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "contentTypes",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "pageSize",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "search",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "sortBy",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "sortDirection",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Get content (charts, dashboards, spaces)"
+        },
+        {
+          "info": {
+            "name": "Move content",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v2/content/:projectUuid/move",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Move a single item (Chart, Dashboard, Space) to another space"
+        },
+        {
+          "info": {
+            "name": "Bulk move content",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v2/content/bulk-action/:projectUuid/move",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Move multiple items (Charts, Dashboards, Spaces) to another space"
+        },
+        {
+          "info": {
+            "name": "List deleted content",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v2/content/deleted",
+            "params": [
+              {
+                "name": "projectUuids",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "pageSize",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "search",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "contentTypes",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "deletedByUserUuids",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Get deleted content (soft-deleted charts, dashboards, etc.)"
+        },
+        {
+          "info": {
+            "name": "Restore content",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v2/content/:projectUuid/restore",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Restore a soft-deleted item (chart, dashboard, etc.)"
+        },
+        {
+          "info": {
+            "name": "Permanently delete content",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "/api/v2/content/:projectUuid/permanent",
+            "params": [
+              {
+                "name": "projectUuid",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Permanently delete a soft-deleted item (chart, dashboard, etc.)"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,584 @@
+{
+  "item": [
+    {
+      "id": "3b5e3d1e-52f0-4606-a644-59db9dd5c8f8",
+      "name": "Parameters",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "d5a73c4e-4758-4952-864a-38a16b965fd8",
+          "name": "List project parameters",
+          "request": {
+            "name": "List project parameters",
+            "description": {
+              "content": "Get a paginated list of project parameters with search and sorting capabilities.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v2",
+                "projects",
+                ":projectUuid",
+                "parameters",
+                "list"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "search",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "sortBy",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "sortOrder",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "<double>"
+                },
+                {
+                  "disabled": false,
+                  "key": "pageSize",
+                  "value": "<double>"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "projectUuid",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "30f16977-608a-4ca6-bb8e-b546edbd8e0d",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "projects",
+                    ":projectUuid",
+                    "parameters",
+                    "list"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "search",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "sortBy",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "sortOrder",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "page",
+                      "value": "<double>"
+                    },
+                    {
+                      "key": "pageSize",
+                      "value": "<double>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "projectUuid",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"results\": {\n    \"data\": [\n      {\n        \"source\": \"config\",\n        \"config\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"name\": \"string\",\n        \"modelName\": \"string\"\n      },\n      {\n        \"source\": \"model\",\n        \"config\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"name\": \"string\",\n        \"modelName\": \"string\"\n      }\n    ],\n    \"pagination\": {\n      \"page\": 6292.280077065743,\n      \"pageSize\": 1639.678114394074,\n      \"totalPageCount\": 2571.48679370214,\n      \"totalResults\": 472.5360961366343\n    }\n  },\n  \"status\": \"ok\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "4a6a9ce9-3f13-4ca4-93c9-47df49d83f6c",
+              "name": "Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "projects",
+                    ":projectUuid",
+                    "parameters",
+                    "list"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "search",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "sortBy",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "sortOrder",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "page",
+                      "value": "<double>"
+                    },
+                    {
+                      "key": "pageSize",
+                      "value": "<double>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "projectUuid",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"name\": \"string\",\n    \"statusCode\": 5011.837420192349,\n    \"data\": {},\n    \"message\": \"string\"\n  },\n  \"status\": \"error\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "3c820239-8a52-487d-bc2b-67d3fc200ad6",
+          "name": "Get project parameters",
+          "request": {
+            "name": "Get project parameters",
+            "description": {
+              "content": "Get project parameters by names",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v2",
+                "projects",
+                ":projectUuid",
+                "parameters"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "names",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "names",
+                  "value": "<string>"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "projectUuid",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "5621917f-64c7-4d3e-b269-2e45cea99878",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "projects",
+                    ":projectUuid",
+                    "parameters"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "names",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "names",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "projectUuid",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"results\": {\n    \"key_0\": {\n      \"label\": \"string\",\n      \"options_from_dimension\": {\n        \"dimension\": \"string\",\n        \"model\": \"string\"\n      },\n      \"options\": [\n        \"string\",\n        \"string\"\n      ],\n      \"allow_custom_values\": false,\n      \"multiple\": true,\n      \"default\": \"string\",\n      \"type\": \"date\",\n      \"description\": \"string\"\n    },\n    \"key_1\": {\n      \"label\": \"string\",\n      \"options_from_dimension\": {\n        \"dimension\": \"string\",\n        \"model\": \"string\"\n      },\n      \"options\": [\n        \"string\",\n        \"string\"\n      ],\n      \"allow_custom_values\": false,\n      \"multiple\": true,\n      \"default\": \"string\",\n      \"type\": \"date\",\n      \"description\": \"string\"\n    }\n  },\n  \"status\": \"ok\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "8be92455-c19b-4dc9-9ba1-25bb6bdbdff3",
+              "name": "Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "projects",
+                    ":projectUuid",
+                    "parameters"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "names",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "names",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "projectUuid",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"name\": \"string\",\n    \"statusCode\": 5011.837420192349,\n    \"data\": {},\n    \"message\": \"string\"\n  },\n  \"status\": \"error\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "b689c5ca-7f9e-4d15-8ca5-1209f01f8c99",
+          "name": "Replace project parameters",
+          "request": {
+            "name": "Replace project parameters",
+            "description": {
+              "content": "Replace all project parameters",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v2",
+                "projects",
+                ":projectUuid",
+                "parameters"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "projectUuid",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"key_0\": {\n    \"label\": \"<string>\",\n    \"options_from_dimension\": {\n      \"dimension\": \"<string>\",\n      \"model\": \"<string>\"\n    },\n    \"options\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"allow_custom_values\": \"<boolean>\",\n    \"multiple\": \"<boolean>\",\n    \"default\": \"<string>\",\n    \"type\": \"<string>\",\n    \"description\": \"<string>\"\n  },\n  \"key_1\": {\n    \"label\": \"<string>\",\n    \"options_from_dimension\": {\n      \"dimension\": \"<string>\",\n      \"model\": \"<string>\"\n    },\n    \"options\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"allow_custom_values\": \"<boolean>\",\n    \"multiple\": \"<boolean>\",\n    \"default\": \"<string>\",\n    \"type\": \"<string>\",\n    \"description\": \"<string>\"\n  },\n  \"key_2\": {\n    \"label\": \"<string>\",\n    \"options_from_dimension\": {\n      \"dimension\": \"<string>\",\n      \"model\": \"<string>\"\n    },\n    \"options\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"allow_custom_values\": \"<boolean>\",\n    \"multiple\": \"<boolean>\",\n    \"default\": \"<string>\",\n    \"type\": \"<string>\",\n    \"description\": \"<string>\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "96506bf9-11cd-47af-9d69-a699002c4bca",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "projects",
+                    ":projectUuid",
+                    "parameters"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "projectUuid",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"key_0\": {\n    \"label\": \"<string>\",\n    \"options_from_dimension\": {\n      \"dimension\": \"<string>\",\n      \"model\": \"<string>\"\n    },\n    \"options\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"allow_custom_values\": \"<boolean>\",\n    \"multiple\": \"<boolean>\",\n    \"default\": \"<string>\",\n    \"type\": \"<string>\",\n    \"description\": \"<string>\"\n  },\n  \"key_1\": {\n    \"label\": \"<string>\",\n    \"options_from_dimension\": {\n      \"dimension\": \"<string>\",\n      \"model\": \"<string>\"\n    },\n    \"options\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"allow_custom_values\": \"<boolean>\",\n    \"multiple\": \"<boolean>\",\n    \"default\": \"<string>\",\n    \"type\": \"<string>\",\n    \"description\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": \"ok\",\n  \"results\": \"\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "aed1ef4b-c16a-446b-bb35-ab2d8257ba6c",
+              "name": "Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "projects",
+                    ":projectUuid",
+                    "parameters"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "projectUuid",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"key_0\": {\n    \"label\": \"<string>\",\n    \"options_from_dimension\": {\n      \"dimension\": \"<string>\",\n      \"model\": \"<string>\"\n    },\n    \"options\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"allow_custom_values\": \"<boolean>\",\n    \"multiple\": \"<boolean>\",\n    \"default\": \"<string>\",\n    \"type\": \"<string>\",\n    \"description\": \"<string>\"\n  },\n  \"key_1\": {\n    \"label\": \"<string>\",\n    \"options_from_dimension\": {\n      \"dimension\": \"<string>\",\n      \"model\": \"<string>\"\n    },\n    \"options\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"allow_custom_values\": \"<boolean>\",\n    \"multiple\": \"<boolean>\",\n    \"default\": \"<string>\",\n    \"type\": \"<string>\",\n    \"description\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"name\": \"string\",\n    \"statusCode\": 5011.837420192349,\n    \"data\": {},\n    \"message\": \"string\"\n  },\n  \"status\": \"error\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "/",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "8771945b-7726-49b7-b8e6-88fcf927818b",
+    "name": "Lightdash AiAgents Parameters API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Open API documentation for all public Lightdash API endpoints. # Authentication Before you get started, you might need to create a Personal Access Token to authenticate via the API. You can create a token by following this guide: https://docs.lightdash.com/references/personal_tokens\n\n\nContact Support:\n Name: Lightdash Support\n Email: support@lightdash.com",
+      "type": "text/plain"
+    }
+  }
+}

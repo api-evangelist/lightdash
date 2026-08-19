@@ -1,0 +1,52 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Lightdash AiAgents Share links API",
+    "version": "0.3156.1"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Share links",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get share URL",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v1/share/:nanoId",
+            "params": [
+              {
+                "name": "nanoId",
+                "value": "",
+                "type": "path",
+                "description": "the short id for the share url"
+              }
+            ]
+          },
+          "docs": "Get a share url from a short url id"
+        },
+        {
+          "info": {
+            "name": "Create share URL",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v1/share",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Given a full URL generates a short url id that can be used for sharing"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
