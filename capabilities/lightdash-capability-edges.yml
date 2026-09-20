@@ -1,0 +1,189 @@
+slug: lightdash
+provider: Lightdash
+generated_by: planning/capability-mapping/scripts/classify_capabilities.py
+model: claude-opus-5
+frame:
+- Software & Technology
+min_confidence: 0.7
+capability_model:
+  source: https://github.com/vincentmakes/turbo-ea-capabilities
+  license: CC-BY-4.0
+  attribution: Turbo EA Capabilities by Vincent Verdet — Turbo EA, https://github.com/vincentmakes/turbo-ea-capabilities,
+    CC BY 4.0
+  notice: NOTICE
+edge_count: 17
+edges:
+- tag: Dashboards
+  spec_file: lightdash-dashboards-api-openapi.yml
+  capability_id: BC-610.50
+  capability_id_l1: BC-610
+  capability_name: Analytics & BI Management
+  confidence: 0.85
+  evidence: GET /api/v1/dashboards/{dashboardUuid}/history  getDashboardHistory; POST /api/v1/dashboards/{dashboardUuid}/schedulers  createDashboardScheduler  Create
+    dashboard scheduler
+  reason: Lightdash is a BI platform; these operations manage analytics dashboards (CRUD, versioning,
+    scheduled delivery, verification), which is BI/reporting delivery.
+- tag: Organization Roles
+  spec_file: lightdash-organization-roles-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.85
+  evidence: GET /api/v2/orgs/{orgUuid}/roles/assignments  GetOrganizationRoleAssignments; POST .../roles/assignments/user/{userId}  Assign
+    organization role to user; RoleWithScopes
+  reason: Operations manage roles, custom roles with scopes, and assignment of roles to users at organisation
+    level — textbook role-based access control administration, i.e. Identity & Access Management.
+- tag: Query
+  spec_file: lightdash-query-api-openapi.yml
+  capability_id: BC-610.50
+  capability_id_l1: BC-610
+  capability_name: Analytics & BI Management
+  confidence: 0.85
+  evidence: '''Execute metric query'', ''Execute SQL query'', ''Execute saved chart'', ''Download results'''
+  reason: These operations run analytical metric/SQL/chart queries and return or download results — the
+    core query and reporting delivery function of a business intelligence platform.
+- tag: SQL runner
+  spec_file: lightdash-sql-runner-api-openapi.yml
+  capability_id: BC-610.50
+  capability_id_l1: BC-610
+  capability_name: Analytics & BI Management
+  confidence: 0.85
+  evidence: '''List warehouse tables'', ''Run SQL query'', ''Run SQL pivot query'', ''Create SQL chart'''
+  reason: Ad-hoc SQL execution against the warehouse plus creation and management of saved SQL charts
+    is analytics/BI query and reporting delivery.
+- tag: Charts
+  spec_file: lightdash-charts-api-openapi.yml
+  capability_id: BC-610.50
+  capability_id_l1: BC-610
+  capability_name: Analytics & BI Management
+  confidence: 0.82
+  evidence: PostChartResults 'Run chart query'; GetChartHistory 'Get chart version history'; exportSavedChartImage
+    'Export chart image'; createSavedChartScheduler 'Create saved chart scheduler'
+  reason: Saved-chart execution, versioning, scheduled delivery and export in an open-source BI platform
+    is squarely reporting/analytics delivery (Analytics & BI Management).
+- tag: Metrics
+  spec_file: lightdash-metrics-api-openapi.yml
+  capability_id: BC-610.50
+  capability_id_l1: BC-610
+  capability_name: Analytics & BI Management
+  confidence: 0.8
+  evidence: POST /api/v1/projects/{projectUuid}/metricsExplorer/{explore}/{metric}/runMetricTotal  Run
+    metric total query
+  reason: Operations compile and execute metric queries against the dbt semantic layer, returning MetricTotalResults/ApiMetricsExplorerTotalResults.
+    This is analytics/BI query delivery on defined metrics, matching Analytics & BI Management. Not master
+    data or data quality.
+- tag: Metrics Explorer
+  spec_file: lightdash-metrics-explorer-api-openapi.yml
+  capability_id: BC-610.50
+  capability_id_l1: BC-610
+  capability_name: Analytics & BI Management
+  confidence: 0.8
+  evidence: POST .../metricsExplorer/{explore}/{metric}/compileMetricTotalQuery  Compile metric total
+    query
+  reason: 'Identical surface to the Metrics tag: compiling and running metric total queries with comparison
+    types (MetricTotalComparisonType) for exploratory metric analysis. This is business intelligence/analytics
+    delivery.'
+- tag: Project Roles
+  spec_file: lightdash-project-roles-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.8
+  evidence: '''Assign project role to user'', ''Remove project role from group''; schemas RoleAssignment,
+    UpsertUserRoleAssignmentRequest'
+  reason: Operations create, update and delete role assignments for users and groups — role-based access
+    administration, which is Identity & Access Management. Not a BI-content capability.
+- tag: Roles & Permissions
+  spec_file: lightdash-roles-permissions-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.8
+  evidence: '''Grant user access to space'', ''Revoke group access to space'', ''Grant project access
+    to user'', ''Update organization member''; schemas SpaceMemberRole, OrganizationMemberRole'
+  reason: Granting, updating and revoking user and group access at space, project and organisation level
+    is access administration, i.e. Identity & Access Management, not analytics content itself.
+- tag: Custom Roles
+  spec_file: lightdash-custom-roles-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.78
+  evidence: POST /api/v2/orgs/{orgUuid}/roles  CreateOrganizationRole  Create custom role; POST .../roles/{roleUuid}/scopes  AddScopesToRole  Add
+    scopes to role; GET .../assignees  List role assignees
+  reason: Operations define custom roles, attach permission scopes and list assignees — role-based access
+    control administration, i.e. Identity & Access Management. Not a business-domain 'role' concept.
+- tag: User Groups
+  spec_file: lightdash-user-groups-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.78
+  evidence: PUT /api/v1/groups/{groupUuid}/members/{userUuid} addUserToGroup; POST /api/v1/groups/{groupUuid}/projects/{projectUuid}
+    addProjectAccessToGroup; schema ProjectGroupAccess, ProjectMemberRole
+  reason: Operations manage user groups, group membership and role-based project access grants — this
+    is identity and access management (group-based authorisation), not HR group management.
+- tag: Catalog
+  spec_file: lightdash-catalog-api-openapi.yml
+  capability_id: BC-610
+  capability_id_l1: BC-610
+  capability_name: Information & Data Management
+  confidence: 0.75
+  evidence: getCatalog 'Get catalog'; getMetadata 'Get table metadata'; getMetricsTrees 'List metrics
+    trees'; getAnalyticsField 'Get field analytics'
+  reason: A data catalog exposing table/field metadata and curated metric definitions is information &
+    data management. Left the L2 null because the surface straddles catalog/metadata governance, data
+    architecture and BI metric definition without naming one.
+- tag: Exploring
+  spec_file: lightdash-exploring-api-openapi.yml
+  capability_id: BC-610.50
+  capability_id_l1: BC-610
+  capability_name: Analytics & BI Management
+  confidence: 0.75
+  evidence: POST /api/v1/projects/{projectUuid}/explores/{exploreId}/runQuery  RunMetricQuery  Run metric
+    query; POST /api/v1/projects/{projectUuid}/sqlQuery  RunSqlQuery  Run SQL query
+  reason: Running metric and SQL queries against the analytics project is core BI/analytics execution.
+- tag: Explorer
+  spec_file: lightdash-explorer-api-openapi.yml
+  capability_id: BC-610.50
+  capability_id_l1: BC-610
+  capability_name: Analytics & BI Management
+  confidence: 0.72
+  evidence: POST /api/v1/projects/{projectUuid}/metricsExplorer/{explore}/{metric}/runMetricTotal  Run
+    metric total query
+  reason: Metric exploration and total-query execution against the semantic layer is analytics/BI query
+    delivery, not a domain business capability.
+- tag: Funnel
+  spec_file: lightdash-funnel-api-openapi.yml
+  capability_id: BC-610.50
+  capability_id_l1: BC-610
+  capability_name: Analytics & BI Management
+  confidence: 0.7
+  evidence: POST /api/v1/projects/{projectUuid}/funnel/query  RunFunnelQuery; schema FunnelStepResult,
+    FunnelConversionWindowUnit
+  reason: Funnel/conversion analysis over event data inside a BI tool is analytics delivery; the data
+    analysed belongs to the customer, so generic Analytics & BI is the honest mapping rather than product
+    telemetry.
+- tag: Organizations
+  spec_file: lightdash-organizations-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.7
+  evidence: PUT /api/v1/org/sso/okta  UpsertOktaSsoConfig  Upsert Okta SSO configuration; VerifiedDomain,
+    ApiDomainVerificationStatusResponse
+  reason: The visible operations configure enterprise single sign-on providers (Azure AD, Okta, generic
+    OIDC, OneLogin) plus verified domains and project member roles — identity federation and access administration.
+    Confidence limited because only 12 of 55 operations are shown and the tag also covers broader org
+    settings.
+- tag: Schedulers
+  spec_file: lightdash-schedulers-api-openapi.yml
+  capability_id: BC-610.50
+  capability_id_l1: BC-610
+  capability_name: Analytics & BI Management
+  confidence: 0.7
+  evidence: '''List schedulers'', ''Get scheduler logs'', ''Update scheduler enabled status''; schemas
+    SchedulerSlackTarget, SchedulerGsheetsOptions, SqlChartScheduler, SchedulerResourceType'
+  reason: Schedulers here drive automated delivery of dashboards and charts to Slack/Google Sheets targets,
+    i.e. scheduled report distribution within the BI platform. Job-run/log endpoints are supporting plumbing,
+    so confidence is moderate.
