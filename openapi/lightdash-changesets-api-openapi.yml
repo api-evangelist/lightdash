@@ -1,10 +1,8 @@
-openapi: 3.0.0
+openapi: 3.2.0
 info:
-  title: Lightdash AiAgents Changesets API
+  title: Lightdash Changesets API
   version: 0.3156.1
-  description: 'Open API documentation for all public Lightdash API endpoints. # Authentication Before you get started, you might need to create a Personal Access Token to authenticate via the API. You can create a token by following this guide: https://docs.lightdash.com/references/personal_tokens
-
-    '
+  description: 'Open API documentation for all public Lightdash API endpoints. # Authentication Before you get started, you might need to create a Personal Access Token to authenticate via the API. You can create a token by following this guide: https://docs.lightdash.com/references/personal_tokens'
   license:
     name: MIT
   contact:
@@ -136,6 +134,20 @@ paths:
           type: string
 components:
   schemas:
+    ApiChangesetsResponseTSOACompat:
+      properties:
+        results:
+          items:
+            $ref: '#/components/schemas/ChangesetTSOACompat'
+          type: array
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
     AnyType:
       description: 'This AnyType is an alias for any
 
@@ -146,6 +158,10 @@ components:
         These are only used on legacy `any` types, don''t use it for new types.
 
         This is added on a separate file to avoid circular dependencies.'
+    ApiRevertChangeResponse:
+      $ref: '#/components/schemas/ApiSuccessEmpty'
+    ChangeTSOACompat:
+      $ref: '#/components/schemas/Record_string.unknown_'
     ApiErrorPayload:
       properties:
         error:
@@ -171,7 +187,6 @@ components:
           type: string
           enum:
           - error
-          nullable: false
       required:
       - error
       - status
@@ -179,6 +194,8 @@ components:
       description: 'The Error object is returned from the api any time there is an error.
 
         The message contains'
+    ChangesetTSOACompat:
+      $ref: '#/components/schemas/Record_string.unknown_'
     ApiSuccessEmpty:
       properties:
         results: {}
@@ -186,17 +203,9 @@ components:
           type: string
           enum:
           - ok
-          nullable: false
       required:
       - status
       type: object
-    ApiRevertChangeResponse:
-      $ref: '#/components/schemas/ApiSuccessEmpty'
-    Record_string.unknown_:
-      properties: {}
-      additionalProperties: {}
-      type: object
-      description: Construct a type with a set of properties K of type T
     ApiGetChangeResponseTSOACompat:
       properties:
         results:
@@ -205,30 +214,15 @@ components:
           type: string
           enum:
           - ok
-          nullable: false
       required:
       - results
       - status
       type: object
-    ChangesetTSOACompat:
-      $ref: '#/components/schemas/Record_string.unknown_'
-    ChangeTSOACompat:
-      $ref: '#/components/schemas/Record_string.unknown_'
-    ApiChangesetsResponseTSOACompat:
-      properties:
-        results:
-          items:
-            $ref: '#/components/schemas/ChangesetTSOACompat'
-          type: array
-        status:
-          type: string
-          enum:
-          - ok
-          nullable: false
-      required:
-      - results
-      - status
+    Record_string.unknown_:
+      properties: {}
+      additionalProperties: {}
       type: object
+      description: Construct a type with a set of properties K of type T
   securitySchemes:
     session_cookie:
       type: apiKey

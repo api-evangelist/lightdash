@@ -1,10 +1,8 @@
-openapi: 3.0.0
+openapi: 3.2.0
 info:
-  title: Lightdash AiAgents Git Files API
+  title: Lightdash Git Files API
   version: 0.3156.1
-  description: 'Open API documentation for all public Lightdash API endpoints. # Authentication Before you get started, you might need to create a Personal Access Token to authenticate via the API. You can create a token by following this guide: https://docs.lightdash.com/references/personal_tokens
-
-    '
+  description: 'Open API documentation for all public Lightdash API endpoints. # Authentication Before you get started, you might need to create a Personal Access Token to authenticate via the API. You can create a token by following this guide: https://docs.lightdash.com/references/personal_tokens'
   license:
     name: MIT
   contact:
@@ -248,50 +246,14 @@ paths:
               $ref: '#/components/schemas/CreateGitPullRequestRequest'
 components:
   schemas:
-    ApiGitBranchCreatedResponse:
+    CreateGitBranchRequest:
       properties:
-        results:
-          $ref: '#/components/schemas/GitBranch'
-        status:
-          type: string
-          enum:
-          - ok
-          nullable: false
-      required:
-      - results
-      - status
-      type: object
-    CreateGitPullRequestRequest:
-      properties:
-        description:
-          type: string
-        title:
-          type: string
-      required:
-      - description
-      - title
-      type: object
-    GitFileEntry:
-      properties:
-        sha:
-          type: string
-        size:
-          type: number
-          format: double
-        type:
-          type: string
-          enum:
-          - file
-          - dir
-        path:
+        sourceBranch:
           type: string
         name:
           type: string
       required:
-      - sha
-      - size
-      - type
-      - path
+      - sourceBranch
       - name
       type: object
     AnyType:
@@ -329,7 +291,6 @@ components:
           type: string
           enum:
           - error
-          nullable: false
       required:
       - error
       - status
@@ -337,17 +298,6 @@ components:
       description: 'The Error object is returned from the api any time there is an error.
 
         The message contains'
-    GitBranch:
-      properties:
-        isProtected:
-          type: boolean
-          description: TRUE if direct writes are blocked (GitHub protection OR project's configured branch)
-        name:
-          type: string
-      required:
-      - isProtected
-      - name
-      type: object
     PullRequestCreated:
       properties:
         prUrl:
@@ -357,6 +307,72 @@ components:
       required:
       - prUrl
       - prTitle
+      type: object
+    ApiGitPullRequestCreatedResponse:
+      properties:
+        results:
+          $ref: '#/components/schemas/PullRequestCreated'
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
+    GitFileEntry:
+      properties:
+        sha:
+          type: string
+        size:
+          type: number
+          format: double
+        type:
+          type: string
+          enum:
+          - file
+          - dir
+        path:
+          type: string
+        name:
+          type: string
+      required:
+      - sha
+      - size
+      - type
+      - path
+      - name
+      type: object
+    ApiGitFileDeletedResponse:
+      properties:
+        results:
+          properties:
+            deleted:
+              type: boolean
+              enum:
+              - true
+          required:
+          - deleted
+          type: object
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
+    ApiGitBranchCreatedResponse:
+      properties:
+        results:
+          $ref: '#/components/schemas/GitBranch'
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
       type: object
     ApiGitBranchesResponse:
       properties:
@@ -368,65 +384,30 @@ components:
           type: string
           enum:
           - ok
-          nullable: false
       required:
       - results
       - status
       type: object
-    GitFileOrDirectory:
-      anyOf:
-      - properties:
-          entries:
-            items:
-              $ref: '#/components/schemas/GitFileEntry'
-            type: array
-          type:
-            type: string
-            enum:
-            - directory
-            nullable: false
-        required:
-        - entries
-        - type
-        type: object
-      - properties:
-          path:
-            type: string
-          sha:
-            type: string
-          content:
-            type: string
-          type:
-            type: string
-            enum:
-            - file
-            nullable: false
-        required:
-        - path
-        - sha
-        - content
-        - type
-        type: object
-    ApiGitFileDeletedResponse:
+    GitBranch:
       properties:
-        results:
-          properties:
-            deleted:
-              type: boolean
-              enum:
-              - true
-              nullable: false
-          required:
-          - deleted
-          type: object
-        status:
+        isProtected:
+          type: boolean
+          description: TRUE if direct writes are blocked (GitHub protection OR project's configured branch)
+        name:
           type: string
-          enum:
-          - ok
-          nullable: false
       required:
-      - results
-      - status
+      - isProtected
+      - name
+      type: object
+    CreateGitPullRequestRequest:
+      properties:
+        description:
+          type: string
+        title:
+          type: string
+      required:
+      - description
+      - title
       type: object
     ApiGitFileOrDirectoryResponse:
       properties:
@@ -436,30 +417,6 @@ components:
           type: string
           enum:
           - ok
-          nullable: false
-      required:
-      - results
-      - status
-      type: object
-    CreateGitBranchRequest:
-      properties:
-        sourceBranch:
-          type: string
-        name:
-          type: string
-      required:
-      - sourceBranch
-      - name
-      type: object
-    ApiGitPullRequestCreatedResponse:
-      properties:
-        results:
-          $ref: '#/components/schemas/PullRequestCreated'
-        status:
-          type: string
-          enum:
-          - ok
-          nullable: false
       required:
       - results
       - status
@@ -480,11 +437,42 @@ components:
           type: string
           enum:
           - ok
-          nullable: false
       required:
       - results
       - status
       type: object
+    GitFileOrDirectory:
+      anyOf:
+      - properties:
+          entries:
+            items:
+              $ref: '#/components/schemas/GitFileEntry'
+            type: array
+          type:
+            type: string
+            enum:
+            - directory
+        required:
+        - entries
+        - type
+        type: object
+      - properties:
+          path:
+            type: string
+          sha:
+            type: string
+          content:
+            type: string
+          type:
+            type: string
+            enum:
+            - file
+        required:
+        - path
+        - sha
+        - content
+        - type
+        type: object
   securitySchemes:
     session_cookie:
       type: apiKey

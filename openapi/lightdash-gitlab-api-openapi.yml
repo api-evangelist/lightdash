@@ -1,10 +1,8 @@
-openapi: 3.0.0
+openapi: 3.2.0
 info:
-  title: Lightdash AiAgents Gitlab API
+  title: Lightdash Gitlab API
   version: 0.3156.1
-  description: 'Open API documentation for all public Lightdash API endpoints. # Authentication Before you get started, you might need to create a Personal Access Token to authenticate via the API. You can create a token by following this guide: https://docs.lightdash.com/references/personal_tokens
-
-    '
+  description: 'Open API documentation for all public Lightdash API endpoints. # Authentication Before you get started, you might need to create a Personal Access Token to authenticate via the API. You can create a token by following this guide: https://docs.lightdash.com/references/personal_tokens'
   license:
     name: MIT
   contact:
@@ -98,7 +96,6 @@ paths:
                     type: string
                     enum:
                     - ok
-                    nullable: false
                 required:
                 - results
                 - status
@@ -111,6 +108,16 @@ paths:
       - Gitlab
 components:
   schemas:
+    ApiSuccessEmpty:
+      properties:
+        results: {}
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - status
+      type: object
     GitRepo:
       properties:
         defaultBranch:
@@ -126,17 +133,6 @@ components:
       - ownerLogin
       - fullName
       - name
-      type: object
-    ApiSuccessEmpty:
-      properties:
-        results: {}
-        status:
-          type: string
-          enum:
-          - ok
-          nullable: false
-      required:
-      - status
       type: object
   securitySchemes:
     session_cookie:

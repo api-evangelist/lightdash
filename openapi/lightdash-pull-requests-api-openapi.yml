@@ -1,10 +1,8 @@
-openapi: 3.0.0
+openapi: 3.2.0
 info:
-  title: Lightdash AiAgents Pull Requests API
+  title: Lightdash Pull Requests API
   version: 0.3156.1
-  description: 'Open API documentation for all public Lightdash API endpoints. # Authentication Before you get started, you might need to create a Personal Access Token to authenticate via the API. You can create a token by following this guide: https://docs.lightdash.com/references/personal_tokens
-
-    '
+  description: 'Open API documentation for all public Lightdash API endpoints. # Authentication Before you get started, you might need to create a Personal Access Token to authenticate via the API. You can create a token by following this guide: https://docs.lightdash.com/references/personal_tokens'
   license:
     name: MIT
   contact:
@@ -57,37 +55,6 @@ paths:
           type: number
 components:
   schemas:
-    PullRequestWithStatus:
-      allOf:
-      - $ref: '#/components/schemas/PullRequest'
-      - properties:
-          state:
-            allOf:
-            - $ref: '#/components/schemas/PullRequestState'
-            nullable: true
-          title:
-            type: string
-            nullable: true
-        required:
-        - state
-        - title
-        type: object
-      description: 'A stored pull request enriched with its live title/state resolved from the
-
-        provider API. `title`/`state` are null when the live lookup fails (e.g. the
-
-        PR was deleted or the token lost access) — `prUrl` always remains usable.'
-    AiAgentRootCause:
-      type: string
-      enum:
-      - semantic_layer
-      - project_context
-      - agent_configuration
-      - product_capability
-      - runtime_reliability
-      - feedback_quality
-      - not_a_failure
-      - ambiguous
     ApiPullRequestsResponse:
       properties:
         results:
@@ -96,7 +63,6 @@ components:
           type: string
           enum:
           - ok
-          nullable: false
       required:
       - results
       - status
@@ -111,6 +77,53 @@ components:
         These are only used on legacy `any` types, don''t use it for new types.
 
         This is added on a separate file to avoid circular dependencies.'
+    AiAgentRootCause:
+      type: string
+      enum:
+      - semantic_layer
+      - project_context
+      - agent_configuration
+      - product_capability
+      - runtime_reliability
+      - feedback_quality
+      - not_a_failure
+      - ambiguous
+    PullRequestProvider:
+      enum:
+      - github
+      - gitlab
+      type: string
+    AiAgentReviewItemStatus:
+      type: string
+      enum:
+      - open
+      - in_progress
+      - resolved
+      - dismissed
+      - duplicate
+    KnexPaginatedData_PullRequestWithStatus-Array_:
+      properties:
+        pagination:
+          allOf:
+          - $ref: '#/components/schemas/KnexPaginateArgs'
+          - properties:
+              totalResults:
+                type: number
+                format: double
+              totalPageCount:
+                type: number
+                format: double
+            required:
+            - totalResults
+            - totalPageCount
+            type: object
+        data:
+          items:
+            $ref: '#/components/schemas/PullRequestWithStatus'
+          type: array
+      required:
+      - data
+      type: object
     ApiErrorPayload:
       properties:
         error:
@@ -136,7 +149,6 @@ components:
           type: string
           enum:
           - error
-          nullable: false
       required:
       - error
       - status
@@ -144,88 +156,11 @@ components:
       description: 'The Error object is returned from the api any time there is an error.
 
         The message contains'
-    PullRequest:
-      properties:
-        createdAt:
-          type: string
-          format: date-time
-        reviewContext:
-          allOf:
-          - $ref: '#/components/schemas/PullRequestReviewContext'
-          nullable: true
-          description: 'Source review context for AI review remediation PRs. Present when the PR
-
-            was opened to address a review finding.'
-        aiAgentUuid:
-          type: string
-          nullable: true
-          description: 'The AI agent that owns the thread above. Paired with `aiThreadUuid` to
-
-            build the in-app thread link. Null whenever `aiThreadUuid` is null.'
-        aiThreadUuid:
-          type: string
-          nullable: true
-          description: 'The AI thread that produced this PR, when it originated from an AI
-
-            write-back (source `ai_agent`). Null for non-AI PRs, or in deployments
-
-            without the enterprise AI write-back feature.'
-        summary:
-          type: string
-          nullable: true
-          description: 'Two-line user-facing "what this PR does", written by the AI write-back
-
-            agent at PR creation. Null for non-AI PRs and PRs predating the field —
-
-            consumers fall back to the live PR title.'
-        prUrl:
-          type: string
-        prNumber:
-          type: number
-          format: double
-        repo:
-          type: string
-        owner:
-          type: string
-        source:
-          $ref: '#/components/schemas/PullRequestSource'
-        provider:
-          $ref: '#/components/schemas/PullRequestProvider'
-        createdByUserUuid:
-          type: string
-          nullable: true
-        projectUuid:
-          type: string
-        organizationUuid:
-          type: string
-        pullRequestUuid:
-          type: string
-      required:
-      - createdAt
-      - reviewContext
-      - aiAgentUuid
-      - aiThreadUuid
-      - summary
-      - prUrl
-      - prNumber
-      - repo
-      - owner
-      - source
-      - provider
-      - createdByUserUuid
-      - projectUuid
-      - organizationUuid
-      - pullRequestUuid
-      type: object
-      description: 'A pull request created by a write-back. Only immutable identifiers are
-
-        persisted; the live title/state are resolved at runtime from the
-
-        GitHub/GitLab API using provider + owner + repo + prNumber.'
-    PullRequestProvider:
+    PullRequestState:
       enum:
-      - github
-      - gitlab
+      - open
+      - closed
+      - merged
       type: string
     PullRequestReviewContext:
       properties:
@@ -258,51 +193,6 @@ components:
       - reviewItemFingerprint
       - reviewItemUuid
       type: object
-    PullRequestSource:
-      enum:
-      - custom_metric
-      - custom_dimension
-      - sql_runner
-      - source_editor
-      - ai_agent
-      type: string
-    PullRequestState:
-      enum:
-      - open
-      - closed
-      - merged
-      type: string
-    KnexPaginatedData_PullRequestWithStatus-Array_:
-      properties:
-        pagination:
-          allOf:
-          - $ref: '#/components/schemas/KnexPaginateArgs'
-          - properties:
-              totalResults:
-                type: number
-                format: double
-              totalPageCount:
-                type: number
-                format: double
-            required:
-            - totalResults
-            - totalPageCount
-            type: object
-        data:
-          items:
-            $ref: '#/components/schemas/PullRequestWithStatus'
-          type: array
-      required:
-      - data
-      type: object
-    AiAgentReviewItemStatus:
-      type: string
-      enum:
-      - open
-      - in_progress
-      - resolved
-      - dismissed
-      - duplicate
     KnexPaginateArgs:
       properties:
         page:
@@ -315,6 +205,115 @@ components:
       - page
       - pageSize
       type: object
+    PullRequestSource:
+      enum:
+      - custom_metric
+      - custom_dimension
+      - sql_runner
+      - source_editor
+      - ai_agent
+      type: string
+    PullRequest:
+      properties:
+        createdAt:
+          type: string
+          format: date-time
+        reviewContext:
+          allOf:
+          - $ref: '#/components/schemas/PullRequestReviewContext'
+          description: 'Source review context for AI review remediation PRs. Present when the PR
+
+            was opened to address a review finding.'
+        aiAgentUuid:
+          type:
+          - string
+          - 'null'
+          description: 'The AI agent that owns the thread above. Paired with `aiThreadUuid` to
+
+            build the in-app thread link. Null whenever `aiThreadUuid` is null.'
+        aiThreadUuid:
+          type:
+          - string
+          - 'null'
+          description: 'The AI thread that produced this PR, when it originated from an AI
+
+            write-back (source `ai_agent`). Null for non-AI PRs, or in deployments
+
+            without the enterprise AI write-back feature.'
+        summary:
+          type:
+          - string
+          - 'null'
+          description: 'Two-line user-facing "what this PR does", written by the AI write-back
+
+            agent at PR creation. Null for non-AI PRs and PRs predating the field —
+
+            consumers fall back to the live PR title.'
+        prUrl:
+          type: string
+        prNumber:
+          type: number
+          format: double
+        repo:
+          type: string
+        owner:
+          type: string
+        source:
+          $ref: '#/components/schemas/PullRequestSource'
+        provider:
+          $ref: '#/components/schemas/PullRequestProvider'
+        createdByUserUuid:
+          type:
+          - string
+          - 'null'
+        projectUuid:
+          type: string
+        organizationUuid:
+          type: string
+        pullRequestUuid:
+          type: string
+      required:
+      - createdAt
+      - reviewContext
+      - aiAgentUuid
+      - aiThreadUuid
+      - summary
+      - prUrl
+      - prNumber
+      - repo
+      - owner
+      - source
+      - provider
+      - createdByUserUuid
+      - projectUuid
+      - organizationUuid
+      - pullRequestUuid
+      type: object
+      description: 'A pull request created by a write-back. Only immutable identifiers are
+
+        persisted; the live title/state are resolved at runtime from the
+
+        GitHub/GitLab API using provider + owner + repo + prNumber.'
+    PullRequestWithStatus:
+      allOf:
+      - $ref: '#/components/schemas/PullRequest'
+      - properties:
+          state:
+            allOf:
+            - $ref: '#/components/schemas/PullRequestState'
+          title:
+            type:
+            - string
+            - 'null'
+        required:
+        - state
+        - title
+        type: object
+      description: 'A stored pull request enriched with its live title/state resolved from the
+
+        provider API. `title`/`state` are null when the live lookup fails (e.g. the
+
+        PR was deleted or the token lost access) — `prUrl` always remains usable.'
   securitySchemes:
     session_cookie:
       type: apiKey

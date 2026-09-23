@@ -1,10 +1,8 @@
-openapi: 3.0.0
+openapi: 3.2.0
 info:
-  title: Lightdash AiAgents Exports API
+  title: Lightdash Exports API
   version: 0.3156.1
-  description: 'Open API documentation for all public Lightdash API endpoints. # Authentication Before you get started, you might need to create a Personal Access Token to authenticate via the API. You can create a token by following this guide: https://docs.lightdash.com/references/personal_tokens
-
-    '
+  description: 'Open API documentation for all public Lightdash API endpoints. # Authentication Before you get started, you might need to create a Personal Access Token to authenticate via the API. You can create a token by following this guide: https://docs.lightdash.com/references/personal_tokens'
   license:
     name: MIT
   contact:
@@ -46,16 +44,6 @@ paths:
           type: string
 components:
   schemas:
-    AnyType:
-      description: 'This AnyType is an alias for any
-
-        The goal is to make it easier to identify any type in the codebase
-
-        without having to eslint-disable all the time
-
-        These are only used on legacy `any` types, don''t use it for new types.
-
-        This is added on a separate file to avoid circular dependencies.'
     ApiErrorPayload:
       properties:
         error:
@@ -81,7 +69,6 @@ components:
           type: string
           enum:
           - error
-          nullable: false
       required:
       - error
       - status
@@ -89,6 +76,16 @@ components:
       description: 'The Error object is returned from the api any time there is an error.
 
         The message contains'
+    AnyType:
+      description: 'This AnyType is an alias for any
+
+        The goal is to make it easier to identify any type in the codebase
+
+        without having to eslint-disable all the time
+
+        These are only used on legacy `any` types, don''t use it for new types.
+
+        This is added on a separate file to avoid circular dependencies.'
     ApiCsvUrlResponse:
       properties:
         results:
@@ -108,7 +105,6 @@ components:
           type: string
           enum:
           - ok
-          nullable: false
       required:
       - results
       - status

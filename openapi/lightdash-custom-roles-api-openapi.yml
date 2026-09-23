@@ -1,10 +1,8 @@
-openapi: 3.0.0
+openapi: 3.2.0
 info:
-  title: Lightdash AiAgents Custom Roles API
+  title: Lightdash Custom Roles API
   version: 0.3156.1
-  description: 'Open API documentation for all public Lightdash API endpoints. # Authentication Before you get started, you might need to create a Personal Access Token to authenticate via the API. You can create a token by following this guide: https://docs.lightdash.com/references/personal_tokens
-
-    '
+  description: 'Open API documentation for all public Lightdash API endpoints. # Authentication Before you get started, you might need to create a Personal Access Token to authenticate via the API. You can create a token by following this guide: https://docs.lightdash.com/references/personal_tokens'
   license:
     name: MIT
   contact:
@@ -170,7 +168,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiErrorPayload'
-      description: Add scopes to role
       summary: Add scopes to role
       tags:
       - Custom Roles
@@ -209,7 +206,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiErrorPayload'
-      description: Remove scope from role
       summary: Remove scope from role
       tags:
       - Custom Roles
@@ -233,76 +229,6 @@ paths:
           type: string
 components:
   schemas:
-    ApiUnassignRoleFromUserResponse:
-      $ref: '#/components/schemas/ApiSuccessEmpty'
-    Role:
-      properties:
-        updatedAt:
-          type: string
-          format: date-time
-          nullable: true
-        createdAt:
-          type: string
-          format: date-time
-          nullable: true
-        createdBy:
-          type: string
-          nullable: true
-        ownerType:
-          type: string
-          enum:
-          - user
-          - system
-        organizationUuid:
-          type: string
-          nullable: true
-        description:
-          type: string
-          nullable: true
-        name:
-          type: string
-        roleUuid:
-          type: string
-      required:
-      - updatedAt
-      - createdAt
-      - createdBy
-      - ownerType
-      - organizationUuid
-      - description
-      - name
-      - roleUuid
-      type: object
-    RoleAssignee:
-      properties:
-        projectName:
-          type: string
-          nullable: true
-        projectUuid:
-          type: string
-          nullable: true
-        assigneeName:
-          type: string
-        assigneeId:
-          type: string
-        kind:
-          $ref: '#/components/schemas/RoleAssigneeKind'
-      required:
-      - projectName
-      - projectUuid
-      - assigneeName
-      - assigneeId
-      - kind
-      type: object
-    AddScopesToRole:
-      properties:
-        scopeNames:
-          items:
-            type: string
-          type: array
-      required:
-      - scopeNames
-      type: object
     AnyType:
       description: 'This AnyType is an alias for any
 
@@ -313,6 +239,15 @@ components:
         These are only used on legacy `any` types, don''t use it for new types.
 
         This is added on a separate file to avoid circular dependencies.'
+    AddScopesToRole:
+      properties:
+        scopeNames:
+          items:
+            type: string
+          type: array
+      required:
+      - scopeNames
+      type: object
     ApiErrorPayload:
       properties:
         error:
@@ -338,7 +273,6 @@ components:
           type: string
           enum:
           - error
-          nullable: false
       required:
       - error
       - status
@@ -346,52 +280,72 @@ components:
       description: 'The Error object is returned from the api any time there is an error.
 
         The message contains'
-    ApiSuccessEmpty:
+    Role:
       properties:
-        results: {}
-        status:
+        updatedAt:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        createdAt:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        createdBy:
+          type:
+          - string
+          - 'null'
+        ownerType:
           type: string
           enum:
-          - ok
-          nullable: false
-      required:
-      - status
-      type: object
-    ApiDefaultRoleResponse:
-      properties:
-        results:
-          $ref: '#/components/schemas/Role'
-        status:
-          type: string
-          enum:
-          - ok
-          nullable: false
-      required:
-      - results
-      - status
-      type: object
-    CreateRole:
-      properties:
-        scopes:
-          items:
-            type: string
-          type: array
+          - user
+          - system
+        organizationUuid:
+          type:
+          - string
+          - 'null'
         description:
-          type: string
+          type:
+          - string
+          - 'null'
         name:
           type: string
+        roleUuid:
+          type: string
       required:
+      - updatedAt
+      - createdAt
+      - createdBy
+      - ownerType
+      - organizationUuid
+      - description
       - name
+      - roleUuid
       type: object
-    ApiRemoveScopeFromRoleResponse:
-      $ref: '#/components/schemas/ApiSuccessEmpty'
-    RoleAssigneeKind:
-      type: string
-      enum:
-      - organization_user
-      - project_user
-      - project_group
-      - service_account
+    RoleAssignee:
+      properties:
+        projectName:
+          type:
+          - string
+          - 'null'
+        projectUuid:
+          type:
+          - string
+          - 'null'
+        assigneeName:
+          type: string
+        assigneeId:
+          type: string
+        kind:
+          $ref: '#/components/schemas/RoleAssigneeKind'
+      required:
+      - projectName
+      - projectUuid
+      - assigneeName
+      - assigneeId
+      - kind
+      type: object
     UpdateRole:
       properties:
         scopes:
@@ -413,6 +367,20 @@ components:
         name:
           type: string
       type: object
+    ApiRemoveScopeFromRoleResponse:
+      $ref: '#/components/schemas/ApiSuccessEmpty'
+    ApiSuccessEmpty:
+      properties:
+        results: {}
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - status
+      type: object
+    ApiUnassignRoleFromUserResponse:
+      $ref: '#/components/schemas/ApiSuccessEmpty'
     ApiRoleAssigneesResponse:
       properties:
         results:
@@ -423,10 +391,41 @@ components:
           type: string
           enum:
           - ok
-          nullable: false
       required:
       - results
       - status
+      type: object
+    RoleAssigneeKind:
+      type: string
+      enum:
+      - organization_user
+      - project_user
+      - project_group
+      - service_account
+    ApiDefaultRoleResponse:
+      properties:
+        results:
+          $ref: '#/components/schemas/Role'
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
+    CreateRole:
+      properties:
+        scopes:
+          items:
+            type: string
+          type: array
+        description:
+          type: string
+        name:
+          type: string
+      required:
+      - name
       type: object
   securitySchemes:
     session_cookie:

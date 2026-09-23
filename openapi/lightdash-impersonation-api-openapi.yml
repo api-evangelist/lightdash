@@ -1,10 +1,8 @@
-openapi: 3.0.0
+openapi: 3.2.0
 info:
-  title: Lightdash AiAgents Impersonation API
+  title: Lightdash Impersonation API
   version: 0.3156.1
-  description: 'Open API documentation for all public Lightdash API endpoints. # Authentication Before you get started, you might need to create a Personal Access Token to authenticate via the API. You can create a token by following this guide: https://docs.lightdash.com/references/personal_tokens
-
-    '
+  description: 'Open API documentation for all public Lightdash API endpoints. # Authentication Before you get started, you might need to create a Personal Access Token to authenticate via the API. You can create a token by following this guide: https://docs.lightdash.com/references/personal_tokens'
   license:
     name: MIT
   contact:
@@ -68,45 +66,6 @@ paths:
       parameters: []
 components:
   schemas:
-    ApiStartImpersonationRequest:
-      properties:
-        targetUserUuid:
-          type: string
-      required:
-      - targetUserUuid
-      type: object
-    ApiStopImpersonationResponse:
-      properties:
-        results:
-          type: number
-          enum:
-          - null
-          nullable: true
-        status:
-          type: string
-          enum:
-          - ok
-          nullable: false
-      required:
-      - results
-      - status
-      type: object
-    ApiStartImpersonationResponse:
-      properties:
-        results:
-          type: number
-          enum:
-          - null
-          nullable: true
-        status:
-          type: string
-          enum:
-          - ok
-          nullable: false
-      required:
-      - results
-      - status
-      type: object
     AnyType:
       description: 'This AnyType is an alias for any
 
@@ -142,7 +101,6 @@ components:
           type: string
           enum:
           - error
-          nullable: false
       required:
       - error
       - status
@@ -150,6 +108,45 @@ components:
       description: 'The Error object is returned from the api any time there is an error.
 
         The message contains'
+    ApiStopImpersonationResponse:
+      properties:
+        results:
+          type:
+          - number
+          - 'null'
+          enum:
+          - null
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
+    ApiStartImpersonationRequest:
+      properties:
+        targetUserUuid:
+          type: string
+      required:
+      - targetUserUuid
+      type: object
+    ApiStartImpersonationResponse:
+      properties:
+        results:
+          type:
+          - number
+          - 'null'
+          enum:
+          - null
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
   securitySchemes:
     session_cookie:
       type: apiKey

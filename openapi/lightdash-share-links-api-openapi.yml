@@ -1,10 +1,8 @@
-openapi: 3.0.0
+openapi: 3.2.0
 info:
-  title: Lightdash AiAgents Share links API
+  title: Lightdash Share links API
   version: 0.3156.1
-  description: 'Open API documentation for all public Lightdash API endpoints. # Authentication Before you get started, you might need to create a Personal Access Token to authenticate via the API. You can create a token by following this guide: https://docs.lightdash.com/references/personal_tokens
-
-    '
+  description: 'Open API documentation for all public Lightdash API endpoints. # Authentication Before you get started, you might need to create a Personal Access Token to authenticate via the API. You can create a token by following this guide: https://docs.lightdash.com/references/personal_tokens'
   license:
     name: MIT
   contact:
@@ -14,7 +12,7 @@ info:
 servers:
 - url: /
 tags:
-- name: Share links
+- name: Share Links
 paths:
   /api/v1/share/{nanoId}:
     get:
@@ -35,7 +33,7 @@ paths:
       description: Get a share url from a short url id
       summary: Get share URL
       tags:
-      - Share links
+      - Share Links
       security: []
       parameters:
       - description: the short id for the share url
@@ -63,7 +61,7 @@ paths:
       description: Given a full URL generates a short url id that can be used for sharing
       summary: Create share URL
       tags:
-      - Share links
+      - Share Links
       security: []
       parameters: []
       requestBody:
@@ -76,34 +74,6 @@ paths:
               description: a full URL used to generate a short url id
 components:
   schemas:
-    Pick_ShareUrl.path-or-params_:
-      properties:
-        path:
-          type: string
-          description: The URL path of the full URL
-        params:
-          type: string
-      required:
-      - path
-      - params
-      type: object
-      description: From T, pick a set of properties whose keys are in the union K
-    CreateShareUrl:
-      $ref: '#/components/schemas/Pick_ShareUrl.path-or-params_'
-      description: Contains the detail of a full URL to generate a short URL id
-    ApiShareResponse:
-      properties:
-        results:
-          $ref: '#/components/schemas/ShareUrl'
-        status:
-          type: string
-          enum:
-          - ok
-          nullable: false
-      required:
-      - results
-      - status
-      type: object
     AnyType:
       description: 'This AnyType is an alias for any
 
@@ -139,7 +109,6 @@ components:
           type: string
           enum:
           - error
-          nullable: false
       required:
       - error
       - status
@@ -147,6 +116,33 @@ components:
       description: 'The Error object is returned from the api any time there is an error.
 
         The message contains'
+    ApiShareResponse:
+      properties:
+        results:
+          $ref: '#/components/schemas/ShareUrl'
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
+    CreateShareUrl:
+      $ref: '#/components/schemas/Pick_ShareUrl.path-or-params_'
+      description: Contains the detail of a full URL to generate a short URL id
+    Pick_ShareUrl.path-or-params_:
+      properties:
+        path:
+          type: string
+          description: The URL path of the full URL
+        params:
+          type: string
+      required:
+      - path
+      - params
+      type: object
+      description: From T, pick a set of properties whose keys are in the union K
     ShareUrl:
       properties:
         host:

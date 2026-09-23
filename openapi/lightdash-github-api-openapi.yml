@@ -1,10 +1,8 @@
-openapi: 3.0.0
+openapi: 3.2.0
 info:
-  title: Lightdash AiAgents Github API
+  title: Lightdash Github API
   version: 0.3156.1
-  description: 'Open API documentation for all public Lightdash API endpoints. # Authentication Before you get started, you might need to create a Personal Access Token to authenticate via the API. You can create a token by following this guide: https://docs.lightdash.com/references/personal_tokens
-
-    '
+  description: 'Open API documentation for all public Lightdash API endpoints. # Authentication Before you get started, you might need to create a Personal Access Token to authenticate via the API. You can create a token by following this guide: https://docs.lightdash.com/references/personal_tokens'
   license:
     name: MIT
   contact:
@@ -95,7 +93,6 @@ paths:
                     type: string
                     enum:
                     - ok
-                    nullable: false
                 required:
                 - results
                 - status
@@ -176,7 +173,6 @@ paths:
                     type: string
                     enum:
                     - ok
-                    nullable: false
                 required:
                 - results
                 - status
@@ -217,7 +213,6 @@ paths:
                     type: string
                     enum:
                     - ok
-                    nullable: false
                 required:
                 - results
                 - status
@@ -245,22 +240,6 @@ paths:
       - Github
 components:
   schemas:
-    GitRepo:
-      properties:
-        defaultBranch:
-          type: string
-        ownerLogin:
-          type: string
-        fullName:
-          type: string
-        name:
-          type: string
-      required:
-      - defaultBranch
-      - ownerLogin
-      - fullName
-      - name
-      type: object
     GitIntegrationConfiguration:
       properties:
         installationId:
@@ -270,21 +249,6 @@ components:
       required:
       - enabled
       type: object
-    ApiGithubUserCredentialResponse:
-      properties:
-        results:
-          allOf:
-          - $ref: '#/components/schemas/GithubUserCredential'
-          nullable: true
-        status:
-          type: string
-          enum:
-          - ok
-          nullable: false
-      required:
-      - results
-      - status
-      type: object
     ApiSuccessEmpty:
       properties:
         results: {}
@@ -292,8 +256,20 @@ components:
           type: string
           enum:
           - ok
-          nullable: false
       required:
+      - status
+      type: object
+    ApiGithubUserCredentialResponse:
+      properties:
+        results:
+          allOf:
+          - $ref: '#/components/schemas/GithubUserCredential'
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
       - status
       type: object
     GithubUserCredential:
@@ -310,6 +286,22 @@ components:
       description: 'A user''s personally linked GitHub account. When present, write-backs are
 
         authored as this user instead of the Lightdash GitHub App bot.'
+    GitRepo:
+      properties:
+        defaultBranch:
+          type: string
+        ownerLogin:
+          type: string
+        fullName:
+          type: string
+        name:
+          type: string
+      required:
+      - defaultBranch
+      - ownerLogin
+      - fullName
+      - name
+      type: object
   securitySchemes:
     session_cookie:
       type: apiKey

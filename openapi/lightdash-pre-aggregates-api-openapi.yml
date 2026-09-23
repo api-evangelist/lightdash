@@ -1,10 +1,8 @@
-openapi: 3.0.0
+openapi: 3.2.0
 info:
-  title: Lightdash AiAgents Pre-Aggregates API
+  title: Lightdash Pre Aggregates API
   version: 0.3156.1
-  description: 'Open API documentation for all public Lightdash API endpoints. # Authentication Before you get started, you might need to create a Personal Access Token to authenticate via the API. You can create a token by following this guide: https://docs.lightdash.com/references/personal_tokens
-
-    '
+  description: 'Open API documentation for all public Lightdash API endpoints. # Authentication Before you get started, you might need to create a Personal Access Token to authenticate via the API. You can create a token by following this guide: https://docs.lightdash.com/references/personal_tokens'
   license:
     name: MIT
   contact:
@@ -189,10 +187,74 @@ paths:
           type: number
 components:
   schemas:
-    PreAggregateMissReason.METRIC_NOT_IN_PRE_AGGREGATE:
+    DashboardPreAggregateAudit:
+      properties:
+        summary:
+          $ref: '#/components/schemas/DashboardPreAggregateAuditSummary'
+        tabs:
+          items:
+            $ref: '#/components/schemas/TabAuditGroup'
+          type: array
+        dashboardName:
+          type: string
+        dashboardSlug:
+          type: string
+        dashboardUuid:
+          type: string
+      required:
+      - summary
+      - tabs
+      - dashboardName
+      - dashboardSlug
+      - dashboardUuid
+      type: object
+    ResultColumns:
+      $ref: '#/components/schemas/Record_string.ResultColumn_'
+    TilePreAggregateAuditStatus:
+      anyOf:
+      - $ref: '#/components/schemas/TilePreAggregateAuditHit'
+      - $ref: '#/components/schemas/TilePreAggregateAuditMiss'
+      - $ref: '#/components/schemas/TilePreAggregateAuditIneligible'
+    TilePreAggregateAuditIneligible:
+      properties:
+        ineligibleReason:
+          $ref: '#/components/schemas/TileIneligibleReason'
+        tileType:
+          $ref: '#/components/schemas/DashboardTileTypes'
+        tileName:
+          type: string
+        tileUuid:
+          type: string
+        status:
+          type: string
+          enum:
+          - ineligible
+      required:
+      - ineligibleReason
+      - tileType
+      - tileName
+      - tileUuid
+      - status
+      type: object
+    DashboardTileTypes:
       enum:
-      - metric_not_in_pre_aggregate
+      - saved_chart
+      - sql_chart
+      - markdown
+      - loom
+      - heading
+      - data_app
       type: string
+    DashboardTileTypes.SAVED_CHART:
+      enum:
+      - saved_chart
+      type: string
+    DashboardTileTarget:
+      anyOf:
+      - $ref: '#/components/schemas/DashboardFieldTarget'
+      - type: boolean
+        enum:
+        - false
     DashboardFilterRule:
       allOf:
       - $ref: '#/components/schemas/FilterRule_FilterOperator.DashboardFieldTarget.AnyType.AnyType_'
@@ -215,24 +277,251 @@ components:
           tileTargets:
             $ref: '#/components/schemas/Record_string.DashboardTileTarget_'
         type: object
-    PreAggregateMaterializationRole:
+    PreAggregateMaterializationTrigger:
+      type: string
+      enum:
+      - compile
+      - cron
+      - manual
+      - webhook
+    PreAggregateMaterializationSummary:
       properties:
-        attributes:
-          $ref: '#/components/schemas/UserAttributeValueMap'
-        email:
+        materialization:
+          properties:
+            trigger:
+              $ref: '#/components/schemas/PreAggregateMaterializationTrigger'
+            errorMessage:
+              type:
+              - string
+              - 'null'
+            totalBytes:
+              type:
+              - number
+              - 'null'
+              format: double
+            columns:
+              allOf:
+              - $ref: '#/components/schemas/ResultColumns'
+            rowCount:
+              type:
+              - number
+              - 'null'
+              format: double
+            durationMs:
+              type:
+              - number
+              - 'null'
+              format: double
+            materializedAt:
+              type:
+              - string
+              - 'null'
+              format: date-time
+            status:
+              $ref: '#/components/schemas/PreAggregateMaterializationStatus'
+            materializationUuid:
+              type: string
+          required:
+          - trigger
+          - errorMessage
+          - totalBytes
+          - columns
+          - rowCount
+          - durationMs
+          - materializedAt
+          - status
+          - materializationUuid
+          type:
+          - object
+          - 'null'
+        warnings:
+          items:
+            $ref: '#/components/schemas/PreAggregateMaterializationWarning'
+          type: array
+        resolvedMaxRows:
+          type:
+          - number
+          - 'null'
+          format: double
+        definitionError:
+          type:
+          - string
+          - 'null'
+        refreshCron:
+          type:
+          - string
+          - 'null'
+        granularity:
+          allOf:
+          - $ref: '#/components/schemas/TimeFrames'
+        timeDimension:
+          type:
+          - string
+          - 'null'
+        filters:
+          items:
+            $ref: '#/components/schemas/MetricFilterRule'
+          type: array
+        metrics:
+          items:
+            type: string
+          type: array
+        dimensions:
+          items:
+            type: string
+          type: array
+        materializationRole:
+          allOf:
+          - $ref: '#/components/schemas/PreAggregateMaterializationRole'
+        sourceExploreName:
+          type: string
+        preAggExploreName:
+          type: string
+        preAggregateName:
+          type: string
+        preAggregateDefinitionUuid:
           type: string
       required:
-      - attributes
-      - email
+      - materialization
+      - warnings
+      - resolvedMaxRows
+      - definitionError
+      - refreshCron
+      - granularity
+      - timeDimension
+      - filters
+      - metrics
+      - dimensions
+      - materializationRole
+      - sourceExploreName
+      - preAggExploreName
+      - preAggregateName
+      - preAggregateDefinitionUuid
       type: object
-    FieldId:
+    KnexPaginateArgs:
+      properties:
+        page:
+          type: number
+          format: double
+        pageSize:
+          type: number
+          format: double
+      required:
+      - page
+      - pageSize
+      type: object
+    KnexPaginatedData_ApiPreAggregateStatsResults_:
+      properties:
+        pagination:
+          allOf:
+          - $ref: '#/components/schemas/KnexPaginateArgs'
+          - properties:
+              totalResults:
+                type: number
+                format: double
+              totalPageCount:
+                type: number
+                format: double
+            required:
+            - totalResults
+            - totalPageCount
+            type: object
+        data:
+          $ref: '#/components/schemas/ApiPreAggregateStatsResults'
+      required:
+      - data
+      type: object
+    PreAggregateDailyStatResult:
+      properties:
+        updatedAt:
+          type: string
+        preAggregateName:
+          type:
+          - string
+          - 'null'
+        missReason:
+          type:
+          - string
+          - 'null'
+        missCount:
+          type: number
+          format: double
+        hitCount:
+          type: number
+          format: double
+        queryContext:
+          type: string
+        dashboardName:
+          type:
+          - string
+          - 'null'
+        dashboardUuid:
+          type:
+          - string
+          - 'null'
+        chartName:
+          type:
+          - string
+          - 'null'
+        chartUuid:
+          type:
+          - string
+          - 'null'
+        date:
+          type: string
+        exploreName:
+          type: string
+      required:
+      - updatedAt
+      - preAggregateName
+      - missReason
+      - missCount
+      - hitCount
+      - queryContext
+      - dashboardName
+      - dashboardUuid
+      - chartName
+      - chartUuid
+      - date
+      - exploreName
+      type: object
+    ResultColumn:
+      properties:
+        type:
+          $ref: '#/components/schemas/DimensionType'
+        reference:
+          type: string
+      required:
+      - type
+      - reference
+      type: object
+    PreAggregateMissReason.TABLE_CALCULATION_PRESENT:
+      enum:
+      - table_calculation_present
       type: string
-    DashboardTileTarget:
-      anyOf:
-      - $ref: '#/components/schemas/DashboardFieldTarget'
-      - type: boolean
-        enum:
-        - false
+    FilterOperator:
+      enum:
+      - isNull
+      - notNull
+      - equals
+      - notEquals
+      - startsWith
+      - endsWith
+      - include
+      - doesNotInclude
+      - lessThan
+      - lessThanOrEqual
+      - greaterThan
+      - greaterThanOrEqual
+      - inThePast
+      - notInThePast
+      - inTheNext
+      - inTheCurrent
+      - notInTheCurrent
+      - inBetween
+      - notInBetween
+      - inPeriodToDate
+      type: string
     ApiPreAggregateStatsResults:
       properties:
         stats:
@@ -242,122 +531,37 @@ components:
       required:
       - stats
       type: object
-    ResultColumns:
-      $ref: '#/components/schemas/Record_string.ResultColumn_'
-    TileIneligibleReason:
+    PreAggregateMissReason.NO_ACTIVE_MATERIALIZATION:
       enum:
-      - non_chart_tile
-      - sql_chart
-      - orphaned_chart
+      - no_active_materialization
+      type: string
+    PreAggregateMissReason.EXPLORE_RESOLUTION_ERROR:
+      enum:
       - explore_resolution_error
       type: string
-    Record_string.string-Array_:
-      properties: {}
-      additionalProperties:
-        items:
-          type: string
-        type: array
-      type: object
-      description: Construct a type with a set of properties K of type T
-    DashboardFieldTarget:
-      properties:
-        fallbackType:
-          $ref: '#/components/schemas/DimensionType'
-        isSqlColumn:
-          type: boolean
-        tableName:
-          type: string
-        fieldId:
-          type: string
-      required:
-      - tableName
-      - fieldId
-      type: object
-    TilePreAggregateAuditMiss:
-      properties:
-        missFieldLabel:
-          type: string
-          nullable: true
-        miss:
-          $ref: '#/components/schemas/PreAggregateMatchMiss'
-        exploreName:
-          type: string
-        savedChartUuid:
-          type: string
-        tileType:
-          $ref: '#/components/schemas/DashboardTileTypes.SAVED_CHART'
-        tileName:
-          type: string
-        tileUuid:
-          type: string
-        status:
-          type: string
-          enum:
-          - miss
-          nullable: false
-      required:
-      - missFieldLabel
-      - miss
-      - exploreName
-      - savedChartUuid
-      - tileType
-      - tileName
-      - tileUuid
-      - status
-      type: object
-    PreAggregateMissReason.NO_PRE_AGGREGATES_DEFINED:
+    PreAggregateMissReason.CUSTOM_DIMENSION_PRESENT:
       enum:
-      - no_pre_aggregates_defined
+      - custom_dimension_present
       type: string
-    DashboardFilters:
+    TabAuditGroup:
       properties:
-        tableCalculations:
+        tiles:
           items:
-            $ref: '#/components/schemas/DashboardFilterRule'
+            $ref: '#/components/schemas/TilePreAggregateAuditStatus'
           type: array
-        metrics:
-          items:
-            $ref: '#/components/schemas/DashboardFilterRule'
-          type: array
-        dimensions:
-          items:
-            $ref: '#/components/schemas/DashboardFilterRule'
-          type: array
+        tabName:
+          type:
+          - string
+          - 'null'
+        tabUuid:
+          type:
+          - string
+          - 'null'
       required:
-      - tableCalculations
-      - metrics
-      - dimensions
+      - tiles
+      - tabName
+      - tabUuid
       type: object
-    PreAggregateMissReason.CUSTOM_METRIC_PRESENT:
-      enum:
-      - custom_metric_present
-      type: string
-    DashboardPreAggregateAuditSummary:
-      properties:
-        ineligibleCount:
-          type: number
-          format: double
-        missCount:
-          type: number
-          format: double
-        hitCount:
-          type: number
-          format: double
-      required:
-      - ineligibleCount
-      - missCount
-      - hitCount
-      type: object
-    AnyType:
-      description: 'This AnyType is an alias for any
-
-        The goal is to make it easier to identify any type in the codebase
-
-        without having to eslint-disable all the time
-
-        These are only used on legacy `any` types, don''t use it for new types.
-
-        This is added on a separate file to avoid circular dependencies.'
     ApiErrorPayload:
       properties:
         error:
@@ -383,7 +587,6 @@ components:
           type: string
           enum:
           - error
-          nullable: false
       required:
       - error
       - status
@@ -391,43 +594,124 @@ components:
       description: 'The Error object is returned from the api any time there is an error.
 
         The message contains'
-    ApiPreAggregateMaterializationsResults:
+    ApiGetPreAggregateMaterializationsResponse:
       properties:
-        materializations:
-          items:
-            $ref: '#/components/schemas/PreAggregateMaterializationSummary'
-          type: array
+        results:
+          $ref: '#/components/schemas/KnexPaginatedData_ApiPreAggregateMaterializationsResults_'
+        status:
+          type: string
+          enum:
+          - ok
       required:
-      - materializations
+      - results
+      - status
       type: object
-    TimeFrames:
+    TilePreAggregateAuditMiss:
+      properties:
+        missFieldLabel:
+          type:
+          - string
+          - 'null'
+        miss:
+          $ref: '#/components/schemas/PreAggregateMatchMiss'
+        exploreName:
+          type: string
+        savedChartUuid:
+          type: string
+        tileType:
+          $ref: '#/components/schemas/DashboardTileTypes.SAVED_CHART'
+        tileName:
+          type: string
+        tileUuid:
+          type: string
+        status:
+          type: string
+          enum:
+          - miss
+      required:
+      - missFieldLabel
+      - miss
+      - exploreName
+      - savedChartUuid
+      - tileType
+      - tileName
+      - tileUuid
+      - status
+      type: object
+    PreAggregateMissReason.USER_BYPASS:
       enum:
-      - RAW
-      - YEAR
-      - QUARTER
-      - MONTH
-      - WEEK
-      - DAY
-      - HOUR
-      - MINUTE
-      - SECOND
-      - MILLISECOND
-      - DAY_OF_WEEK_INDEX
-      - DAY_OF_MONTH_NUM
-      - DAY_OF_YEAR_NUM
-      - WEEK_NUM
-      - MONTH_NUM
-      - QUARTER_NUM
-      - YEAR_NUM
-      - DAY_OF_WEEK_NAME
-      - MONTH_NAME
-      - QUARTER_NAME
-      - HOUR_OF_DAY_NUM
-      - MINUTE_OF_HOUR_NUM
+      - user_bypass
       type: string
-    PreAggregateMissReason.GRANULARITY_TOO_FINE:
+    TileIneligibleReason:
       enum:
-      - granularity_too_fine
+      - non_chart_tile
+      - sql_chart
+      - orphaned_chart
+      - explore_resolution_error
+      type: string
+    PreAggregateMissReason.NO_PRE_AGGREGATES_DEFINED:
+      enum:
+      - no_pre_aggregates_defined
+      type: string
+    DashboardPreAggregateAuditSummary:
+      properties:
+        ineligibleCount:
+          type: number
+          format: double
+        missCount:
+          type: number
+          format: double
+        hitCount:
+          type: number
+          format: double
+      required:
+      - ineligibleCount
+      - missCount
+      - hitCount
+      type: object
+    TilePreAggregateAuditHit:
+      properties:
+        preAggregateName:
+          type: string
+        exploreName:
+          type: string
+        savedChartUuid:
+          type: string
+        tileType:
+          $ref: '#/components/schemas/DashboardTileTypes.SAVED_CHART'
+        tileName:
+          type: string
+        tileUuid:
+          type: string
+        status:
+          type: string
+          enum:
+          - hit
+      required:
+      - preAggregateName
+      - exploreName
+      - savedChartUuid
+      - tileType
+      - tileName
+      - tileUuid
+      - status
+      type: object
+    PreAggregateMaterializationStatus:
+      type: string
+      enum:
+      - in_progress
+      - active
+      - superseded
+      - failed
+    Record_string.ResultColumn_:
+      properties: {}
+      additionalProperties:
+        $ref: '#/components/schemas/ResultColumn'
+      type: object
+      description: Construct a type with a set of properties K of type T
+    PreAggregateMissReason.FILTER_DIMENSION_NOT_IN_PRE_AGGREGATE:
+      enum:
+      - filter_dimension_not_in_pre_aggregate
       type: string
     FilterRule_FilterOperator.DashboardFieldTarget.AnyType.AnyType_:
       properties:
@@ -467,153 +751,98 @@ components:
       - target
       type: object
       additionalProperties: true
-    FilterOperator:
-      enum:
-      - isNull
-      - notNull
-      - equals
-      - notEquals
-      - startsWith
-      - endsWith
-      - include
-      - doesNotInclude
-      - lessThan
-      - lessThanOrEqual
-      - greaterThan
-      - greaterThanOrEqual
-      - inThePast
-      - notInThePast
-      - inTheNext
-      - inTheCurrent
-      - notInTheCurrent
-      - inBetween
-      - notInBetween
-      - inPeriodToDate
-      type: string
+    KnexPaginatedData_ApiPreAggregateMaterializationsResults_:
+      properties:
+        pagination:
+          allOf:
+          - $ref: '#/components/schemas/KnexPaginateArgs'
+          - properties:
+              totalResults:
+                type: number
+                format: double
+              totalPageCount:
+                type: number
+                format: double
+            required:
+            - totalResults
+            - totalPageCount
+            type: object
+        data:
+          $ref: '#/components/schemas/ApiPreAggregateMaterializationsResults'
+      required:
+      - data
+      type: object
+    PreAggregateMaterializationWarning:
+      anyOf:
+      - properties:
+          threshold:
+            type: number
+            format: double
+          rowCount:
+            type: number
+            format: double
+          message:
+            type: string
+          type:
+            type: string
+            enum:
+            - row_count_exceeded
+        required:
+        - threshold
+        - rowCount
+        - message
+        - type
+        type: object
+      - properties:
+          maxRows:
+            type: number
+            format: double
+          message:
+            type: string
+          type:
+            type: string
+            enum:
+            - max_rows_applied
+        required:
+        - maxRows
+        - message
+        - type
+        type: object
+    Record_string.DashboardTileTarget_:
+      properties: {}
+      additionalProperties:
+        $ref: '#/components/schemas/DashboardTileTarget'
+      type: object
+      description: Construct a type with a set of properties K of type T
     ApiRunDashboardPreAggregateAuditBody:
       properties:
         dashboardFilters:
           $ref: '#/components/schemas/DashboardFilters'
       type: object
-    TabAuditGroup:
+    DashboardFieldTarget:
       properties:
-        tiles:
+        fallbackType:
+          $ref: '#/components/schemas/DimensionType'
+        isSqlColumn:
+          type: boolean
+        tableName:
+          type: string
+        fieldId:
+          type: string
+      required:
+      - tableName
+      - fieldId
+      type: object
+    UserAttributeValueMap:
+      $ref: '#/components/schemas/Record_string.string-Array_'
+    ApiPreAggregateMaterializationsResults:
+      properties:
+        materializations:
           items:
-            $ref: '#/components/schemas/TilePreAggregateAuditStatus'
+            $ref: '#/components/schemas/PreAggregateMaterializationSummary'
           type: array
-        tabName:
-          type: string
-          nullable: true
-        tabUuid:
-          type: string
-          nullable: true
       required:
-      - tiles
-      - tabName
-      - tabUuid
-      type: object
-    PreAggregateMissReason.NO_ACTIVE_MATERIALIZATION:
-      enum:
-      - no_active_materialization
-      type: string
-    PreAggregateMissReason.PRE_AGGREGATE_FILTER_NOT_SATISFIED:
-      enum:
-      - pre_aggregate_filter_not_satisfied
-      type: string
-    KnexPaginateArgs:
-      properties:
-        page:
-          type: number
-          format: double
-        pageSize:
-          type: number
-          format: double
-      required:
-      - page
-      - pageSize
-      type: object
-    TilePreAggregateAuditIneligible:
-      properties:
-        ineligibleReason:
-          $ref: '#/components/schemas/TileIneligibleReason'
-        tileType:
-          $ref: '#/components/schemas/DashboardTileTypes'
-        tileName:
-          type: string
-        tileUuid:
-          type: string
-        status:
-          type: string
-          enum:
-          - ineligible
-          nullable: false
-      required:
-      - ineligibleReason
-      - tileType
-      - tileName
-      - tileUuid
-      - status
-      type: object
-    PreAggregateMissReason.FILTER_DIMENSION_NOT_IN_PRE_AGGREGATE:
-      enum:
-      - filter_dimension_not_in_pre_aggregate
-      type: string
-    PreAggregateMissReason.CUSTOM_DIMENSION_PRESENT:
-      enum:
-      - custom_dimension_present
-      type: string
-    TilePreAggregateAuditHit:
-      properties:
-        preAggregateName:
-          type: string
-        exploreName:
-          type: string
-        savedChartUuid:
-          type: string
-        tileType:
-          $ref: '#/components/schemas/DashboardTileTypes.SAVED_CHART'
-        tileName:
-          type: string
-        tileUuid:
-          type: string
-        status:
-          type: string
-          enum:
-          - hit
-          nullable: false
-      required:
-      - preAggregateName
-      - exploreName
-      - savedChartUuid
-      - tileType
-      - tileName
-      - tileUuid
-      - status
-      type: object
-    PreAggregateMissReason.DIMENSION_NOT_IN_PRE_AGGREGATE:
-      enum:
-      - dimension_not_in_pre_aggregate
-      type: string
-    PreAggregateMissReason.USER_BYPASS:
-      enum:
-      - user_bypass
-      type: string
-    PreAggregateMissReason.CUSTOM_SQL_METRIC:
-      enum:
-      - custom_sql_metric
-      type: string
-    ApiGetDashboardPreAggregateAuditResponse:
-      properties:
-        results:
-          $ref: '#/components/schemas/DashboardPreAggregateAudit'
-        status:
-          type: string
-          enum:
-          - ok
-          nullable: false
-      required:
-      - results
-      - status
+      - materializations
       type: object
     PreAggregateMatchMiss:
       anyOf:
@@ -740,14 +969,38 @@ components:
         required:
         - reason
         type: object
-    DashboardTileTypes.SAVED_CHART:
-      enum:
-      - saved_chart
+    ApiGetDashboardPreAggregateAuditResponse:
+      properties:
+        results:
+          $ref: '#/components/schemas/DashboardPreAggregateAudit'
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
+    FieldId:
       type: string
-    PreAggregateMissReason.NON_ADDITIVE_METRIC:
+    PreAggregateMissReason.PRE_AGGREGATE_FILTER_NOT_SATISFIED:
       enum:
-      - non_additive_metric
+      - pre_aggregate_filter_not_satisfied
       type: string
+    PreAggregateMissReason.METRIC_NOT_IN_PRE_AGGREGATE:
+      enum:
+      - metric_not_in_pre_aggregate
+      type: string
+    AnyType:
+      description: 'This AnyType is an alias for any
+
+        The goal is to make it easier to identify any type in the codebase
+
+        without having to eslint-disable all the time
+
+        These are only used on legacy `any` types, don''t use it for new types.
+
+        This is added on a separate file to avoid circular dependencies.'
     ApiGetPreAggregateStatsResponse:
       properties:
         results:
@@ -756,277 +1009,10 @@ components:
           type: string
           enum:
           - ok
-          nullable: false
       required:
       - results
       - status
       type: object
-    PreAggregateDailyStatResult:
-      properties:
-        updatedAt:
-          type: string
-        preAggregateName:
-          type: string
-          nullable: true
-        missReason:
-          type: string
-          nullable: true
-        missCount:
-          type: number
-          format: double
-        hitCount:
-          type: number
-          format: double
-        queryContext:
-          type: string
-        dashboardName:
-          type: string
-          nullable: true
-        dashboardUuid:
-          type: string
-          nullable: true
-        chartName:
-          type: string
-          nullable: true
-        chartUuid:
-          type: string
-          nullable: true
-        date:
-          type: string
-        exploreName:
-          type: string
-      required:
-      - updatedAt
-      - preAggregateName
-      - missReason
-      - missCount
-      - hitCount
-      - queryContext
-      - dashboardName
-      - dashboardUuid
-      - chartName
-      - chartUuid
-      - date
-      - exploreName
-      type: object
-    DashboardPreAggregateAudit:
-      properties:
-        summary:
-          $ref: '#/components/schemas/DashboardPreAggregateAuditSummary'
-        tabs:
-          items:
-            $ref: '#/components/schemas/TabAuditGroup'
-          type: array
-        dashboardName:
-          type: string
-        dashboardSlug:
-          type: string
-        dashboardUuid:
-          type: string
-      required:
-      - summary
-      - tabs
-      - dashboardName
-      - dashboardSlug
-      - dashboardUuid
-      type: object
-    TilePreAggregateAuditStatus:
-      anyOf:
-      - $ref: '#/components/schemas/TilePreAggregateAuditHit'
-      - $ref: '#/components/schemas/TilePreAggregateAuditMiss'
-      - $ref: '#/components/schemas/TilePreAggregateAuditIneligible'
-    PreAggregateMaterializationTrigger:
-      type: string
-      enum:
-      - compile
-      - cron
-      - manual
-      - webhook
-    PreAggregateMissReason.TABLE_CALCULATION_PRESENT:
-      enum:
-      - table_calculation_present
-      type: string
-    PreAggregateMaterializationWarning:
-      anyOf:
-      - properties:
-          threshold:
-            type: number
-            format: double
-          rowCount:
-            type: number
-            format: double
-          message:
-            type: string
-          type:
-            type: string
-            enum:
-            - row_count_exceeded
-            nullable: false
-        required:
-        - threshold
-        - rowCount
-        - message
-        - type
-        type: object
-      - properties:
-          maxRows:
-            type: number
-            format: double
-          message:
-            type: string
-          type:
-            type: string
-            enum:
-            - max_rows_applied
-            nullable: false
-        required:
-        - maxRows
-        - message
-        - type
-        type: object
-    ResultColumn:
-      properties:
-        type:
-          $ref: '#/components/schemas/DimensionType'
-        reference:
-          type: string
-      required:
-      - type
-      - reference
-      type: object
-    ApiGetPreAggregateMaterializationsResponse:
-      properties:
-        results:
-          $ref: '#/components/schemas/KnexPaginatedData_ApiPreAggregateMaterializationsResults_'
-        status:
-          type: string
-          enum:
-          - ok
-          nullable: false
-      required:
-      - results
-      - status
-      type: object
-    PreAggregateMaterializationSummary:
-      properties:
-        materialization:
-          properties:
-            trigger:
-              $ref: '#/components/schemas/PreAggregateMaterializationTrigger'
-            errorMessage:
-              type: string
-              nullable: true
-            totalBytes:
-              type: number
-              format: double
-              nullable: true
-            columns:
-              allOf:
-              - $ref: '#/components/schemas/ResultColumns'
-              nullable: true
-            rowCount:
-              type: number
-              format: double
-              nullable: true
-            durationMs:
-              type: number
-              format: double
-              nullable: true
-            materializedAt:
-              type: string
-              format: date-time
-              nullable: true
-            status:
-              $ref: '#/components/schemas/PreAggregateMaterializationStatus'
-            materializationUuid:
-              type: string
-          required:
-          - trigger
-          - errorMessage
-          - totalBytes
-          - columns
-          - rowCount
-          - durationMs
-          - materializedAt
-          - status
-          - materializationUuid
-          type: object
-          nullable: true
-        warnings:
-          items:
-            $ref: '#/components/schemas/PreAggregateMaterializationWarning'
-          type: array
-        resolvedMaxRows:
-          type: number
-          format: double
-          nullable: true
-        definitionError:
-          type: string
-          nullable: true
-        refreshCron:
-          type: string
-          nullable: true
-        granularity:
-          allOf:
-          - $ref: '#/components/schemas/TimeFrames'
-          nullable: true
-        timeDimension:
-          type: string
-          nullable: true
-        filters:
-          items:
-            $ref: '#/components/schemas/MetricFilterRule'
-          type: array
-        metrics:
-          items:
-            type: string
-          type: array
-        dimensions:
-          items:
-            type: string
-          type: array
-        materializationRole:
-          allOf:
-          - $ref: '#/components/schemas/PreAggregateMaterializationRole'
-          nullable: true
-        sourceExploreName:
-          type: string
-        preAggExploreName:
-          type: string
-        preAggregateName:
-          type: string
-        preAggregateDefinitionUuid:
-          type: string
-      required:
-      - materialization
-      - warnings
-      - resolvedMaxRows
-      - definitionError
-      - refreshCron
-      - granularity
-      - timeDimension
-      - filters
-      - metrics
-      - dimensions
-      - materializationRole
-      - sourceExploreName
-      - preAggExploreName
-      - preAggregateName
-      - preAggregateDefinitionUuid
-      type: object
-    PreAggregateMaterializationStatus:
-      type: string
-      enum:
-      - in_progress
-      - active
-      - superseded
-      - failed
-    Record_string.DashboardTileTarget_:
-      properties: {}
-      additionalProperties:
-        $ref: '#/components/schemas/DashboardTileTarget'
-      type: object
-      description: Construct a type with a set of properties K of type T
     DimensionType:
       enum:
       - string
@@ -1035,48 +1021,30 @@ components:
       - date
       - boolean
       type: string
-    DashboardTileTypes:
+    PreAggregateMissReason.CUSTOM_METRIC_PRESENT:
       enum:
-      - saved_chart
-      - sql_chart
-      - markdown
-      - loom
-      - heading
-      - data_app
+      - custom_metric_present
       type: string
-    KnexPaginatedData_ApiPreAggregateStatsResults_:
-      properties:
-        pagination:
-          allOf:
-          - $ref: '#/components/schemas/KnexPaginateArgs'
-          - properties:
-              totalResults:
-                type: number
-                format: double
-              totalPageCount:
-                type: number
-                format: double
-            required:
-            - totalResults
-            - totalPageCount
-            type: object
-        data:
-          $ref: '#/components/schemas/ApiPreAggregateStatsResults'
-      required:
-      - data
-      type: object
-    Record_string.ResultColumn_:
+    PreAggregateMissReason.GRANULARITY_TOO_FINE:
+      enum:
+      - granularity_too_fine
+      type: string
+    PreAggregateMissReason.NON_ADDITIVE_METRIC:
+      enum:
+      - non_additive_metric
+      type: string
+    PreAggregateMissReason.CUSTOM_SQL_METRIC:
+      enum:
+      - custom_sql_metric
+      type: string
+    Record_string.string-Array_:
       properties: {}
       additionalProperties:
-        $ref: '#/components/schemas/ResultColumn'
+        items:
+          type: string
+        type: array
       type: object
       description: Construct a type with a set of properties K of type T
-    UserAttributeValueMap:
-      $ref: '#/components/schemas/Record_string.string-Array_'
-    PreAggregateMissReason.EXPLORE_RESOLUTION_ERROR:
-      enum:
-      - explore_resolution_error
-      type: string
     MetricFilterRule:
       description: Filter rule for metrics, targeting fields by reference
       properties:
@@ -1122,26 +1090,63 @@ components:
       - target
       type: object
       additionalProperties: true
-    KnexPaginatedData_ApiPreAggregateMaterializationsResults_:
+    PreAggregateMaterializationRole:
       properties:
-        pagination:
-          allOf:
-          - $ref: '#/components/schemas/KnexPaginateArgs'
-          - properties:
-              totalResults:
-                type: number
-                format: double
-              totalPageCount:
-                type: number
-                format: double
-            required:
-            - totalResults
-            - totalPageCount
-            type: object
-        data:
-          $ref: '#/components/schemas/ApiPreAggregateMaterializationsResults'
+        attributes:
+          $ref: '#/components/schemas/UserAttributeValueMap'
+        email:
+          type: string
       required:
-      - data
+      - attributes
+      - email
+      type: object
+    TimeFrames:
+      enum:
+      - RAW
+      - YEAR
+      - QUARTER
+      - MONTH
+      - WEEK
+      - DAY
+      - HOUR
+      - MINUTE
+      - SECOND
+      - MILLISECOND
+      - DAY_OF_WEEK_INDEX
+      - DAY_OF_MONTH_NUM
+      - DAY_OF_YEAR_NUM
+      - WEEK_NUM
+      - MONTH_NUM
+      - QUARTER_NUM
+      - YEAR_NUM
+      - DAY_OF_WEEK_NAME
+      - MONTH_NAME
+      - QUARTER_NAME
+      - HOUR_OF_DAY_NUM
+      - MINUTE_OF_HOUR_NUM
+      type: string
+    PreAggregateMissReason.DIMENSION_NOT_IN_PRE_AGGREGATE:
+      enum:
+      - dimension_not_in_pre_aggregate
+      type: string
+    DashboardFilters:
+      properties:
+        tableCalculations:
+          items:
+            $ref: '#/components/schemas/DashboardFilterRule'
+          type: array
+        metrics:
+          items:
+            $ref: '#/components/schemas/DashboardFilterRule'
+          type: array
+        dimensions:
+          items:
+            $ref: '#/components/schemas/DashboardFilterRule'
+          type: array
+      required:
+      - tableCalculations
+      - metrics
+      - dimensions
       type: object
   securitySchemes:
     session_cookie:

@@ -1,10 +1,8 @@
-openapi: 3.0.0
+openapi: 3.2.0
 info:
-  title: Lightdash AiAgents Roles & Permissions API
+  title: Lightdash Roles & Permissions API
   version: 0.3156.1
-  description: 'Open API documentation for all public Lightdash API endpoints. # Authentication Before you get started, you might need to create a Personal Access Token to authenticate via the API. You can create a token by following this guide: https://docs.lightdash.com/references/personal_tokens
-
-    '
+  description: 'Open API documentation for all public Lightdash API endpoints. # Authentication Before you get started, you might need to create a Personal Access Token to authenticate via the API. You can create a token by following this guide: https://docs.lightdash.com/references/personal_tokens'
   license:
     name: MIT
   contact:
@@ -458,79 +456,17 @@ paths:
               description: the new membership profile
 components:
   schemas:
-    OrganizationMemberRole:
-      enum:
-      - member
-      - viewer
-      - interactive_viewer
-      - editor
-      - developer
-      - admin
-      type: string
-    ChartSummary:
-      allOf:
-      - $ref: '#/components/schemas/Pick_SavedChart.uuid-or-name-or-description-or-spaceName-or-spaceUuid-or-projectUuid-or-organizationUuid-or-pinnedListUuid-or-dashboardUuid-or-dashboardName-or-slug_'
-      - properties:
-          source:
-            $ref: '#/components/schemas/ChartSourceType'
-          chartKind:
-            $ref: '#/components/schemas/ChartKind'
-          chartType:
-            $ref: '#/components/schemas/ChartType'
-        type: object
-    SpaceGroup:
+    ApiOrganizationMemberProfile:
       properties:
-        spaceRole:
-          $ref: '#/components/schemas/SpaceMemberRole'
-        groupName:
+        results:
+          $ref: '#/components/schemas/OrganizationMemberProfile'
+        status:
           type: string
-        groupUuid:
-          type: string
+          enum:
+          - ok
       required:
-      - spaceRole
-      - groupName
-      - groupUuid
-      type: object
-    UpdateProjectMember:
-      properties:
-        role:
-          $ref: '#/components/schemas/ProjectMemberRole'
-      required:
-      - role
-      type: object
-    ProjectMemberProfile:
-      properties:
-        lastName:
-          type: string
-        firstName:
-          type: string
-        email:
-          type: string
-        roleUuid:
-          type: string
-        role:
-          $ref: '#/components/schemas/ProjectMemberRole'
-        projectUuid:
-          type: string
-        userUuid:
-          type: string
-      required:
-      - lastName
-      - firstName
-      - email
-      - role
-      - projectUuid
-      - userUuid
-      type: object
-    AddSpaceUserAccess:
-      properties:
-        spaceRole:
-          $ref: '#/components/schemas/SpaceMemberRole'
-        userUuid:
-          type: string
-      required:
-      - spaceRole
-      - userUuid
+      - results
+      - status
       type: object
     CreateProjectMember:
       properties:
@@ -545,22 +481,111 @@ components:
       - role
       - email
       type: object
-    SpaceMemberRole:
+    DashboardBasicDetails:
+      allOf:
+      - $ref: '#/components/schemas/Pick_Dashboard.uuid-or-name-or-description-or-updatedAt-or-projectUuid-or-updatedByUser-or-organizationUuid-or-spaceUuid-or-views-or-firstViewedAt-or-pinnedListUuid-or-pinnedListOrder_'
+      - properties:
+          verification:
+            allOf:
+            - $ref: '#/components/schemas/ContentVerificationInfo'
+          validationErrors:
+            items:
+              $ref: '#/components/schemas/ValidationSummary'
+            type: array
+        required:
+        - verification
+        type: object
+    ChartKind:
+      enum:
+      - line
+      - horizontal_bar
+      - vertical_bar
+      - scatter
+      - area
+      - mixed
+      - pie
+      - table
+      - big_number
+      - funnel
+      - custom
+      - treemap
+      - gauge
+      - map
+      - sankey
+      type: string
+    ChartSourceType:
+      enum:
+      - dbt_explore
+      - sql
+      type: string
+    CreateSpace:
+      properties:
+        parentSpaceUuid:
+          type: string
+        access:
+          items:
+            $ref: '#/components/schemas/Pick_SpaceShare.userUuid-or-role_'
+          type: array
+        inheritParentPermissions:
+          type: boolean
+        name:
+          type: string
+      required:
+      - name
+      type: object
+    OrganizationMemberProfileUpdate:
+      properties:
+        role:
+          $ref: '#/components/schemas/OrganizationMemberRole'
+      required:
+      - role
+      type: object
+    ApiSuccessEmpty:
+      properties:
+        results: {}
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - status
+      type: object
+    AddSpaceGroupAccess:
+      properties:
+        spaceRole:
+          $ref: '#/components/schemas/SpaceMemberRole'
+        groupUuid:
+          type: string
+      required:
+      - spaceRole
+      - groupUuid
+      type: object
+    Pick_SavedChart.updatedAt-or-updatedByUser-or-pinnedListOrder_:
+      properties:
+        pinnedListOrder:
+          type:
+          - number
+          - 'null'
+          format: double
+        updatedAt:
+          type: string
+          format: date-time
+          description: Timestamp when the chart was last updated
+        updatedByUser:
+          $ref: '#/components/schemas/UpdatedByUser'
+      required:
+      - pinnedListOrder
+      - updatedAt
+      type: object
+      description: From T, pick a set of properties whose keys are in the union K
+    ProjectMemberRole:
       enum:
       - viewer
+      - interactive_viewer
       - editor
+      - developer
       - admin
       type: string
-    AnyType:
-      description: 'This AnyType is an alias for any
-
-        The goal is to make it easier to identify any type in the codebase
-
-        without having to eslint-disable all the time
-
-        These are only used on legacy `any` types, don''t use it for new types.
-
-        This is added on a separate file to avoid circular dependencies.'
     Pick_ValidationResponse.error-or-createdAt-or-validationUuid-or-validationId_:
       properties:
         createdAt:
@@ -571,9 +596,10 @@ components:
         validationUuid:
           type: string
         validationId:
-          type: number
+          type:
+          - number
+          - 'null'
           format: double
-          nullable: true
           deprecated: true
       required:
       - createdAt
@@ -582,17 +608,44 @@ components:
       - validationId
       type: object
       description: From T, pick a set of properties whose keys are in the union K
-    ApiSuccessEmpty:
+    UpdateSpace:
       properties:
-        results: {}
-        status:
+        colorPaletteUuid:
+          type:
+          - string
+          - 'null'
+        projectMemberAccessRole:
+          allOf:
+          - $ref: '#/components/schemas/SpaceMemberRole'
+          description: When set, all project members get this role on the space
+        inheritParentPermissions:
+          type: boolean
+        name:
           type: string
-          enum:
-          - ok
-          nullable: false
       required:
-      - status
+      - name
       type: object
+    AddSpaceUserAccess:
+      properties:
+        spaceRole:
+          $ref: '#/components/schemas/SpaceMemberRole'
+        userUuid:
+          type: string
+      required:
+      - spaceRole
+      - userUuid
+      type: object
+    ChartSummary:
+      allOf:
+      - $ref: '#/components/schemas/Pick_SavedChart.uuid-or-name-or-description-or-spaceName-or-spaceUuid-or-projectUuid-or-organizationUuid-or-pinnedListUuid-or-dashboardUuid-or-dashboardName-or-slug_'
+      - properties:
+          source:
+            $ref: '#/components/schemas/ChartSourceType'
+          chartKind:
+            $ref: '#/components/schemas/ChartKind'
+          chartType:
+            $ref: '#/components/schemas/ChartType'
+        type: object
     ApiErrorPayload:
       properties:
         error:
@@ -618,7 +671,6 @@ components:
           type: string
           enum:
           - error
-          nullable: false
       required:
       - error
       - status
@@ -626,364 +678,6 @@ components:
       description: 'The Error object is returned from the api any time there is an error.
 
         The message contains'
-    ChartSourceType:
-      enum:
-      - dbt_explore
-      - sql
-      type: string
-    ? Pick_Dashboard.uuid-or-name-or-description-or-updatedAt-or-projectUuid-or-updatedByUser-or-organizationUuid-or-spaceUuid-or-views-or-firstViewedAt-or-pinnedListUuid-or-pinnedListOrder_
-    : properties:
-        description:
-          type: string
-        name:
-          type: string
-        projectUuid:
-          type: string
-        organizationUuid:
-          type: string
-        uuid:
-          type: string
-        pinnedListUuid:
-          type: string
-          nullable: true
-        pinnedListOrder:
-          type: number
-          format: double
-          nullable: true
-        updatedAt:
-          type: string
-          format: date-time
-        spaceUuid:
-          type: string
-        updatedByUser:
-          $ref: '#/components/schemas/UpdatedByUser'
-        views:
-          type: number
-          format: double
-        firstViewedAt:
-          anyOf:
-          - type: string
-          - type: string
-            format: date-time
-          nullable: true
-      required:
-      - name
-      - projectUuid
-      - organizationUuid
-      - uuid
-      - pinnedListUuid
-      - pinnedListOrder
-      - updatedAt
-      - spaceUuid
-      - views
-      - firstViewedAt
-      type: object
-      description: From T, pick a set of properties whose keys are in the union K
-    ApiOrganizationMemberProfile:
-      properties:
-        results:
-          $ref: '#/components/schemas/OrganizationMemberProfile'
-        status:
-          type: string
-          enum:
-          - ok
-          nullable: false
-      required:
-      - results
-      - status
-      type: object
-    ValidationSummary:
-      $ref: '#/components/schemas/Pick_ValidationResponse.error-or-createdAt-or-validationUuid-or-validationId_'
-    DashboardBasicDetails:
-      allOf:
-      - $ref: '#/components/schemas/Pick_Dashboard.uuid-or-name-or-description-or-updatedAt-or-projectUuid-or-updatedByUser-or-organizationUuid-or-spaceUuid-or-views-or-firstViewedAt-or-pinnedListUuid-or-pinnedListOrder_'
-      - properties:
-          verification:
-            allOf:
-            - $ref: '#/components/schemas/ContentVerificationInfo'
-            nullable: true
-          validationErrors:
-            items:
-              $ref: '#/components/schemas/ValidationSummary'
-            type: array
-        required:
-        - verification
-        type: object
-    AddSpaceGroupAccess:
-      properties:
-        spaceRole:
-          $ref: '#/components/schemas/SpaceMemberRole'
-        groupUuid:
-          type: string
-      required:
-      - spaceRole
-      - groupUuid
-      type: object
-    SpaceQuery:
-      allOf:
-      - $ref: '#/components/schemas/ChartSummary'
-      - $ref: '#/components/schemas/Pick_SavedChart.updatedAt-or-updatedByUser-or-pinnedListOrder_'
-      - $ref: '#/components/schemas/ViewStatistics'
-      - properties:
-          verification:
-            allOf:
-            - $ref: '#/components/schemas/ContentVerificationInfo'
-            nullable: true
-          validationErrors:
-            items:
-              $ref: '#/components/schemas/ValidationSummary'
-            type: array
-        required:
-        - verification
-        type: object
-    ViewStatistics:
-      properties:
-        firstViewedAt:
-          anyOf:
-          - type: string
-            format: date-time
-          - type: string
-          nullable: true
-        views:
-          type: number
-          format: double
-      required:
-      - firstViewedAt
-      - views
-      type: object
-    Pick_SavedChart.updatedAt-or-updatedByUser-or-pinnedListOrder_:
-      properties:
-        pinnedListOrder:
-          type: number
-          format: double
-          nullable: true
-        updatedAt:
-          type: string
-          format: date-time
-          description: Timestamp when the chart was last updated
-        updatedByUser:
-          $ref: '#/components/schemas/UpdatedByUser'
-      required:
-      - pinnedListOrder
-      - updatedAt
-      type: object
-      description: From T, pick a set of properties whose keys are in the union K
-    ChartType:
-      enum:
-      - cartesian
-      - table
-      - big_number
-      - pie
-      - funnel
-      - treemap
-      - gauge
-      - custom
-      - map
-      - sankey
-      type: string
-    UpdatedByUser:
-      properties:
-        userUuid:
-          type: string
-        firstName:
-          type: string
-        lastName:
-          type: string
-      required:
-      - userUuid
-      - firstName
-      - lastName
-      type: object
-      additionalProperties: true
-    SpaceShare:
-      allOf:
-      - $ref: '#/components/schemas/SpaceAccess'
-      - $ref: '#/components/schemas/SpaceAccessUserMetadata'
-    ProjectMemberRole:
-      enum:
-      - viewer
-      - interactive_viewer
-      - editor
-      - developer
-      - admin
-      type: string
-    ? Pick_Space.organizationUuid-or-projectUuid-or-uuid-or-name-or-inheritParentPermissions-or-projectMemberAccessRole-or-pinnedListUuid-or-pinnedListOrder-or-slug-or-parentSpaceUuid-or-path_
-    : properties:
-        name:
-          type: string
-        projectUuid:
-          type: string
-        organizationUuid:
-          type: string
-        uuid:
-          type: string
-        inheritParentPermissions:
-          type: boolean
-        projectMemberAccessRole:
-          allOf:
-          - $ref: '#/components/schemas/SpaceMemberRole'
-          nullable: true
-        pinnedListUuid:
-          type: string
-          nullable: true
-        pinnedListOrder:
-          type: number
-          format: double
-          nullable: true
-        slug:
-          type: string
-        parentSpaceUuid:
-          type: string
-          nullable: true
-        path:
-          type: string
-      required:
-      - name
-      - projectUuid
-      - organizationUuid
-      - uuid
-      - inheritParentPermissions
-      - projectMemberAccessRole
-      - pinnedListUuid
-      - pinnedListOrder
-      - slug
-      - parentSpaceUuid
-      - path
-      type: object
-      description: From T, pick a set of properties whose keys are in the union K
-    ApiProjectAccessListResponse:
-      properties:
-        results:
-          items:
-            $ref: '#/components/schemas/ProjectMemberProfile'
-          type: array
-        status:
-          type: string
-          enum:
-          - ok
-          nullable: false
-      required:
-      - results
-      - status
-      type: object
-    CreateSpace:
-      properties:
-        parentSpaceUuid:
-          type: string
-        access:
-          items:
-            $ref: '#/components/schemas/Pick_SpaceShare.userUuid-or-role_'
-          type: array
-        inheritParentPermissions:
-          type: boolean
-        name:
-          type: string
-      required:
-      - name
-      type: object
-    ApiSpaceResponse:
-      properties:
-        results:
-          $ref: '#/components/schemas/Space'
-        status:
-          type: string
-          enum:
-          - ok
-          nullable: false
-      required:
-      - results
-      - status
-      type: object
-    Space:
-      properties:
-        breadcrumbs:
-          items:
-            properties:
-              hasAccess:
-                type: boolean
-              uuid:
-                type: string
-              name:
-                type: string
-            required:
-            - hasAccess
-            - uuid
-            - name
-            type: object
-          type: array
-        path:
-          type: string
-        colorPaletteUuid:
-          type: string
-          nullable: true
-        projectMemberAccessRole:
-          allOf:
-          - $ref: '#/components/schemas/SpaceMemberRole'
-          nullable: true
-        inheritParentPermissions:
-          type: boolean
-        parentSpaceUuid:
-          type: string
-          nullable: true
-        childSpaces:
-          items:
-            $ref: '#/components/schemas/SpaceSummaryBase'
-          type: array
-        slug:
-          type: string
-        pinnedListOrder:
-          type: number
-          format: double
-          nullable: true
-        pinnedListUuid:
-          type: string
-          nullable: true
-        groupsAccess:
-          items:
-            $ref: '#/components/schemas/SpaceGroup'
-          type: array
-        access:
-          items:
-            $ref: '#/components/schemas/SpaceShare'
-          type: array
-        dashboards:
-          items:
-            $ref: '#/components/schemas/SpaceDashboard'
-          type: array
-        projectUuid:
-          type: string
-        queries:
-          items:
-            $ref: '#/components/schemas/SpaceQuery'
-          type: array
-        inheritsFromOrgOrProject:
-          type: boolean
-        name:
-          type: string
-        uuid:
-          type: string
-        organizationUuid:
-          type: string
-      required:
-      - path
-      - colorPaletteUuid
-      - projectMemberAccessRole
-      - inheritParentPermissions
-      - parentSpaceUuid
-      - childSpaces
-      - slug
-      - pinnedListOrder
-      - pinnedListUuid
-      - groupsAccess
-      - access
-      - dashboards
-      - projectUuid
-      - queries
-      - inheritsFromOrgOrProject
-      - name
-      - uuid
-      - organizationUuid
-      type: object
     SpaceDashboard:
       $ref: '#/components/schemas/DashboardBasicDetails'
     ? Pick_SavedChart.uuid-or-name-or-description-or-spaceName-or-spaceUuid-or-projectUuid-or-organizationUuid-or-pinnedListUuid-or-dashboardUuid-or-dashboardName-or-slug_
@@ -1001,21 +695,24 @@ components:
         uuid:
           type: string
         pinnedListUuid:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         slug:
           type: string
           description: Unique identifier slug for this chart
         spaceUuid:
           type: string
         dashboardUuid:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         spaceName:
           type: string
         dashboardName:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
       required:
       - name
       - projectUuid
@@ -1029,61 +726,18 @@ components:
       - dashboardName
       type: object
       description: From T, pick a set of properties whose keys are in the union K
-    UpdateSpace:
+    ApiGetProjectMemberResponse:
       properties:
-        colorPaletteUuid:
+        results:
+          $ref: '#/components/schemas/ProjectMemberProfile'
+        status:
           type: string
-          nullable: true
-        projectMemberAccessRole:
-          allOf:
-          - $ref: '#/components/schemas/SpaceMemberRole'
-          nullable: true
-          description: When set, all project members get this role on the space
-        inheritParentPermissions:
-          type: boolean
-        name:
-          type: string
+          enum:
+          - ok
       required:
-      - name
+      - results
+      - status
       type: object
-    SpaceSummaryBase:
-      allOf:
-      - $ref: '#/components/schemas/Pick_Space.organizationUuid-or-projectUuid-or-uuid-or-name-or-inheritParentPermissions-or-projectMemberAccessRole-or-pinnedListUuid-or-pinnedListOrder-or-slug-or-parentSpaceUuid-or-path_'
-      - properties:
-          deletedBy:
-            properties:
-              lastName:
-                type: string
-              firstName:
-                type: string
-              userUuid:
-                type: string
-            required:
-            - lastName
-            - firstName
-            - userUuid
-            type: object
-          deletedAt:
-            type: string
-            format: date-time
-          appCount:
-            type: number
-            format: double
-          childSpaceCount:
-            type: number
-            format: double
-          dashboardCount:
-            type: number
-            format: double
-          chartCount:
-            type: number
-            format: double
-        required:
-        - appCount
-        - childSpaceCount
-        - dashboardCount
-        - chartCount
-        type: object
     Pick_SpaceShare.userUuid-or-role_:
       properties:
         userUuid:
@@ -1095,53 +749,46 @@ components:
       - role
       type: object
       description: From T, pick a set of properties whose keys are in the union K
-    ApiGetProjectMemberResponse:
+    SpaceGroup:
       properties:
-        results:
-          $ref: '#/components/schemas/ProjectMemberProfile'
-        status:
+        spaceRole:
+          $ref: '#/components/schemas/SpaceMemberRole'
+        groupName:
           type: string
-          enum:
-          - ok
-          nullable: false
+        groupUuid:
+          type: string
       required:
-      - results
-      - status
+      - spaceRole
+      - groupName
+      - groupUuid
       type: object
-    OrganizationMemberProfileUpdate:
+    UpdateProjectMember:
       properties:
         role:
-          $ref: '#/components/schemas/OrganizationMemberRole'
+          $ref: '#/components/schemas/ProjectMemberRole'
       required:
       - role
       type: object
-    SpaceAccess:
+    UpdatedByUser:
       properties:
-        inheritedFrom:
-          type: string
-          enum:
-          - organization
-          - project
-          - group
-          - space_group
-          - parent_space
-        inheritedRole:
-          anyOf:
-          - $ref: '#/components/schemas/OrganizationMemberRole'
-          - $ref: '#/components/schemas/ProjectMemberRole'
-        projectRole:
-          $ref: '#/components/schemas/ProjectMemberRole'
-        hasDirectAccess:
-          type: boolean
-        role:
-          $ref: '#/components/schemas/SpaceMemberRole'
         userUuid:
           type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
       required:
-      - hasDirectAccess
-      - role
       - userUuid
+      - firstName
+      - lastName
       type: object
+      additionalProperties: true
+    SpaceMemberRole:
+      enum:
+      - viewer
+      - editor
+      - admin
+      type: string
     OrganizationMemberProfile:
       properties:
         isPending:
@@ -1189,24 +836,82 @@ components:
       - userUuid
       type: object
       description: Profile for a user's membership in an organization
-    ChartKind:
-      enum:
-      - line
-      - horizontal_bar
-      - vertical_bar
-      - scatter
-      - area
-      - mixed
-      - pie
-      - table
-      - big_number
-      - funnel
-      - custom
-      - treemap
-      - gauge
-      - map
-      - sankey
-      type: string
+    SpaceAccess:
+      properties:
+        inheritedFrom:
+          type: string
+          enum:
+          - organization
+          - project
+          - group
+          - space_group
+          - parent_space
+        inheritedRole:
+          anyOf:
+          - $ref: '#/components/schemas/OrganizationMemberRole'
+          - $ref: '#/components/schemas/ProjectMemberRole'
+        projectRole:
+          $ref: '#/components/schemas/ProjectMemberRole'
+        hasDirectAccess:
+          type: boolean
+        role:
+          $ref: '#/components/schemas/SpaceMemberRole'
+        userUuid:
+          type: string
+      required:
+      - hasDirectAccess
+      - role
+      - userUuid
+      type: object
+    ? Pick_Dashboard.uuid-or-name-or-description-or-updatedAt-or-projectUuid-or-updatedByUser-or-organizationUuid-or-spaceUuid-or-views-or-firstViewedAt-or-pinnedListUuid-or-pinnedListOrder_
+    : properties:
+        description:
+          type: string
+        name:
+          type: string
+        projectUuid:
+          type: string
+        organizationUuid:
+          type: string
+        uuid:
+          type: string
+        pinnedListUuid:
+          type:
+          - string
+          - 'null'
+        pinnedListOrder:
+          type:
+          - number
+          - 'null'
+          format: double
+        updatedAt:
+          type: string
+          format: date-time
+        spaceUuid:
+          type: string
+        updatedByUser:
+          $ref: '#/components/schemas/UpdatedByUser'
+        views:
+          type: number
+          format: double
+        firstViewedAt:
+          anyOf:
+          - type: string
+          - type: string
+            format: date-time
+      required:
+      - name
+      - projectUuid
+      - organizationUuid
+      - uuid
+      - pinnedListUuid
+      - pinnedListOrder
+      - updatedAt
+      - spaceUuid
+      - views
+      - firstViewedAt
+      type: object
+      description: From T, pick a set of properties whose keys are in the union K
     ContentVerificationInfo:
       properties:
         verifiedAt:
@@ -1229,6 +934,167 @@ components:
       - verifiedAt
       - verifiedBy
       type: object
+    ApiSpaceResponse:
+      properties:
+        results:
+          $ref: '#/components/schemas/Space'
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
+    ChartType:
+      enum:
+      - cartesian
+      - table
+      - big_number
+      - pie
+      - funnel
+      - treemap
+      - gauge
+      - custom
+      - map
+      - sankey
+      type: string
+    ViewStatistics:
+      properties:
+        firstViewedAt:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: string
+        views:
+          type: number
+          format: double
+      required:
+      - firstViewedAt
+      - views
+      type: object
+    SpaceQuery:
+      allOf:
+      - $ref: '#/components/schemas/ChartSummary'
+      - $ref: '#/components/schemas/Pick_SavedChart.updatedAt-or-updatedByUser-or-pinnedListOrder_'
+      - $ref: '#/components/schemas/ViewStatistics'
+      - properties:
+          verification:
+            allOf:
+            - $ref: '#/components/schemas/ContentVerificationInfo'
+          validationErrors:
+            items:
+              $ref: '#/components/schemas/ValidationSummary'
+            type: array
+        required:
+        - verification
+        type: object
+    OrganizationMemberRole:
+      enum:
+      - member
+      - viewer
+      - interactive_viewer
+      - editor
+      - developer
+      - admin
+      type: string
+    Space:
+      properties:
+        breadcrumbs:
+          items:
+            properties:
+              hasAccess:
+                type: boolean
+              uuid:
+                type: string
+              name:
+                type: string
+            required:
+            - hasAccess
+            - uuid
+            - name
+            type: object
+          type: array
+        path:
+          type: string
+        colorPaletteUuid:
+          type:
+          - string
+          - 'null'
+        projectMemberAccessRole:
+          allOf:
+          - $ref: '#/components/schemas/SpaceMemberRole'
+        inheritParentPermissions:
+          type: boolean
+        parentSpaceUuid:
+          type:
+          - string
+          - 'null'
+        childSpaces:
+          items:
+            $ref: '#/components/schemas/SpaceSummaryBase'
+          type: array
+        slug:
+          type: string
+        pinnedListOrder:
+          type:
+          - number
+          - 'null'
+          format: double
+        pinnedListUuid:
+          type:
+          - string
+          - 'null'
+        groupsAccess:
+          items:
+            $ref: '#/components/schemas/SpaceGroup'
+          type: array
+        access:
+          items:
+            $ref: '#/components/schemas/SpaceShare'
+          type: array
+        dashboards:
+          items:
+            $ref: '#/components/schemas/SpaceDashboard'
+          type: array
+        projectUuid:
+          type: string
+        queries:
+          items:
+            $ref: '#/components/schemas/SpaceQuery'
+          type: array
+        inheritsFromOrgOrProject:
+          type: boolean
+        name:
+          type: string
+        uuid:
+          type: string
+        organizationUuid:
+          type: string
+      required:
+      - path
+      - colorPaletteUuid
+      - projectMemberAccessRole
+      - inheritParentPermissions
+      - parentSpaceUuid
+      - childSpaces
+      - slug
+      - pinnedListOrder
+      - pinnedListUuid
+      - groupsAccess
+      - access
+      - dashboards
+      - projectUuid
+      - queries
+      - inheritsFromOrgOrProject
+      - name
+      - uuid
+      - organizationUuid
+      type: object
+    SpaceShare:
+      allOf:
+      - $ref: '#/components/schemas/SpaceAccess'
+      - $ref: '#/components/schemas/SpaceAccessUserMetadata'
     SpaceAccessUserMetadata:
       properties:
         isInternal:
@@ -1245,6 +1111,140 @@ components:
       - lastName
       - firstName
       type: object
+    ApiProjectAccessListResponse:
+      properties:
+        results:
+          items:
+            $ref: '#/components/schemas/ProjectMemberProfile'
+          type: array
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
+    AnyType:
+      description: 'This AnyType is an alias for any
+
+        The goal is to make it easier to identify any type in the codebase
+
+        without having to eslint-disable all the time
+
+        These are only used on legacy `any` types, don''t use it for new types.
+
+        This is added on a separate file to avoid circular dependencies.'
+    ProjectMemberProfile:
+      properties:
+        lastName:
+          type: string
+        firstName:
+          type: string
+        email:
+          type: string
+        roleUuid:
+          type: string
+        role:
+          $ref: '#/components/schemas/ProjectMemberRole'
+        projectUuid:
+          type: string
+        userUuid:
+          type: string
+      required:
+      - lastName
+      - firstName
+      - email
+      - role
+      - projectUuid
+      - userUuid
+      type: object
+    ValidationSummary:
+      $ref: '#/components/schemas/Pick_ValidationResponse.error-or-createdAt-or-validationUuid-or-validationId_'
+    SpaceSummaryBase:
+      allOf:
+      - $ref: '#/components/schemas/Pick_Space.organizationUuid-or-projectUuid-or-uuid-or-name-or-inheritParentPermissions-or-projectMemberAccessRole-or-pinnedListUuid-or-pinnedListOrder-or-slug-or-parentSpaceUuid-or-path_'
+      - properties:
+          deletedBy:
+            properties:
+              lastName:
+                type: string
+              firstName:
+                type: string
+              userUuid:
+                type: string
+            required:
+            - lastName
+            - firstName
+            - userUuid
+            type: object
+          deletedAt:
+            type: string
+            format: date-time
+          appCount:
+            type: number
+            format: double
+          childSpaceCount:
+            type: number
+            format: double
+          dashboardCount:
+            type: number
+            format: double
+          chartCount:
+            type: number
+            format: double
+        required:
+        - appCount
+        - childSpaceCount
+        - dashboardCount
+        - chartCount
+        type: object
+    ? Pick_Space.organizationUuid-or-projectUuid-or-uuid-or-name-or-inheritParentPermissions-or-projectMemberAccessRole-or-pinnedListUuid-or-pinnedListOrder-or-slug-or-parentSpaceUuid-or-path_
+    : properties:
+        name:
+          type: string
+        projectUuid:
+          type: string
+        organizationUuid:
+          type: string
+        uuid:
+          type: string
+        inheritParentPermissions:
+          type: boolean
+        projectMemberAccessRole:
+          allOf:
+          - $ref: '#/components/schemas/SpaceMemberRole'
+        pinnedListUuid:
+          type:
+          - string
+          - 'null'
+        pinnedListOrder:
+          type:
+          - number
+          - 'null'
+          format: double
+        slug:
+          type: string
+        parentSpaceUuid:
+          type:
+          - string
+          - 'null'
+        path:
+          type: string
+      required:
+      - name
+      - projectUuid
+      - organizationUuid
+      - uuid
+      - inheritParentPermissions
+      - projectMemberAccessRole
+      - pinnedListUuid
+      - pinnedListOrder
+      - slug
+      - parentSpaceUuid
+      - path
+      type: object
+      description: From T, pick a set of properties whose keys are in the union K
   securitySchemes:
     session_cookie:
       type: apiKey

@@ -1,10 +1,8 @@
-openapi: 3.0.0
+openapi: 3.2.0
 info:
-  title: Lightdash AiAgents Funnel API
+  title: Lightdash Funnel API
   version: 0.3156.1
-  description: 'Open API documentation for all public Lightdash API endpoints. # Authentication Before you get started, you might need to create a Personal Access Token to authenticate via the API. You can create a token by following this guide: https://docs.lightdash.com/references/personal_tokens
-
-    '
+  description: 'Open API documentation for all public Lightdash API endpoints. # Authentication Before you get started, you might need to create a Personal Access Token to authenticate via the API. You can create a token by following this guide: https://docs.lightdash.com/references/personal_tokens'
   license:
     name: MIT
   contact:
@@ -102,22 +100,6 @@ paths:
               description: The funnel query configuration
 components:
   schemas:
-    Exclude_FunnelDatePreset.custom_:
-      type: string
-      enum:
-      - last_7_days
-      - last_14_days
-      - last_30_days
-      - last_90_days
-      - last_6_months
-      - last_12_months
-      description: Exclude from T those types that are assignable to U
-    FunnelConversionWindowUnit:
-      type: string
-      enum:
-      - hours
-      - days
-      - weeks
     AnyType:
       description: 'This AnyType is an alias for any
 
@@ -128,69 +110,6 @@ components:
         These are only used on legacy `any` types, don''t use it for new types.
 
         This is added on a separate file to avoid circular dependencies.'
-    FunnelStepResult:
-      properties:
-        breakdownValue:
-          type: string
-        medianTimeToConvertSeconds:
-          type: number
-          format: double
-          nullable: true
-        stepConversionRate:
-          type: number
-          format: double
-        conversionRate:
-          type: number
-          format: double
-        totalUsers:
-          type: number
-          format: double
-        stepName:
-          type: string
-        stepOrder:
-          type: number
-          format: double
-      required:
-      - medianTimeToConvertSeconds
-      - stepConversionRate
-      - conversionRate
-      - totalUsers
-      - stepName
-      - stepOrder
-      type: object
-    ApiErrorPayload:
-      properties:
-        error:
-          properties:
-            data:
-              $ref: '#/components/schemas/AnyType'
-              description: Optional data containing details of the error
-            message:
-              type: string
-              description: A friendly message summarising the error
-            name:
-              type: string
-              description: Unique name for the type of error
-            statusCode:
-              type: number
-              format: integer
-              description: HTTP status code
-          required:
-          - name
-          - statusCode
-          type: object
-        status:
-          type: string
-          enum:
-          - error
-          nullable: false
-      required:
-      - error
-      - status
-      type: object
-      description: 'The Error object is returned from the api any time there is an error.
-
-        The message contains'
     FunnelQueryRequest:
       properties:
         breakdownDimensionId:
@@ -228,31 +147,6 @@ components:
       - timestampFieldId
       - exploreName
       type: object
-    FunnelQueryResult:
-      properties:
-        sql:
-          type: string
-        steps:
-          items:
-            $ref: '#/components/schemas/FunnelStepResult'
-          type: array
-      required:
-      - sql
-      - steps
-      type: object
-    ApiFunnelQueryResponse:
-      properties:
-        results:
-          $ref: '#/components/schemas/FunnelQueryResult'
-        status:
-          type: string
-          enum:
-          - ok
-          nullable: false
-      required:
-      - results
-      - status
-      type: object
     FunnelDateRange:
       anyOf:
       - properties:
@@ -262,7 +156,6 @@ components:
             type: string
             enum:
             - preset
-            nullable: false
         required:
         - preset
         - type
@@ -276,12 +169,21 @@ components:
             type: string
             enum:
             - custom
-            nullable: false
         required:
         - end
         - start
         - type
         type: object
+    Exclude_FunnelDatePreset.custom_:
+      type: string
+      enum:
+      - last_7_days
+      - last_14_days
+      - last_30_days
+      - last_90_days
+      - last_6_months
+      - last_12_months
+      description: Exclude from T those types that are assignable to U
     FunnelStep:
       properties:
         eventName:
@@ -293,6 +195,99 @@ components:
       - eventName
       - stepOrder
       type: object
+    FunnelConversionWindowUnit:
+      type: string
+      enum:
+      - hours
+      - days
+      - weeks
+    FunnelQueryResult:
+      properties:
+        sql:
+          type: string
+        steps:
+          items:
+            $ref: '#/components/schemas/FunnelStepResult'
+          type: array
+      required:
+      - sql
+      - steps
+      type: object
+    ApiErrorPayload:
+      properties:
+        error:
+          properties:
+            data:
+              $ref: '#/components/schemas/AnyType'
+              description: Optional data containing details of the error
+            message:
+              type: string
+              description: A friendly message summarising the error
+            name:
+              type: string
+              description: Unique name for the type of error
+            statusCode:
+              type: number
+              format: integer
+              description: HTTP status code
+          required:
+          - name
+          - statusCode
+          type: object
+        status:
+          type: string
+          enum:
+          - error
+      required:
+      - error
+      - status
+      type: object
+      description: 'The Error object is returned from the api any time there is an error.
+
+        The message contains'
+    FunnelStepResult:
+      properties:
+        breakdownValue:
+          type: string
+        medianTimeToConvertSeconds:
+          type:
+          - number
+          - 'null'
+          format: double
+        stepConversionRate:
+          type: number
+          format: double
+        conversionRate:
+          type: number
+          format: double
+        totalUsers:
+          type: number
+          format: double
+        stepName:
+          type: string
+        stepOrder:
+          type: number
+          format: double
+      required:
+      - medianTimeToConvertSeconds
+      - stepConversionRate
+      - conversionRate
+      - totalUsers
+      - stepName
+      - stepOrder
+      type: object
+    ApiFunnelQueryResponse:
+      properties:
+        results:
+          $ref: '#/components/schemas/FunnelQueryResult'
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
     ApiFunnelEventNamesResponse:
       properties:
         results:
@@ -303,7 +298,6 @@ components:
           type: string
           enum:
           - ok
-          nullable: false
       required:
       - results
       - status

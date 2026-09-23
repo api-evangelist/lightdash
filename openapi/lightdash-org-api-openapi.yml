@@ -1,10 +1,8 @@
-openapi: 3.0.0
+openapi: 3.2.0
 info:
-  title: Lightdash AiAgents Org API
+  title: Lightdash Org API
   version: 0.3156.1
-  description: 'Open API documentation for all public Lightdash API endpoints. # Authentication Before you get started, you might need to create a Personal Access Token to authenticate via the API. You can create a token by following this guide: https://docs.lightdash.com/references/personal_tokens
-
-    '
+  description: 'Open API documentation for all public Lightdash API endpoints. # Authentication Before you get started, you might need to create a Personal Access Token to authenticate via the API. You can create a token by following this guide: https://docs.lightdash.com/references/personal_tokens'
   license:
     name: MIT
   contact:
@@ -241,38 +239,6 @@ paths:
       - Org
 components:
   schemas:
-    ApiSuccess_AiRouterInstruction-or-null_:
-      properties:
-        results:
-          allOf:
-          - $ref: '#/components/schemas/AiRouterInstruction'
-          nullable: true
-        status:
-          type: string
-          enum:
-          - ok
-          nullable: false
-      required:
-      - results
-      - status
-      type: object
-    ApiAiRouterDecisionCommitResponse:
-      $ref: '#/components/schemas/ApiSuccessEmpty'
-    ApiAiRouterResponse:
-      $ref: '#/components/schemas/ApiSuccess_AiRouter_'
-    ApiSuccess_AiRouterRouteResponseResult_:
-      properties:
-        results:
-          $ref: '#/components/schemas/AiRouterRouteResponseResult'
-        status:
-          type: string
-          enum:
-          - ok
-          nullable: false
-      required:
-      - results
-      - status
-      type: object
     ApiSuccess_AiRouterDecision-Array_:
       properties:
         results:
@@ -283,34 +249,149 @@ components:
           type: string
           enum:
           - ok
-          nullable: false
       required:
       - results
       - status
       type: object
-    ApiAiRouterInstructionResponse:
-      $ref: '#/components/schemas/ApiSuccess_AiRouterInstruction-or-null_'
-    AiRouterRouteDecision:
+    ApiAiRouterRouteResponse:
+      $ref: '#/components/schemas/ApiSuccess_AiRouterRouteResponseResult_'
+    AiRouterDecisionCommitRequest:
       properties:
-        candidates:
+        threadUuid:
+          type: string
+        chosenAgentUuid:
+          type: string
+      required:
+      - threadUuid
+      - chosenAgentUuid
+      type: object
+    AiRouterDecision:
+      properties:
+        committedAt:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        createdAt:
+          type: string
+          format: date-time
+        selectionMode:
+          allOf:
+          - $ref: '#/components/schemas/AiRouterSelectionMode'
+        candidateAgentUuids:
           items:
-            $ref: '#/components/schemas/AiRouterDecisionCandidate'
+            type: string
           type: array
         reasoning:
           type: string
         confidence:
           $ref: '#/components/schemas/AiRouterDecisionConfidence'
+        chosenAgentUuid:
+          type:
+          - string
+          - 'null'
         suggestedAgentUuid:
+          type: string
+        prompt:
+          type: string
+        userUuid:
+          type: string
+        threadUuid:
+          type:
+          - string
+          - 'null'
+        routerUuid:
           type: string
         decisionUuid:
           type: string
       required:
-      - candidates
+      - committedAt
+      - createdAt
+      - selectionMode
+      - candidateAgentUuids
       - reasoning
       - confidence
+      - chosenAgentUuid
       - suggestedAgentUuid
+      - prompt
+      - userUuid
+      - threadUuid
+      - routerUuid
       - decisionUuid
       type: object
+    ApiSuccessEmpty:
+      properties:
+        results: {}
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - status
+      type: object
+    ApiSuccess_AiRouter_:
+      properties:
+        results:
+          $ref: '#/components/schemas/AiRouter'
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
+    ApiErrorPayload:
+      properties:
+        error:
+          properties:
+            data:
+              $ref: '#/components/schemas/AnyType'
+              description: Optional data containing details of the error
+            message:
+              type: string
+              description: A friendly message summarising the error
+            name:
+              type: string
+              description: Unique name for the type of error
+            statusCode:
+              type: number
+              format: integer
+              description: HTTP status code
+          required:
+          - name
+          - statusCode
+          type: object
+        status:
+          type: string
+          enum:
+          - error
+      required:
+      - error
+      - status
+      type: object
+      description: 'The Error object is returned from the api any time there is an error.
+
+        The message contains'
+    AiRouterRouteNextAction:
+      type: string
+      enum:
+      - create_thread
+      - show_picker
+    UpsertAiRouterInstructionRequest:
+      properties:
+        taggedAgentUuids:
+          items:
+            type: string
+          type: array
+        instruction:
+          type: string
+      required:
+      - taggedAgentUuids
+      - instruction
+      type: object
+    ApiAiRouterInstructionResponse:
+      $ref: '#/components/schemas/ApiSuccess_AiRouterInstruction-or-null_'
     AiRouter:
       properties:
         updatedAt:
@@ -337,179 +418,29 @@ components:
       - organizationUuid
       - routerUuid
       type: object
-    AnyType:
-      description: 'This AnyType is an alias for any
-
-        The goal is to make it easier to identify any type in the codebase
-
-        without having to eslint-disable all the time
-
-        These are only used on legacy `any` types, don''t use it for new types.
-
-        This is added on a separate file to avoid circular dependencies.'
-    ApiErrorPayload:
+    AiRouterRouteDecision:
       properties:
-        error:
-          properties:
-            data:
-              $ref: '#/components/schemas/AnyType'
-              description: Optional data containing details of the error
-            message:
-              type: string
-              description: A friendly message summarising the error
-            name:
-              type: string
-              description: Unique name for the type of error
-            statusCode:
-              type: number
-              format: integer
-              description: HTTP status code
-          required:
-          - name
-          - statusCode
-          type: object
-        status:
-          type: string
-          enum:
-          - error
-          nullable: false
-      required:
-      - error
-      - status
-      type: object
-      description: 'The Error object is returned from the api any time there is an error.
-
-        The message contains'
-    ApiSuccessEmpty:
-      properties:
-        results: {}
-        status:
-          type: string
-          enum:
-          - ok
-          nullable: false
-      required:
-      - status
-      type: object
-    ApiSuccess_AiRouter_:
-      properties:
-        results:
-          $ref: '#/components/schemas/AiRouter'
-        status:
-          type: string
-          enum:
-          - ok
-          nullable: false
-      required:
-      - results
-      - status
-      type: object
-    AiRouterSelectionMode:
-      type: string
-      enum:
-      - auto_routed
-      - manual_pick
-    AiRouterDecision:
-      properties:
-        committedAt:
-          type: string
-          format: date-time
-          nullable: true
-        createdAt:
-          type: string
-          format: date-time
-        selectionMode:
-          allOf:
-          - $ref: '#/components/schemas/AiRouterSelectionMode'
-          nullable: true
-        candidateAgentUuids:
+        candidates:
           items:
-            type: string
+            $ref: '#/components/schemas/AiRouterDecisionCandidate'
           type: array
         reasoning:
           type: string
         confidence:
           $ref: '#/components/schemas/AiRouterDecisionConfidence'
-        chosenAgentUuid:
-          type: string
-          nullable: true
         suggestedAgentUuid:
-          type: string
-        prompt:
-          type: string
-        userUuid:
-          type: string
-        threadUuid:
-          type: string
-          nullable: true
-        routerUuid:
           type: string
         decisionUuid:
           type: string
       required:
-      - committedAt
-      - createdAt
-      - selectionMode
-      - candidateAgentUuids
+      - candidates
       - reasoning
       - confidence
-      - chosenAgentUuid
       - suggestedAgentUuid
-      - prompt
-      - userUuid
-      - threadUuid
-      - routerUuid
       - decisionUuid
       type: object
-    AiRouterDecisionCommitRequest:
-      properties:
-        threadUuid:
-          type: string
-        chosenAgentUuid:
-          type: string
-      required:
-      - threadUuid
-      - chosenAgentUuid
-      type: object
-    AiRouterRouteRequest:
-      properties:
-        projectUuid:
-          type: string
-        prompt:
-          type: string
-      required:
-      - projectUuid
-      - prompt
-      type: object
-    AiRouterDecisionCandidate:
-      properties:
-        description:
-          type: string
-          nullable: true
-        name:
-          type: string
-        agentUuid:
-          type: string
-      required:
-      - description
-      - name
-      - agentUuid
-      type: object
-    UpsertAiRouterRequest:
-      properties:
-        projectUuids:
-          items:
-            type: string
-          type: array
-        enabled:
-          type: boolean
-      type: object
-    AiRouterDecisionConfidence:
-      type: string
-      enum:
-      - high
-      - medium
-      - low
+    ApiAiRouterDecisionCommitResponse:
+      $ref: '#/components/schemas/ApiSuccessEmpty'
     AiRouterRouteResponseResult:
       properties:
         nextAction:
@@ -520,19 +451,50 @@ components:
       - nextAction
       - decision
       type: object
-    ApiAiRouterRouteResponse:
-      $ref: '#/components/schemas/ApiSuccess_AiRouterRouteResponseResult_'
-    UpsertAiRouterInstructionRequest:
+    AiRouterSelectionMode:
+      type: string
+      enum:
+      - auto_routed
+      - manual_pick
+    AiRouterRouteRequest:
       properties:
-        taggedAgentUuids:
-          items:
-            type: string
-          type: array
-        instruction:
+        projectUuid:
+          type: string
+        prompt:
           type: string
       required:
-      - taggedAgentUuids
-      - instruction
+      - projectUuid
+      - prompt
+      type: object
+    ApiAiRouterDecisionListResponse:
+      $ref: '#/components/schemas/ApiSuccess_AiRouterDecision-Array_'
+    AiRouterDecisionCandidate:
+      properties:
+        description:
+          type:
+          - string
+          - 'null'
+        name:
+          type: string
+        agentUuid:
+          type: string
+      required:
+      - description
+      - name
+      - agentUuid
+      type: object
+    ApiSuccess_AiRouterInstruction-or-null_:
+      properties:
+        results:
+          allOf:
+          - $ref: '#/components/schemas/AiRouterInstruction'
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
       type: object
     AiRouterInstruction:
       properties:
@@ -568,13 +530,45 @@ components:
         `@[Agent Name](agent-uuid)` tokens; `taggedAgentUuids` is the extracted list,
 
         kept alongside the text so references can be validated and orphans detected.'
-    AiRouterRouteNextAction:
+    ApiAiRouterResponse:
+      $ref: '#/components/schemas/ApiSuccess_AiRouter_'
+    AnyType:
+      description: 'This AnyType is an alias for any
+
+        The goal is to make it easier to identify any type in the codebase
+
+        without having to eslint-disable all the time
+
+        These are only used on legacy `any` types, don''t use it for new types.
+
+        This is added on a separate file to avoid circular dependencies.'
+    UpsertAiRouterRequest:
+      properties:
+        projectUuids:
+          items:
+            type: string
+          type: array
+        enabled:
+          type: boolean
+      type: object
+    AiRouterDecisionConfidence:
       type: string
       enum:
-      - create_thread
-      - show_picker
-    ApiAiRouterDecisionListResponse:
-      $ref: '#/components/schemas/ApiSuccess_AiRouterDecision-Array_'
+      - high
+      - medium
+      - low
+    ApiSuccess_AiRouterRouteResponseResult_:
+      properties:
+        results:
+          $ref: '#/components/schemas/AiRouterRouteResponseResult'
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
   securitySchemes:
     session_cookie:
       type: apiKey
