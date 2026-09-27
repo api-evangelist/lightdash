@@ -170,25 +170,6 @@ paths:
           type: string
 components:
   schemas:
-    ApiResolveComment:
-      properties:
-        status:
-          type: string
-          enum:
-          - ok
-      required:
-      - status
-      type: object
-    AnyType:
-      description: 'This AnyType is an alias for any
-
-        The goal is to make it easier to identify any type in the codebase
-
-        without having to eslint-disable all the time
-
-        These are only used on legacy `any` types, don''t use it for new types.
-
-        This is added on a separate file to avoid circular dependencies.'
     Comment:
       properties:
         mentions:
@@ -231,6 +212,42 @@ components:
       - text
       - commentId
       type: object
+    ApiGetComments:
+      properties:
+        results:
+          properties: {}
+          additionalProperties:
+            items:
+              $ref: '#/components/schemas/Comment'
+            type: array
+          type: object
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
+    ApiResolveComment:
+      properties:
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - status
+      type: object
+    AnyType:
+      description: 'This AnyType is an alias for any
+
+        The goal is to make it easier to identify any type in the codebase
+
+        without having to eslint-disable all the time
+
+        These are only used on legacy `any` types, don''t use it for new types.
+
+        This is added on a separate file to avoid circular dependencies.'
     ApiErrorPayload:
       properties:
         error:
@@ -263,15 +280,10 @@ components:
       description: 'The Error object is returned from the api any time there is an error.
 
         The message contains'
-    ApiGetComments:
+    ApiCreateComment:
       properties:
         results:
-          properties: {}
-          additionalProperties:
-            items:
-              $ref: '#/components/schemas/Comment'
-            type: array
-          type: object
+          type: string
         status:
           type: string
           enum:
@@ -298,18 +310,6 @@ components:
       - textHtml
       type: object
       description: From T, pick a set of properties whose keys are in the union K
-    ApiCreateComment:
-      properties:
-        results:
-          type: string
-        status:
-          type: string
-          enum:
-          - ok
-      required:
-      - results
-      - status
-      type: object
   securitySchemes:
     session_cookie:
       type: apiKey

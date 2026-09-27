@@ -148,6 +148,32 @@ components:
       - results
       - status
       type: object
+    ChangeTSOACompat:
+      $ref: '#/components/schemas/Record_string.unknown_'
+    ChangesetTSOACompat:
+      $ref: '#/components/schemas/Record_string.unknown_'
+    ApiGetChangeResponseTSOACompat:
+      properties:
+        results:
+          $ref: '#/components/schemas/ChangeTSOACompat'
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
+    ApiSuccessEmpty:
+      properties:
+        results: {}
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - status
+      type: object
     AnyType:
       description: 'This AnyType is an alias for any
 
@@ -158,10 +184,11 @@ components:
         These are only used on legacy `any` types, don''t use it for new types.
 
         This is added on a separate file to avoid circular dependencies.'
-    ApiRevertChangeResponse:
-      $ref: '#/components/schemas/ApiSuccessEmpty'
-    ChangeTSOACompat:
-      $ref: '#/components/schemas/Record_string.unknown_'
+    Record_string.unknown_:
+      properties: {}
+      additionalProperties: {}
+      type: object
+      description: Construct a type with a set of properties K of type T
     ApiErrorPayload:
       properties:
         error:
@@ -194,35 +221,8 @@ components:
       description: 'The Error object is returned from the api any time there is an error.
 
         The message contains'
-    ChangesetTSOACompat:
-      $ref: '#/components/schemas/Record_string.unknown_'
-    ApiSuccessEmpty:
-      properties:
-        results: {}
-        status:
-          type: string
-          enum:
-          - ok
-      required:
-      - status
-      type: object
-    ApiGetChangeResponseTSOACompat:
-      properties:
-        results:
-          $ref: '#/components/schemas/ChangeTSOACompat'
-        status:
-          type: string
-          enum:
-          - ok
-      required:
-      - results
-      - status
-      type: object
-    Record_string.unknown_:
-      properties: {}
-      additionalProperties: {}
-      type: object
-      description: Construct a type with a set of properties K of type T
+    ApiRevertChangeResponse:
+      $ref: '#/components/schemas/ApiSuccessEmpty'
   securitySchemes:
     session_cookie:
       type: apiKey

@@ -1124,53 +1124,6 @@ paths:
             type: string
 components:
   schemas:
-    CatalogFilter:
-      enum:
-      - tables
-      - dimensions
-      - metrics
-      type: string
-    ChartKind:
-      enum:
-      - line
-      - horizontal_bar
-      - vertical_bar
-      - scatter
-      - area
-      - mixed
-      - pie
-      - table
-      - big_number
-      - funnel
-      - custom
-      - treemap
-      - gauge
-      - map
-      - sankey
-      type: string
-    ApiGetAllMetricsTreeEdges:
-      properties:
-        results:
-          properties:
-            edges:
-              items:
-                $ref: '#/components/schemas/CatalogMetricsTreeEdge'
-              type: array
-          required:
-          - edges
-          type: object
-        status:
-          type: string
-          enum:
-          - ok
-      required:
-      - results
-      - status
-      type: object
-    CatalogItemIcon:
-      anyOf:
-      - $ref: '#/components/schemas/EmojiIcon'
-      - $ref: '#/components/schemas/CustomIcon'
     KnexPaginateArgs:
       properties:
         page:
@@ -1183,143 +1136,35 @@ components:
       - page
       - pageSize
       type: object
-    InlineErrorType:
-      enum:
-      - METADATA_PARSE_ERROR
-      - NO_DIMENSIONS_FOUND
-      - SKIPPED_JOIN
-      - MISSING_TABLE
-      - FIELD_ERROR
-      - SET_VALIDATION_ERROR
-      - INVALID_PARAMETER
-      - DUPLICATE_FIELD_NAME
-      type: string
-    CustomFormat:
+    CatalogMetricsTreeEdge:
       properties:
-        type:
-          $ref: '#/components/schemas/CustomFormatType'
-          description: Format type
-        round:
-          type: number
-          format: double
-          description: Number of decimal places
-        separator:
-          $ref: '#/components/schemas/NumberSeparator'
-          description: Number separator style
-        currency:
+        createdFrom:
+          $ref: '#/components/schemas/MetricsTreeSource'
+        projectUuid:
           type: string
-          description: Currency code (e.g., USD, GBP, EUR)
-        compact:
-          $ref: '#/components/schemas/CompactOrAlias'
-          description: Compact format for large numbers (K, M, B, T) or byte units
-        prefix:
+        createdByUserUuid:
+          type:
+          - string
+          - 'null'
+        createdAt:
           type: string
-          description: Prefix to prepend to formatted values
-        suffix:
-          type: string
-          description: Suffix to append to formatted values
-        timeInterval:
-          $ref: '#/components/schemas/TimeFrames'
-          description: Time interval for date formatting
-        custom:
-          type: string
-          description: Custom format string
+          format: date-time
+        target:
+          $ref: '#/components/schemas/CatalogMetricsTreeNode'
+        source:
+          $ref: '#/components/schemas/CatalogMetricsTreeNode'
       required:
-      - type
+      - createdFrom
+      - projectUuid
+      - createdByUserUuid
+      - createdAt
+      - target
+      - source
       type: object
-      additionalProperties: true
-    FilterOperator:
-      enum:
-      - isNull
-      - notNull
-      - equals
-      - notEquals
-      - startsWith
-      - endsWith
-      - include
-      - doesNotInclude
-      - lessThan
-      - lessThanOrEqual
-      - greaterThan
-      - greaterThanOrEqual
-      - inThePast
-      - notInThePast
-      - inTheNext
-      - inTheCurrent
-      - notInTheCurrent
-      - inBetween
-      - notInBetween
-      - inPeriodToDate
-      type: string
-    MetricWithAssociatedTimeDimension:
-      allOf:
-      - $ref: '#/components/schemas/CompiledMetric'
-      - properties:
-          availableTimeDimensions:
-            items:
-              allOf:
-              - $ref: '#/components/schemas/CompiledDimension'
-              - properties:
-                  type:
-                    anyOf:
-                    - $ref: '#/components/schemas/DimensionType.DATE'
-                    - $ref: '#/components/schemas/DimensionType.TIMESTAMP'
-                required:
-                - type
-                type: object
-            type: array
-          timeDimension:
-            allOf:
-            - $ref: '#/components/schemas/DefaultTimeDimension'
-            - properties:
-                table:
-                  type: string
-              required:
-              - table
-              type: object
-        type: object
-    Pick_Field.name-or-label-or-fieldType-or-tableLabel-or-description_:
-      properties:
-        description:
-          type: string
-        name:
-          type: string
-        label:
-          type: string
-        fieldType:
-          $ref: '#/components/schemas/FieldType'
-        tableLabel:
-          type: string
-      required:
-      - name
-      - label
-      - fieldType
-      - tableLabel
-      type: object
-      description: From T, pick a set of properties whose keys are in the union K
-    KnexPaginatedData_MetricsTreeSummary-Array_:
-      properties:
-        pagination:
-          allOf:
-          - $ref: '#/components/schemas/KnexPaginateArgs'
-          - properties:
-              totalResults:
-                type: number
-                format: double
-              totalPageCount:
-                type: number
-                format: double
-            required:
-            - totalResults
-            - totalPageCount
-            type: object
-        data:
-          items:
-            $ref: '#/components/schemas/MetricsTreeSummary'
-          type: array
-      required:
-      - data
-      type: object
+    ApiMetricsCatalogResults:
+      items:
+        $ref: '#/components/schemas/CatalogField'
+      type: array
     CatalogField:
       allOf:
       - $ref: '#/components/schemas/Pick_Field.name-or-label-or-fieldType-or-tableLabel-or-description_'
@@ -1397,79 +1242,8 @@ components:
         - type
         - catalogSearchUuid
         type: object
-    FieldType:
-      enum:
-      - metric
-      - dimension
-      type: string
-    MetricType:
-      enum:
-      - percentile
-      - average
-      - count
-      - count_distinct
-      - sum
-      - sum_distinct
-      - average_distinct
-      - min
-      - max
-      - percent_of_previous
-      - percent_of_total
-      - running_total
-      - number
-      - median
-      - string
-      - date
-      - timestamp
-      - boolean
-      type: string
-    NumberSeparator:
-      enum:
-      - default
-      - commaPeriod
-      - spacePeriod
-      - periodComma
-      - noSeparatorPeriod
-      - apostrophePeriod
-      type: string
-    CatalogCategoryFilterMode:
-      enum:
-      - and
-      - or
-      type: string
-    ApiGetMetricsTreePayload:
-      properties:
-        metricUuids:
-          items:
-            type: string
-          type: array
-      required:
-      - metricUuids
-      type: object
-    EmojiIcon:
-      properties:
-        unicode:
-          type: string
-      required:
-      - unicode
-      type: object
-    Compact:
-      enum:
-      - thousands
-      - millions
-      - billions
-      - trillions
-      - kilobytes
-      - megabytes
-      - gigabytes
-      - terabytes
-      - petabytes
-      - kibibytes
-      - mebibytes
-      - gibibytes
-      - tebibytes
-      - pebibytes
-      type: string
+    ApiCatalogAnalyticsResults:
+      $ref: '#/components/schemas/CatalogAnalytics'
     Dimension:
       properties:
         fieldType:
@@ -1598,6 +1372,136 @@ components:
       - hidden
       type: object
       additionalProperties: true
+    CustomIcon:
+      properties:
+        url:
+          type: string
+      required:
+      - url
+      type: object
+    CatalogOwner:
+      properties:
+        email:
+          type: string
+        lastName:
+          type: string
+        firstName:
+          type: string
+        userUuid:
+          type: string
+      required:
+      - email
+      - lastName
+      - firstName
+      - userUuid
+      type: object
+    CatalogItemIcon:
+      anyOf:
+      - $ref: '#/components/schemas/EmojiIcon'
+      - $ref: '#/components/schemas/CustomIcon'
+    CompiledProperties:
+      properties:
+        compiledDistinctKeys:
+          items:
+            type: string
+          type: array
+        compiledValueSql:
+          type: string
+        compilationError:
+          $ref: '#/components/schemas/FieldCompilationError'
+          description: 'When partial compilation mode is enabled, fields that fail to compile
+
+            will have this property set instead of causing the entire explore to fail.'
+        tablesAnyAttributes:
+          $ref: '#/components/schemas/Record_string.Record_string.string-or-string-Array__'
+        tablesRequiredAttributes:
+          $ref: '#/components/schemas/Record_string.Record_string.string-or-string-Array__'
+        tablesReferences:
+          items:
+            type: string
+          type: array
+        compiledSql:
+          type: string
+      required:
+      - compiledSql
+      type: object
+    Source:
+      properties:
+        content:
+          type: string
+        highlight:
+          properties:
+            end:
+              $ref: '#/components/schemas/SourcePosition'
+            start:
+              $ref: '#/components/schemas/SourcePosition'
+          required:
+          - end
+          - start
+          type: object
+        range:
+          properties:
+            end:
+              $ref: '#/components/schemas/SourcePosition'
+            start:
+              $ref: '#/components/schemas/SourcePosition'
+          required:
+          - end
+          - start
+          type: object
+        path:
+          type: string
+      required:
+      - content
+      - range
+      - path
+      type: object
+    Record_string.string_:
+      properties: {}
+      additionalProperties:
+        type: string
+      type: object
+      description: Construct a type with a set of properties K of type T
+    TimeFrames:
+      enum:
+      - RAW
+      - YEAR
+      - QUARTER
+      - MONTH
+      - WEEK
+      - DAY
+      - HOUR
+      - MINUTE
+      - SECOND
+      - MILLISECOND
+      - DAY_OF_WEEK_INDEX
+      - DAY_OF_MONTH_NUM
+      - DAY_OF_YEAR_NUM
+      - WEEK_NUM
+      - MONTH_NUM
+      - QUARTER_NUM
+      - YEAR_NUM
+      - DAY_OF_WEEK_NAME
+      - MONTH_NAME
+      - QUARTER_NAME
+      - HOUR_OF_DAY_NUM
+      - MINUTE_OF_HOUR_NUM
+      type: string
+    MetricsTreeNode:
+      allOf:
+      - $ref: '#/components/schemas/MetricsTreeNodePosition'
+      - properties:
+          source:
+            $ref: '#/components/schemas/MetricsTreeSource'
+          tableName:
+            type: string
+          name:
+            type: string
+        required:
+        - source
+        - tableName
+        - name
+        type: object
     ApiFilterDimensionsResponse:
       properties:
         results:
@@ -1612,42 +1516,311 @@ components:
       - results
       - status
       type: object
-    CatalogAnalytics:
+    CatalogMetadata:
       properties:
-        charts:
+        fieldType:
+          $ref: '#/components/schemas/FieldType'
+        tableLabel:
+          type: string
+        joinedTables:
           items:
-            allOf:
-            - $ref: '#/components/schemas/Pick_ChartSummary.uuid-or-name-or-description-or-spaceUuid-or-spaceName-or-dashboardName-or-dashboardUuid-or-chartKind_'
-            - properties:
-                viewsCount:
-                  type: number
-                  format: double
-              type: object
+            type: string
+          type: array
+        fields:
+          items:
+            $ref: '#/components/schemas/CatalogField'
+          type: array
+        source:
+          type: string
+        modelName:
+          type: string
+        label:
+          type: string
+        description:
+          type: string
+        name:
+          type: string
+      required:
+      - joinedTables
+      - fields
+      - modelName
+      - label
+      - name
+      type: object
+    DimensionType.DATE:
+      enum:
+      - date
+      type: string
+    ApiGetMetricsTreeResponse:
+      properties:
+        results:
+          $ref: '#/components/schemas/MetricsTreeWithDetails'
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
+    ApiGetMetricsTree:
+      properties:
+        results:
+          properties:
+            edges:
+              items:
+                $ref: '#/components/schemas/CatalogMetricsTreeEdge'
+              type: array
+          required:
+          - edges
+          type: object
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
+    FieldCompilationError:
+      properties:
+        message:
+          type: string
+      required:
+      - message
+      type: object
+      description: 'Error information stored on a field when compilation fails but
+
+        partial compilation mode is enabled.'
+    ApiGetMetricsTreePayload:
+      properties:
+        metricUuids:
+          items:
+            type: string
           type: array
       required:
-      - charts
+      - metricUuids
       type: object
-    KnexPaginatedData_ApiMetricsCatalogResults_:
+    ApiCatalogMetadataResults:
+      $ref: '#/components/schemas/CatalogMetadata'
+    ApiErrorPayload:
       properties:
-        pagination:
-          allOf:
-          - $ref: '#/components/schemas/KnexPaginateArgs'
-          - properties:
-              totalResults:
-                type: number
-                format: double
-              totalPageCount:
-                type: number
-                format: double
-            required:
-            - totalResults
-            - totalPageCount
-            type: object
-        data:
-          $ref: '#/components/schemas/ApiMetricsCatalogResults'
+        error:
+          properties:
+            data:
+              $ref: '#/components/schemas/AnyType'
+              description: Optional data containing details of the error
+            message:
+              type: string
+              description: A friendly message summarising the error
+            name:
+              type: string
+              description: Unique name for the type of error
+            statusCode:
+              type: number
+              format: integer
+              description: HTTP status code
+          required:
+          - name
+          - statusCode
+          type: object
+        status:
+          type: string
+          enum:
+          - error
       required:
-      - data
+      - error
+      - status
       type: object
+      description: 'The Error object is returned from the api any time there is an error.
+
+        The message contains'
+    NumberSeparator:
+      enum:
+      - default
+      - commaPeriod
+      - spacePeriod
+      - periodComma
+      - noSeparatorPeriod
+      - apostrophePeriod
+      type: string
+    ApiPaginatedMetricsWithTimeDimensionResponse:
+      properties:
+        results:
+          $ref: '#/components/schemas/KnexPaginatedData_CatalogField-Array_'
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
+    CompiledMetric:
+      allOf:
+      - $ref: '#/components/schemas/Metric'
+      - $ref: '#/components/schemas/CompiledProperties'
+    MetricsTreeSource:
+      type: string
+      enum:
+      - ui
+      - yaml
+    MetricsTree:
+      properties:
+        generation:
+          type: number
+          format: double
+        updatedAt:
+          type: string
+          format: date-time
+        createdAt:
+          type: string
+          format: date-time
+        updatedByUserUuid:
+          type:
+          - string
+          - 'null'
+        createdByUserUuid:
+          type:
+          - string
+          - 'null'
+        source:
+          $ref: '#/components/schemas/MetricsTreeSource'
+        description:
+          type:
+          - string
+          - 'null'
+        name:
+          type: string
+        slug:
+          type: string
+        projectUuid:
+          type: string
+        metricsTreeUuid:
+          type: string
+      required:
+      - generation
+      - updatedAt
+      - createdAt
+      - updatedByUserUuid
+      - createdByUserUuid
+      - source
+      - description
+      - name
+      - slug
+      - projectUuid
+      - metricsTreeUuid
+      type: object
+    ApiGetAllMetricsTreeEdges:
+      properties:
+        results:
+          properties:
+            edges:
+              items:
+                $ref: '#/components/schemas/CatalogMetricsTreeEdge'
+              type: array
+          required:
+          - edges
+          type: object
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
+    InlineError:
+      properties:
+        message:
+          type: string
+        type:
+          $ref: '#/components/schemas/InlineErrorType'
+      required:
+      - message
+      - type
+      type: object
+    FieldType.METRIC:
+      enum:
+      - metric
+      type: string
+    ApiSortDirection:
+      type: string
+      enum:
+      - asc
+      - desc
+    CatalogFilter:
+      enum:
+      - tables
+      - dimensions
+      - metrics
+      type: string
+    CatalogCategoryFilterMode:
+      enum:
+      - and
+      - or
+      type: string
+    CatalogType.Table:
+      enum:
+      - table
+      type: string
+    CatalogSortField:
+      type: string
+      enum:
+      - name
+      - label
+      - chartUsage
+      - tableLabel
+      - owner
+    MetricType:
+      enum:
+      - percentile
+      - average
+      - count
+      - count_distinct
+      - sum
+      - sum_distinct
+      - average_distinct
+      - min
+      - max
+      - percent_of_previous
+      - percent_of_total
+      - running_total
+      - number
+      - median
+      - string
+      - date
+      - timestamp
+      - boolean
+      type: string
+    Pick_Field.name-or-label-or-fieldType-or-tableLabel-or-description_:
+      properties:
+        description:
+          type: string
+        name:
+          type: string
+        label:
+          type: string
+        fieldType:
+          $ref: '#/components/schemas/FieldType'
+        tableLabel:
+          type: string
+      required:
+      - name
+      - label
+      - fieldType
+      - tableLabel
+      type: object
+      description: From T, pick a set of properties whose keys are in the union K
+    CatalogType:
+      enum:
+      - table
+      - field
+      type: string
+    DimensionType.TIMESTAMP:
+      enum:
+      - timestamp
+      type: string
     MetricFilterRule:
       description: Filter rule for metrics, targeting fields by reference
       properties:
@@ -1693,19 +1866,194 @@ components:
       - target
       type: object
       additionalProperties: true
-    MetricsTreeLockInfo:
+    EmojiIcon:
       properties:
-        acquiredAt:
-          type: string
-          format: date-time
-        lockedByUserName:
-          type: string
-        lockedByUserUuid:
+        unicode:
           type: string
       required:
-      - acquiredAt
-      - lockedByUserName
-      - lockedByUserUuid
+      - unicode
+      type: object
+    DimensionType:
+      enum:
+      - string
+      - number
+      - timestamp
+      - date
+      - boolean
+      type: string
+    Pick_Tag.name-or-color-or-tagUuid-or-yamlReference_:
+      properties:
+        name:
+          type: string
+        color:
+          type: string
+        tagUuid:
+          type: string
+        yamlReference:
+          type:
+          - string
+          - 'null'
+      required:
+      - name
+      - color
+      - tagUuid
+      - yamlReference
+      type: object
+      description: From T, pick a set of properties whose keys are in the union K
+    AnyType:
+      description: 'This AnyType is an alias for any
+
+        The goal is to make it easier to identify any type in the codebase
+
+        without having to eslint-disable all the time
+
+        These are only used on legacy `any` types, don''t use it for new types.
+
+        This is added on a separate file to avoid circular dependencies.'
+    CompactOrAlias:
+      anyOf:
+      - $ref: '#/components/schemas/Compact'
+      - type: string
+        enum:
+        - K
+        - thousand
+        - M
+        - million
+        - B
+        - billion
+        - T
+        - trillion
+        - KB
+        - kilobyte
+        - MB
+        - megabyte
+        - GB
+        - gigabyte
+        - TB
+        - terabyte
+        - PB
+        - petabyte
+        - KiB
+        - kibibyte
+        - MiB
+        - mebibyte
+        - GiB
+        - gibibyte
+        - TiB
+        - tebibyte
+        - PiB
+        - pebibyte
+    InlineErrorType:
+      enum:
+      - METADATA_PARSE_ERROR
+      - NO_DIMENSIONS_FOUND
+      - SKIPPED_JOIN
+      - MISSING_TABLE
+      - FIELD_ERROR
+      - SET_VALIDATION_ERROR
+      - INVALID_PARAMETER
+      - DUPLICATE_FIELD_NAME
+      type: string
+    ApiMetricsTreeLockResponse:
+      properties:
+        results:
+          $ref: '#/components/schemas/MetricsTreeLockInfo'
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
+    MetricsTreeWithDetails:
+      allOf:
+      - $ref: '#/components/schemas/MetricsTree'
+      - properties:
+          lock:
+            allOf:
+            - $ref: '#/components/schemas/MetricsTreeLockInfo'
+          edges:
+            items:
+              $ref: '#/components/schemas/CatalogMetricsTreeEdge'
+            type: array
+          nodes:
+            items:
+              $ref: '#/components/schemas/MetricsTreeNode'
+            type: array
+        required:
+        - lock
+        - edges
+        - nodes
+        type: object
+    KnexPaginatedData_MetricsTreeSummary-Array_:
+      properties:
+        pagination:
+          allOf:
+          - $ref: '#/components/schemas/KnexPaginateArgs'
+          - properties:
+              totalResults:
+                type: number
+                format: double
+              totalPageCount:
+                type: number
+                format: double
+            required:
+            - totalResults
+            - totalPageCount
+            type: object
+        data:
+          items:
+            $ref: '#/components/schemas/MetricsTreeSummary'
+          type: array
+      required:
+      - data
+      type: object
+    ApiCatalogResults:
+      items:
+        $ref: '#/components/schemas/CatalogItem'
+      type: array
+    ApiCreateMetricsTreePayload:
+      properties:
+        edges:
+          items:
+            properties:
+              targetCatalogSearchUuid:
+                type: string
+              sourceCatalogSearchUuid:
+                type: string
+            required:
+            - targetCatalogSearchUuid
+            - sourceCatalogSearchUuid
+            type: object
+          type: array
+        nodes:
+          items:
+            properties:
+              yPosition:
+                type: number
+                format: double
+              xPosition:
+                type: number
+                format: double
+              catalogSearchUuid:
+                type: string
+            required:
+            - catalogSearchUuid
+            type: object
+          type: array
+        source:
+          $ref: '#/components/schemas/MetricsTreeSource'
+        description:
+          type: string
+        slug:
+          type: string
+        name:
+          type: string
+      required:
+      - edges
+      - nodes
+      - name
       type: object
     Metric:
       properties:
@@ -1843,169 +2191,20 @@ components:
       - hidden
       type: object
       additionalProperties: true
-    ApiMetricsTreeEdgePayload:
-      properties:
-        targetCatalogSearchUuid:
-          type: string
-        sourceCatalogSearchUuid:
-          type: string
-      required:
-      - targetCatalogSearchUuid
-      - sourceCatalogSearchUuid
-      type: object
-    ApiMetricsTreeLockResponse:
-      properties:
-        results:
-          $ref: '#/components/schemas/MetricsTreeLockInfo'
-        status:
-          type: string
-          enum:
-          - ok
-      required:
-      - results
-      - status
-      type: object
-    ApiUpdateMetricsTreeResponse:
-      properties:
-        results:
-          $ref: '#/components/schemas/MetricsTreeWithDetails'
-        status:
-          type: string
-          enum:
-          - ok
-      required:
-      - results
-      - status
-      type: object
-    ApiSuccessEmpty:
-      properties:
-        results: {}
-        status:
-          type: string
-          enum:
-          - ok
-      required:
-      - status
-      type: object
-    MetricsTreeNode:
+    MetricsTreeSummary:
       allOf:
-      - $ref: '#/components/schemas/MetricsTreeNodePosition'
+      - $ref: '#/components/schemas/MetricsTree'
       - properties:
-          source:
-            $ref: '#/components/schemas/MetricsTreeSource'
-          tableName:
-            type: string
-          name:
-            type: string
+          lock:
+            allOf:
+            - $ref: '#/components/schemas/MetricsTreeLockInfo'
+          nodeCount:
+            type: number
+            format: double
         required:
-        - source
-        - tableName
-        - name
+        - lock
+        - nodeCount
         type: object
-    MetricsTree:
-      properties:
-        generation:
-          type: number
-          format: double
-        updatedAt:
-          type: string
-          format: date-time
-        createdAt:
-          type: string
-          format: date-time
-        updatedByUserUuid:
-          type:
-          - string
-          - 'null'
-        createdByUserUuid:
-          type:
-          - string
-          - 'null'
-        source:
-          $ref: '#/components/schemas/MetricsTreeSource'
-        description:
-          type:
-          - string
-          - 'null'
-        name:
-          type: string
-        slug:
-          type: string
-        projectUuid:
-          type: string
-        metricsTreeUuid:
-          type: string
-      required:
-      - generation
-      - updatedAt
-      - createdAt
-      - updatedByUserUuid
-      - createdByUserUuid
-      - source
-      - description
-      - name
-      - slug
-      - projectUuid
-      - metricsTreeUuid
-      type: object
-    CompiledProperties:
-      properties:
-        compiledDistinctKeys:
-          items:
-            type: string
-          type: array
-        compiledValueSql:
-          type: string
-        compilationError:
-          $ref: '#/components/schemas/FieldCompilationError'
-          description: 'When partial compilation mode is enabled, fields that fail to compile
-
-            will have this property set instead of causing the entire explore to fail.'
-        tablesAnyAttributes:
-          $ref: '#/components/schemas/Record_string.Record_string.string-or-string-Array__'
-        tablesRequiredAttributes:
-          $ref: '#/components/schemas/Record_string.Record_string.string-or-string-Array__'
-        tablesReferences:
-          items:
-            type: string
-          type: array
-        compiledSql:
-          type: string
-      required:
-      - compiledSql
-      type: object
-    ApiErrorPayload:
-      properties:
-        error:
-          properties:
-            data:
-              $ref: '#/components/schemas/AnyType'
-              description: Optional data containing details of the error
-            message:
-              type: string
-              description: A friendly message summarising the error
-            name:
-              type: string
-              description: Unique name for the type of error
-            statusCode:
-              type: number
-              format: integer
-              description: HTTP status code
-          required:
-          - name
-          - statusCode
-          type: object
-        status:
-          type: string
-          enum:
-          - error
-      required:
-      - error
-      - status
-      type: object
-      description: 'The Error object is returned from the api any time there is an error.
-
-        The message contains'
     ApiUpdateMetricsTreePayload:
       properties:
         edges:
@@ -2048,179 +2247,37 @@ components:
       - nodes
       - expectedGeneration
       type: object
-    MetricsTreeSource:
-      type: string
-      enum:
-      - ui
-      - yaml
-    Pick_ChartSummary.uuid-or-name-or-description-or-spaceUuid-or-spaceName-or-dashboardName-or-dashboardUuid-or-chartKind_:
+    MetricsTreeLockInfo:
       properties:
-        description:
+        acquiredAt:
           type: string
-          description: Optional description of what this chart displays
-        name:
+          format: date-time
+        lockedByUserName:
           type: string
-          description: Display name of the chart
-        uuid:
-          type: string
-        spaceUuid:
-          type: string
-        dashboardUuid:
-          type:
-          - string
-          - 'null'
-        spaceName:
-          type: string
-        dashboardName:
-          type:
-          - string
-          - 'null'
-        chartKind:
-          $ref: '#/components/schemas/ChartKind'
-      required:
-      - name
-      - uuid
-      - spaceUuid
-      - dashboardUuid
-      - spaceName
-      - dashboardName
-      type: object
-      description: From T, pick a set of properties whose keys are in the union K
-    Pick_CatalogField.catalogSearchUuid-or-name-or-tableName_:
-      properties:
-        name:
-          type: string
-        tableName:
-          type: string
-        catalogSearchUuid:
+        lockedByUserUuid:
           type: string
       required:
-      - name
-      - tableName
-      - catalogSearchUuid
-      type: object
-      description: From T, pick a set of properties whose keys are in the union K
-    ApiCatalogAnalyticsResults:
-      $ref: '#/components/schemas/CatalogAnalytics'
-    ApiSortDirection:
-      type: string
-      enum:
-      - asc
-      - desc
-    ApiMetricsCatalogResults:
-      items:
-        $ref: '#/components/schemas/CatalogField'
-      type: array
-    CatalogMetadata:
-      properties:
-        fieldType:
-          $ref: '#/components/schemas/FieldType'
-        tableLabel:
-          type: string
-        joinedTables:
-          items:
-            type: string
-          type: array
-        fields:
-          items:
-            $ref: '#/components/schemas/CatalogField'
-          type: array
-        source:
-          type: string
-        modelName:
-          type: string
-        label:
-          type: string
-        description:
-          type: string
-        name:
-          type: string
-      required:
-      - joinedTables
-      - fields
-      - modelName
-      - label
-      - name
-      type: object
-    Format:
-      enum:
-      - km
-      - mi
-      - usd
-      - gbp
-      - eur
-      - jpy
-      - dkk
-      - id
-      - percent
-      type: string
-    ApiGetMetricsTreesResponse:
-      properties:
-        results:
-          $ref: '#/components/schemas/KnexPaginatedData_MetricsTreeSummary-Array_'
-        status:
-          type: string
-          enum:
-          - ok
-      required:
-      - results
-      - status
-      type: object
-    ApiMetricsWithAssociatedTimeDimensionResponse:
-      properties:
-        results:
-          items:
-            $ref: '#/components/schemas/MetricWithAssociatedTimeDimension'
-          type: array
-        status:
-          type: string
-          enum:
-          - ok
-      required:
-      - results
-      - status
-      type: object
-    CatalogMetricsTreeNode:
-      $ref: '#/components/schemas/Pick_CatalogField.catalogSearchUuid-or-name-or-tableName_'
-    AnyType:
-      description: 'This AnyType is an alias for any
-
-        The goal is to make it easier to identify any type in the codebase
-
-        without having to eslint-disable all the time
-
-        These are only used on legacy `any` types, don''t use it for new types.
-
-        This is added on a separate file to avoid circular dependencies.'
-    ApiSegmentDimensionsResponse:
-      properties:
-        results:
-          items:
-            $ref: '#/components/schemas/CompiledDimension'
-          type: array
-        status:
-          type: string
-          enum:
-          - ok
-      required:
-      - results
-      - status
+      - acquiredAt
+      - lockedByUserName
+      - lockedByUserUuid
       type: object
     CompiledDimension:
       allOf:
       - $ref: '#/components/schemas/Dimension'
       - $ref: '#/components/schemas/CompiledProperties'
-    ApiCreateMetricsTreeResponse:
+    CatalogMetricsTreeNode:
+      $ref: '#/components/schemas/Pick_CatalogField.catalogSearchUuid-or-name-or-tableName_'
+    SourcePosition:
       properties:
-        results:
-          $ref: '#/components/schemas/MetricsTree'
-        status:
-          type: string
-          enum:
-          - ok
+        character:
+          type: number
+          format: double
+        line:
+          type: number
+          format: double
       required:
-      - results
-      - status
+      - character
+      - line
       type: object
     Pick_TableBase.name-or-label-or-groupLabel-or-description-or-requiredAttributes-or-anyAttributes_:
       properties:
@@ -2241,25 +2298,12 @@ components:
       - label
       type: object
       description: From T, pick a set of properties whose keys are in the union K
-    ApiCatalogResults:
-      items:
-        $ref: '#/components/schemas/CatalogItem'
-      type: array
-    CatalogType.Table:
-      enum:
-      - table
-      type: string
-    ApiGetMetricsTree:
+    ApiSegmentDimensionsResponse:
       properties:
         results:
-          properties:
-            edges:
-              items:
-                $ref: '#/components/schemas/CatalogMetricsTreeEdge'
-              type: array
-          required:
-          - edges
-          type: object
+          items:
+            $ref: '#/components/schemas/CompiledDimension'
+          type: array
         status:
           type: string
           enum:
@@ -2268,186 +2312,11 @@ components:
       - results
       - status
       type: object
-    ApiCreateMetricsTreePayload:
-      properties:
-        edges:
-          items:
-            properties:
-              targetCatalogSearchUuid:
-                type: string
-              sourceCatalogSearchUuid:
-                type: string
-            required:
-            - targetCatalogSearchUuid
-            - sourceCatalogSearchUuid
-            type: object
-          type: array
-        nodes:
-          items:
-            properties:
-              yPosition:
-                type: number
-                format: double
-              xPosition:
-                type: number
-                format: double
-              catalogSearchUuid:
-                type: string
-            required:
-            - catalogSearchUuid
-            type: object
-          type: array
-        source:
-          $ref: '#/components/schemas/MetricsTreeSource'
-        description:
-          type: string
-        slug:
-          type: string
-        name:
-          type: string
-      required:
-      - edges
-      - nodes
-      - name
-      type: object
-    FieldType.METRIC:
+    FieldType:
       enum:
       - metric
+      - dimension
       type: string
-    CatalogType.Field:
-      enum:
-      - field
-      type: string
-    ApiGetMetricPeek:
-      properties:
-        results:
-          $ref: '#/components/schemas/MetricWithAssociatedTimeDimension'
-        status:
-          type: string
-          enum:
-          - ok
-      required:
-      - results
-      - status
-      type: object
-    Pick_Dimension.requiredAttributes-or-anyAttributes_:
-      properties:
-        requiredAttributes:
-          $ref: '#/components/schemas/Record_string.string-or-string-Array_'
-        anyAttributes:
-          $ref: '#/components/schemas/Record_string.string-or-string-Array_'
-      type: object
-      description: From T, pick a set of properties whose keys are in the union K
-    ApiMetricsCatalog:
-      properties:
-        results:
-          $ref: '#/components/schemas/KnexPaginatedData_ApiMetricsCatalogResults_'
-        status:
-          type: string
-          enum:
-          - ok
-      required:
-      - results
-      - status
-      type: object
-    CatalogMetricsTreeEdge:
-      properties:
-        createdFrom:
-          $ref: '#/components/schemas/MetricsTreeSource'
-        projectUuid:
-          type: string
-        createdByUserUuid:
-          type:
-          - string
-          - 'null'
-        createdAt:
-          type: string
-          format: date-time
-        target:
-          $ref: '#/components/schemas/CatalogMetricsTreeNode'
-        source:
-          $ref: '#/components/schemas/CatalogMetricsTreeNode'
-      required:
-      - createdFrom
-      - projectUuid
-      - createdByUserUuid
-      - createdAt
-      - target
-      - source
-      type: object
-    DefaultTimeDimension:
-      properties:
-        interval:
-          $ref: '#/components/schemas/TimeFrames'
-        field:
-          type: string
-      required:
-      - interval
-      - field
-      type: object
-    DimensionType.DATE:
-      enum:
-      - date
-      type: string
-    Record_string.Record_string.string-or-string-Array__:
-      properties: {}
-      additionalProperties:
-        $ref: '#/components/schemas/Record_string.string-or-string-Array_'
-      type: object
-      description: Construct a type with a set of properties K of type T
-    DimensionType:
-      enum:
-      - string
-      - number
-      - timestamp
-      - date
-      - boolean
-      type: string
-    CompiledMetric:
-      allOf:
-      - $ref: '#/components/schemas/Metric'
-      - $ref: '#/components/schemas/CompiledProperties'
-    Record_string.string_:
-      properties: {}
-      additionalProperties:
-        type: string
-      type: object
-      description: Construct a type with a set of properties K of type T
-    TimeFrames:
-      enum:
-      - RAW
-      - YEAR
-      - QUARTER
-      - MONTH
-      - WEEK
-      - DAY
-      - HOUR
-      - MINUTE
-      - SECOND
-      - MILLISECOND
-      - DAY_OF_WEEK_INDEX
-      - DAY_OF_MONTH_NUM
-      - DAY_OF_YEAR_NUM
-      - WEEK_NUM
-      - MONTH_NUM
-      - QUARTER_NUM
-      - YEAR_NUM
-      - DAY_OF_WEEK_NAME
-      - MONTH_NAME
-      - QUARTER_NAME
-      - HOUR_OF_DAY_NUM
-      - MINUTE_OF_HOUR_NUM
-      type: string
-    FieldCompilationError:
-      properties:
-        message:
-          type: string
-      required:
-      - message
-      type: object
-      description: 'Error information stored on a field when compilation fails but
-
-        partial compilation mode is enabled.'
     KnexPaginatedData_CatalogField-Array_:
       properties:
         pagination:
@@ -2471,39 +2340,34 @@ components:
       required:
       - data
       type: object
-    CompactOrAlias:
-      anyOf:
-      - $ref: '#/components/schemas/Compact'
-      - type: string
-        enum:
-        - K
-        - thousand
-        - M
-        - million
-        - B
-        - billion
-        - T
-        - trillion
-        - KB
-        - kilobyte
-        - MB
-        - megabyte
-        - GB
-        - gigabyte
-        - TB
-        - terabyte
-        - PB
-        - petabyte
-        - KiB
-        - kibibyte
-        - MiB
-        - mebibyte
-        - GiB
-        - gibibyte
-        - TiB
-        - tebibyte
-        - PiB
-        - pebibyte
+    ApiCreateMetricsTreeResponse:
+      properties:
+        results:
+          $ref: '#/components/schemas/MetricsTree'
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
+    CatalogType.Field:
+      enum:
+      - field
+      type: string
+    ApiMetricsCatalog:
+      properties:
+        results:
+          $ref: '#/components/schemas/KnexPaginatedData_ApiMetricsCatalogResults_'
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
     Record_string.string-or-string-Array_:
       properties: {}
       additionalProperties:
@@ -2514,40 +2378,40 @@ components:
           type: array
       type: object
       description: Construct a type with a set of properties K of type T
-    ApiPaginatedMetricsWithTimeDimensionResponse:
+    ApiSuccessEmpty:
       properties:
-        results:
-          $ref: '#/components/schemas/KnexPaginatedData_CatalogField-Array_'
+        results: {}
         status:
           type: string
           enum:
           - ok
       required:
-      - results
       - status
       type: object
-    CatalogType:
-      enum:
-      - table
-      - field
-      type: string
-    ApiCatalogMetadataResults:
-      $ref: '#/components/schemas/CatalogMetadata'
-    SourcePosition:
+    Pick_Dimension.requiredAttributes-or-anyAttributes_:
       properties:
-        character:
-          type: number
-          format: double
-        line:
-          type: number
-          format: double
-      required:
-      - character
-      - line
+        requiredAttributes:
+          $ref: '#/components/schemas/Record_string.string-or-string-Array_'
+        anyAttributes:
+          $ref: '#/components/schemas/Record_string.string-or-string-Array_'
       type: object
-    FieldType.DIMENSION:
+      description: From T, pick a set of properties whose keys are in the union K
+    Compact:
       enum:
-      - dimension
+      - thousands
+      - millions
+      - billions
+      - trillions
+      - kilobytes
+      - megabytes
+      - gigabytes
+      - terabytes
+      - petabytes
+      - kibibytes
+      - mebibytes
+      - gibibytes
+      - tebibytes
+      - pebibytes
       type: string
     CatalogTable:
       allOf:
@@ -2600,32 +2464,148 @@ components:
         - type
         - catalogSearchUuid
         type: object
-    MetricsTreeWithDetails:
-      allOf:
-      - $ref: '#/components/schemas/MetricsTree'
-      - properties:
-          lock:
-            allOf:
-            - $ref: '#/components/schemas/MetricsTreeLockInfo'
-          edges:
-            items:
-              $ref: '#/components/schemas/CatalogMetricsTreeEdge'
-            type: array
-          nodes:
-            items:
-              $ref: '#/components/schemas/MetricsTreeNode'
-            type: array
-        required:
-        - lock
-        - edges
-        - nodes
-        type: object
-    CustomIcon:
+    CatalogAnalytics:
       properties:
+        charts:
+          items:
+            allOf:
+            - $ref: '#/components/schemas/Pick_ChartSummary.uuid-or-name-or-description-or-spaceUuid-or-spaceName-or-dashboardName-or-dashboardUuid-or-chartKind_'
+            - properties:
+                viewsCount:
+                  type: number
+                  format: double
+              type: object
+          type: array
+      required:
+      - charts
+      type: object
+    FieldType.DIMENSION:
+      enum:
+      - dimension
+      type: string
+    FieldUrl:
+      properties:
+        label:
+          type: string
         url:
           type: string
       required:
+      - label
       - url
+      type: object
+    ApiUpdateMetricsTreeResponse:
+      properties:
+        results:
+          $ref: '#/components/schemas/MetricsTreeWithDetails'
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
+    Format:
+      enum:
+      - km
+      - mi
+      - usd
+      - gbp
+      - eur
+      - jpy
+      - dkk
+      - id
+      - percent
+      type: string
+    ApiGetMetricsTreesResponse:
+      properties:
+        results:
+          $ref: '#/components/schemas/KnexPaginatedData_MetricsTreeSummary-Array_'
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
+    Pick_ChartSummary.uuid-or-name-or-description-or-spaceUuid-or-spaceName-or-dashboardName-or-dashboardUuid-or-chartKind_:
+      properties:
+        description:
+          type: string
+          description: Optional description of what this chart displays
+        name:
+          type: string
+          description: Display name of the chart
+        uuid:
+          type: string
+        spaceUuid:
+          type: string
+        dashboardUuid:
+          type:
+          - string
+          - 'null'
+        spaceName:
+          type: string
+        dashboardName:
+          type:
+          - string
+          - 'null'
+        chartKind:
+          $ref: '#/components/schemas/ChartKind'
+      required:
+      - name
+      - uuid
+      - spaceUuid
+      - dashboardUuid
+      - spaceName
+      - dashboardName
+      type: object
+      description: From T, pick a set of properties whose keys are in the union K
+    MetricWithAssociatedTimeDimension:
+      allOf:
+      - $ref: '#/components/schemas/CompiledMetric'
+      - properties:
+          availableTimeDimensions:
+            items:
+              allOf:
+              - $ref: '#/components/schemas/CompiledDimension'
+              - properties:
+                  type:
+                    anyOf:
+                    - $ref: '#/components/schemas/DimensionType.DATE'
+                    - $ref: '#/components/schemas/DimensionType.TIMESTAMP'
+                required:
+                - type
+                type: object
+            type: array
+          timeDimension:
+            allOf:
+            - $ref: '#/components/schemas/DefaultTimeDimension'
+            - properties:
+                table:
+                  type: string
+              required:
+              - table
+              type: object
+        type: object
+    CatalogItem:
+      anyOf:
+      - $ref: '#/components/schemas/CatalogField'
+      - $ref: '#/components/schemas/CatalogTable'
+    ApiMetricsWithAssociatedTimeDimensionResponse:
+      properties:
+        results:
+          items:
+            $ref: '#/components/schemas/MetricWithAssociatedTimeDimension'
+          type: array
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
       type: object
     CustomFormatType:
       enum:
@@ -2640,55 +2620,136 @@ components:
       - bytes_iec
       - custom
       type: string
-    Pick_Tag.name-or-color-or-tagUuid-or-yamlReference_:
+    KnexPaginatedData_ApiMetricsCatalogResults_:
+      properties:
+        pagination:
+          allOf:
+          - $ref: '#/components/schemas/KnexPaginateArgs'
+          - properties:
+              totalResults:
+                type: number
+                format: double
+              totalPageCount:
+                type: number
+                format: double
+            required:
+            - totalResults
+            - totalPageCount
+            type: object
+        data:
+          $ref: '#/components/schemas/ApiMetricsCatalogResults'
+      required:
+      - data
+      type: object
+    Record_string.Record_string.string-or-string-Array__:
+      properties: {}
+      additionalProperties:
+        $ref: '#/components/schemas/Record_string.string-or-string-Array_'
+      type: object
+      description: Construct a type with a set of properties K of type T
+    DefaultTimeDimension:
+      properties:
+        interval:
+          $ref: '#/components/schemas/TimeFrames'
+        field:
+          type: string
+      required:
+      - interval
+      - field
+      type: object
+    ApiGetMetricPeek:
+      properties:
+        results:
+          $ref: '#/components/schemas/MetricWithAssociatedTimeDimension'
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
+    FilterOperator:
+      enum:
+      - isNull
+      - notNull
+      - equals
+      - notEquals
+      - startsWith
+      - endsWith
+      - include
+      - doesNotInclude
+      - lessThan
+      - lessThanOrEqual
+      - greaterThan
+      - greaterThanOrEqual
+      - inThePast
+      - notInThePast
+      - inTheNext
+      - inTheCurrent
+      - notInTheCurrent
+      - inBetween
+      - notInBetween
+      - inPeriodToDate
+      type: string
+    CustomFormat:
+      properties:
+        type:
+          $ref: '#/components/schemas/CustomFormatType'
+          description: Format type
+        round:
+          type: number
+          format: double
+          description: Number of decimal places
+        separator:
+          $ref: '#/components/schemas/NumberSeparator'
+          description: Number separator style
+        currency:
+          type: string
+          description: Currency code (e.g., USD, GBP, EUR)
+        compact:
+          $ref: '#/components/schemas/CompactOrAlias'
+          description: Compact format for large numbers (K, M, B, T) or byte units
+        prefix:
+          type: string
+          description: Prefix to prepend to formatted values
+        suffix:
+          type: string
+          description: Suffix to append to formatted values
+        timeInterval:
+          $ref: '#/components/schemas/TimeFrames'
+          description: Time interval for date formatting
+        custom:
+          type: string
+          description: Custom format string
+      required:
+      - type
+      type: object
+      additionalProperties: true
+    ApiMetricsTreeEdgePayload:
+      properties:
+        targetCatalogSearchUuid:
+          type: string
+        sourceCatalogSearchUuid:
+          type: string
+      required:
+      - targetCatalogSearchUuid
+      - sourceCatalogSearchUuid
+      type: object
+    Pick_CatalogField.catalogSearchUuid-or-name-or-tableName_:
       properties:
         name:
           type: string
-        color:
+        tableName:
           type: string
-        tagUuid:
+        catalogSearchUuid:
           type: string
-        yamlReference:
-          type:
-          - string
-          - 'null'
       required:
       - name
-      - color
-      - tagUuid
-      - yamlReference
+      - tableName
+      - catalogSearchUuid
       type: object
       description: From T, pick a set of properties whose keys are in the union K
-    InlineError:
-      properties:
-        message:
-          type: string
-        type:
-          $ref: '#/components/schemas/InlineErrorType'
-      required:
-      - message
-      - type
-      type: object
-    DimensionType.TIMESTAMP:
-      enum:
-      - timestamp
-      type: string
-    CatalogOwner:
-      properties:
-        email:
-          type: string
-        lastName:
-          type: string
-        firstName:
-          type: string
-        userUuid:
-          type: string
-      required:
-      - email
-      - lastName
-      - firstName
-      - userUuid
-      type: object
     MetricsTreeNodePosition:
       properties:
         yPosition:
@@ -2708,85 +2769,24 @@ components:
       - xPosition
       - catalogSearchUuid
       type: object
-    Source:
-      properties:
-        content:
-          type: string
-        highlight:
-          properties:
-            end:
-              $ref: '#/components/schemas/SourcePosition'
-            start:
-              $ref: '#/components/schemas/SourcePosition'
-          required:
-          - end
-          - start
-          type: object
-        range:
-          properties:
-            end:
-              $ref: '#/components/schemas/SourcePosition'
-            start:
-              $ref: '#/components/schemas/SourcePosition'
-          required:
-          - end
-          - start
-          type: object
-        path:
-          type: string
-      required:
-      - content
-      - range
-      - path
-      type: object
-    FieldUrl:
-      properties:
-        label:
-          type: string
-        url:
-          type: string
-      required:
-      - label
-      - url
-      type: object
-    MetricsTreeSummary:
-      allOf:
-      - $ref: '#/components/schemas/MetricsTree'
-      - properties:
-          lock:
-            allOf:
-            - $ref: '#/components/schemas/MetricsTreeLockInfo'
-          nodeCount:
-            type: number
-            format: double
-        required:
-        - lock
-        - nodeCount
-        type: object
-    CatalogItem:
-      anyOf:
-      - $ref: '#/components/schemas/CatalogField'
-      - $ref: '#/components/schemas/CatalogTable'
-    CatalogSortField:
-      type: string
+    ChartKind:
       enum:
-      - name
-      - label
-      - chartUsage
-      - tableLabel
-      - owner
-    ApiGetMetricsTreeResponse:
-      properties:
-        results:
-          $ref: '#/components/schemas/MetricsTreeWithDetails'
-        status:
-          type: string
-          enum:
-          - ok
-      required:
-      - results
-      - status
-      type: object
+      - line
+      - horizontal_bar
+      - vertical_bar
+      - scatter
+      - area
+      - mixed
+      - pie
+      - table
+      - big_number
+      - funnel
+      - custom
+      - treemap
+      - gauge
+      - map
+      - sankey
+      type: string
   securitySchemes:
     session_cookie:
       type: apiKey

@@ -1,6 +1,6 @@
 openapi: 3.2.0
 info:
-  title: Lightdash Github API
+  title: Lightdash GitHub API
   version: 0.3156.1
   description: 'Open API documentation for all public Lightdash API endpoints. # Authentication Before you get started, you might need to create a Personal Access Token to authenticate via the API. You can create a token by following this guide: https://docs.lightdash.com/references/personal_tokens'
   license:
@@ -240,38 +240,6 @@ paths:
       - Github
 components:
   schemas:
-    GitIntegrationConfiguration:
-      properties:
-        installationId:
-          type: string
-        enabled:
-          type: boolean
-      required:
-      - enabled
-      type: object
-    ApiSuccessEmpty:
-      properties:
-        results: {}
-        status:
-          type: string
-          enum:
-          - ok
-      required:
-      - status
-      type: object
-    ApiGithubUserCredentialResponse:
-      properties:
-        results:
-          allOf:
-          - $ref: '#/components/schemas/GithubUserCredential'
-        status:
-          type: string
-          enum:
-          - ok
-      required:
-      - results
-      - status
-      type: object
     GithubUserCredential:
       properties:
         createdAt:
@@ -286,6 +254,28 @@ components:
       description: 'A user''s personally linked GitHub account. When present, write-backs are
 
         authored as this user instead of the Lightdash GitHub App bot.'
+    GitIntegrationConfiguration:
+      properties:
+        installationId:
+          type: string
+        enabled:
+          type: boolean
+      required:
+      - enabled
+      type: object
+    ApiGithubUserCredentialResponse:
+      properties:
+        results:
+          allOf:
+          - $ref: '#/components/schemas/GithubUserCredential'
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
     GitRepo:
       properties:
         defaultBranch:
@@ -301,6 +291,16 @@ components:
       - ownerLogin
       - fullName
       - name
+      type: object
+    ApiSuccessEmpty:
+      properties:
+        results: {}
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - status
       type: object
   securitySchemes:
     session_cookie:

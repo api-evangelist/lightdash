@@ -66,6 +66,22 @@ paths:
       parameters: []
 components:
   schemas:
+    ApiStartImpersonationResponse:
+      properties:
+        results:
+          type:
+          - number
+          - 'null'
+          enum:
+          - null
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
     AnyType:
       description: 'This AnyType is an alias for any
 
@@ -108,22 +124,6 @@ components:
       description: 'The Error object is returned from the api any time there is an error.
 
         The message contains'
-    ApiStopImpersonationResponse:
-      properties:
-        results:
-          type:
-          - number
-          - 'null'
-          enum:
-          - null
-        status:
-          type: string
-          enum:
-          - ok
-      required:
-      - results
-      - status
-      type: object
     ApiStartImpersonationRequest:
       properties:
         targetUserUuid:
@@ -131,7 +131,7 @@ components:
       required:
       - targetUserUuid
       type: object
-    ApiStartImpersonationResponse:
+    ApiStopImpersonationResponse:
       properties:
         results:
           type:

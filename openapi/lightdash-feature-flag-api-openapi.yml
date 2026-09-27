@@ -16,7 +16,7 @@ tags:
 paths:
   /api/v2/feature-flag/{featureFlagId}:
     get:
-      operationId: Get feature flag
+      operationId: GetFeatureFlag
       responses:
         '200':
           description: Success
@@ -50,8 +50,20 @@ paths:
         required: true
         schema:
           type: string
+      x-operation-id-source: normalized
+      x-operation-id-original: Get feature flag
 components:
   schemas:
+    FeatureFlag:
+      properties:
+        enabled:
+          type: boolean
+        id:
+          type: string
+      required:
+      - enabled
+      - id
+      type: object
     ApiErrorPayload:
       properties:
         error:
@@ -94,16 +106,6 @@ components:
         These are only used on legacy `any` types, don''t use it for new types.
 
         This is added on a separate file to avoid circular dependencies.'
-    FeatureFlag:
-      properties:
-        enabled:
-          type: boolean
-        id:
-          type: string
-      required:
-      - enabled
-      - id
-      type: object
   securitySchemes:
     session_cookie:
       type: apiKey

@@ -141,68 +141,6 @@ paths:
               $ref: '#/components/schemas/Record_string.LightdashProjectParameter_'
 components:
   schemas:
-    ApiSuccess_undefined_:
-      properties:
-        results: {}
-        status:
-          type: string
-          enum:
-          - ok
-      required:
-      - status
-      type: object
-    ApiGetProjectParametersResults:
-      $ref: '#/components/schemas/ParameterDefinitions'
-    AnyType:
-      description: 'This AnyType is an alias for any
-
-        The goal is to make it easier to identify any type in the codebase
-
-        without having to eslint-disable all the time
-
-        These are only used on legacy `any` types, don''t use it for new types.
-
-        This is added on a separate file to avoid circular dependencies.'
-    ApiGetProjectParametersListResults:
-      $ref: '#/components/schemas/KnexPaginatedData_ProjectParameterSummary-Array_'
-    Record_string.LightdashProjectParameter_:
-      properties: {}
-      additionalProperties:
-        $ref: '#/components/schemas/LightdashProjectParameter'
-      type: object
-      description: Construct a type with a set of properties K of type T
-    ApiErrorPayload:
-      properties:
-        error:
-          properties:
-            data:
-              $ref: '#/components/schemas/AnyType'
-              description: Optional data containing details of the error
-            message:
-              type: string
-              description: A friendly message summarising the error
-            name:
-              type: string
-              description: Unique name for the type of error
-            statusCode:
-              type: number
-              format: integer
-              description: HTTP status code
-          required:
-          - name
-          - statusCode
-          type: object
-        status:
-          type: string
-          enum:
-          - error
-      required:
-      - error
-      - status
-      type: object
-      description: 'The Error object is returned from the api any time there is an error.
-
-        The message contains'
     KnexPaginateArgs:
       properties:
         page:
@@ -215,8 +153,36 @@ components:
       - page
       - pageSize
       type: object
-    ParameterDefinitions:
-      $ref: '#/components/schemas/Record_string.LightdashProjectParameter_'
+    ApiSuccess_ApiGetProjectParametersResults_:
+      properties:
+        results:
+          $ref: '#/components/schemas/ApiGetProjectParametersResults'
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
+    ProjectParameterSummary:
+      properties:
+        modelName:
+          type: string
+        source:
+          type: string
+          enum:
+          - config
+          - model
+        config:
+          $ref: '#/components/schemas/LightdashProjectParameter'
+        name:
+          type: string
+      required:
+      - source
+      - config
+      - name
+      type: object
     LightdashProjectParameter:
       properties:
         options_from_dimension:
@@ -257,28 +223,14 @@ components:
       required:
       - label
       type: object
-    ApiSuccess_ApiGetProjectParametersResults_:
+    ApiSuccess_undefined_:
       properties:
-        results:
-          $ref: '#/components/schemas/ApiGetProjectParametersResults'
+        results: {}
         status:
           type: string
           enum:
           - ok
       required:
-      - results
-      - status
-      type: object
-    ApiSuccess_ApiGetProjectParametersListResults_:
-      properties:
-        results:
-          $ref: '#/components/schemas/ApiGetProjectParametersListResults'
-        status:
-          type: string
-          enum:
-          - ok
-      required:
-      - results
       - status
       type: object
     ParameterValue:
@@ -293,24 +245,20 @@ components:
           type: number
           format: double
         type: array
-    ProjectParameterSummary:
-      properties:
-        modelName:
-          type: string
-        source:
-          type: string
-          enum:
-          - config
-          - model
-        config:
-          $ref: '#/components/schemas/LightdashProjectParameter'
-        name:
-          type: string
-      required:
-      - source
-      - config
-      - name
-      type: object
+    ApiGetProjectParametersResults:
+      $ref: '#/components/schemas/ParameterDefinitions'
+    ApiGetProjectParametersListResults:
+      $ref: '#/components/schemas/KnexPaginatedData_ProjectParameterSummary-Array_'
+    AnyType:
+      description: 'This AnyType is an alias for any
+
+        The goal is to make it easier to identify any type in the codebase
+
+        without having to eslint-disable all the time
+
+        These are only used on legacy `any` types, don''t use it for new types.
+
+        This is added on a separate file to avoid circular dependencies.'
     KnexPaginatedData_ProjectParameterSummary-Array_:
       properties:
         pagination:
@@ -334,6 +282,58 @@ components:
       required:
       - data
       type: object
+    Record_string.LightdashProjectParameter_:
+      properties: {}
+      additionalProperties:
+        $ref: '#/components/schemas/LightdashProjectParameter'
+      type: object
+      description: Construct a type with a set of properties K of type T
+    ApiErrorPayload:
+      properties:
+        error:
+          properties:
+            data:
+              $ref: '#/components/schemas/AnyType'
+              description: Optional data containing details of the error
+            message:
+              type: string
+              description: A friendly message summarising the error
+            name:
+              type: string
+              description: Unique name for the type of error
+            statusCode:
+              type: number
+              format: integer
+              description: HTTP status code
+          required:
+          - name
+          - statusCode
+          type: object
+        status:
+          type: string
+          enum:
+          - error
+      required:
+      - error
+      - status
+      type: object
+      description: 'The Error object is returned from the api any time there is an error.
+
+        The message contains'
+    ApiSuccess_ApiGetProjectParametersListResults_:
+      properties:
+        results:
+          $ref: '#/components/schemas/ApiGetProjectParametersListResults'
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
+    ParameterDefinitions:
+      $ref: '#/components/schemas/Record_string.LightdashProjectParameter_'
   securitySchemes:
     session_cookie:
       type: apiKey

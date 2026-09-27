@@ -113,6 +113,108 @@ paths:
           type: string
 components:
   schemas:
+    ExploreWarningSummary:
+      allOf:
+      - $ref: '#/components/schemas/Pick_Explore.name_'
+      - properties:
+          warnings:
+            $ref: '#/components/schemas/NonNullable_Explore-at-warnings_'
+        required:
+        - warnings
+        type: object
+    ApiFinalizeDeployResponse:
+      properties:
+        results:
+          allOf:
+          - $ref: '#/components/schemas/ApiDeployExploresResults'
+          - properties:
+              status:
+                $ref: '#/components/schemas/DeploySessionStatus'
+            required:
+            - status
+            type: object
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
+    ApiStartDeploySessionResponse:
+      properties:
+        results:
+          properties:
+            deploySessionUuid:
+              type: string
+          required:
+          - deploySessionUuid
+          type: object
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
+    ExploreWarningReport:
+      properties:
+        exploresWithWarnings:
+          items:
+            $ref: '#/components/schemas/ExploreWarningSummary'
+          type: array
+        warningExploreCount:
+          type: number
+          format: double
+        warningCount:
+          type: number
+          format: double
+      required:
+      - exploresWithWarnings
+      - warningExploreCount
+      - warningCount
+      type: object
+    DeploySessionStatus:
+      enum:
+      - uploading
+      - finalizing
+      - completed
+      - failed
+      type: string
+    ApiDeployExploresResults:
+      properties:
+        warnings:
+          $ref: '#/components/schemas/ExploreWarningReport'
+        exploreCount:
+          type: number
+          format: double
+      required:
+      - warnings
+      - exploreCount
+      type: object
+    ApiAddDeployBatchResponse:
+      properties:
+        results:
+          properties:
+            exploreCount:
+              type: number
+              format: double
+            batchNumber:
+              type: number
+              format: double
+          required:
+          - exploreCount
+          - batchNumber
+          type: object
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
     Pick_Explore.name_:
       properties:
         name:
@@ -131,6 +233,14 @@ components:
         These are only used on legacy `any` types, don''t use it for new types.
 
         This is added on a separate file to avoid circular dependencies.'
+    NonNullable_Explore-at-warnings_:
+      allOf:
+      - items:
+          $ref: '#/components/schemas/InlineError'
+        type: array
+      - properties: {}
+        type: object
+      description: Exclude null and undefined from T
     ApiErrorPayload:
       properties:
         error:
@@ -163,69 +273,6 @@ components:
       description: 'The Error object is returned from the api any time there is an error.
 
         The message contains'
-    DeploySessionStatus:
-      enum:
-      - uploading
-      - finalizing
-      - completed
-      - failed
-      type: string
-    ExploreWarningReport:
-      properties:
-        exploresWithWarnings:
-          items:
-            $ref: '#/components/schemas/ExploreWarningSummary'
-          type: array
-        warningExploreCount:
-          type: number
-          format: double
-        warningCount:
-          type: number
-          format: double
-      required:
-      - exploresWithWarnings
-      - warningExploreCount
-      - warningCount
-      type: object
-    ApiStartDeploySessionResponse:
-      properties:
-        results:
-          properties:
-            deploySessionUuid:
-              type: string
-          required:
-          - deploySessionUuid
-          type: object
-        status:
-          type: string
-          enum:
-          - ok
-      required:
-      - results
-      - status
-      type: object
-    ApiAddDeployBatchResponse:
-      properties:
-        results:
-          properties:
-            exploreCount:
-              type: number
-              format: double
-            batchNumber:
-              type: number
-              format: double
-          required:
-          - exploreCount
-          - batchNumber
-          type: object
-        status:
-          type: string
-          enum:
-          - ok
-      required:
-      - results
-      - status
-      type: object
     InlineErrorType:
       enum:
       - METADATA_PARSE_ERROR
@@ -237,25 +284,6 @@ components:
       - INVALID_PARAMETER
       - DUPLICATE_FIELD_NAME
       type: string
-    NonNullable_Explore-at-warnings_:
-      allOf:
-      - items:
-          $ref: '#/components/schemas/InlineError'
-        type: array
-      - properties: {}
-        type: object
-      description: Exclude null and undefined from T
-    ApiDeployExploresResults:
-      properties:
-        warnings:
-          $ref: '#/components/schemas/ExploreWarningReport'
-        exploreCount:
-          type: number
-          format: double
-      required:
-      - warnings
-      - exploreCount
-      type: object
     InlineError:
       properties:
         message:
@@ -265,34 +293,6 @@ components:
       required:
       - message
       - type
-      type: object
-    ExploreWarningSummary:
-      allOf:
-      - $ref: '#/components/schemas/Pick_Explore.name_'
-      - properties:
-          warnings:
-            $ref: '#/components/schemas/NonNullable_Explore-at-warnings_'
-        required:
-        - warnings
-        type: object
-    ApiFinalizeDeployResponse:
-      properties:
-        results:
-          allOf:
-          - $ref: '#/components/schemas/ApiDeployExploresResults'
-          - properties:
-              status:
-                $ref: '#/components/schemas/DeploySessionStatus'
-            required:
-            - status
-            type: object
-        status:
-          type: string
-          enum:
-          - ok
-      required:
-      - results
-      - status
       type: object
   securitySchemes:
     session_cookie:

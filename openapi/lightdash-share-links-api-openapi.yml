@@ -74,6 +74,53 @@ paths:
               description: a full URL used to generate a short url id
 components:
   schemas:
+    CreateShareUrl:
+      $ref: '#/components/schemas/Pick_ShareUrl.path-or-params_'
+      description: Contains the detail of a full URL to generate a short URL id
+    ApiShareResponse:
+      properties:
+        results:
+          $ref: '#/components/schemas/ShareUrl'
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
+    ShareUrl:
+      properties:
+        host:
+          type: string
+        url:
+          type: string
+        shareUrl:
+          type: string
+        organizationUuid:
+          type: string
+          format: uuid
+        createdByUserUuid:
+          type: string
+          format: uuid
+        params:
+          type: string
+        path:
+          type: string
+          description: The URL path of the full URL
+        nanoid:
+          type: string
+          description: Unique shareable id
+      required:
+      - params
+      - path
+      - nanoid
+      type: object
+      description: 'A ShareUrl maps a short shareable id to a full URL
+
+        in the Lightdash UI. This allows very long URLs
+
+        to be represented by short ids.'
     AnyType:
       description: 'This AnyType is an alias for any
 
@@ -116,21 +163,6 @@ components:
       description: 'The Error object is returned from the api any time there is an error.
 
         The message contains'
-    ApiShareResponse:
-      properties:
-        results:
-          $ref: '#/components/schemas/ShareUrl'
-        status:
-          type: string
-          enum:
-          - ok
-      required:
-      - results
-      - status
-      type: object
-    CreateShareUrl:
-      $ref: '#/components/schemas/Pick_ShareUrl.path-or-params_'
-      description: Contains the detail of a full URL to generate a short URL id
     Pick_ShareUrl.path-or-params_:
       properties:
         path:
@@ -143,38 +175,6 @@ components:
       - params
       type: object
       description: From T, pick a set of properties whose keys are in the union K
-    ShareUrl:
-      properties:
-        host:
-          type: string
-        url:
-          type: string
-        shareUrl:
-          type: string
-        organizationUuid:
-          type: string
-          format: uuid
-        createdByUserUuid:
-          type: string
-          format: uuid
-        params:
-          type: string
-        path:
-          type: string
-          description: The URL path of the full URL
-        nanoid:
-          type: string
-          description: Unique shareable id
-      required:
-      - params
-      - path
-      - nanoid
-      type: object
-      description: 'A ShareUrl maps a short shareable id to a full URL
-
-        in the Lightdash UI. This allows very long URLs
-
-        to be represented by short ids.'
   securitySchemes:
     session_cookie:
       type: apiKey
