@@ -100,52 +100,29 @@ paths:
               description: The funnel query configuration
 components:
   schemas:
-    FunnelConversionWindowUnit:
-      type: string
-      enum:
-      - hours
-      - days
-      - weeks
-    Exclude_FunnelDatePreset.custom_:
-      type: string
-      enum:
-      - last_7_days
-      - last_14_days
-      - last_30_days
-      - last_90_days
-      - last_6_months
-      - last_12_months
-      description: Exclude from T those types that are assignable to U
-    FunnelStepResult:
+    AnyType:
+      description: 'This AnyType is an alias for any
+
+        The goal is to make it easier to identify any type in the codebase
+
+        without having to eslint-disable all the time
+
+        These are only used on legacy `any` types, don''t use it for new types.
+
+        This is added on a separate file to avoid circular dependencies.'
+    ApiFunnelEventNamesResponse:
       properties:
-        breakdownValue:
+        results:
+          items:
+            type: string
+          type: array
+        status:
           type: string
-        medianTimeToConvertSeconds:
-          type:
-          - number
-          - 'null'
-          format: double
-        stepConversionRate:
-          type: number
-          format: double
-        conversionRate:
-          type: number
-          format: double
-        totalUsers:
-          type: number
-          format: double
-        stepName:
-          type: string
-        stepOrder:
-          type: number
-          format: double
+          enum:
+          - ok
       required:
-      - medianTimeToConvertSeconds
-      - stepConversionRate
-      - conversionRate
-      - totalUsers
-      - stepName
-      - stepOrder
+      - results
+      - status
       type: object
     FunnelQueryRequest:
       properties:
@@ -184,54 +161,16 @@ components:
       - timestampFieldId
       - exploreName
       type: object
-    ApiFunnelQueryResponse:
-      properties:
-        results:
-          $ref: '#/components/schemas/FunnelQueryResult'
-        status:
-          type: string
-          enum:
-          - ok
-      required:
-      - results
-      - status
-      type: object
-    FunnelQueryResult:
-      properties:
-        sql:
-          type: string
-        steps:
-          items:
-            $ref: '#/components/schemas/FunnelStepResult'
-          type: array
-      required:
-      - sql
-      - steps
-      type: object
-    AnyType:
-      description: 'This AnyType is an alias for any
-
-        The goal is to make it easier to identify any type in the codebase
-
-        without having to eslint-disable all the time
-
-        These are only used on legacy `any` types, don''t use it for new types.
-
-        This is added on a separate file to avoid circular dependencies.'
-    ApiFunnelEventNamesResponse:
-      properties:
-        results:
-          items:
-            type: string
-          type: array
-        status:
-          type: string
-          enum:
-          - ok
-      required:
-      - results
-      - status
-      type: object
+    Exclude_FunnelDatePreset.custom_:
+      type: string
+      enum:
+      - last_7_days
+      - last_14_days
+      - last_30_days
+      - last_90_days
+      - last_6_months
+      - last_12_months
+      description: Exclude from T those types that are assignable to U
     FunnelDateRange:
       anyOf:
       - properties:
@@ -259,6 +198,37 @@ components:
         - start
         - type
         type: object
+    FunnelStepResult:
+      properties:
+        breakdownValue:
+          type: string
+        medianTimeToConvertSeconds:
+          type:
+          - number
+          - 'null'
+          format: double
+        stepConversionRate:
+          type: number
+          format: double
+        conversionRate:
+          type: number
+          format: double
+        totalUsers:
+          type: number
+          format: double
+        stepName:
+          type: string
+        stepOrder:
+          type: number
+          format: double
+      required:
+      - medianTimeToConvertSeconds
+      - stepConversionRate
+      - conversionRate
+      - totalUsers
+      - stepName
+      - stepOrder
+      type: object
     ApiErrorPayload:
       properties:
         error:
@@ -291,6 +261,36 @@ components:
       description: 'The Error object is returned from the api any time there is an error.
 
         The message contains'
+    ApiFunnelQueryResponse:
+      properties:
+        results:
+          $ref: '#/components/schemas/FunnelQueryResult'
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
+    FunnelQueryResult:
+      properties:
+        sql:
+          type: string
+        steps:
+          items:
+            $ref: '#/components/schemas/FunnelStepResult'
+          type: array
+      required:
+      - sql
+      - steps
+      type: object
+    FunnelConversionWindowUnit:
+      type: string
+      enum:
+      - hours
+      - days
+      - weeks
     FunnelStep:
       properties:
         eventName:

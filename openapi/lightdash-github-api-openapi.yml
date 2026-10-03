@@ -240,42 +240,6 @@ paths:
       - Github
 components:
   schemas:
-    GithubUserCredential:
-      properties:
-        createdAt:
-          type: string
-          format: date-time
-        githubLogin:
-          type: string
-      required:
-      - createdAt
-      - githubLogin
-      type: object
-      description: 'A user''s personally linked GitHub account. When present, write-backs are
-
-        authored as this user instead of the Lightdash GitHub App bot.'
-    GitIntegrationConfiguration:
-      properties:
-        installationId:
-          type: string
-        enabled:
-          type: boolean
-      required:
-      - enabled
-      type: object
-    ApiGithubUserCredentialResponse:
-      properties:
-        results:
-          allOf:
-          - $ref: '#/components/schemas/GithubUserCredential'
-        status:
-          type: string
-          enum:
-          - ok
-      required:
-      - results
-      - status
-      type: object
     GitRepo:
       properties:
         defaultBranch:
@@ -291,6 +255,42 @@ components:
       - ownerLogin
       - fullName
       - name
+      type: object
+    GitIntegrationConfiguration:
+      properties:
+        installationId:
+          type: string
+        enabled:
+          type: boolean
+      required:
+      - enabled
+      type: object
+    GithubUserCredential:
+      properties:
+        createdAt:
+          type: string
+          format: date-time
+        githubLogin:
+          type: string
+      required:
+      - createdAt
+      - githubLogin
+      type: object
+      description: 'A user''s personally linked GitHub account. When present, write-backs are
+
+        authored as this user instead of the Lightdash GitHub App bot.'
+    ApiGithubUserCredentialResponse:
+      properties:
+        results:
+          allOf:
+          - $ref: '#/components/schemas/GithubUserCredential'
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
       type: object
     ApiSuccessEmpty:
       properties:

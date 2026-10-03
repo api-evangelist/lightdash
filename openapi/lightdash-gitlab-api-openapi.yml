@@ -108,16 +108,6 @@ paths:
       - Gitlab
 components:
   schemas:
-    ApiSuccessEmpty:
-      properties:
-        results: {}
-        status:
-          type: string
-          enum:
-          - ok
-      required:
-      - status
-      type: object
     GitRepo:
       properties:
         defaultBranch:
@@ -133,6 +123,16 @@ components:
       - ownerLogin
       - fullName
       - name
+      type: object
+    ApiSuccessEmpty:
+      properties:
+        results: {}
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - status
       type: object
   securitySchemes:
     session_cookie:

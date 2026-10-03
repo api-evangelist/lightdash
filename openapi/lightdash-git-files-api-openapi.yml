@@ -246,10 +246,22 @@ paths:
               $ref: '#/components/schemas/CreateGitPullRequestRequest'
 components:
   schemas:
-    ApiGitFileOrDirectoryResponse:
+    AnyType:
+      description: 'This AnyType is an alias for any
+
+        The goal is to make it easier to identify any type in the codebase
+
+        without having to eslint-disable all the time
+
+        These are only used on legacy `any` types, don''t use it for new types.
+
+        This is added on a separate file to avoid circular dependencies.'
+    ApiGitBranchesResponse:
       properties:
         results:
-          $ref: '#/components/schemas/GitFileOrDirectory'
+          items:
+            $ref: '#/components/schemas/GitBranch'
+          type: array
         status:
           type: string
           enum:
@@ -258,12 +270,53 @@ components:
       - results
       - status
       type: object
-    ApiGitBranchesResponse:
+    GitFileEntry:
+      properties:
+        sha:
+          type: string
+        size:
+          type: number
+          format: double
+        type:
+          type: string
+          enum:
+          - file
+          - dir
+        path:
+          type: string
+        name:
+          type: string
+      required:
+      - sha
+      - size
+      - type
+      - path
+      - name
+      type: object
+    PullRequestCreated:
+      properties:
+        prUrl:
+          type: string
+        prTitle:
+          type: string
+      required:
+      - prUrl
+      - prTitle
+      type: object
+    CreateGitPullRequestRequest:
+      properties:
+        description:
+          type: string
+        title:
+          type: string
+      required:
+      - description
+      - title
+      type: object
+    ApiGitFileOrDirectoryResponse:
       properties:
         results:
-          items:
-            $ref: '#/components/schemas/GitBranch'
-          type: array
+          $ref: '#/components/schemas/GitFileOrDirectory'
         status:
           type: string
           enum:
@@ -304,39 +357,71 @@ components:
         - content
         - type
         type: object
-    GitFileEntry:
+    ApiErrorPayload:
       properties:
-        sha:
-          type: string
-        size:
-          type: number
-          format: double
-        type:
+        error:
+          properties:
+            data:
+              $ref: '#/components/schemas/AnyType'
+              description: Optional data containing details of the error
+            message:
+              type: string
+              description: A friendly message summarising the error
+            name:
+              type: string
+              description: Unique name for the type of error
+            statusCode:
+              type: number
+              format: integer
+              description: HTTP status code
+          required:
+          - name
+          - statusCode
+          type: object
+        status:
           type: string
           enum:
-          - file
-          - dir
-        path:
+          - error
+      required:
+      - error
+      - status
+      type: object
+      description: 'The Error object is returned from the api any time there is an error.
+
+        The message contains'
+    ApiGitPullRequestCreatedResponse:
+      properties:
+        results:
+          $ref: '#/components/schemas/PullRequestCreated'
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
+    CreateGitBranchRequest:
+      properties:
+        sourceBranch:
           type: string
         name:
           type: string
       required:
-      - sha
-      - size
-      - type
-      - path
+      - sourceBranch
       - name
       type: object
-    GitBranch:
+    ApiGitBranchCreatedResponse:
       properties:
-        isProtected:
-          type: boolean
-          description: TRUE if direct writes are blocked (GitHub protection OR project's configured branch)
-        name:
+        results:
+          $ref: '#/components/schemas/GitBranch'
+        status:
           type: string
+          enum:
+          - ok
       required:
-      - isProtected
-      - name
+      - results
+      - status
       type: object
     ApiGitFileSavedResponse:
       properties:
@@ -377,100 +462,15 @@ components:
       - results
       - status
       type: object
-    PullRequestCreated:
+    GitBranch:
       properties:
-        prUrl:
-          type: string
-        prTitle:
-          type: string
-      required:
-      - prUrl
-      - prTitle
-      type: object
-    CreateGitPullRequestRequest:
-      properties:
-        description:
-          type: string
-        title:
-          type: string
-      required:
-      - description
-      - title
-      type: object
-    AnyType:
-      description: 'This AnyType is an alias for any
-
-        The goal is to make it easier to identify any type in the codebase
-
-        without having to eslint-disable all the time
-
-        These are only used on legacy `any` types, don''t use it for new types.
-
-        This is added on a separate file to avoid circular dependencies.'
-    ApiGitPullRequestCreatedResponse:
-      properties:
-        results:
-          $ref: '#/components/schemas/PullRequestCreated'
-        status:
-          type: string
-          enum:
-          - ok
-      required:
-      - results
-      - status
-      type: object
-    ApiErrorPayload:
-      properties:
-        error:
-          properties:
-            data:
-              $ref: '#/components/schemas/AnyType'
-              description: Optional data containing details of the error
-            message:
-              type: string
-              description: A friendly message summarising the error
-            name:
-              type: string
-              description: Unique name for the type of error
-            statusCode:
-              type: number
-              format: integer
-              description: HTTP status code
-          required:
-          - name
-          - statusCode
-          type: object
-        status:
-          type: string
-          enum:
-          - error
-      required:
-      - error
-      - status
-      type: object
-      description: 'The Error object is returned from the api any time there is an error.
-
-        The message contains'
-    ApiGitBranchCreatedResponse:
-      properties:
-        results:
-          $ref: '#/components/schemas/GitBranch'
-        status:
-          type: string
-          enum:
-          - ok
-      required:
-      - results
-      - status
-      type: object
-    CreateGitBranchRequest:
-      properties:
-        sourceBranch:
-          type: string
+        isProtected:
+          type: boolean
+          description: TRUE if direct writes are blocked (GitHub protection OR project's configured branch)
         name:
           type: string
       required:
-      - sourceBranch
+      - isProtected
       - name
       type: object
   securitySchemes:

@@ -113,15 +113,33 @@ paths:
           type: string
 components:
   schemas:
-    ExploreWarningSummary:
-      allOf:
-      - $ref: '#/components/schemas/Pick_Explore.name_'
-      - properties:
-          warnings:
-            $ref: '#/components/schemas/NonNullable_Explore-at-warnings_'
-        required:
-        - warnings
-        type: object
+    AnyType:
+      description: 'This AnyType is an alias for any
+
+        The goal is to make it easier to identify any type in the codebase
+
+        without having to eslint-disable all the time
+
+        These are only used on legacy `any` types, don''t use it for new types.
+
+        This is added on a separate file to avoid circular dependencies.'
+    ExploreWarningReport:
+      properties:
+        exploresWithWarnings:
+          items:
+            $ref: '#/components/schemas/ExploreWarningSummary'
+          type: array
+        warningExploreCount:
+          type: number
+          format: double
+        warningCount:
+          type: number
+          format: double
+      required:
+      - exploresWithWarnings
+      - warningExploreCount
+      - warningCount
+      type: object
     ApiFinalizeDeployResponse:
       properties:
         results:
@@ -141,106 +159,6 @@ components:
       - results
       - status
       type: object
-    ApiStartDeploySessionResponse:
-      properties:
-        results:
-          properties:
-            deploySessionUuid:
-              type: string
-          required:
-          - deploySessionUuid
-          type: object
-        status:
-          type: string
-          enum:
-          - ok
-      required:
-      - results
-      - status
-      type: object
-    ExploreWarningReport:
-      properties:
-        exploresWithWarnings:
-          items:
-            $ref: '#/components/schemas/ExploreWarningSummary'
-          type: array
-        warningExploreCount:
-          type: number
-          format: double
-        warningCount:
-          type: number
-          format: double
-      required:
-      - exploresWithWarnings
-      - warningExploreCount
-      - warningCount
-      type: object
-    DeploySessionStatus:
-      enum:
-      - uploading
-      - finalizing
-      - completed
-      - failed
-      type: string
-    ApiDeployExploresResults:
-      properties:
-        warnings:
-          $ref: '#/components/schemas/ExploreWarningReport'
-        exploreCount:
-          type: number
-          format: double
-      required:
-      - warnings
-      - exploreCount
-      type: object
-    ApiAddDeployBatchResponse:
-      properties:
-        results:
-          properties:
-            exploreCount:
-              type: number
-              format: double
-            batchNumber:
-              type: number
-              format: double
-          required:
-          - exploreCount
-          - batchNumber
-          type: object
-        status:
-          type: string
-          enum:
-          - ok
-      required:
-      - results
-      - status
-      type: object
-    Pick_Explore.name_:
-      properties:
-        name:
-          type: string
-      required:
-      - name
-      type: object
-      description: From T, pick a set of properties whose keys are in the union K
-    AnyType:
-      description: 'This AnyType is an alias for any
-
-        The goal is to make it easier to identify any type in the codebase
-
-        without having to eslint-disable all the time
-
-        These are only used on legacy `any` types, don''t use it for new types.
-
-        This is added on a separate file to avoid circular dependencies.'
-    NonNullable_Explore-at-warnings_:
-      allOf:
-      - items:
-          $ref: '#/components/schemas/InlineError'
-        type: array
-      - properties: {}
-        type: object
-      description: Exclude null and undefined from T
     ApiErrorPayload:
       properties:
         error:
@@ -284,6 +202,15 @@ components:
       - INVALID_PARAMETER
       - DUPLICATE_FIELD_NAME
       type: string
+    ExploreWarningSummary:
+      allOf:
+      - $ref: '#/components/schemas/Pick_Explore.name_'
+      - properties:
+          warnings:
+            $ref: '#/components/schemas/NonNullable_Explore-at-warnings_'
+        required:
+        - warnings
+        type: object
     InlineError:
       properties:
         message:
@@ -294,6 +221,79 @@ components:
       - message
       - type
       type: object
+    ApiDeployExploresResults:
+      properties:
+        warnings:
+          $ref: '#/components/schemas/ExploreWarningReport'
+        exploreCount:
+          type: number
+          format: double
+      required:
+      - warnings
+      - exploreCount
+      type: object
+    Pick_Explore.name_:
+      properties:
+        name:
+          type: string
+      required:
+      - name
+      type: object
+      description: From T, pick a set of properties whose keys are in the union K
+    DeploySessionStatus:
+      enum:
+      - uploading
+      - finalizing
+      - completed
+      - failed
+      type: string
+    ApiAddDeployBatchResponse:
+      properties:
+        results:
+          properties:
+            exploreCount:
+              type: number
+              format: double
+            batchNumber:
+              type: number
+              format: double
+          required:
+          - exploreCount
+          - batchNumber
+          type: object
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
+    ApiStartDeploySessionResponse:
+      properties:
+        results:
+          properties:
+            deploySessionUuid:
+              type: string
+          required:
+          - deploySessionUuid
+          type: object
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
+    NonNullable_Explore-at-warnings_:
+      allOf:
+      - items:
+          $ref: '#/components/schemas/InlineError'
+        type: array
+      - properties: {}
+        type: object
+      description: Exclude null and undefined from T
   securitySchemes:
     session_cookie:
       type: apiKey

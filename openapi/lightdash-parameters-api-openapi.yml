@@ -141,18 +141,16 @@ paths:
               $ref: '#/components/schemas/Record_string.LightdashProjectParameter_'
 components:
   schemas:
-    KnexPaginateArgs:
-      properties:
-        page:
-          type: number
-          format: double
-        pageSize:
-          type: number
-          format: double
-      required:
-      - page
-      - pageSize
-      type: object
+    AnyType:
+      description: 'This AnyType is an alias for any
+
+        The goal is to make it easier to identify any type in the codebase
+
+        without having to eslint-disable all the time
+
+        These are only used on legacy `any` types, don''t use it for new types.
+
+        This is added on a separate file to avoid circular dependencies.'
     ApiSuccess_ApiGetProjectParametersResults_:
       properties:
         results:
@@ -164,24 +162,6 @@ components:
       required:
       - results
       - status
-      type: object
-    ProjectParameterSummary:
-      properties:
-        modelName:
-          type: string
-        source:
-          type: string
-          enum:
-          - config
-          - model
-        config:
-          $ref: '#/components/schemas/LightdashProjectParameter'
-        name:
-          type: string
-      required:
-      - source
-      - config
-      - name
       type: object
     LightdashProjectParameter:
       properties:
@@ -223,71 +203,6 @@ components:
       required:
       - label
       type: object
-    ApiSuccess_undefined_:
-      properties:
-        results: {}
-        status:
-          type: string
-          enum:
-          - ok
-      required:
-      - status
-      type: object
-    ParameterValue:
-      anyOf:
-      - type: string
-      - type: number
-        format: double
-      - items:
-          type: string
-        type: array
-      - items:
-          type: number
-          format: double
-        type: array
-    ApiGetProjectParametersResults:
-      $ref: '#/components/schemas/ParameterDefinitions'
-    ApiGetProjectParametersListResults:
-      $ref: '#/components/schemas/KnexPaginatedData_ProjectParameterSummary-Array_'
-    AnyType:
-      description: 'This AnyType is an alias for any
-
-        The goal is to make it easier to identify any type in the codebase
-
-        without having to eslint-disable all the time
-
-        These are only used on legacy `any` types, don''t use it for new types.
-
-        This is added on a separate file to avoid circular dependencies.'
-    KnexPaginatedData_ProjectParameterSummary-Array_:
-      properties:
-        pagination:
-          allOf:
-          - $ref: '#/components/schemas/KnexPaginateArgs'
-          - properties:
-              totalResults:
-                type: number
-                format: double
-              totalPageCount:
-                type: number
-                format: double
-            required:
-            - totalResults
-            - totalPageCount
-            type: object
-        data:
-          items:
-            $ref: '#/components/schemas/ProjectParameterSummary'
-          type: array
-      required:
-      - data
-      type: object
-    Record_string.LightdashProjectParameter_:
-      properties: {}
-      additionalProperties:
-        $ref: '#/components/schemas/LightdashProjectParameter'
-      type: object
-      description: Construct a type with a set of properties K of type T
     ApiErrorPayload:
       properties:
         error:
@@ -320,6 +235,93 @@ components:
       description: 'The Error object is returned from the api any time there is an error.
 
         The message contains'
+    ApiGetProjectParametersListResults:
+      $ref: '#/components/schemas/KnexPaginatedData_ProjectParameterSummary-Array_'
+    KnexPaginatedData_ProjectParameterSummary-Array_:
+      properties:
+        pagination:
+          allOf:
+          - $ref: '#/components/schemas/KnexPaginateArgs'
+          - properties:
+              totalResults:
+                type: number
+                format: double
+              totalPageCount:
+                type: number
+                format: double
+            required:
+            - totalResults
+            - totalPageCount
+            type: object
+        data:
+          items:
+            $ref: '#/components/schemas/ProjectParameterSummary'
+          type: array
+      required:
+      - data
+      type: object
+    ParameterDefinitions:
+      $ref: '#/components/schemas/Record_string.LightdashProjectParameter_'
+    ProjectParameterSummary:
+      properties:
+        modelName:
+          type: string
+        source:
+          type: string
+          enum:
+          - config
+          - model
+        config:
+          $ref: '#/components/schemas/LightdashProjectParameter'
+        name:
+          type: string
+      required:
+      - source
+      - config
+      - name
+      type: object
+    ParameterValue:
+      anyOf:
+      - type: string
+      - type: number
+        format: double
+      - items:
+          type: string
+        type: array
+      - items:
+          type: number
+          format: double
+        type: array
+    Record_string.LightdashProjectParameter_:
+      properties: {}
+      additionalProperties:
+        $ref: '#/components/schemas/LightdashProjectParameter'
+      type: object
+      description: Construct a type with a set of properties K of type T
+    ApiGetProjectParametersResults:
+      $ref: '#/components/schemas/ParameterDefinitions'
+    ApiSuccess_undefined_:
+      properties:
+        results: {}
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - status
+      type: object
+    KnexPaginateArgs:
+      properties:
+        page:
+          type: number
+          format: double
+        pageSize:
+          type: number
+          format: double
+      required:
+      - page
+      - pageSize
+      type: object
     ApiSuccess_ApiGetProjectParametersListResults_:
       properties:
         results:
@@ -332,8 +334,6 @@ components:
       - results
       - status
       type: object
-    ParameterDefinitions:
-      $ref: '#/components/schemas/Record_string.LightdashProjectParameter_'
   securitySchemes:
     session_cookie:
       type: apiKey

@@ -76,59 +76,8 @@ paths:
               $ref: '#/components/schemas/ApiNotificationUpdateParams'
 components:
   schemas:
-    NotificationBase:
-      properties:
-        url:
-          type: string
-        message:
-          type: string
-        resourceUuid:
-          type: string
-        viewed:
-          type: boolean
-        createdAt:
-          type: string
-          format: date-time
-        notificationId:
-          type: string
-      required:
-      - viewed
-      - createdAt
-      - notificationId
-      type: object
-    NotificationDashboardTileCommentMetadata:
-      properties:
-        dashboardUuid:
-          type: string
-        dashboardName:
-          type: string
-        dashboardTileUuid:
-          type: string
-        dashboardTileName:
-          type: string
-      required:
-      - dashboardUuid
-      - dashboardName
-      - dashboardTileUuid
-      - dashboardTileName
-      type: object
-      additionalProperties: true
-    Pick_Notification.viewed_:
-      properties:
-        viewed:
-          type: boolean
-      required:
-      - viewed
-      type: object
-      description: From T, pick a set of properties whose keys are in the union K
-    Notification:
-      $ref: '#/components/schemas/NotificationDashboardComment'
     ApiNotificationUpdateParams:
       $ref: '#/components/schemas/Pick_Notification.viewed_'
-    ApiNotificationsResults:
-      items:
-        $ref: '#/components/schemas/Notification'
-      type: array
     AnyType:
       description: 'This AnyType is an alias for any
 
@@ -139,28 +88,18 @@ components:
         These are only used on legacy `any` types, don''t use it for new types.
 
         This is added on a separate file to avoid circular dependencies.'
-    ApiGetNotifications:
+    Pick_Notification.viewed_:
       properties:
-        results:
-          $ref: '#/components/schemas/ApiNotificationsResults'
-        status:
-          type: string
-          enum:
-          - ok
+        viewed:
+          type: boolean
       required:
-      - results
-      - status
+      - viewed
       type: object
-    ApiSuccessEmpty:
-      properties:
-        results: {}
-        status:
-          type: string
-          enum:
-          - ok
-      required:
-      - status
-      type: object
+      description: From T, pick a set of properties whose keys are in the union K
+    ApiNotificationResourceType:
+      enum:
+      - dashboardComments
+      type: string
     ApiErrorPayload:
       properties:
         error:
@@ -193,7 +132,68 @@ components:
       description: 'The Error object is returned from the api any time there is an error.
 
         The message contains'
-    ApiNotificationResourceType:
+    ApiSuccessEmpty:
+      properties:
+        results: {}
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - status
+      type: object
+    NotificationBase:
+      properties:
+        url:
+          type: string
+        message:
+          type: string
+        resourceUuid:
+          type: string
+        viewed:
+          type: boolean
+        createdAt:
+          type: string
+          format: date-time
+        notificationId:
+          type: string
+      required:
+      - viewed
+      - createdAt
+      - notificationId
+      type: object
+    ApiGetNotifications:
+      properties:
+        results:
+          $ref: '#/components/schemas/ApiNotificationsResults'
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
+    NotificationDashboardTileCommentMetadata:
+      properties:
+        dashboardUuid:
+          type: string
+        dashboardName:
+          type: string
+        dashboardTileUuid:
+          type: string
+        dashboardTileName:
+          type: string
+      required:
+      - dashboardUuid
+      - dashboardName
+      - dashboardTileUuid
+      - dashboardTileName
+      type: object
+      additionalProperties: true
+    Notification:
+      $ref: '#/components/schemas/NotificationDashboardComment'
+    ApiNotificationResourceType.DashboardComments:
       enum:
       - dashboardComments
       type: string
@@ -208,10 +208,10 @@ components:
         required:
         - resourceType
         type: object
-    ApiNotificationResourceType.DashboardComments:
-      enum:
-      - dashboardComments
-      type: string
+    ApiNotificationsResults:
+      items:
+        $ref: '#/components/schemas/Notification'
+      type: array
   securitySchemes:
     session_cookie:
       type: apiKey

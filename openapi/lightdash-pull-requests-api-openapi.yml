@@ -55,6 +55,16 @@ paths:
           type: number
 components:
   schemas:
+    AnyType:
+      description: 'This AnyType is an alias for any
+
+        The goal is to make it easier to identify any type in the codebase
+
+        without having to eslint-disable all the time
+
+        These are only used on legacy `any` types, don''t use it for new types.
+
+        This is added on a separate file to avoid circular dependencies.'
     KnexPaginateArgs:
       properties:
         page:
@@ -67,6 +77,18 @@ components:
       - page
       - pageSize
       type: object
+    ApiPullRequestsResponse:
+      properties:
+        results:
+          $ref: '#/components/schemas/KnexPaginatedData_PullRequestWithStatus-Array_'
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
     PullRequestSource:
       enum:
       - custom_metric
@@ -75,6 +97,49 @@ components:
       - source_editor
       - ai_agent
       type: string
+    ApiErrorPayload:
+      properties:
+        error:
+          properties:
+            data:
+              $ref: '#/components/schemas/AnyType'
+              description: Optional data containing details of the error
+            message:
+              type: string
+              description: A friendly message summarising the error
+            name:
+              type: string
+              description: Unique name for the type of error
+            statusCode:
+              type: number
+              format: integer
+              description: HTTP status code
+          required:
+          - name
+          - statusCode
+          type: object
+        status:
+          type: string
+          enum:
+          - error
+      required:
+      - error
+      - status
+      type: object
+      description: 'The Error object is returned from the api any time there is an error.
+
+        The message contains'
+    AiAgentRootCause:
+      type: string
+      enum:
+      - semantic_layer
+      - project_context
+      - agent_configuration
+      - product_capability
+      - runtime_reliability
+      - feedback_quality
+      - not_a_failure
+      - ambiguous
     PullRequest:
       properties:
         createdAt:
@@ -156,11 +221,43 @@ components:
         persisted; the live title/state are resolved at runtime from the
 
         GitHub/GitLab API using provider + owner + repo + prNumber.'
-    PullRequestProvider:
+    PullRequestState:
       enum:
-      - github
-      - gitlab
+      - open
+      - closed
+      - merged
       type: string
+    PullRequestReviewContext:
+      properties:
+        sourceAgentUuid:
+          type: string
+        sourceProjectUuid:
+          type: string
+        sourceThreadUuid:
+          type: string
+        sourceFindingUuid:
+          type: string
+        primaryRootCause:
+          $ref: '#/components/schemas/AiAgentRootCause'
+        reviewStatus:
+          $ref: '#/components/schemas/AiAgentReviewItemStatus'
+        reviewTitle:
+          type: string
+        reviewItemFingerprint:
+          type: string
+        reviewItemUuid:
+          type: string
+      required:
+      - sourceAgentUuid
+      - sourceProjectUuid
+      - sourceThreadUuid
+      - sourceFindingUuid
+      - primaryRootCause
+      - reviewStatus
+      - reviewTitle
+      - reviewItemFingerprint
+      - reviewItemUuid
+      type: object
     AiAgentReviewItemStatus:
       type: string
       enum:
@@ -169,21 +266,10 @@ components:
       - resolved
       - dismissed
       - duplicate
-    AnyType:
-      description: 'This AnyType is an alias for any
-
-        The goal is to make it easier to identify any type in the codebase
-
-        without having to eslint-disable all the time
-
-        These are only used on legacy `any` types, don''t use it for new types.
-
-        This is added on a separate file to avoid circular dependencies.'
-    PullRequestState:
+    PullRequestProvider:
       enum:
-      - open
-      - closed
-      - merged
+      - github
+      - gitlab
       type: string
     KnexPaginatedData_PullRequestWithStatus-Array_:
       properties:
@@ -228,92 +314,6 @@ components:
         provider API. `title`/`state` are null when the live lookup fails (e.g. the
 
         PR was deleted or the token lost access) — `prUrl` always remains usable.'
-    ApiErrorPayload:
-      properties:
-        error:
-          properties:
-            data:
-              $ref: '#/components/schemas/AnyType'
-              description: Optional data containing details of the error
-            message:
-              type: string
-              description: A friendly message summarising the error
-            name:
-              type: string
-              description: Unique name for the type of error
-            statusCode:
-              type: number
-              format: integer
-              description: HTTP status code
-          required:
-          - name
-          - statusCode
-          type: object
-        status:
-          type: string
-          enum:
-          - error
-      required:
-      - error
-      - status
-      type: object
-      description: 'The Error object is returned from the api any time there is an error.
-
-        The message contains'
-    AiAgentRootCause:
-      type: string
-      enum:
-      - semantic_layer
-      - project_context
-      - agent_configuration
-      - product_capability
-      - runtime_reliability
-      - feedback_quality
-      - not_a_failure
-      - ambiguous
-    ApiPullRequestsResponse:
-      properties:
-        results:
-          $ref: '#/components/schemas/KnexPaginatedData_PullRequestWithStatus-Array_'
-        status:
-          type: string
-          enum:
-          - ok
-      required:
-      - results
-      - status
-      type: object
-    PullRequestReviewContext:
-      properties:
-        sourceAgentUuid:
-          type: string
-        sourceProjectUuid:
-          type: string
-        sourceThreadUuid:
-          type: string
-        sourceFindingUuid:
-          type: string
-        primaryRootCause:
-          $ref: '#/components/schemas/AiAgentRootCause'
-        reviewStatus:
-          $ref: '#/components/schemas/AiAgentReviewItemStatus'
-        reviewTitle:
-          type: string
-        reviewItemFingerprint:
-          type: string
-        reviewItemUuid:
-          type: string
-      required:
-      - sourceAgentUuid
-      - sourceProjectUuid
-      - sourceThreadUuid
-      - sourceFindingUuid
-      - primaryRootCause
-      - reviewStatus
-      - reviewTitle
-      - reviewItemFingerprint
-      - reviewItemUuid
-      type: object
   securitySchemes:
     session_cookie:
       type: apiKey

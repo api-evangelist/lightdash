@@ -239,48 +239,64 @@ paths:
       - Org
 components:
   schemas:
-    AiRouterRouteDecision:
+    ApiAiRouterRouteResponse:
+      $ref: '#/components/schemas/ApiSuccess_AiRouterRouteResponseResult_'
+    ApiAiRouterDecisionListResponse:
+      $ref: '#/components/schemas/ApiSuccess_AiRouterDecision-Array_'
+    ApiAiRouterResponse:
+      $ref: '#/components/schemas/ApiSuccess_AiRouter_'
+    AiRouterDecisionCandidate:
       properties:
-        candidates:
-          items:
-            $ref: '#/components/schemas/AiRouterDecisionCandidate'
-          type: array
-        reasoning:
+        description:
+          type:
+          - string
+          - 'null'
+        name:
           type: string
-        confidence:
-          $ref: '#/components/schemas/AiRouterDecisionConfidence'
-        suggestedAgentUuid:
-          type: string
-        decisionUuid:
+        agentUuid:
           type: string
       required:
-      - candidates
-      - reasoning
-      - confidence
-      - suggestedAgentUuid
-      - decisionUuid
+      - description
+      - name
+      - agentUuid
       type: object
-    AiRouterRouteResponseResult:
+    ApiErrorPayload:
       properties:
-        nextAction:
-          $ref: '#/components/schemas/AiRouterRouteNextAction'
-        decision:
-          $ref: '#/components/schemas/AiRouterRouteDecision'
+        error:
+          properties:
+            data:
+              $ref: '#/components/schemas/AnyType'
+              description: Optional data containing details of the error
+            message:
+              type: string
+              description: A friendly message summarising the error
+            name:
+              type: string
+              description: Unique name for the type of error
+            statusCode:
+              type: number
+              format: integer
+              description: HTTP status code
+          required:
+          - name
+          - statusCode
+          type: object
+        status:
+          type: string
+          enum:
+          - error
       required:
-      - nextAction
-      - decision
+      - error
+      - status
       type: object
-    ApiAiRouterInstructionResponse:
-      $ref: '#/components/schemas/ApiSuccess_AiRouterInstruction-or-null_'
-    AiRouterSelectionMode:
-      type: string
-      enum:
-      - auto_routed
-      - manual_pick
-    ApiSuccess_AiRouter_:
+      description: 'The Error object is returned from the api any time there is an error.
+
+        The message contains'
+    ApiSuccess_AiRouterInstruction-or-null_:
       properties:
         results:
-          $ref: '#/components/schemas/AiRouter'
+          allOf:
+          - $ref: '#/components/schemas/AiRouterInstruction'
         status:
           type: string
           enum:
@@ -298,8 +314,6 @@ components:
         enabled:
           type: boolean
       type: object
-    ApiAiRouterRouteResponse:
-      $ref: '#/components/schemas/ApiSuccess_AiRouterRouteResponseResult_'
     AiRouterDecisionCommitRequest:
       properties:
         threadUuid:
@@ -310,73 +324,45 @@ components:
       - threadUuid
       - chosenAgentUuid
       type: object
-    ApiAiRouterDecisionListResponse:
-      $ref: '#/components/schemas/ApiSuccess_AiRouterDecision-Array_'
-    AiRouterInstruction:
+    AiRouterRouteResponseResult:
       properties:
-        createdAt:
-          type: string
-          format: date-time
-        taggedAgentUuids:
-          items:
-            type: string
-          type: array
-        instruction:
-          type: string
-        projectUuid:
-          type: string
-        routerUuid:
-          type: string
-        instructionVersionUuid:
-          type: string
+        nextAction:
+          $ref: '#/components/schemas/AiRouterRouteNextAction'
+        decision:
+          $ref: '#/components/schemas/AiRouterRouteDecision'
       required:
-      - createdAt
-      - taggedAgentUuids
-      - instruction
-      - projectUuid
-      - routerUuid
-      - instructionVersionUuid
+      - nextAction
+      - decision
       type: object
-      description: 'Per-project routing instructions written by an admin. Versioned append-only
-
-        (like agent instructions): the latest version for a (router, project) pair is
-
-        the active one. `instruction` is free text where tagged agents are embedded as
-
-        `@[Agent Name](agent-uuid)` tokens; `taggedAgentUuids` is the extracted list,
-
-        kept alongside the text so references can be validated and orphans detected.'
-    AiRouter:
+    ApiSuccessEmpty:
       properties:
-        updatedAt:
+        results: {}
+        status:
           type: string
-          format: date-time
-        createdAt:
-          type: string
-          format: date-time
-        projectUuids:
-          items:
-            type: string
-          type: array
-        enabled:
-          type: boolean
-        organizationUuid:
-          type: string
-        routerUuid:
-          type: string
+          enum:
+          - ok
       required:
-      - updatedAt
-      - createdAt
-      - projectUuids
-      - enabled
-      - organizationUuid
-      - routerUuid
+      - status
       type: object
-    AiRouterRouteNextAction:
+    AnyType:
+      description: 'This AnyType is an alias for any
+
+        The goal is to make it easier to identify any type in the codebase
+
+        without having to eslint-disable all the time
+
+        These are only used on legacy `any` types, don''t use it for new types.
+
+        This is added on a separate file to avoid circular dependencies.'
+    AiRouterSelectionMode:
       type: string
       enum:
-      - create_thread
-      - show_picker
+      - auto_routed
+      - manual_pick
+    ApiAiRouterDecisionCommitResponse:
+      $ref: '#/components/schemas/ApiSuccessEmpty'
+    ApiAiRouterInstructionResponse:
+      $ref: '#/components/schemas/ApiSuccess_AiRouterInstruction-or-null_'
     AiRouterRouteRequest:
       properties:
         projectUuid:
@@ -387,11 +373,10 @@ components:
       - projectUuid
       - prompt
       type: object
-    ApiSuccess_AiRouterInstruction-or-null_:
+    ApiSuccess_AiRouter_:
       properties:
         results:
-          allOf:
-          - $ref: '#/components/schemas/AiRouterInstruction'
+          $ref: '#/components/schemas/AiRouter'
         status:
           type: string
           enum:
@@ -412,34 +397,6 @@ components:
           - ok
       required:
       - results
-      - status
-      type: object
-    AiRouterDecisionConfidence:
-      type: string
-      enum:
-      - high
-      - medium
-      - low
-    UpsertAiRouterInstructionRequest:
-      properties:
-        taggedAgentUuids:
-          items:
-            type: string
-          type: array
-        instruction:
-          type: string
-      required:
-      - taggedAgentUuids
-      - instruction
-      type: object
-    ApiSuccessEmpty:
-      properties:
-        results: {}
-        status:
-          type: string
-          enum:
-          - ok
-      required:
       - status
       type: object
     AiRouterDecision:
@@ -496,20 +453,46 @@ components:
       - routerUuid
       - decisionUuid
       type: object
-    AnyType:
-      description: 'This AnyType is an alias for any
+    AiRouterInstruction:
+      properties:
+        createdAt:
+          type: string
+          format: date-time
+        taggedAgentUuids:
+          items:
+            type: string
+          type: array
+        instruction:
+          type: string
+        projectUuid:
+          type: string
+        routerUuid:
+          type: string
+        instructionVersionUuid:
+          type: string
+      required:
+      - createdAt
+      - taggedAgentUuids
+      - instruction
+      - projectUuid
+      - routerUuid
+      - instructionVersionUuid
+      type: object
+      description: 'Per-project routing instructions written by an admin. Versioned append-only
 
-        The goal is to make it easier to identify any type in the codebase
+        (like agent instructions): the latest version for a (router, project) pair is
 
-        without having to eslint-disable all the time
+        the active one. `instruction` is free text where tagged agents are embedded as
 
-        These are only used on legacy `any` types, don''t use it for new types.
+        `@[Agent Name](agent-uuid)` tokens; `taggedAgentUuids` is the extracted list,
 
-        This is added on a separate file to avoid circular dependencies.'
-    ApiAiRouterResponse:
-      $ref: '#/components/schemas/ApiSuccess_AiRouter_'
-    ApiAiRouterDecisionCommitResponse:
-      $ref: '#/components/schemas/ApiSuccessEmpty'
+        kept alongside the text so references can be validated and orphans detected.'
+    AiRouterDecisionConfidence:
+      type: string
+      enum:
+      - high
+      - medium
+      - low
     ApiSuccess_AiRouterRouteResponseResult_:
       properties:
         results:
@@ -522,52 +505,69 @@ components:
       - results
       - status
       type: object
-    ApiErrorPayload:
+    AiRouter:
       properties:
-        error:
-          properties:
-            data:
-              $ref: '#/components/schemas/AnyType'
-              description: Optional data containing details of the error
-            message:
-              type: string
-              description: A friendly message summarising the error
-            name:
-              type: string
-              description: Unique name for the type of error
-            statusCode:
-              type: number
-              format: integer
-              description: HTTP status code
-          required:
-          - name
-          - statusCode
-          type: object
-        status:
+        updatedAt:
           type: string
-          enum:
-          - error
+          format: date-time
+        createdAt:
+          type: string
+          format: date-time
+        projectUuids:
+          items:
+            type: string
+          type: array
+        enabled:
+          type: boolean
+        organizationUuid:
+          type: string
+        routerUuid:
+          type: string
       required:
-      - error
-      - status
+      - updatedAt
+      - createdAt
+      - projectUuids
+      - enabled
+      - organizationUuid
+      - routerUuid
       type: object
-      description: 'The Error object is returned from the api any time there is an error.
-
-        The message contains'
-    AiRouterDecisionCandidate:
+    AiRouterRouteNextAction:
+      type: string
+      enum:
+      - create_thread
+      - show_picker
+    UpsertAiRouterInstructionRequest:
       properties:
-        description:
-          type:
-          - string
-          - 'null'
-        name:
-          type: string
-        agentUuid:
+        taggedAgentUuids:
+          items:
+            type: string
+          type: array
+        instruction:
           type: string
       required:
-      - description
-      - name
-      - agentUuid
+      - taggedAgentUuids
+      - instruction
+      type: object
+    AiRouterRouteDecision:
+      properties:
+        candidates:
+          items:
+            $ref: '#/components/schemas/AiRouterDecisionCandidate'
+          type: array
+        reasoning:
+          type: string
+        confidence:
+          $ref: '#/components/schemas/AiRouterDecisionConfidence'
+        suggestedAgentUuid:
+          type: string
+        decisionUuid:
+          type: string
+      required:
+      - candidates
+      - reasoning
+      - confidence
+      - suggestedAgentUuid
+      - decisionUuid
       type: object
   securitySchemes:
     session_cookie:

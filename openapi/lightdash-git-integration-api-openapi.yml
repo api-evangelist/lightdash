@@ -277,52 +277,6 @@ paths:
               type: object
 components:
   schemas:
-    BinType.CUSTOM_GROUP:
-      enum:
-      - custom_group
-      type: string
-    NumberSeparator:
-      enum:
-      - default
-      - commaPeriod
-      - spacePeriod
-      - periodComma
-      - noSeparatorPeriod
-      - apostrophePeriod
-      type: string
-    CustomRangeBinDimension:
-      properties:
-        id:
-          type: string
-          description: Unique identifier for the custom dimension
-        name:
-          type: string
-          description: Display name for the custom dimension
-        table:
-          type: string
-          description: Table this custom dimension belongs to
-        type:
-          $ref: '#/components/schemas/CustomDimensionType.BIN'
-          description: Type of custom dimension (bin or sql)
-        dimensionId:
-          $ref: '#/components/schemas/FieldId'
-          description: Field ID of the parent dimension to bin
-        binType:
-          $ref: '#/components/schemas/BinType.CUSTOM_RANGE'
-        customRange:
-          items:
-            $ref: '#/components/schemas/BinRange'
-          type: array
-      required:
-      - id
-      - name
-      - table
-      - type
-      - dimensionId
-      - binType
-      - customRange
-      type: object
-      additionalProperties: true
     Format:
       enum:
       - km
@@ -335,6 +289,48 @@ components:
       - id
       - percent
       type: string
+    PullRequestCreated:
+      properties:
+        prUrl:
+          type: string
+        prTitle:
+          type: string
+      required:
+      - prUrl
+      - prTitle
+      type: object
+    ApiErrorPayload:
+      properties:
+        error:
+          properties:
+            data:
+              $ref: '#/components/schemas/AnyType'
+              description: Optional data containing details of the error
+            message:
+              type: string
+              description: A friendly message summarising the error
+            name:
+              type: string
+              description: Unique name for the type of error
+            statusCode:
+              type: number
+              format: integer
+              description: HTTP status code
+          required:
+          - name
+          - statusCode
+          type: object
+        status:
+          type: string
+          enum:
+          - error
+      required:
+      - error
+      - status
+      type: object
+      description: 'The Error object is returned from the api any time there is an error.
+
+        The message contains'
     CustomGroupBinDimension:
       properties:
         id:
@@ -368,164 +364,77 @@ components:
       - customGroups
       type: object
       additionalProperties: true
-    BinType.FIXED_NUMBER:
+    FieldId:
+      type: string
+    CustomFormat:
+      properties:
+        type:
+          $ref: '#/components/schemas/CustomFormatType'
+          description: Format type
+        round:
+          type: number
+          format: double
+          description: Number of decimal places
+        separator:
+          $ref: '#/components/schemas/NumberSeparator'
+          description: Number separator style
+        currency:
+          type: string
+          description: Currency code (e.g., USD, GBP, EUR)
+        compact:
+          $ref: '#/components/schemas/CompactOrAlias'
+          description: Compact format for large numbers (K, M, B, T) or byte units
+        prefix:
+          type: string
+          description: Prefix to prepend to formatted values
+        suffix:
+          type: string
+          description: Suffix to append to formatted values
+        timeInterval:
+          $ref: '#/components/schemas/TimeFrames'
+          description: Time interval for date formatting
+        custom:
+          type: string
+          description: Custom format string
+      required:
+      - type
+      type: object
+      additionalProperties: true
+    CustomDimensionType.SQL:
       enum:
-      - fixed_number
+      - sql
+      type: string
+    AnyType:
+      description: 'This AnyType is an alias for any
+
+        The goal is to make it easier to identify any type in the codebase
+
+        without having to eslint-disable all the time
+
+        These are only used on legacy `any` types, don''t use it for new types.
+
+        This is added on a separate file to avoid circular dependencies.'
+    CustomDimensionType.BIN:
+      enum:
+      - bin
       type: string
     CustomDimension:
       anyOf:
       - $ref: '#/components/schemas/CustomBinDimension'
       - $ref: '#/components/schemas/CustomSqlDimension'
-    CustomFormatType:
+    NumberSeparator:
       enum:
       - default
-      - percent
-      - currency
-      - number
-      - id
-      - date
-      - timestamp
-      - bytes_si
-      - bytes_iec
-      - custom
-      type: string
-    MetricType:
-      enum:
-      - percentile
-      - average
-      - count
-      - count_distinct
-      - sum
-      - sum_distinct
-      - average_distinct
-      - min
-      - max
-      - percent_of_previous
-      - percent_of_total
-      - running_total
-      - number
-      - median
-      - string
-      - date
-      - timestamp
-      - boolean
-      type: string
-    CustomBinDimension:
-      anyOf:
-      - $ref: '#/components/schemas/FixedNumberBinDimension'
-      - $ref: '#/components/schemas/FixedWidthBinDimension'
-      - $ref: '#/components/schemas/CustomRangeBinDimension'
-      - $ref: '#/components/schemas/CustomGroupBinDimension'
-    FixedNumberBinDimension:
-      properties:
-        id:
-          type: string
-          description: Unique identifier for the custom dimension
-        name:
-          type: string
-          description: Display name for the custom dimension
-        table:
-          type: string
-          description: Table this custom dimension belongs to
-        type:
-          $ref: '#/components/schemas/CustomDimensionType.BIN'
-          description: Type of custom dimension (bin or sql)
-        dimensionId:
-          $ref: '#/components/schemas/FieldId'
-          description: Field ID of the parent dimension to bin
-        binType:
-          $ref: '#/components/schemas/BinType.FIXED_NUMBER'
-        binNumber:
-          type: number
-          format: double
-      required:
-      - id
-      - name
-      - table
-      - type
-      - dimensionId
-      - binType
-      - binNumber
-      type: object
-      additionalProperties: true
-    BinType.CUSTOM_RANGE:
-      enum:
-      - custom_range
+      - commaPeriod
+      - spacePeriod
+      - periodComma
+      - noSeparatorPeriod
+      - apostrophePeriod
       type: string
     BinType.FIXED_WIDTH:
       enum:
       - fixed_width
       type: string
-    ApiGitFileContent:
-      properties:
-        filePath:
-          type: string
-        sha:
-          type: string
-        content:
-          type: string
-      required:
-      - filePath
-      - sha
-      - content
-      type: object
-    TimeFrames:
-      enum:
-      - RAW
-      - YEAR
-      - QUARTER
-      - MONTH
-      - WEEK
-      - DAY
-      - HOUR
-      - MINUTE
-      - SECOND
-      - MILLISECOND
-      - DAY_OF_WEEK_INDEX
-      - DAY_OF_MONTH_NUM
-      - DAY_OF_YEAR_NUM
-      - WEEK_NUM
-      - MONTH_NUM
-      - QUARTER_NUM
-      - YEAR_NUM
-      - DAY_OF_WEEK_NAME
-      - MONTH_NAME
-      - QUARTER_NAME
-      - HOUR_OF_DAY_NUM
-      - MINUTE_OF_HOUR_NUM
-      type: string
-    FixedWidthBinDimension:
-      properties:
-        id:
-          type: string
-          description: Unique identifier for the custom dimension
-        name:
-          type: string
-          description: Display name for the custom dimension
-        table:
-          type: string
-          description: Table this custom dimension belongs to
-        type:
-          $ref: '#/components/schemas/CustomDimensionType.BIN'
-          description: Type of custom dimension (bin or sql)
-        dimensionId:
-          $ref: '#/components/schemas/FieldId'
-          description: Field ID of the parent dimension to bin
-        binType:
-          $ref: '#/components/schemas/BinType.FIXED_WIDTH'
-        binWidth:
-          type: number
-          format: double
-      required:
-      - id
-      - name
-      - table
-      - type
-      - dimensionId
-      - binType
-      - binWidth
-      type: object
-      additionalProperties: true
     MetricFilterRule:
       description: Filter rule for metrics, targeting fields by reference
       properties:
@@ -571,91 +480,6 @@ components:
       - target
       type: object
       additionalProperties: true
-    DimensionType:
-      enum:
-      - string
-      - number
-      - timestamp
-      - date
-      - boolean
-      type: string
-    FilterOperator:
-      enum:
-      - isNull
-      - notNull
-      - equals
-      - notEquals
-      - startsWith
-      - endsWith
-      - include
-      - doesNotInclude
-      - lessThan
-      - lessThanOrEqual
-      - greaterThan
-      - greaterThanOrEqual
-      - inThePast
-      - notInThePast
-      - inTheNext
-      - inTheCurrent
-      - notInTheCurrent
-      - inBetween
-      - notInBetween
-      - inPeriodToDate
-      type: string
-    GroupValueRule:
-      properties:
-        value:
-          type: string
-        matchType:
-          $ref: '#/components/schemas/GroupValueMatchType'
-      required:
-      - value
-      - matchType
-      type: object
-    CustomFormat:
-      properties:
-        type:
-          $ref: '#/components/schemas/CustomFormatType'
-          description: Format type
-        round:
-          type: number
-          format: double
-          description: Number of decimal places
-        separator:
-          $ref: '#/components/schemas/NumberSeparator'
-          description: Number separator style
-        currency:
-          type: string
-          description: Currency code (e.g., USD, GBP, EUR)
-        compact:
-          $ref: '#/components/schemas/CompactOrAlias'
-          description: Compact format for large numbers (K, M, B, T) or byte units
-        prefix:
-          type: string
-          description: Prefix to prepend to formatted values
-        suffix:
-          type: string
-          description: Suffix to append to formatted values
-        timeInterval:
-          $ref: '#/components/schemas/TimeFrames'
-          description: Time interval for date formatting
-        custom:
-          type: string
-          description: Custom format string
-      required:
-      - type
-      type: object
-      additionalProperties: true
-    PullRequestCreated:
-      properties:
-        prUrl:
-          type: string
-        prTitle:
-          type: string
-      required:
-      - prUrl
-      - prTitle
-      type: object
     CompactOrAlias:
       anyOf:
       - $ref: '#/components/schemas/Compact'
@@ -689,22 +513,81 @@ components:
         - tebibyte
         - PiB
         - pebibyte
-    AnyType:
-      description: 'This AnyType is an alias for any
-
-        The goal is to make it easier to identify any type in the codebase
-
-        without having to eslint-disable all the time
-
-        These are only used on legacy `any` types, don''t use it for new types.
-
-        This is added on a separate file to avoid circular dependencies.'
-    FieldId:
-      type: string
-    CustomDimensionType.SQL:
+    CustomRangeBinDimension:
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the custom dimension
+        name:
+          type: string
+          description: Display name for the custom dimension
+        table:
+          type: string
+          description: Table this custom dimension belongs to
+        type:
+          $ref: '#/components/schemas/CustomDimensionType.BIN'
+          description: Type of custom dimension (bin or sql)
+        dimensionId:
+          $ref: '#/components/schemas/FieldId'
+          description: Field ID of the parent dimension to bin
+        binType:
+          $ref: '#/components/schemas/BinType.CUSTOM_RANGE'
+        customRange:
+          items:
+            $ref: '#/components/schemas/BinRange'
+          type: array
+      required:
+      - id
+      - name
+      - table
+      - type
+      - dimensionId
+      - binType
+      - customRange
+      type: object
+      additionalProperties: true
+    BinType.FIXED_NUMBER:
       enum:
-      - sql
+      - fixed_number
       type: string
+    TimeFrames:
+      enum:
+      - RAW
+      - YEAR
+      - QUARTER
+      - MONTH
+      - WEEK
+      - DAY
+      - HOUR
+      - MINUTE
+      - SECOND
+      - MILLISECOND
+      - DAY_OF_WEEK_INDEX
+      - DAY_OF_MONTH_NUM
+      - DAY_OF_YEAR_NUM
+      - WEEK_NUM
+      - MONTH_NUM
+      - QUARTER_NUM
+      - YEAR_NUM
+      - DAY_OF_WEEK_NAME
+      - MONTH_NAME
+      - QUARTER_NAME
+      - HOUR_OF_DAY_NUM
+      - MINUTE_OF_HOUR_NUM
+      type: string
+    ApiGitFileContent:
+      properties:
+        filePath:
+          type: string
+        sha:
+          type: string
+        content:
+          type: string
+      required:
+      - filePath
+      - sha
+      - content
+      type: object
     Compact:
       enum:
       - thousands
@@ -722,35 +605,6 @@ components:
       - tebibytes
       - pebibytes
       type: string
-    BinGroup:
-      properties:
-        values:
-          items:
-            $ref: '#/components/schemas/GroupValueRule'
-          type: array
-          description: Rules that match values into this group
-        name:
-          type: string
-          description: Display name for this group (e.g. "North America")
-      required:
-      - values
-      - name
-      type: object
-    CustomDimensionType.BIN:
-      enum:
-      - bin
-      type: string
-    BinRange:
-      properties:
-        to:
-          type: number
-          format: double
-          description: End value for this bin range (undefined for the last range)
-        from:
-          type: number
-          format: double
-          description: Start value for this bin range (undefined for the first range)
-      type: object
     AdditionalMetric:
       properties:
         label:
@@ -844,38 +698,93 @@ components:
       - name
       type: object
       additionalProperties: true
-    ApiErrorPayload:
+    CustomBinDimension:
+      anyOf:
+      - $ref: '#/components/schemas/FixedNumberBinDimension'
+      - $ref: '#/components/schemas/FixedWidthBinDimension'
+      - $ref: '#/components/schemas/CustomRangeBinDimension'
+      - $ref: '#/components/schemas/CustomGroupBinDimension'
+    GroupValueRule:
       properties:
-        error:
-          properties:
-            data:
-              $ref: '#/components/schemas/AnyType'
-              description: Optional data containing details of the error
-            message:
-              type: string
-              description: A friendly message summarising the error
-            name:
-              type: string
-              description: Unique name for the type of error
-            statusCode:
-              type: number
-              format: integer
-              description: HTTP status code
-          required:
-          - name
-          - statusCode
-          type: object
-        status:
+        value:
           type: string
-          enum:
-          - error
+        matchType:
+          $ref: '#/components/schemas/GroupValueMatchType'
       required:
-      - error
-      - status
+      - value
+      - matchType
       type: object
-      description: 'The Error object is returned from the api any time there is an error.
-
-        The message contains'
+    DimensionType:
+      enum:
+      - string
+      - number
+      - timestamp
+      - date
+      - boolean
+      type: string
+    BinType.CUSTOM_RANGE:
+      enum:
+      - custom_range
+      type: string
+    BinType.CUSTOM_GROUP:
+      enum:
+      - custom_group
+      type: string
+    BinGroup:
+      properties:
+        values:
+          items:
+            $ref: '#/components/schemas/GroupValueRule'
+          type: array
+          description: Rules that match values into this group
+        name:
+          type: string
+          description: Display name for this group (e.g. "North America")
+      required:
+      - values
+      - name
+      type: object
+    FilterOperator:
+      enum:
+      - isNull
+      - notNull
+      - equals
+      - notEquals
+      - startsWith
+      - endsWith
+      - include
+      - doesNotInclude
+      - lessThan
+      - lessThanOrEqual
+      - greaterThan
+      - greaterThanOrEqual
+      - inThePast
+      - notInThePast
+      - inTheNext
+      - inTheCurrent
+      - notInTheCurrent
+      - inBetween
+      - notInBetween
+      - inPeriodToDate
+      type: string
+    GroupValueMatchType:
+      enum:
+      - exact
+      - startsWith
+      - endsWith
+      - includes
+      type: string
+    BinRange:
+      properties:
+        to:
+          type: number
+          format: double
+          description: End value for this bin range (undefined for the last range)
+        from:
+          type: number
+          format: double
+          description: Start value for this bin range (undefined for the first range)
+      type: object
     CustomSqlDimension:
       properties:
         id:
@@ -905,12 +814,103 @@ components:
       - dimensionType
       type: object
       additionalProperties: true
-    GroupValueMatchType:
+    MetricType:
       enum:
-      - exact
-      - startsWith
-      - endsWith
-      - includes
+      - percentile
+      - average
+      - count
+      - count_distinct
+      - sum
+      - sum_distinct
+      - average_distinct
+      - min
+      - max
+      - percent_of_previous
+      - percent_of_total
+      - running_total
+      - number
+      - median
+      - string
+      - date
+      - timestamp
+      - boolean
+      type: string
+    FixedWidthBinDimension:
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the custom dimension
+        name:
+          type: string
+          description: Display name for the custom dimension
+        table:
+          type: string
+          description: Table this custom dimension belongs to
+        type:
+          $ref: '#/components/schemas/CustomDimensionType.BIN'
+          description: Type of custom dimension (bin or sql)
+        dimensionId:
+          $ref: '#/components/schemas/FieldId'
+          description: Field ID of the parent dimension to bin
+        binType:
+          $ref: '#/components/schemas/BinType.FIXED_WIDTH'
+        binWidth:
+          type: number
+          format: double
+      required:
+      - id
+      - name
+      - table
+      - type
+      - dimensionId
+      - binType
+      - binWidth
+      type: object
+      additionalProperties: true
+    FixedNumberBinDimension:
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the custom dimension
+        name:
+          type: string
+          description: Display name for the custom dimension
+        table:
+          type: string
+          description: Table this custom dimension belongs to
+        type:
+          $ref: '#/components/schemas/CustomDimensionType.BIN'
+          description: Type of custom dimension (bin or sql)
+        dimensionId:
+          $ref: '#/components/schemas/FieldId'
+          description: Field ID of the parent dimension to bin
+        binType:
+          $ref: '#/components/schemas/BinType.FIXED_NUMBER'
+        binNumber:
+          type: number
+          format: double
+      required:
+      - id
+      - name
+      - table
+      - type
+      - dimensionId
+      - binType
+      - binNumber
+      type: object
+      additionalProperties: true
+    CustomFormatType:
+      enum:
+      - default
+      - percent
+      - currency
+      - number
+      - id
+      - date
+      - timestamp
+      - bytes_si
+      - bytes_iec
+      - custom
       type: string
   securitySchemes:
     session_cookie:

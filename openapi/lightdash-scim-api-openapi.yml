@@ -922,121 +922,13 @@ paths:
           type: string
 components:
   schemas:
-    ScimListResponse_ScimResourceType_:
-      properties:
-        schemas:
-          items:
-            $ref: '#/components/schemas/ScimSchemaType.LIST_RESPONSE'
-          type: array
-        totalResults:
-          type: number
-          format: double
-        itemsPerPage:
-          type: number
-          format: double
-        startIndex:
-          type: number
-          format: double
-        Resources:
-          items:
-            $ref: '#/components/schemas/ScimResourceType'
-          type: array
-      required:
-      - schemas
-      - totalResults
-      - itemsPerPage
-      - startIndex
-      - Resources
-      type: object
-      additionalProperties: true
-    ScimSchemaType.LIST_RESPONSE:
+    ScimSchemaType.GROUP:
       enum:
-      - urn:ietf:params:scim:api:messages:2.0:ListResponse
-      type: string
-    ScimSchemaType.RESOURCE_TYPE:
-      enum:
-      - urn:ietf:params:scim:schemas:core:2.0:ResourceType
+      - urn:ietf:params:scim:schemas:core:2.0:Group
       type: string
     Omit_ScimUser.id_:
       $ref: '#/components/schemas/Pick_ScimUser.Exclude_keyofScimUser.id__'
       description: Construct a type with the properties of T except for those in type K.
-    ScimUpsertUser:
-      allOf:
-      - $ref: '#/components/schemas/Omit_ScimUser.id_'
-      - properties:
-          title:
-            type: string
-          password:
-            type: string
-        type: object
-    ScimListResponse_ScimSchema_:
-      properties:
-        schemas:
-          items:
-            $ref: '#/components/schemas/ScimSchemaType.LIST_RESPONSE'
-          type: array
-        totalResults:
-          type: number
-          format: double
-        itemsPerPage:
-          type: number
-          format: double
-        startIndex:
-          type: number
-          format: double
-        Resources:
-          items:
-            $ref: '#/components/schemas/ScimSchema'
-          type: array
-      required:
-      - schemas
-      - totalResults
-      - itemsPerPage
-      - startIndex
-      - Resources
-      type: object
-      additionalProperties: true
-    ScimGroupMember:
-      properties:
-        value:
-          type: string
-        display:
-          type: string
-      required:
-      - value
-      type: object
-      additionalProperties: true
-    ScimListResponse_ScimGroup_:
-      properties:
-        schemas:
-          items:
-            $ref: '#/components/schemas/ScimSchemaType.LIST_RESPONSE'
-          type: array
-        totalResults:
-          type: number
-          format: double
-        itemsPerPage:
-          type: number
-          format: double
-        startIndex:
-          type: number
-          format: double
-        Resources:
-          items:
-            $ref: '#/components/schemas/ScimGroup'
-          type: array
-      required:
-      - schemas
-      - totalResults
-      - itemsPerPage
-      - startIndex
-      - Resources
-      type: object
-      additionalProperties: true
-    ScimSchemaType.ERROR:
-      enum:
-      - urn:ietf:params:scim:api:messages:2.0:Error
-      type: string
     ScimUserRole:
       properties:
         value:
@@ -1051,520 +943,6 @@ components:
       - value
       type: object
       additionalProperties: true
-    ScimUpsertGroup:
-      properties:
-        schemas:
-          items:
-            $ref: '#/components/schemas/ScimSchemaType.GROUP'
-          type: array
-        displayName:
-          type: string
-        members:
-          items:
-            $ref: '#/components/schemas/ScimGroupMember'
-          type: array
-      required:
-      - schemas
-      - displayName
-      type: object
-      additionalProperties: true
-    ScimGroup:
-      properties:
-        schemas:
-          items:
-            type: string
-          type: array
-        id:
-          type: string
-        meta:
-          allOf:
-          - properties:
-              version:
-                type: string
-              location:
-                type: string
-              lastModified:
-                type: string
-                format: date-time
-              created:
-                type: string
-                format: date-time
-              resourceType:
-                type: string
-            type: object
-          - properties:
-              location:
-                type: string
-              lastModified:
-                type: string
-                format: date-time
-              created:
-                type: string
-                format: date-time
-              resourceType:
-                type: string
-                enum:
-                - Group
-            required:
-            - location
-            - lastModified
-            - created
-            - resourceType
-            type: object
-        displayName:
-          type: string
-        members:
-          items:
-            $ref: '#/components/schemas/ScimGroupMember'
-          type: array
-      required:
-      - schemas
-      - id
-      - displayName
-      - meta
-      type: object
-      additionalProperties: true
-    ScimUser:
-      properties:
-        schemas:
-          items:
-            type: string
-          type: array
-        id:
-          type: string
-        meta:
-          properties:
-            version:
-              type: string
-            location:
-              type: string
-            lastModified:
-              type: string
-              format: date-time
-            created:
-              type: string
-              format: date-time
-            resourceType:
-              type: string
-          type: object
-        userName:
-          type: string
-        name:
-          properties:
-            familyName:
-              type: string
-            givenName:
-              type: string
-          type: object
-        active:
-          type: boolean
-        emails:
-          items:
-            properties:
-              primary:
-                type: boolean
-              value:
-                type: string
-            required:
-            - value
-            type: object
-          type: array
-        roles:
-          items:
-            $ref: '#/components/schemas/ScimUserRole'
-          type: array
-        urn:lightdash:params:scim:schemas:extension:2.0:User:
-          $ref: '#/components/schemas/LightdashScimExtension'
-      required:
-      - schemas
-      - id
-      - userName
-      type: object
-      additionalProperties: true
-    ScimSchemaType.SERVICE_PROVIDER_CONFIG:
-      enum:
-      - urn:ietf:params:scim:schemas:core:2.0:ServiceProviderConfig
-      type: string
-    ScimSchemaType.GROUP:
-      enum:
-      - urn:ietf:params:scim:schemas:core:2.0:Group
-      type: string
-    ScimRole:
-      properties:
-        schemas:
-          items:
-            $ref: '#/components/schemas/ScimSchemaType.ROLE'
-          type: array
-        id:
-          type: string
-        meta:
-          allOf:
-          - properties:
-              version:
-                type: string
-              location:
-                type: string
-              lastModified:
-                type: string
-                format: date-time
-              created:
-                type: string
-                format: date-time
-              resourceType:
-                type: string
-            type: object
-          - properties:
-              location:
-                type: string
-              lastModified:
-                type: string
-                format: date-time
-              created:
-                type: string
-                format: date-time
-              resourceType:
-                type: string
-                enum:
-                - Role
-            required:
-            - location
-            - resourceType
-            type: object
-        value:
-          type: string
-        display:
-          type: string
-        type:
-          type: string
-        supported:
-          type: boolean
-      required:
-      - schemas
-      - id
-      - value
-      - supported
-      - meta
-      type: object
-      additionalProperties: true
-    ScimPatchOperation:
-      anyOf:
-      - $ref: '#/components/schemas/ScimPatchRemoveOperation'
-      - $ref: '#/components/schemas/ScimPatchAddReplaceOperation'
-    ScimPatchSchema:
-      type: string
-      enum:
-      - urn:ietf:params:scim:api:messages:2.0:PatchOp
-    ScimPatch:
-      properties:
-        schemas:
-          items:
-            $ref: '#/components/schemas/ScimPatchSchema'
-          type: array
-        Operations:
-          items:
-            $ref: '#/components/schemas/ScimPatchOperation'
-          type: array
-      required:
-      - schemas
-      - Operations
-      type: object
-      additionalProperties: true
-    ScimSchemaType.SCHEMA:
-      enum:
-      - urn:ietf:params:scim:schemas:core:2.0:Schema
-      type: string
-    ScimSchemaType.ROLE:
-      enum:
-      - urn:ietf:params:scim:schemas:extension:2.0:Role
-      type: string
-    ScimPatchRemoveOperation:
-      properties:
-        op:
-          type: string
-          enum:
-          - remove
-          - Remove
-        path:
-          type: string
-        value: {}
-      required:
-      - op
-      - path
-      type: object
-      additionalProperties: true
-    LightdashScimExtension:
-      properties:
-        role:
-          type: string
-          deprecated: true
-      type: object
-      additionalProperties: true
-    Pick_ScimUser.Exclude_keyofScimUser.id__:
-      properties:
-        urn:lightdash:params:scim:schemas:extension:2.0:User:
-          $ref: '#/components/schemas/LightdashScimExtension'
-        schemas:
-          items:
-            type: string
-          type: array
-        userName:
-          type: string
-        name:
-          properties:
-            familyName:
-              type: string
-            givenName:
-              type: string
-          type: object
-        active:
-          type: boolean
-        emails:
-          items:
-            properties:
-              primary:
-                type: boolean
-              value:
-                type: string
-            required:
-            - value
-            type: object
-          type: array
-        roles:
-          items:
-            $ref: '#/components/schemas/ScimUserRole'
-          type: array
-        meta:
-          properties:
-            version:
-              type: string
-            location:
-              type: string
-            lastModified:
-              type: string
-              format: date-time
-            created:
-              type: string
-              format: date-time
-            resourceType:
-              type: string
-          type: object
-      required:
-      - schemas
-      - userName
-      type: object
-      description: From T, pick a set of properties whose keys are in the union K
-    ScimSchema:
-      properties:
-        schemas:
-          items:
-            $ref: '#/components/schemas/ScimSchemaType.SCHEMA'
-          type: array
-        id:
-          type: string
-        meta:
-          properties:
-            version:
-              type: string
-            location:
-              type: string
-            lastModified:
-              type: string
-              format: date-time
-            created:
-              type: string
-              format: date-time
-            resourceType:
-              type: string
-          type: object
-        name:
-          type: string
-        description:
-          type: string
-        attributes:
-          items:
-            $ref: '#/components/schemas/ScimSchemaAttribute'
-          type: array
-      required:
-      - schemas
-      - id
-      - attributes
-      type: object
-      additionalProperties: true
-    ScimListResponse_ScimUser_:
-      properties:
-        schemas:
-          items:
-            $ref: '#/components/schemas/ScimSchemaType.LIST_RESPONSE'
-          type: array
-        totalResults:
-          type: number
-          format: double
-        itemsPerPage:
-          type: number
-          format: double
-        startIndex:
-          type: number
-          format: double
-        Resources:
-          items:
-            $ref: '#/components/schemas/ScimUser'
-          type: array
-      required:
-      - schemas
-      - totalResults
-      - itemsPerPage
-      - startIndex
-      - Resources
-      type: object
-      additionalProperties: true
-    ScimSchemaAttribute:
-      properties:
-        name:
-          type: string
-        type:
-          type: string
-          enum:
-          - string
-          - boolean
-          - decimal
-          - integer
-          - dateTime
-          - reference
-          - complex
-        multiValued:
-          type: boolean
-        description:
-          type: string
-        required:
-          type: boolean
-        canonicalValues:
-          items:
-            type: string
-          type: array
-        caseExact:
-          type: boolean
-        mutability:
-          type: string
-          enum:
-          - readOnly
-          - readWrite
-          - immutable
-          - writeOnly
-        returned:
-          type: string
-          enum:
-          - always
-          - never
-          - default
-          - request
-        uniqueness:
-          type: string
-          enum:
-          - none
-          - server
-          - global
-        subAttributes:
-          items:
-            $ref: '#/components/schemas/ScimSchemaAttribute'
-          type: array
-      required:
-      - name
-      - type
-      - multiValued
-      - required
-      - caseExact
-      - mutability
-      - returned
-      - uniqueness
-      type: object
-      additionalProperties: true
-    ScimResourceType:
-      properties:
-        schemas:
-          items:
-            $ref: '#/components/schemas/ScimSchemaType.RESOURCE_TYPE'
-          type: array
-        id:
-          type: string
-        meta:
-          properties:
-            version:
-              type: string
-            location:
-              type: string
-            lastModified:
-              type: string
-              format: date-time
-            created:
-              type: string
-              format: date-time
-            resourceType:
-              type: string
-          type: object
-        name:
-          type: string
-        description:
-          type: string
-        endpoint:
-          type: string
-        schema:
-          type: string
-        schemaExtensions:
-          items:
-            properties:
-              required:
-                type: boolean
-              schema:
-                type: string
-            required:
-            - required
-            - schema
-            type: object
-          type: array
-      required:
-      - schemas
-      - id
-      - name
-      - endpoint
-      - schema
-      type: object
-      additionalProperties: true
-    ScimErrorPayload:
-      properties:
-        status:
-          type: string
-          description: 'HTTP status code as a string, indicating the status of the response.
-
-            For example: "400" for bad requests, "404" for not found, "500" for server errors.'
-        detail:
-          type: string
-          description: Human-readable description of the error, providing details about why the error occurred.
-        schemas:
-          items:
-            $ref: '#/components/schemas/ScimSchemaType.ERROR'
-          type: array
-          description: 'Array of schema URIs that describe the structure of the SCIM error response.
-
-            Typically includes "urn:ietf:params:scim:api:messages:2.0:Error".'
-        scimType:
-          type: string
-          enum:
-          - invalidFilter
-          - tooMany
-          - uniqueness
-          - mutability
-          - invalidSyntax
-          - invalidPath
-          - noTarget
-          - invalidValue
-          - invalidVers
-          - sensitive
-          description: "NOTE: this is taken from the SCIM spec here: https://datatracker.ietf.org/doc/html/rfc7644#section-3.7.3\nA SCIM-specific error type that provides additional context for the error.\n- 'invalidFilter': The specified filter syntax was invalid or the attribute and comparison combination is not supported.\n  Applicable for GET (Section 3.4.2), POST (Search - Section 3.4.3), PATCH (Path Filter - Section 3.5.2).\n- 'tooMany': The filter yields too many results for the server to process.\n  Applicable for GET (Section 3.4.2), POST (Search - Section 3.4.3).\n- 'uniqueness': One or more attribute values are already in use or reserved.\n  Applicable for POST (Create - Section 3.3), PUT (Section 3.5.1), PATCH (Section 3.5.2).\n- 'mutability': The modification is incompatible with the target attribute's mutability.\n  Applicable for PUT (Section 3.5.1), PATCH (Section 3.5.2).\n- 'invalidSyntax': The request body structure was invalid or did not conform to the schema.\n  Applicable for POST (Search - Section 3.4.3, Create - Section 3.3, Bulk - Section 3.7), PUT (Section 3.5.1).\n- 'invalidPath': The \"path\" attribute was invalid or malformed.\n  Applicable for PATCH (Section 3.5.2).\n- 'noTarget': The specified \"path\" did not yield an attribute that could be operated on.\n  Applicable for PATCH (Section 3.5.2).\n- 'invalidValue': A required value was missing, or the value specified was not compatible with the operation.\n  Applicable for GET (Section 3.4.2), POST (Create - Section 3.3, Query - Section 3.4.3), PUT (Section 3.5.1), PATCH (Section 3.5.2).\n- 'invalidVers': The specified SCIM protocol version is not supported.\n  Applicable for GET (Section 3.4.2), POST (ALL), PUT (Section 3.5.1), PATCH (Section 3.5.2), DELETE (Section 3.6).\n- 'sensitive': The request cannot be completed due to sensitive information passed in the URI.\n  Applicable for GET (Section 3.4.2)."
-      required:
-      - status
-      - detail
-      - schemas
-      type: object
     ScimServiceProviderConfig:
       properties:
         schemas:
@@ -1656,6 +1034,82 @@ components:
       - authenticationSchemes
       type: object
       additionalProperties: true
+    ScimUser:
+      properties:
+        schemas:
+          items:
+            type: string
+          type: array
+        id:
+          type: string
+        meta:
+          properties:
+            version:
+              type: string
+            location:
+              type: string
+            lastModified:
+              type: string
+              format: date-time
+            created:
+              type: string
+              format: date-time
+            resourceType:
+              type: string
+          type: object
+        userName:
+          type: string
+        name:
+          properties:
+            familyName:
+              type: string
+            givenName:
+              type: string
+          type: object
+        active:
+          type: boolean
+        emails:
+          items:
+            properties:
+              primary:
+                type: boolean
+              value:
+                type: string
+            required:
+            - value
+            type: object
+          type: array
+        roles:
+          items:
+            $ref: '#/components/schemas/ScimUserRole'
+          type: array
+        urn:lightdash:params:scim:schemas:extension:2.0:User:
+          $ref: '#/components/schemas/LightdashScimExtension'
+      required:
+      - schemas
+      - id
+      - userName
+      type: object
+      additionalProperties: true
+    ScimPatch:
+      properties:
+        schemas:
+          items:
+            $ref: '#/components/schemas/ScimPatchSchema'
+          type: array
+        Operations:
+          items:
+            $ref: '#/components/schemas/ScimPatchOperation'
+          type: array
+      required:
+      - schemas
+      - Operations
+      type: object
+      additionalProperties: true
+    ScimSchemaType.SERVICE_PROVIDER_CONFIG:
+      enum:
+      - urn:ietf:params:scim:schemas:core:2.0:ServiceProviderConfig
+      type: string
     ScimPatchAddReplaceOperation:
       properties:
         op:
@@ -1672,6 +1126,492 @@ components:
       - op
       type: object
       additionalProperties: true
+    ScimListResponse_ScimSchema_:
+      properties:
+        schemas:
+          items:
+            $ref: '#/components/schemas/ScimSchemaType.LIST_RESPONSE'
+          type: array
+        totalResults:
+          type: number
+          format: double
+        itemsPerPage:
+          type: number
+          format: double
+        startIndex:
+          type: number
+          format: double
+        Resources:
+          items:
+            $ref: '#/components/schemas/ScimSchema'
+          type: array
+      required:
+      - schemas
+      - totalResults
+      - itemsPerPage
+      - startIndex
+      - Resources
+      type: object
+      additionalProperties: true
+    ScimErrorPayload:
+      properties:
+        status:
+          type: string
+          description: 'HTTP status code as a string, indicating the status of the response.
+
+            For example: "400" for bad requests, "404" for not found, "500" for server errors.'
+        detail:
+          type: string
+          description: Human-readable description of the error, providing details about why the error occurred.
+        schemas:
+          items:
+            $ref: '#/components/schemas/ScimSchemaType.ERROR'
+          type: array
+          description: 'Array of schema URIs that describe the structure of the SCIM error response.
+
+            Typically includes "urn:ietf:params:scim:api:messages:2.0:Error".'
+        scimType:
+          type: string
+          enum:
+          - invalidFilter
+          - tooMany
+          - uniqueness
+          - mutability
+          - invalidSyntax
+          - invalidPath
+          - noTarget
+          - invalidValue
+          - invalidVers
+          - sensitive
+          description: "NOTE: this is taken from the SCIM spec here: https://datatracker.ietf.org/doc/html/rfc7644#section-3.7.3\nA SCIM-specific error type that provides additional context for the error.\n- 'invalidFilter': The specified filter syntax was invalid or the attribute and comparison combination is not supported.\n  Applicable for GET (Section 3.4.2), POST (Search - Section 3.4.3), PATCH (Path Filter - Section 3.5.2).\n- 'tooMany': The filter yields too many results for the server to process.\n  Applicable for GET (Section 3.4.2), POST (Search - Section 3.4.3).\n- 'uniqueness': One or more attribute values are already in use or reserved.\n  Applicable for POST (Create - Section 3.3), PUT (Section 3.5.1), PATCH (Section 3.5.2).\n- 'mutability': The modification is incompatible with the target attribute's mutability.\n  Applicable for PUT (Section 3.5.1), PATCH (Section 3.5.2).\n- 'invalidSyntax': The request body structure was invalid or did not conform to the schema.\n  Applicable for POST (Search - Section 3.4.3, Create - Section 3.3, Bulk - Section 3.7), PUT (Section 3.5.1).\n- 'invalidPath': The \"path\" attribute was invalid or malformed.\n  Applicable for PATCH (Section 3.5.2).\n- 'noTarget': The specified \"path\" did not yield an attribute that could be operated on.\n  Applicable for PATCH (Section 3.5.2).\n- 'invalidValue': A required value was missing, or the value specified was not compatible with the operation.\n  Applicable for GET (Section 3.4.2), POST (Create - Section 3.3, Query - Section 3.4.3), PUT (Section 3.5.1), PATCH (Section 3.5.2).\n- 'invalidVers': The specified SCIM protocol version is not supported.\n  Applicable for GET (Section 3.4.2), POST (ALL), PUT (Section 3.5.1), PATCH (Section 3.5.2), DELETE (Section 3.6).\n- 'sensitive': The request cannot be completed due to sensitive information passed in the URI.\n  Applicable for GET (Section 3.4.2)."
+      required:
+      - status
+      - detail
+      - schemas
+      type: object
+    ScimPatchRemoveOperation:
+      properties:
+        op:
+          type: string
+          enum:
+          - remove
+          - Remove
+        path:
+          type: string
+        value: {}
+      required:
+      - op
+      - path
+      type: object
+      additionalProperties: true
+    ScimUpsertGroup:
+      properties:
+        schemas:
+          items:
+            $ref: '#/components/schemas/ScimSchemaType.GROUP'
+          type: array
+        displayName:
+          type: string
+        members:
+          items:
+            $ref: '#/components/schemas/ScimGroupMember'
+          type: array
+      required:
+      - schemas
+      - displayName
+      type: object
+      additionalProperties: true
+    ScimListResponse_ScimGroup_:
+      properties:
+        schemas:
+          items:
+            $ref: '#/components/schemas/ScimSchemaType.LIST_RESPONSE'
+          type: array
+        totalResults:
+          type: number
+          format: double
+        itemsPerPage:
+          type: number
+          format: double
+        startIndex:
+          type: number
+          format: double
+        Resources:
+          items:
+            $ref: '#/components/schemas/ScimGroup'
+          type: array
+      required:
+      - schemas
+      - totalResults
+      - itemsPerPage
+      - startIndex
+      - Resources
+      type: object
+      additionalProperties: true
+    ScimUpsertUser:
+      allOf:
+      - $ref: '#/components/schemas/Omit_ScimUser.id_'
+      - properties:
+          title:
+            type: string
+          password:
+            type: string
+        type: object
+    ScimResourceType:
+      properties:
+        schemas:
+          items:
+            $ref: '#/components/schemas/ScimSchemaType.RESOURCE_TYPE'
+          type: array
+        id:
+          type: string
+        meta:
+          properties:
+            version:
+              type: string
+            location:
+              type: string
+            lastModified:
+              type: string
+              format: date-time
+            created:
+              type: string
+              format: date-time
+            resourceType:
+              type: string
+          type: object
+        name:
+          type: string
+        description:
+          type: string
+        endpoint:
+          type: string
+        schema:
+          type: string
+        schemaExtensions:
+          items:
+            properties:
+              required:
+                type: boolean
+              schema:
+                type: string
+            required:
+            - required
+            - schema
+            type: object
+          type: array
+      required:
+      - schemas
+      - id
+      - name
+      - endpoint
+      - schema
+      type: object
+      additionalProperties: true
+    ScimPatchSchema:
+      type: string
+      enum:
+      - urn:ietf:params:scim:api:messages:2.0:PatchOp
+    ScimSchemaType.LIST_RESPONSE:
+      enum:
+      - urn:ietf:params:scim:api:messages:2.0:ListResponse
+      type: string
+    ScimGroupMember:
+      properties:
+        value:
+          type: string
+        display:
+          type: string
+      required:
+      - value
+      type: object
+      additionalProperties: true
+    ScimRole:
+      properties:
+        schemas:
+          items:
+            $ref: '#/components/schemas/ScimSchemaType.ROLE'
+          type: array
+        id:
+          type: string
+        meta:
+          allOf:
+          - properties:
+              version:
+                type: string
+              location:
+                type: string
+              lastModified:
+                type: string
+                format: date-time
+              created:
+                type: string
+                format: date-time
+              resourceType:
+                type: string
+            type: object
+          - properties:
+              location:
+                type: string
+              lastModified:
+                type: string
+                format: date-time
+              created:
+                type: string
+                format: date-time
+              resourceType:
+                type: string
+                enum:
+                - Role
+            required:
+            - location
+            - resourceType
+            type: object
+        value:
+          type: string
+        display:
+          type: string
+        type:
+          type: string
+        supported:
+          type: boolean
+      required:
+      - schemas
+      - id
+      - value
+      - supported
+      - meta
+      type: object
+      additionalProperties: true
+    ScimSchemaType.ERROR:
+      enum:
+      - urn:ietf:params:scim:api:messages:2.0:Error
+      type: string
+    ScimSchemaType.ROLE:
+      enum:
+      - urn:ietf:params:scim:schemas:extension:2.0:Role
+      type: string
+    ScimListResponse_ScimResourceType_:
+      properties:
+        schemas:
+          items:
+            $ref: '#/components/schemas/ScimSchemaType.LIST_RESPONSE'
+          type: array
+        totalResults:
+          type: number
+          format: double
+        itemsPerPage:
+          type: number
+          format: double
+        startIndex:
+          type: number
+          format: double
+        Resources:
+          items:
+            $ref: '#/components/schemas/ScimResourceType'
+          type: array
+      required:
+      - schemas
+      - totalResults
+      - itemsPerPage
+      - startIndex
+      - Resources
+      type: object
+      additionalProperties: true
+    ScimSchemaAttribute:
+      properties:
+        name:
+          type: string
+        type:
+          type: string
+          enum:
+          - string
+          - boolean
+          - decimal
+          - integer
+          - dateTime
+          - reference
+          - complex
+        multiValued:
+          type: boolean
+        description:
+          type: string
+        required:
+          type: boolean
+        canonicalValues:
+          items:
+            type: string
+          type: array
+        caseExact:
+          type: boolean
+        mutability:
+          type: string
+          enum:
+          - readOnly
+          - readWrite
+          - immutable
+          - writeOnly
+        returned:
+          type: string
+          enum:
+          - always
+          - never
+          - default
+          - request
+        uniqueness:
+          type: string
+          enum:
+          - none
+          - server
+          - global
+        subAttributes:
+          items:
+            $ref: '#/components/schemas/ScimSchemaAttribute'
+          type: array
+      required:
+      - name
+      - type
+      - multiValued
+      - required
+      - caseExact
+      - mutability
+      - returned
+      - uniqueness
+      type: object
+      additionalProperties: true
+    LightdashScimExtension:
+      properties:
+        role:
+          type: string
+          deprecated: true
+      type: object
+      additionalProperties: true
+    ScimPatchOperation:
+      anyOf:
+      - $ref: '#/components/schemas/ScimPatchRemoveOperation'
+      - $ref: '#/components/schemas/ScimPatchAddReplaceOperation'
+    ScimSchemaType.SCHEMA:
+      enum:
+      - urn:ietf:params:scim:schemas:core:2.0:Schema
+      type: string
+    ScimSchema:
+      properties:
+        schemas:
+          items:
+            $ref: '#/components/schemas/ScimSchemaType.SCHEMA'
+          type: array
+        id:
+          type: string
+        meta:
+          properties:
+            version:
+              type: string
+            location:
+              type: string
+            lastModified:
+              type: string
+              format: date-time
+            created:
+              type: string
+              format: date-time
+            resourceType:
+              type: string
+          type: object
+        name:
+          type: string
+        description:
+          type: string
+        attributes:
+          items:
+            $ref: '#/components/schemas/ScimSchemaAttribute'
+          type: array
+      required:
+      - schemas
+      - id
+      - attributes
+      type: object
+      additionalProperties: true
+    ScimListResponse_ScimUser_:
+      properties:
+        schemas:
+          items:
+            $ref: '#/components/schemas/ScimSchemaType.LIST_RESPONSE'
+          type: array
+        totalResults:
+          type: number
+          format: double
+        itemsPerPage:
+          type: number
+          format: double
+        startIndex:
+          type: number
+          format: double
+        Resources:
+          items:
+            $ref: '#/components/schemas/ScimUser'
+          type: array
+      required:
+      - schemas
+      - totalResults
+      - itemsPerPage
+      - startIndex
+      - Resources
+      type: object
+      additionalProperties: true
+    Pick_ScimUser.Exclude_keyofScimUser.id__:
+      properties:
+        urn:lightdash:params:scim:schemas:extension:2.0:User:
+          $ref: '#/components/schemas/LightdashScimExtension'
+        schemas:
+          items:
+            type: string
+          type: array
+        userName:
+          type: string
+        name:
+          properties:
+            familyName:
+              type: string
+            givenName:
+              type: string
+          type: object
+        active:
+          type: boolean
+        emails:
+          items:
+            properties:
+              primary:
+                type: boolean
+              value:
+                type: string
+            required:
+            - value
+            type: object
+          type: array
+        roles:
+          items:
+            $ref: '#/components/schemas/ScimUserRole'
+          type: array
+        meta:
+          properties:
+            version:
+              type: string
+            location:
+              type: string
+            lastModified:
+              type: string
+              format: date-time
+            created:
+              type: string
+              format: date-time
+            resourceType:
+              type: string
+          type: object
+      required:
+      - schemas
+      - userName
+      type: object
+      description: From T, pick a set of properties whose keys are in the union K
     ScimListResponse_ScimRole_:
       properties:
         schemas:
@@ -1699,6 +1639,66 @@ components:
       - Resources
       type: object
       additionalProperties: true
+    ScimGroup:
+      properties:
+        schemas:
+          items:
+            type: string
+          type: array
+        id:
+          type: string
+        meta:
+          allOf:
+          - properties:
+              version:
+                type: string
+              location:
+                type: string
+              lastModified:
+                type: string
+                format: date-time
+              created:
+                type: string
+                format: date-time
+              resourceType:
+                type: string
+            type: object
+          - properties:
+              location:
+                type: string
+              lastModified:
+                type: string
+                format: date-time
+              created:
+                type: string
+                format: date-time
+              resourceType:
+                type: string
+                enum:
+                - Group
+            required:
+            - location
+            - lastModified
+            - created
+            - resourceType
+            type: object
+        displayName:
+          type: string
+        members:
+          items:
+            $ref: '#/components/schemas/ScimGroupMember'
+          type: array
+      required:
+      - schemas
+      - id
+      - displayName
+      - meta
+      type: object
+      additionalProperties: true
+    ScimSchemaType.RESOURCE_TYPE:
+      enum:
+      - urn:ietf:params:scim:schemas:core:2.0:ResourceType
+      type: string
   securitySchemes:
     session_cookie:
       type: apiKey
