@@ -84,18 +84,6 @@ components:
         These are only used on legacy `any` types, don''t use it for new types.
 
         This is added on a separate file to avoid circular dependencies.'
-    ApiShareResponse:
-      properties:
-        results:
-          $ref: '#/components/schemas/ShareUrl'
-        status:
-          type: string
-          enum:
-          - ok
-      required:
-      - results
-      - status
-      type: object
     ApiErrorPayload:
       properties:
         error:
@@ -128,18 +116,6 @@ components:
       description: 'The Error object is returned from the api any time there is an error.
 
         The message contains'
-    Pick_ShareUrl.path-or-params_:
-      properties:
-        path:
-          type: string
-          description: The URL path of the full URL
-        params:
-          type: string
-      required:
-      - path
-      - params
-      type: object
-      description: From T, pick a set of properties whose keys are in the union K
     ShareUrl:
       properties:
         host:
@@ -172,9 +148,33 @@ components:
         in the Lightdash UI. This allows very long URLs
 
         to be represented by short ids.'
+    ApiShareResponse:
+      properties:
+        results:
+          $ref: '#/components/schemas/ShareUrl'
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
     CreateShareUrl:
       $ref: '#/components/schemas/Pick_ShareUrl.path-or-params_'
       description: Contains the detail of a full URL to generate a short URL id
+    Pick_ShareUrl.path-or-params_:
+      properties:
+        path:
+          type: string
+          description: The URL path of the full URL
+        params:
+          type: string
+      required:
+      - path
+      - params
+      type: object
+      description: From T, pick a set of properties whose keys are in the union K
   securitySchemes:
     session_cookie:
       type: apiKey

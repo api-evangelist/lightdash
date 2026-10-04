@@ -229,22 +229,10 @@ paths:
           type: string
 components:
   schemas:
-    AnyType:
-      description: 'This AnyType is an alias for any
-
-        The goal is to make it easier to identify any type in the codebase
-
-        without having to eslint-disable all the time
-
-        These are only used on legacy `any` types, don''t use it for new types.
-
-        This is added on a separate file to avoid circular dependencies.'
-    ApiRoleAssigneesResponse:
+    ApiDefaultRoleResponse:
       properties:
         results:
-          items:
-            $ref: '#/components/schemas/RoleAssignee'
-          type: array
+          $ref: '#/components/schemas/Role'
         status:
           type: string
           enum:
@@ -252,29 +240,6 @@ components:
       required:
       - results
       - status
-      type: object
-    ApiUnassignRoleFromUserResponse:
-      $ref: '#/components/schemas/ApiSuccessEmpty'
-    UpdateRole:
-      properties:
-        scopes:
-          properties:
-            remove:
-              items:
-                type: string
-              type: array
-            add:
-              items:
-                type: string
-              type: array
-          required:
-          - remove
-          - add
-          type: object
-        description:
-          type: string
-        name:
-          type: string
       type: object
     ApiErrorPayload:
       properties:
@@ -308,18 +273,16 @@ components:
       description: 'The Error object is returned from the api any time there is an error.
 
         The message contains'
-    ApiDefaultRoleResponse:
-      properties:
-        results:
-          $ref: '#/components/schemas/Role'
-        status:
-          type: string
-          enum:
-          - ok
-      required:
-      - results
-      - status
-      type: object
+    AnyType:
+      description: 'This AnyType is an alias for any
+
+        The goal is to make it easier to identify any type in the codebase
+
+        without having to eslint-disable all the time
+
+        These are only used on legacy `any` types, don''t use it for new types.
+
+        This is added on a separate file to avoid circular dependencies.'
     RoleAssigneeKind:
       type: string
       enum:
@@ -327,42 +290,8 @@ components:
       - project_user
       - project_group
       - service_account
-    CreateRole:
-      properties:
-        scopes:
-          items:
-            type: string
-          type: array
-        description:
-          type: string
-        name:
-          type: string
-      required:
-      - name
-      type: object
-    RoleAssignee:
-      properties:
-        projectName:
-          type:
-          - string
-          - 'null'
-        projectUuid:
-          type:
-          - string
-          - 'null'
-        assigneeName:
-          type: string
-        assigneeId:
-          type: string
-        kind:
-          $ref: '#/components/schemas/RoleAssigneeKind'
-      required:
-      - projectName
-      - projectUuid
-      - assigneeName
-      - assigneeId
-      - kind
-      type: object
+    ApiRemoveScopeFromRoleResponse:
+      $ref: '#/components/schemas/ApiSuccessEmpty'
     AddScopesToRole:
       properties:
         scopeNames:
@@ -372,8 +301,41 @@ components:
       required:
       - scopeNames
       type: object
-    ApiRemoveScopeFromRoleResponse:
-      $ref: '#/components/schemas/ApiSuccessEmpty'
+    ApiRoleAssigneesResponse:
+      properties:
+        results:
+          items:
+            $ref: '#/components/schemas/RoleAssignee'
+          type: array
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
+    UpdateRole:
+      properties:
+        scopes:
+          properties:
+            remove:
+              items:
+                type: string
+              type: array
+            add:
+              items:
+                type: string
+              type: array
+          required:
+          - remove
+          - add
+          type: object
+        description:
+          type: string
+        name:
+          type: string
+      type: object
     Role:
       properties:
         updatedAt:
@@ -416,6 +378,44 @@ components:
       - description
       - name
       - roleUuid
+      type: object
+    ApiUnassignRoleFromUserResponse:
+      $ref: '#/components/schemas/ApiSuccessEmpty'
+    RoleAssignee:
+      properties:
+        projectName:
+          type:
+          - string
+          - 'null'
+        projectUuid:
+          type:
+          - string
+          - 'null'
+        assigneeName:
+          type: string
+        assigneeId:
+          type: string
+        kind:
+          $ref: '#/components/schemas/RoleAssigneeKind'
+      required:
+      - projectName
+      - projectUuid
+      - assigneeName
+      - assigneeId
+      - kind
+      type: object
+    CreateRole:
+      properties:
+        scopes:
+          items:
+            type: string
+          type: array
+        description:
+          type: string
+        name:
+          type: string
+      required:
+      - name
       type: object
     ApiSuccessEmpty:
       properties:

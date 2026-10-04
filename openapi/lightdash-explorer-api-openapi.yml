@@ -164,24 +164,26 @@ paths:
               type: object
 components:
   schemas:
-    MetricTotalComparisonType:
-      enum:
-      - none
-      - previous_period
-      - rolling_days
-      type: string
-    Format:
-      enum:
-      - km
-      - mi
-      - usd
-      - gbp
-      - eur
-      - jpy
-      - dkk
-      - id
-      - percent
-      type: string
+    FieldUrl:
+      properties:
+        label:
+          type: string
+        url:
+          type: string
+      required:
+      - label
+      - url
+      type: object
+    AnyType:
+      description: 'This AnyType is an alias for any
+
+        The goal is to make it easier to identify any type in the codebase
+
+        without having to eslint-disable all the time
+
+        These are only used on legacy `any` types, don''t use it for new types.
+
+        This is added on a separate file to avoid circular dependencies.'
     ApiErrorPayload:
       properties:
         error:
@@ -214,195 +216,92 @@ components:
       description: 'The Error object is returned from the api any time there is an error.
 
         The message contains'
-    CustomFormat:
+    DefaultTimeDimension:
       properties:
-        type:
-          $ref: '#/components/schemas/CustomFormatType'
-          description: Format type
-        round:
-          type: number
-          format: double
-          description: Number of decimal places
-        separator:
-          $ref: '#/components/schemas/NumberSeparator'
-          description: Number separator style
-        currency:
-          type: string
-          description: Currency code (e.g., USD, GBP, EUR)
-        compact:
-          $ref: '#/components/schemas/CompactOrAlias'
-          description: Compact format for large numbers (K, M, B, T) or byte units
-        prefix:
-          type: string
-          description: Prefix to prepend to formatted values
-        suffix:
-          type: string
-          description: Suffix to append to formatted values
-        timeInterval:
+        interval:
           $ref: '#/components/schemas/TimeFrames'
-          description: Time interval for date formatting
-        custom:
+        field:
           type: string
-          description: Custom format string
       required:
-      - type
+      - interval
+      - field
       type: object
-      additionalProperties: true
-    MetricType:
-      enum:
-      - percentile
-      - average
-      - count
-      - count_distinct
-      - sum
-      - sum_distinct
-      - average_distinct
-      - min
-      - max
-      - percent_of_previous
-      - percent_of_total
-      - running_total
-      - number
-      - median
-      - string
-      - date
-      - timestamp
-      - boolean
-      type: string
-    Record_string.Record_string.string-or-string-Array__:
+    ApiCompiledQueryResults:
+      properties:
+        compilationErrors:
+          items:
+            type: string
+          type: array
+        parameterReferences:
+          items:
+            type: string
+          type: array
+        pivotQuery:
+          type: string
+        query:
+          type: string
+      required:
+      - parameterReferences
+      - query
+      type: object
+    Record_string.string-or-string-Array_:
       properties: {}
       additionalProperties:
-        $ref: '#/components/schemas/Record_string.string-or-string-Array_'
+        anyOf:
+        - type: string
+        - items:
+            type: string
+          type: array
       type: object
       description: Construct a type with a set of properties K of type T
-    FieldCompilationError:
+    SourcePosition:
       properties:
-        message:
-          type: string
+        character:
+          type: number
+          format: double
+        line:
+          type: number
+          format: double
       required:
-      - message
+      - character
+      - line
       type: object
-      description: 'Error information stored on a field when compilation fails but
-
-        partial compilation mode is enabled.'
-    AnyType:
-      description: 'This AnyType is an alias for any
-
-        The goal is to make it easier to identify any type in the codebase
-
-        without having to eslint-disable all the time
-
-        These are only used on legacy `any` types, don''t use it for new types.
-
-        This is added on a separate file to avoid circular dependencies.'
-    CompiledDimension:
-      allOf:
-      - $ref: '#/components/schemas/Dimension'
-      - $ref: '#/components/schemas/CompiledProperties'
-    DimensionType.TIMESTAMP:
-      enum:
-      - timestamp
-      type: string
-    FieldUrl:
+    Source:
       properties:
-        label:
+        content:
           type: string
-        url:
-          type: string
-      required:
-      - label
-      - url
-      type: object
-    NumberSeparator:
-      enum:
-      - default
-      - commaPeriod
-      - spacePeriod
-      - periodComma
-      - noSeparatorPeriod
-      - apostrophePeriod
-      type: string
-    MetricFilterRule:
-      description: Filter rule for metrics, targeting fields by reference
-      properties:
-        values:
-          items:
-            $ref: '#/components/schemas/AnyType'
-          type: array
-          description: Values to filter by
-        operator:
-          $ref: '#/components/schemas/FilterOperator'
-          description: Filter operator
-        id:
-          type: string
-          description: Unique identifier for the filter
-        target:
+        highlight:
           properties:
-            fieldRef:
-              type: string
-              description: Field reference to filter on (e.g., 'table_name.field_name')
+            end:
+              $ref: '#/components/schemas/SourcePosition'
+            start:
+              $ref: '#/components/schemas/SourcePosition'
           required:
-          - fieldRef
+          - end
+          - start
           type: object
-          description: Target field for the filter
-        settings:
-          $ref: '#/components/schemas/AnyType'
-          description: Additional settings for date/time filters
-        disabled:
-          type: boolean
-          description: Whether this filter is disabled
-        required:
-          type: boolean
-          description: Whether this filter is required
-        caseSensitive:
-          type: boolean
-          description: 'Overrides the field/explore case-sensitivity for this rule only.
-
-            Used by internal features like autocomplete search that must always
-
-            match case-insensitively regardless of the field''s configured setting.'
+        range:
+          properties:
+            end:
+              $ref: '#/components/schemas/SourcePosition'
+            start:
+              $ref: '#/components/schemas/SourcePosition'
+          required:
+          - end
+          - start
+          type: object
+        path:
+          type: string
       required:
-      - operator
-      - id
-      - target
+      - content
+      - range
+      - path
       type: object
-      additionalProperties: true
-    CompactOrAlias:
-      anyOf:
-      - $ref: '#/components/schemas/Compact'
-      - type: string
-        enum:
-        - K
-        - thousand
-        - M
-        - million
-        - B
-        - billion
-        - T
-        - trillion
-        - KB
-        - kilobyte
-        - MB
-        - megabyte
-        - GB
-        - gigabyte
-        - TB
-        - terabyte
-        - PB
-        - petabyte
-        - KiB
-        - kibibyte
-        - MiB
-        - mebibyte
-        - GiB
-        - gibibyte
-        - TiB
-        - tebibyte
-        - PiB
-        - pebibyte
-    DimensionType.DATE:
+    MetricTotalComparisonType:
       enum:
-      - date
+      - none
+      - previous_period
+      - rolling_days
       type: string
     Metric:
       properties:
@@ -540,67 +439,168 @@ components:
       - hidden
       type: object
       additionalProperties: true
-    ApiCompiledQueryResults:
+    Compact:
+      enum:
+      - thousands
+      - millions
+      - billions
+      - trillions
+      - kilobytes
+      - megabytes
+      - gigabytes
+      - terabytes
+      - petabytes
+      - kibibytes
+      - mebibytes
+      - gibibytes
+      - tebibytes
+      - pebibytes
+      type: string
+    MetricFilterRule:
+      description: Filter rule for metrics, targeting fields by reference
       properties:
-        compilationErrors:
+        values:
           items:
-            type: string
+            $ref: '#/components/schemas/AnyType'
           type: array
-        parameterReferences:
-          items:
-            type: string
-          type: array
-        pivotQuery:
+          description: Values to filter by
+        operator:
+          $ref: '#/components/schemas/FilterOperator'
+          description: Filter operator
+        id:
           type: string
-        query:
-          type: string
-      required:
-      - parameterReferences
-      - query
-      type: object
-    ApiMetricsExplorerTotalResults:
-      properties:
-        results:
-          $ref: '#/components/schemas/MetricTotalResults'
-        status:
-          type: string
-          enum:
-          - ok
-      required:
-      - results
-      - status
-      type: object
-    Source:
-      properties:
-        content:
-          type: string
-        highlight:
+          description: Unique identifier for the filter
+        target:
           properties:
-            end:
-              $ref: '#/components/schemas/SourcePosition'
-            start:
-              $ref: '#/components/schemas/SourcePosition'
+            fieldRef:
+              type: string
+              description: Field reference to filter on (e.g., 'table_name.field_name')
           required:
-          - end
-          - start
+          - fieldRef
           type: object
-        range:
-          properties:
-            end:
-              $ref: '#/components/schemas/SourcePosition'
-            start:
-              $ref: '#/components/schemas/SourcePosition'
-          required:
-          - end
-          - start
-          type: object
-        path:
+          description: Target field for the filter
+        settings:
+          $ref: '#/components/schemas/AnyType'
+          description: Additional settings for date/time filters
+        disabled:
+          type: boolean
+          description: Whether this filter is disabled
+        required:
+          type: boolean
+          description: Whether this filter is required
+        caseSensitive:
+          type: boolean
+          description: 'Overrides the field/explore case-sensitivity for this rule only.
+
+            Used by internal features like autocomplete search that must always
+
+            match case-insensitively regardless of the field''s configured setting.'
+      required:
+      - operator
+      - id
+      - target
+      type: object
+      additionalProperties: true
+    FieldType.DIMENSION:
+      enum:
+      - dimension
+      type: string
+    CustomFormatType:
+      enum:
+      - default
+      - percent
+      - currency
+      - number
+      - id
+      - date
+      - timestamp
+      - bytes_si
+      - bytes_iec
+      - custom
+      type: string
+    DimensionType.TIMESTAMP:
+      enum:
+      - timestamp
+      type: string
+    Format:
+      enum:
+      - km
+      - mi
+      - usd
+      - gbp
+      - eur
+      - jpy
+      - dkk
+      - id
+      - percent
+      type: string
+    CustomFormat:
+      properties:
+        type:
+          $ref: '#/components/schemas/CustomFormatType'
+          description: Format type
+        round:
+          type: number
+          format: double
+          description: Number of decimal places
+        separator:
+          $ref: '#/components/schemas/NumberSeparator'
+          description: Number separator style
+        currency:
+          type: string
+          description: Currency code (e.g., USD, GBP, EUR)
+        compact:
+          $ref: '#/components/schemas/CompactOrAlias'
+          description: Compact format for large numbers (K, M, B, T) or byte units
+        prefix:
+          type: string
+          description: Prefix to prepend to formatted values
+        suffix:
+          type: string
+          description: Suffix to append to formatted values
+        timeInterval:
+          $ref: '#/components/schemas/TimeFrames'
+          description: Time interval for date formatting
+        custom:
+          type: string
+          description: Custom format string
+      required:
+      - type
+      type: object
+      additionalProperties: true
+    FieldCompilationError:
+      properties:
+        message:
           type: string
       required:
-      - content
-      - range
-      - path
+      - message
       type: object
+      description: 'Error information stored on a field when compilation fails but
+
+        partial compilation mode is enabled.'
+    FilterOperator:
+      enum:
+      - isNull
+      - notNull
+      - equals
+      - notEquals
+      - startsWith
+      - endsWith
+      - include
+      - doesNotInclude
+      - lessThan
+      - lessThanOrEqual
+      - greaterThan
+      - greaterThanOrEqual
+      - inThePast
+      - notInThePast
+      - inTheNext
+      - inTheCurrent
+      - notInTheCurrent
+      - inBetween
+      - notInBetween
+      - inPeriodToDate
+      type: string
     MetricWithAssociatedTimeDimension:
       allOf:
       - $ref: '#/components/schemas/CompiledMetric'
@@ -628,48 +628,62 @@ components:
               - table
               type: object
         type: object
-    TimeFrames:
+    CompactOrAlias:
+      anyOf:
+      - $ref: '#/components/schemas/Compact'
+      - type: string
+        enum:
+        - K
+        - thousand
+        - M
+        - million
+        - B
+        - billion
+        - T
+        - trillion
+        - KB
+        - kilobyte
+        - MB
+        - megabyte
+        - GB
+        - gigabyte
+        - TB
+        - terabyte
+        - PB
+        - petabyte
+        - KiB
+        - kibibyte
+        - MiB
+        - mebibyte
+        - GiB
+        - gibibyte
+        - TiB
+        - tebibyte
+        - PiB
+        - pebibyte
+    DimensionType:
       enum:
-      - RAW
-      - YEAR
-      - QUARTER
-      - MONTH
-      - WEEK
-      - DAY
-      - HOUR
-      - MINUTE
-      - SECOND
-      - MILLISECOND
-      - DAY_OF_WEEK_INDEX
-      - DAY_OF_MONTH_NUM
-      - DAY_OF_YEAR_NUM
-      - WEEK_NUM
-      - MONTH_NUM
-      - QUARTER_NUM
-      - YEAR_NUM
-      - DAY_OF_WEEK_NAME
-      - MONTH_NAME
-      - QUARTER_NAME
-      - HOUR_OF_DAY_NUM
-      - MINUTE_OF_HOUR_NUM
+      - string
+      - number
+      - timestamp
+      - date
+      - boolean
       type: string
-    Compact:
+    NumberSeparator:
       enum:
-      - thousands
-      - millions
-      - billions
-      - trillions
-      - kilobytes
-      - megabytes
-      - gigabytes
-      - terabytes
-      - petabytes
-      - kibibytes
-      - mebibytes
-      - gibibytes
-      - tebibytes
-      - pebibytes
+      - default
+      - commaPeriod
+      - spacePeriod
+      - periodComma
+      - noSeparatorPeriod
+      - apostrophePeriod
       type: string
+    Record_string.string_:
+      properties: {}
+      additionalProperties:
+        type: string
+      type: object
+      description: Construct a type with a set of properties K of type T
     MetricTotalResults:
       properties:
         metric:
@@ -689,14 +703,6 @@ components:
       - comparisonValue
       - value
       type: object
-    DimensionType:
-      enum:
-      - string
-      - number
-      - timestamp
-      - date
-      - boolean
-      type: string
     Dimension:
       properties:
         fieldType:
@@ -825,75 +831,10 @@ components:
       - hidden
       type: object
       additionalProperties: true
-    SourcePosition:
-      properties:
-        character:
-          type: number
-          format: double
-        line:
-          type: number
-          format: double
-      required:
-      - character
-      - line
-      type: object
-    FieldType.METRIC:
-      enum:
-      - metric
-      type: string
-    Record_string.string_:
-      properties: {}
-      additionalProperties:
-        type: string
-      type: object
-      description: Construct a type with a set of properties K of type T
-    DefaultTimeDimension:
-      properties:
-        interval:
-          $ref: '#/components/schemas/TimeFrames'
-        field:
-          type: string
-      required:
-      - interval
-      - field
-      type: object
-    FilterOperator:
-      enum:
-      - isNull
-      - notNull
-      - equals
-      - notEquals
-      - startsWith
-      - endsWith
-      - include
-      - doesNotInclude
-      - lessThan
-      - lessThanOrEqual
-      - greaterThan
-      - greaterThanOrEqual
-      - inThePast
-      - notInThePast
-      - inTheNext
-      - inTheCurrent
-      - notInTheCurrent
-      - inBetween
-      - notInBetween
-      - inPeriodToDate
-      type: string
-    FieldType.DIMENSION:
-      enum:
-      - dimension
-      type: string
-    Record_string.string-or-string-Array_:
-      properties: {}
-      additionalProperties:
-        anyOf:
-        - type: string
-        - items:
-            type: string
-          type: array
-      type: object
-      description: Construct a type with a set of properties K of type T
+    CompiledMetric:
+      allOf:
+      - $ref: '#/components/schemas/Metric'
+      - $ref: '#/components/schemas/CompiledProperties'
     CompiledProperties:
       properties:
         compiledDistinctKeys:
@@ -920,22 +861,81 @@ components:
       required:
       - compiledSql
       type: object
-    CompiledMetric:
-      allOf:
-      - $ref: '#/components/schemas/Metric'
-      - $ref: '#/components/schemas/CompiledProperties'
-    CustomFormatType:
+    DimensionType.DATE:
       enum:
-      - default
-      - percent
-      - currency
+      - date
+      type: string
+    CompiledDimension:
+      allOf:
+      - $ref: '#/components/schemas/Dimension'
+      - $ref: '#/components/schemas/CompiledProperties'
+    Record_string.Record_string.string-or-string-Array__:
+      properties: {}
+      additionalProperties:
+        $ref: '#/components/schemas/Record_string.string-or-string-Array_'
+      type: object
+      description: Construct a type with a set of properties K of type T
+    ApiMetricsExplorerTotalResults:
+      properties:
+        results:
+          $ref: '#/components/schemas/MetricTotalResults'
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
+    TimeFrames:
+      enum:
+      - RAW
+      - YEAR
+      - QUARTER
+      - MONTH
+      - WEEK
+      - DAY
+      - HOUR
+      - MINUTE
+      - SECOND
+      - MILLISECOND
+      - DAY_OF_WEEK_INDEX
+      - DAY_OF_MONTH_NUM
+      - DAY_OF_YEAR_NUM
+      - WEEK_NUM
+      - MONTH_NUM
+      - QUARTER_NUM
+      - YEAR_NUM
+      - DAY_OF_WEEK_NAME
+      - MONTH_NAME
+      - QUARTER_NAME
+      - HOUR_OF_DAY_NUM
+      - MINUTE_OF_HOUR_NUM
+      type: string
+    MetricType:
+      enum:
+      - percentile
+      - average
+      - count
+      - count_distinct
+      - sum
+      - sum_distinct
+      - average_distinct
+      - min
+      - max
+      - percent_of_previous
+      - percent_of_total
+      - running_total
       - number
-      - id
+      - median
+      - string
       - date
       - timestamp
-      - bytes_si
-      - bytes_iec
-      - custom
+      - boolean
+      type: string
+    FieldType.METRIC:
+      enum:
+      - metric
       type: string
   securitySchemes:
     session_cookie:

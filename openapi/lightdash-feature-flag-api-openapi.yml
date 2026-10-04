@@ -64,6 +64,16 @@ components:
         These are only used on legacy `any` types, don''t use it for new types.
 
         This is added on a separate file to avoid circular dependencies.'
+    FeatureFlag:
+      properties:
+        enabled:
+          type: boolean
+        id:
+          type: string
+      required:
+      - enabled
+      - id
+      type: object
     ApiErrorPayload:
       properties:
         error:
@@ -96,16 +106,6 @@ components:
       description: 'The Error object is returned from the api any time there is an error.
 
         The message contains'
-    FeatureFlag:
-      properties:
-        enabled:
-          type: boolean
-        id:
-          type: string
-      required:
-      - enabled
-      - id
-      type: object
   securitySchemes:
     session_cookie:
       type: apiKey

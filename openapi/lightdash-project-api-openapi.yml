@@ -113,52 +113,29 @@ paths:
           type: string
 components:
   schemas:
-    AnyType:
-      description: 'This AnyType is an alias for any
-
-        The goal is to make it easier to identify any type in the codebase
-
-        without having to eslint-disable all the time
-
-        These are only used on legacy `any` types, don''t use it for new types.
-
-        This is added on a separate file to avoid circular dependencies.'
-    ExploreWarningReport:
+    DeploySessionStatus:
+      enum:
+      - uploading
+      - finalizing
+      - completed
+      - failed
+      type: string
+    NonNullable_Explore-at-warnings_:
+      allOf:
+      - items:
+          $ref: '#/components/schemas/InlineError'
+        type: array
+      - properties: {}
+        type: object
+      description: Exclude null and undefined from T
+    Pick_Explore.name_:
       properties:
-        exploresWithWarnings:
-          items:
-            $ref: '#/components/schemas/ExploreWarningSummary'
-          type: array
-        warningExploreCount:
-          type: number
-          format: double
-        warningCount:
-          type: number
-          format: double
-      required:
-      - exploresWithWarnings
-      - warningExploreCount
-      - warningCount
-      type: object
-    ApiFinalizeDeployResponse:
-      properties:
-        results:
-          allOf:
-          - $ref: '#/components/schemas/ApiDeployExploresResults'
-          - properties:
-              status:
-                $ref: '#/components/schemas/DeploySessionStatus'
-            required:
-            - status
-            type: object
-        status:
+        name:
           type: string
-          enum:
-          - ok
       required:
-      - results
-      - status
+      - name
       type: object
+      description: From T, pick a set of properties whose keys are in the union K
     ApiErrorPayload:
       properties:
         error:
@@ -191,6 +168,16 @@ components:
       description: 'The Error object is returned from the api any time there is an error.
 
         The message contains'
+    AnyType:
+      description: 'This AnyType is an alias for any
+
+        The goal is to make it easier to identify any type in the codebase
+
+        without having to eslint-disable all the time
+
+        These are only used on legacy `any` types, don''t use it for new types.
+
+        This is added on a separate file to avoid circular dependencies.'
     InlineErrorType:
       enum:
       - METADATA_PARSE_ERROR
@@ -202,24 +189,22 @@ components:
       - INVALID_PARAMETER
       - DUPLICATE_FIELD_NAME
       type: string
-    ExploreWarningSummary:
-      allOf:
-      - $ref: '#/components/schemas/Pick_Explore.name_'
-      - properties:
-          warnings:
-            $ref: '#/components/schemas/NonNullable_Explore-at-warnings_'
-        required:
-        - warnings
-        type: object
-    InlineError:
+    ApiStartDeploySessionResponse:
       properties:
-        message:
+        results:
+          properties:
+            deploySessionUuid:
+              type: string
+          required:
+          - deploySessionUuid
+          type: object
+        status:
           type: string
-        type:
-          $ref: '#/components/schemas/InlineErrorType'
+          enum:
+          - ok
       required:
-      - message
-      - type
+      - results
+      - status
       type: object
     ApiDeployExploresResults:
       properties:
@@ -232,21 +217,51 @@ components:
       - warnings
       - exploreCount
       type: object
-    Pick_Explore.name_:
+    ApiFinalizeDeployResponse:
       properties:
-        name:
+        results:
+          allOf:
+          - $ref: '#/components/schemas/ApiDeployExploresResults'
+          - properties:
+              status:
+                $ref: '#/components/schemas/DeploySessionStatus'
+            required:
+            - status
+            type: object
+        status:
           type: string
+          enum:
+          - ok
       required:
-      - name
+      - results
+      - status
       type: object
-      description: From T, pick a set of properties whose keys are in the union K
-    DeploySessionStatus:
-      enum:
-      - uploading
-      - finalizing
-      - completed
-      - failed
-      type: string
+    ExploreWarningSummary:
+      allOf:
+      - $ref: '#/components/schemas/Pick_Explore.name_'
+      - properties:
+          warnings:
+            $ref: '#/components/schemas/NonNullable_Explore-at-warnings_'
+        required:
+        - warnings
+        type: object
+    ExploreWarningReport:
+      properties:
+        exploresWithWarnings:
+          items:
+            $ref: '#/components/schemas/ExploreWarningSummary'
+          type: array
+        warningExploreCount:
+          type: number
+          format: double
+        warningCount:
+          type: number
+          format: double
+      required:
+      - exploresWithWarnings
+      - warningExploreCount
+      - warningCount
+      type: object
     ApiAddDeployBatchResponse:
       properties:
         results:
@@ -269,31 +284,16 @@ components:
       - results
       - status
       type: object
-    ApiStartDeploySessionResponse:
+    InlineError:
       properties:
-        results:
-          properties:
-            deploySessionUuid:
-              type: string
-          required:
-          - deploySessionUuid
-          type: object
-        status:
+        message:
           type: string
-          enum:
-          - ok
+        type:
+          $ref: '#/components/schemas/InlineErrorType'
       required:
-      - results
-      - status
+      - message
+      - type
       type: object
-    NonNullable_Explore-at-warnings_:
-      allOf:
-      - items:
-          $ref: '#/components/schemas/InlineError'
-        type: array
-      - properties: {}
-        type: object
-      description: Exclude null and undefined from T
   securitySchemes:
     session_cookie:
       type: apiKey

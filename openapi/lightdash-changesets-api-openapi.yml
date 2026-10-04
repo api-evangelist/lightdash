@@ -134,8 +134,20 @@ paths:
           type: string
 components:
   schemas:
-    ChangeTSOACompat:
-      $ref: '#/components/schemas/Record_string.unknown_'
+    ApiChangesetsResponseTSOACompat:
+      properties:
+        results:
+          items:
+            $ref: '#/components/schemas/ChangesetTSOACompat'
+          type: array
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
     AnyType:
       description: 'This AnyType is an alias for any
 
@@ -146,8 +158,6 @@ components:
         These are only used on legacy `any` types, don''t use it for new types.
 
         This is added on a separate file to avoid circular dependencies.'
-    ChangesetTSOACompat:
-      $ref: '#/components/schemas/Record_string.unknown_'
     ApiErrorPayload:
       properties:
         error:
@@ -180,13 +190,27 @@ components:
       description: 'The Error object is returned from the api any time there is an error.
 
         The message contains'
+    ChangeTSOACompat:
+      $ref: '#/components/schemas/Record_string.unknown_'
+    ChangesetTSOACompat:
+      $ref: '#/components/schemas/Record_string.unknown_'
+    ApiRevertChangeResponse:
+      $ref: '#/components/schemas/ApiSuccessEmpty'
+    ApiSuccessEmpty:
+      properties:
+        results: {}
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - status
+      type: object
     Record_string.unknown_:
       properties: {}
       additionalProperties: {}
       type: object
       description: Construct a type with a set of properties K of type T
-    ApiRevertChangeResponse:
-      $ref: '#/components/schemas/ApiSuccessEmpty'
     ApiGetChangeResponseTSOACompat:
       properties:
         results:
@@ -197,30 +221,6 @@ components:
           - ok
       required:
       - results
-      - status
-      type: object
-    ApiChangesetsResponseTSOACompat:
-      properties:
-        results:
-          items:
-            $ref: '#/components/schemas/ChangesetTSOACompat'
-          type: array
-        status:
-          type: string
-          enum:
-          - ok
-      required:
-      - results
-      - status
-      type: object
-    ApiSuccessEmpty:
-      properties:
-        results: {}
-        status:
-          type: string
-          enum:
-          - ok
-      required:
       - status
       type: object
   securitySchemes:

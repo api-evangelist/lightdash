@@ -217,27 +217,20 @@ paths:
           type: string
 components:
   schemas:
-    AnyType:
-      description: 'This AnyType is an alias for any
-
-        The goal is to make it easier to identify any type in the codebase
-
-        without having to eslint-disable all the time
-
-        These are only used on legacy `any` types, don''t use it for new types.
-
-        This is added on a separate file to avoid circular dependencies.'
-    UpsertUserRoleAssignmentRequest:
+    ApiRoleAssignmentListResponse:
       properties:
-        sendEmail:
-          type: boolean
-        roleId:
+        results:
+          items:
+            $ref: '#/components/schemas/RoleAssignment'
+          type: array
+        status:
           type: string
+          enum:
+          - ok
       required:
-      - roleId
+      - results
+      - status
       type: object
-    ApiUnassignRoleFromUserResponse:
-      $ref: '#/components/schemas/ApiSuccessEmpty'
     ApiErrorPayload:
       properties:
         error:
@@ -270,6 +263,25 @@ components:
       description: 'The Error object is returned from the api any time there is an error.
 
         The message contains'
+    AnyType:
+      description: 'This AnyType is an alias for any
+
+        The goal is to make it easier to identify any type in the codebase
+
+        without having to eslint-disable all the time
+
+        These are only used on legacy `any` types, don''t use it for new types.
+
+        This is added on a separate file to avoid circular dependencies.'
+    UpsertUserRoleAssignmentRequest:
+      properties:
+        sendEmail:
+          type: boolean
+        roleId:
+          type: string
+      required:
+      - roleId
+      type: object
     ApiRoleAssignmentResponse:
       properties:
         results:
@@ -322,26 +334,14 @@ components:
       - roleName
       - roleId
       type: object
+    ApiUnassignRoleFromUserResponse:
+      $ref: '#/components/schemas/ApiSuccessEmpty'
     UpdateRoleAssignmentRequest:
       properties:
         roleId:
           type: string
       required:
       - roleId
-      type: object
-    ApiRoleAssignmentListResponse:
-      properties:
-        results:
-          items:
-            $ref: '#/components/schemas/RoleAssignment'
-          type: array
-        status:
-          type: string
-          enum:
-          - ok
-      required:
-      - results
-      - status
       type: object
     ApiSuccessEmpty:
       properties:

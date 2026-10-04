@@ -130,52 +130,6 @@ paths:
           type: string
 components:
   schemas:
-    ApiCreateUserAttributeResponse:
-      properties:
-        results:
-          $ref: '#/components/schemas/UserAttribute'
-        status:
-          type: string
-          enum:
-          - ok
-      required:
-      - results
-      - status
-      type: object
-    Omit_UserAttributeValue.email_:
-      $ref: '#/components/schemas/Pick_UserAttributeValue.Exclude_keyofUserAttributeValue.email__'
-      description: Construct a type with the properties of T except for those in type K.
-    Pick_UserAttributeValue.Exclude_keyofUserAttributeValue.email__:
-      properties:
-        userUuid:
-          type: string
-        value:
-          type: string
-      required:
-      - userUuid
-      - value
-      type: object
-      description: From T, pick a set of properties whose keys are in the union K
-    GroupAttributeValue:
-      properties:
-        value:
-          type: string
-        groupUuid:
-          type: string
-      required:
-      - value
-      - groupUuid
-      type: object
-    AnyType:
-      description: 'This AnyType is an alias for any
-
-        The goal is to make it easier to identify any type in the codebase
-
-        without having to eslint-disable all the time
-
-        These are only used on legacy `any` types, don''t use it for new types.
-
-        This is added on a separate file to avoid circular dependencies.'
     ApiUserAttributesResponse:
       properties:
         results:
@@ -190,8 +144,19 @@ components:
       - results
       - status
       type: object
-    CreateUserAttributeValue:
-      $ref: '#/components/schemas/Omit_UserAttributeValue.email_'
+    UserAttributeValue:
+      properties:
+        value:
+          type: string
+        email:
+          type: string
+        userUuid:
+          type: string
+      required:
+      - value
+      - email
+      - userUuid
+      type: object
     ApiErrorPayload:
       properties:
         error:
@@ -224,23 +189,48 @@ components:
       description: 'The Error object is returned from the api any time there is an error.
 
         The message contains'
+    AnyType:
+      description: 'This AnyType is an alias for any
+
+        The goal is to make it easier to identify any type in the codebase
+
+        without having to eslint-disable all the time
+
+        These are only used on legacy `any` types, don''t use it for new types.
+
+        This is added on a separate file to avoid circular dependencies.'
     CreateGroupAttributeValue:
       $ref: '#/components/schemas/GroupAttributeValue'
-    Pick_UserAttribute.name-or-description-or-attributeDefault_:
+    CreateUserAttribute:
+      allOf:
+      - $ref: '#/components/schemas/Pick_UserAttribute.name-or-description-or-attributeDefault_'
+      - properties:
+          groups:
+            items:
+              $ref: '#/components/schemas/CreateGroupAttributeValue'
+            type: array
+          users:
+            items:
+              $ref: '#/components/schemas/CreateUserAttributeValue'
+            type: array
+        required:
+        - groups
+        - users
+        type: object
+    Pick_UserAttributeValue.Exclude_keyofUserAttributeValue.email__:
       properties:
-        description:
+        userUuid:
           type: string
-        name:
+        value:
           type: string
-        attributeDefault:
-          type:
-          - string
-          - 'null'
       required:
-      - name
-      - attributeDefault
+      - userUuid
+      - value
       type: object
       description: From T, pick a set of properties whose keys are in the union K
+    Omit_UserAttributeValue.email_:
+      $ref: '#/components/schemas/Pick_UserAttributeValue.Exclude_keyofUserAttributeValue.email__'
+      description: Construct a type with the properties of T except for those in type K.
     UserAttribute:
       properties:
         attributeDefault:
@@ -275,35 +265,35 @@ components:
       - createdAt
       - uuid
       type: object
-    UserAttributeValue:
+    ApiCreateUserAttributeResponse:
       properties:
-        value:
+        results:
+          $ref: '#/components/schemas/UserAttribute'
+        status:
           type: string
-        email:
-          type: string
-        userUuid:
-          type: string
+          enum:
+          - ok
       required:
-      - value
-      - email
-      - userUuid
+      - results
+      - status
       type: object
-    CreateUserAttribute:
-      allOf:
-      - $ref: '#/components/schemas/Pick_UserAttribute.name-or-description-or-attributeDefault_'
-      - properties:
-          groups:
-            items:
-              $ref: '#/components/schemas/CreateGroupAttributeValue'
-            type: array
-          users:
-            items:
-              $ref: '#/components/schemas/CreateUserAttributeValue'
-            type: array
-        required:
-        - groups
-        - users
-        type: object
+    Pick_UserAttribute.name-or-description-or-attributeDefault_:
+      properties:
+        description:
+          type: string
+        name:
+          type: string
+        attributeDefault:
+          type:
+          - string
+          - 'null'
+      required:
+      - name
+      - attributeDefault
+      type: object
+      description: From T, pick a set of properties whose keys are in the union K
+    CreateUserAttributeValue:
+      $ref: '#/components/schemas/Omit_UserAttributeValue.email_'
     ApiSuccessEmpty:
       properties:
         results: {}
@@ -313,6 +303,16 @@ components:
           - ok
       required:
       - status
+      type: object
+    GroupAttributeValue:
+      properties:
+        value:
+          type: string
+        groupUuid:
+          type: string
+      required:
+      - value
+      - groupUuid
       type: object
   securitySchemes:
     session_cookie:

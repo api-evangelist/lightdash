@@ -703,249 +703,22 @@ paths:
           type: string
 components:
   schemas:
-    LogCounts:
+    ApiTestSchedulerResponse:
       properties:
-        error:
-          type: number
-          format: double
-        completed:
-          type: number
-          format: double
-        started:
-          type: number
-          format: double
-        scheduled:
-          type: number
-          format: double
-        total:
-          type: number
-          format: double
-      required:
-      - error
-      - completed
-      - started
-      - scheduled
-      - total
-      type: object
-    DashboardFilterRule:
-      allOf:
-      - $ref: '#/components/schemas/FilterRule_FilterOperator.DashboardFieldTarget.AnyType.AnyType_'
-      - properties:
-          lockedTabUuids:
-            items:
-              type: string
-            type: array
-            description: 'Tab UUIDs where this filter is locked. When the active tab is in this
-
-              list, viewers see the filter but cannot change it, and URL / embed
-
-              filter overrides targeting the same field are ignored on that tab.
-
-              Empty or omitted means the filter is not locked anywhere.'
-          singleValue:
-            type: boolean
-          label:
-            type: string
-          tileTargets:
-            $ref: '#/components/schemas/Record_string.DashboardTileTarget_'
-        type: object
-    SqlChartScheduler:
-      allOf:
-      - $ref: '#/components/schemas/SchedulerBase'
-      - properties:
-          appUuid:
-            type:
-            - number
-            - 'null'
-            enum:
-            - null
-          savedSqlUuid:
-            type: string
-          dashboardUuid:
-            type:
-            - number
-            - 'null'
-            enum:
-            - null
-          savedChartUuid:
-            type:
-            - number
-            - 'null'
-            enum:
-            - null
-        required:
-        - appUuid
-        - savedSqlUuid
-        - dashboardUuid
-        - savedChartUuid
-        type: object
-    SchedulerPdfOptions:
-      $ref: '#/components/schemas/Record_string.never_'
-    ApiSchedulerRunsResponse:
-      $ref: '#/components/schemas/ApiSuccess_KnexPaginatedData_SchedulerRun-Array__'
-    ApiErrorPayload:
-      properties:
-        error:
+        results:
           properties:
-            data:
-              $ref: '#/components/schemas/AnyType'
-              description: Optional data containing details of the error
-            message:
+            jobId:
               type: string
-              description: A friendly message summarising the error
-            name:
-              type: string
-              description: Unique name for the type of error
-            statusCode:
-              type: number
-              format: integer
-              description: HTTP status code
           required:
-          - name
-          - statusCode
+          - jobId
           type: object
         status:
           type: string
           enum:
-          - error
+          - ok
       required:
-      - error
+      - results
       - status
-      type: object
-      description: 'The Error object is returned from the api any time there is an error.
-
-        The message contains'
-    SchedulerFormat:
-      enum:
-      - csv
-      - xlsx
-      - image
-      - gsheets
-      - pdf
-      type: string
-    NotificationFrequency:
-      enum:
-      - always
-      - once
-      type: string
-    SchedulerCsvOptions:
-      properties:
-        exportPivotedData:
-          type: boolean
-        asAttachment:
-          type: boolean
-        limit:
-          anyOf:
-          - type: number
-            format: double
-          - type: string
-            enum:
-            - table
-            - all
-        formatted:
-          type: boolean
-      required:
-      - limit
-      - formatted
-      type: object
-    SchedulerEmailTarget:
-      properties:
-        recipient:
-          type: string
-        schedulerUuid:
-          type: string
-        updatedAt:
-          type: string
-          format: date-time
-        createdAt:
-          type: string
-          format: date-time
-        schedulerEmailTargetUuid:
-          type: string
-      required:
-      - recipient
-      - schedulerUuid
-      - updatedAt
-      - createdAt
-      - schedulerEmailTargetUuid
-      type: object
-    Record_string.ParameterValue_:
-      properties: {}
-      additionalProperties:
-        $ref: '#/components/schemas/ParameterValue'
-      type: object
-      description: Construct a type with a set of properties K of type T
-    ParameterValue:
-      anyOf:
-      - type: string
-      - type: number
-        format: double
-      - items:
-          type: string
-        type: array
-      - items:
-          type: number
-          format: double
-        type: array
-    SchedulerRunLog:
-      allOf:
-      - $ref: '#/components/schemas/BaseSchedulerLog'
-      - properties:
-          isParent:
-            type: boolean
-          details:
-            allOf:
-            - $ref: '#/components/schemas/SchedulerDetails'
-          targetType:
-            allOf:
-            - $ref: '#/components/schemas/SchedulerTargetType'
-          target:
-            type:
-            - string
-            - 'null'
-          jobGroup:
-            type: string
-        required:
-        - isParent
-        - details
-        - targetType
-        - target
-        - jobGroup
-        type: object
-    KnexPaginateArgs:
-      properties:
-        page:
-          type: number
-          format: double
-        pageSize:
-          type: number
-          format: double
-      required:
-      - page
-      - pageSize
-      type: object
-    KnexPaginatedData_SchedulerRun-Array_:
-      properties:
-        pagination:
-          allOf:
-          - $ref: '#/components/schemas/KnexPaginateArgs'
-          - properties:
-              totalResults:
-                type: number
-                format: double
-              totalPageCount:
-                type: number
-                format: double
-            required:
-            - totalResults
-            - totalPageCount
-            type: object
-        data:
-          items:
-            $ref: '#/components/schemas/SchedulerRun'
-          type: array
-      required:
-      - data
       type: object
     SchedulerWithLogs:
       properties:
@@ -1003,89 +776,21 @@ components:
       - users
       - schedulers
       type: object
-    SchedulerGsheetsOptions:
-      properties:
-        tabName:
-          type: string
-        url:
-          type: string
-        gdriveOrganizationName:
-          type: string
-        gdriveName:
-          type: string
-        gdriveId:
-          type: string
-      required:
-      - url
-      - gdriveOrganizationName
-      - gdriveName
-      - gdriveId
-      type: object
-    SchedulerOptions:
+    Scheduler:
       anyOf:
-      - $ref: '#/components/schemas/SchedulerCsvOptions'
-      - $ref: '#/components/schemas/SchedulerImageOptions'
-      - $ref: '#/components/schemas/SchedulerGsheetsOptions'
-      - $ref: '#/components/schemas/SchedulerPdfOptions'
-    DashboardTileTarget:
-      anyOf:
-      - $ref: '#/components/schemas/DashboardFieldTarget'
-      - type: boolean
-        enum:
-        - false
-    ThresholdOperator:
+      - $ref: '#/components/schemas/ChartScheduler'
+      - $ref: '#/components/schemas/DashboardScheduler'
+      - $ref: '#/components/schemas/SqlChartScheduler'
+      - $ref: '#/components/schemas/AppScheduler'
+    SchedulerJobStatus:
       enum:
-      - greaterThan
-      - lessThan
-      - increasedBy
-      - decreasedBy
+      - scheduled
+      - started
+      - completed
+      - error
       type: string
-    DashboardScheduler:
-      allOf:
-      - $ref: '#/components/schemas/SchedulerBase'
-      - properties:
-          selectedTabs:
-            items:
-              type: string
-            type:
-            - array
-            - 'null'
-          customViewportWidth:
-            type: number
-            format: double
-          parameters:
-            $ref: '#/components/schemas/ParametersValuesMap'
-          filters:
-            items:
-              $ref: '#/components/schemas/DashboardFilterRule'
-            type: array
-          appUuid:
-            type:
-            - number
-            - 'null'
-            enum:
-            - null
-          savedSqlUuid:
-            type:
-            - number
-            - 'null'
-            enum:
-            - null
-          dashboardUuid:
-            type: string
-          savedChartUuid:
-            type:
-            - number
-            - 'null'
-            enum:
-            - null
-        required:
-        - selectedTabs
-        - appUuid
-        - savedSqlUuid
-        - dashboardUuid
-        - savedChartUuid
-        type: object
+    ParametersValuesMap:
+      $ref: '#/components/schemas/Record_string.ParameterValue_'
     AnyType:
       description: 'This AnyType is an alias for any
 
@@ -1096,90 +801,12 @@ components:
         These are only used on legacy `any` types, don''t use it for new types.
 
         This is added on a separate file to avoid circular dependencies.'
-    PartialFailureType.MISSING_TARGETS:
-      enum:
-      - missing_targets
-      type: string
-    ThresholdStatus:
-      description: 'Outcome of evaluating a threshold-alert scheduler against the latest query results.
-
-        Emitted on `SchedulerDetails.thresholdStatus` and on the `scheduler_job.completed`
-
-        analytics event so downstream consumers (UI toasts, dashboards) can branch reliably.'
-      enum:
-      - met
-      - not_met
-      type: string
-    SchedulerTaskName:
-      type: string
-      enum:
-      - slackAiPrompt
-      - aiAgentEvalResult
-      - aiAgentReviewClassifier
-      - aiAgentReviewWriteback
-      - aiAgentReviewRemediationPreview
-      - aiAgentReviewRemediationCompile
-      - aiAgentReviewRemediationRun
-      - embedArtifactVersion
-      - generateArtifactQuestion
-      - appGeneratePipeline
-      - sweepStaleAppLocks
-      - handleScheduledDelivery
-      - sendSlackNotification
-      - sendEmailNotification
-      - sendMsTeamsNotification
-      - sendGoogleChatNotification
-      - sendSlackBatchNotification
-      - sendEmailBatchNotification
-      - sendMsTeamsBatchNotification
-      - sendGoogleChatBatchNotification
-      - uploadGsheets
-      - uploadGsheetFromQuery
-      - validateProject
-      - compileProject
-      - createProjectWithCompile
-      - testAndCompileProject
-      - sqlRunner
-      - sqlRunnerPivotQuery
-      - replaceCustomFields
-      - indexCatalog
-      - generateDailyJobs
-      - exportCsvDashboard
-      - renameResources
-      - materializePreAggregate
-      - cleanQueryHistory
-      - downloadAsyncQueryResults
-      - syncSlackChannels
-      - generateSlackChannelSyncJobs
-      - checkForStuckJobs
-      - cleanDeploySessions
-      - managedAgentHeartbeat
-      - cleanExpiredPreviews
-      - ingestProjectContext
-    SchedulerImageOptions:
-      properties:
-        withPdf:
-          type: boolean
+    Record_string.ParameterValue_:
+      properties: {}
+      additionalProperties:
+        $ref: '#/components/schemas/ParameterValue'
       type: object
-    SchedulerLog:
-      allOf:
-      - $ref: '#/components/schemas/BaseSchedulerLog'
-      - properties:
-          details:
-            $ref: '#/components/schemas/SchedulerDetails'
-          targetType:
-            $ref: '#/components/schemas/SchedulerTargetType'
-          target:
-            type: string
-          jobGroup:
-            type: string
-          schedulerUuid:
-            type: string
-        required:
-        - details
-        type: object
-    ApiReassignSchedulerOwnerResponse:
-      $ref: '#/components/schemas/ApiSuccess_SchedulerAndTargets-Array_'
+      description: Construct a type with a set of properties K of type T
     SchedulerDetails:
       properties:
         thresholdStatus:
@@ -1199,53 +826,53 @@ components:
       additionalProperties:
         $ref: '#/components/schemas/AnyType'
       type: object
-    Record_string.never_:
+    Record_string.DashboardTileTarget_:
       properties: {}
+      additionalProperties:
+        $ref: '#/components/schemas/DashboardTileTarget'
       type: object
       description: Construct a type with a set of properties K of type T
-    SchedulerRunStatus:
+    PartialFailureType.MISSING_TARGETS:
       enum:
-      - completed
-      - partial_failure
-      - failed
-      - running
-      - scheduled
+      - missing_targets
       type: string
-    ApiSuccess_SchedulerRunLogsResponse_:
+    Record_string.AnyType_:
+      properties: {}
+      additionalProperties: {}
+      type: object
+      description: Construct a type with a set of properties K of type T
+    ApiErrorPayload:
       properties:
-        results:
-          $ref: '#/components/schemas/SchedulerRunLogsResponse'
+        error:
+          properties:
+            data:
+              $ref: '#/components/schemas/AnyType'
+              description: Optional data containing details of the error
+            message:
+              type: string
+              description: A friendly message summarising the error
+            name:
+              type: string
+              description: Unique name for the type of error
+            statusCode:
+              type: number
+              format: integer
+              description: HTTP status code
+          required:
+          - name
+          - statusCode
+          type: object
         status:
           type: string
           enum:
-          - ok
-      required:
-      - results
-      - status
-      type: object
-    DashboardChartPartialFailure:
-      properties:
-        error:
-          type: string
-        tileUuid:
-          type: string
-        chartName:
-          type: string
-        chartUuid:
-          type: string
-        type:
-          $ref: '#/components/schemas/PartialFailureType.DASHBOARD_CHART'
+          - error
       required:
       - error
-      - tileUuid
-      - chartName
-      - chartUuid
-      - type
+      - status
       type: object
-    PartialFailureType.DASHBOARD_CHART:
-      enum:
-      - dashboard_chart
-      type: string
+      description: 'The Error object is returned from the api any time there is an error.
+
+        The message contains'
     AppScheduler:
       allOf:
       - $ref: '#/components/schemas/SchedulerBase'
@@ -1276,14 +903,14 @@ components:
         - dashboardUuid
         - savedChartUuid
         type: object
-    Record_string.DashboardTileTarget_:
-      properties: {}
-      additionalProperties:
-        $ref: '#/components/schemas/DashboardTileTarget'
-      type: object
-      description: Construct a type with a set of properties K of type T
-    ApiSchedulersResponse:
-      $ref: '#/components/schemas/ApiSuccess_KnexPaginatedData_SchedulerAndTargets-Array__'
+    SchedulerRunStatus:
+      enum:
+      - completed
+      - partial_failure
+      - failed
+      - running
+      - scheduled
+      type: string
     SchedulerGoogleChatTarget:
       properties:
         googleChatWebhook:
@@ -1304,514 +931,6 @@ components:
       - updatedAt
       - createdAt
       - schedulerGoogleChatTargetUuid
-      type: object
-    ApiJobStatusResponse:
-      properties:
-        results:
-          properties:
-            details:
-              allOf:
-              - $ref: '#/components/schemas/Record_string.AnyType_'
-            status:
-              $ref: '#/components/schemas/SchedulerJobStatus'
-          required:
-          - details
-          - status
-          type: object
-        status:
-          type: string
-          enum:
-          - ok
-      required:
-      - results
-      - status
-      type: object
-    SchedulerAndTargets:
-      allOf:
-      - $ref: '#/components/schemas/Scheduler'
-      - properties:
-          latestRun:
-            allOf:
-            - $ref: '#/components/schemas/SchedulerRun'
-          targets:
-            items:
-              anyOf:
-              - $ref: '#/components/schemas/SchedulerSlackTarget'
-              - $ref: '#/components/schemas/SchedulerEmailTarget'
-              - $ref: '#/components/schemas/SchedulerMsTeamsTarget'
-              - $ref: '#/components/schemas/SchedulerGoogleChatTarget'
-            type: array
-        required:
-        - targets
-        type: object
-    SchedulerMsTeamsTarget:
-      properties:
-        webhook:
-          type: string
-        schedulerUuid:
-          type: string
-        updatedAt:
-          type: string
-          format: date-time
-        createdAt:
-          type: string
-          format: date-time
-        schedulerMsTeamsTargetUuid:
-          type: string
-      required:
-      - webhook
-      - schedulerUuid
-      - updatedAt
-      - createdAt
-      - schedulerMsTeamsTargetUuid
-      type: object
-    ApiSchedulerAndTargetsResponse:
-      properties:
-        results:
-          $ref: '#/components/schemas/SchedulerAndTargets'
-        status:
-          type: string
-          enum:
-          - ok
-      required:
-      - results
-      - status
-      type: object
-    ApiSchedulerLogsResponse:
-      $ref: '#/components/schemas/ApiSuccess_KnexPaginatedData_SchedulerWithLogs__'
-    ScheduledJobs:
-      properties:
-        id:
-          type: string
-        date:
-          type: string
-          format: date-time
-      required:
-      - id
-      - date
-      type: object
-    SchedulerTargetType:
-      type: string
-      enum:
-      - email
-      - slack
-      - gsheets
-      - msteams
-      - googlechat
-    ParametersValuesMap:
-      $ref: '#/components/schemas/Record_string.ParameterValue_'
-    SchedulerSlackTarget:
-      properties:
-        channel:
-          type: string
-        schedulerUuid:
-          type: string
-        updatedAt:
-          type: string
-          format: date-time
-        createdAt:
-          type: string
-          format: date-time
-        schedulerSlackTargetUuid:
-          type: string
-      required:
-      - channel
-      - schedulerUuid
-      - updatedAt
-      - createdAt
-      - schedulerSlackTargetUuid
-      type: object
-    SchedulerRunLogsResponse:
-      properties:
-        createdByUserName:
-          type: string
-        createdByUserUuid:
-          type: string
-        resourceName:
-          type: string
-        resourceUuid:
-          type: string
-        resourceType:
-          $ref: '#/components/schemas/SchedulerResourceType'
-        logs:
-          items:
-            $ref: '#/components/schemas/SchedulerRunLog'
-          type: array
-        scheduledTime:
-          type: string
-          format: date-time
-        schedulerName:
-          type: string
-        schedulerUuid:
-          type: string
-        runId:
-          type: string
-      required:
-      - createdByUserName
-      - createdByUserUuid
-      - resourceName
-      - resourceUuid
-      - resourceType
-      - logs
-      - scheduledTime
-      - schedulerName
-      - schedulerUuid
-      - runId
-      type: object
-    ApiSuccess_KnexPaginatedData_SchedulerRun-Array__:
-      properties:
-        results:
-          $ref: '#/components/schemas/KnexPaginatedData_SchedulerRun-Array_'
-        status:
-          type: string
-          enum:
-          - ok
-      required:
-      - results
-      - status
-      type: object
-    ApiSuccess_KnexPaginatedData_SchedulerWithLogs__:
-      properties:
-        results:
-          $ref: '#/components/schemas/KnexPaginatedData_SchedulerWithLogs_'
-        status:
-          type: string
-          enum:
-          - ok
-      required:
-      - results
-      - status
-      type: object
-    ThresholdOptions:
-      properties:
-        value:
-          type: number
-          format: double
-        fieldId:
-          type: string
-        operator:
-          $ref: '#/components/schemas/ThresholdOperator'
-      required:
-      - value
-      - fieldId
-      - operator
-      type: object
-    DimensionType:
-      enum:
-      - string
-      - number
-      - timestamp
-      - date
-      - boolean
-      type: string
-    SchedulerRun:
-      properties:
-        format:
-          $ref: '#/components/schemas/SchedulerFormat'
-        createdByUserName:
-          type: string
-        createdByUserUuid:
-          type: string
-        resourceName:
-          type: string
-        resourceUuid:
-          type: string
-        resourceType:
-          $ref: '#/components/schemas/SchedulerResourceType'
-        logCounts:
-          $ref: '#/components/schemas/LogCounts'
-        details:
-          allOf:
-          - $ref: '#/components/schemas/Record_string.AnyType_'
-        createdAt:
-          type: string
-          format: date-time
-        runStatus:
-          $ref: '#/components/schemas/SchedulerRunStatus'
-        status:
-          $ref: '#/components/schemas/SchedulerJobStatus'
-        scheduledTime:
-          type: string
-          format: date-time
-        schedulerName:
-          type: string
-        schedulerUuid:
-          type: string
-        runId:
-          type: string
-      required:
-      - format
-      - createdByUserName
-      - createdByUserUuid
-      - resourceName
-      - resourceUuid
-      - resourceType
-      - logCounts
-      - details
-      - createdAt
-      - runStatus
-      - status
-      - scheduledTime
-      - schedulerName
-      - schedulerUuid
-      - runId
-      type: object
-    FilterRule_FilterOperator.DashboardFieldTarget.AnyType.AnyType_:
-      properties:
-        values:
-          items:
-            $ref: '#/components/schemas/AnyType'
-          type: array
-          description: Values to filter by
-        operator:
-          $ref: '#/components/schemas/FilterOperator'
-          description: Filter operator
-        id:
-          type: string
-          description: Unique identifier for the filter
-        target:
-          $ref: '#/components/schemas/DashboardFieldTarget'
-          description: Target field for the filter
-        settings:
-          $ref: '#/components/schemas/AnyType'
-          description: Additional settings for date/time filters
-        disabled:
-          type: boolean
-          description: Whether this filter is disabled
-        required:
-          type: boolean
-          description: Whether this filter is required
-        caseSensitive:
-          type: boolean
-          description: 'Overrides the field/explore case-sensitivity for this rule only.
-
-            Used by internal features like autocomplete search that must always
-
-            match case-insensitively regardless of the field''s configured setting.'
-      required:
-      - operator
-      - id
-      - target
-      type: object
-      additionalProperties: true
-    SchedulerJobStatus:
-      enum:
-      - scheduled
-      - started
-      - completed
-      - error
-      type: string
-    BaseSchedulerLog:
-      properties:
-        createdAt:
-          type: string
-          format: date-time
-        scheduledTime:
-          type: string
-          format: date-time
-        status:
-          $ref: '#/components/schemas/SchedulerJobStatus'
-        task:
-          $ref: '#/components/schemas/SchedulerTaskName'
-        jobId:
-          type: string
-      required:
-      - createdAt
-      - scheduledTime
-      - status
-      - task
-      - jobId
-      type: object
-    Record_string.AnyType_:
-      properties: {}
-      additionalProperties: {}
-      type: object
-      description: Construct a type with a set of properties K of type T
-    PartialFailureType.DASHBOARD_SQL_CHART:
-      enum:
-      - dashboard_sql_chart
-      type: string
-    ApiSuccess_KnexPaginatedData_SchedulerAndTargets-Array__:
-      properties:
-        results:
-          $ref: '#/components/schemas/KnexPaginatedData_SchedulerAndTargets-Array_'
-        status:
-          type: string
-          enum:
-          - ok
-      required:
-      - results
-      - status
-      type: object
-    DashboardFieldTarget:
-      properties:
-        fallbackType:
-          $ref: '#/components/schemas/DimensionType'
-        isSqlColumn:
-          type: boolean
-        tableName:
-          type: string
-        fieldId:
-          type: string
-      required:
-      - tableName
-      - fieldId
-      type: object
-    Scheduler:
-      anyOf:
-      - $ref: '#/components/schemas/ChartScheduler'
-      - $ref: '#/components/schemas/DashboardScheduler'
-      - $ref: '#/components/schemas/SqlChartScheduler'
-      - $ref: '#/components/schemas/AppScheduler'
-    PartialFailure:
-      anyOf:
-      - $ref: '#/components/schemas/DashboardChartPartialFailure'
-      - $ref: '#/components/schemas/DashboardSqlChartPartialFailure'
-      - $ref: '#/components/schemas/MissingTargetsPartialFailure'
-    DashboardSqlChartPartialFailure:
-      properties:
-        error:
-          type: string
-        tileUuid:
-          type: string
-        chartName:
-          type: string
-        savedSqlUuid:
-          type: string
-        type:
-          $ref: '#/components/schemas/PartialFailureType.DASHBOARD_SQL_CHART'
-      required:
-      - error
-      - tileUuid
-      - chartName
-      - savedSqlUuid
-      - type
-      type: object
-    ChartScheduler:
-      allOf:
-      - $ref: '#/components/schemas/SchedulerBase'
-      - properties:
-          appUuid:
-            type:
-            - number
-            - 'null'
-            enum:
-            - null
-          savedSqlUuid:
-            type:
-            - number
-            - 'null'
-            enum:
-            - null
-          dashboardUuid:
-            type:
-            - number
-            - 'null'
-            enum:
-            - null
-          savedChartUuid:
-            type: string
-        required:
-        - appUuid
-        - savedSqlUuid
-        - dashboardUuid
-        - savedChartUuid
-        type: object
-    ApiScheduledJobsResponse:
-      properties:
-        results:
-          items:
-            $ref: '#/components/schemas/ScheduledJobs'
-          type: array
-        status:
-          type: string
-          enum:
-          - ok
-      required:
-      - results
-      - status
-      type: object
-    ApiTestSchedulerResponse:
-      properties:
-        results:
-          properties:
-            jobId:
-              type: string
-          required:
-          - jobId
-          type: object
-        status:
-          type: string
-          enum:
-          - ok
-      required:
-      - results
-      - status
-      type: object
-    SchedulerResourceType:
-      enum:
-      - chart
-      - dashboard
-      - sqlChart
-      - app
-      type: string
-    FilterOperator:
-      enum:
-      - isNull
-      - notNull
-      - equals
-      - notEquals
-      - startsWith
-      - endsWith
-      - include
-      - doesNotInclude
-      - lessThan
-      - lessThanOrEqual
-      - greaterThan
-      - greaterThanOrEqual
-      - inThePast
-      - notInThePast
-      - inTheNext
-      - inTheCurrent
-      - notInTheCurrent
-      - inBetween
-      - notInBetween
-      - inPeriodToDate
-      type: string
-    KnexPaginatedData_SchedulerWithLogs_:
-      properties:
-        pagination:
-          allOf:
-          - $ref: '#/components/schemas/KnexPaginateArgs'
-          - properties:
-              totalResults:
-                type: number
-                format: double
-              totalPageCount:
-                type: number
-                format: double
-            required:
-            - totalResults
-            - totalPageCount
-            type: object
-        data:
-          $ref: '#/components/schemas/SchedulerWithLogs'
-      required:
-      - data
-      type: object
-    ApiSuccess_SchedulerAndTargets-Array_:
-      properties:
-        results:
-          items:
-            $ref: '#/components/schemas/SchedulerAndTargets'
-          type: array
-        status:
-          type: string
-          enum:
-          - ok
-      required:
-      - results
-      - status
       type: object
     SchedulerBase:
       properties:
@@ -1914,20 +1033,279 @@ components:
       - name
       - schedulerUuid
       type: object
-    ReassignSchedulerOwnerRequest:
-      properties:
-        newOwnerUserUuid:
-          type: string
-        schedulerUuids:
-          items:
+    SchedulerRunLog:
+      allOf:
+      - $ref: '#/components/schemas/BaseSchedulerLog'
+      - properties:
+          isParent:
+            type: boolean
+          details:
+            allOf:
+            - $ref: '#/components/schemas/SchedulerDetails'
+          targetType:
+            allOf:
+            - $ref: '#/components/schemas/SchedulerTargetType'
+          target:
+            type:
+            - string
+            - 'null'
+          jobGroup:
             type: string
+        required:
+        - isParent
+        - details
+        - targetType
+        - target
+        - jobGroup
+        type: object
+    ApiSuccess_SchedulerAndTargets-Array_:
+      properties:
+        results:
+          items:
+            $ref: '#/components/schemas/SchedulerAndTargets'
           type: array
+        status:
+          type: string
+          enum:
+          - ok
       required:
-      - newOwnerUserUuid
-      - schedulerUuids
+      - results
+      - status
       type: object
-    ApiSchedulerRunLogsResponse:
-      $ref: '#/components/schemas/ApiSuccess_SchedulerRunLogsResponse_'
+    LogCounts:
+      properties:
+        error:
+          type: number
+          format: double
+        completed:
+          type: number
+          format: double
+        started:
+          type: number
+          format: double
+        scheduled:
+          type: number
+          format: double
+        total:
+          type: number
+          format: double
+      required:
+      - error
+      - completed
+      - started
+      - scheduled
+      - total
+      type: object
+    SchedulerImageOptions:
+      properties:
+        withPdf:
+          type: boolean
+      type: object
+    SchedulerOptions:
+      anyOf:
+      - $ref: '#/components/schemas/SchedulerCsvOptions'
+      - $ref: '#/components/schemas/SchedulerImageOptions'
+      - $ref: '#/components/schemas/SchedulerGsheetsOptions'
+      - $ref: '#/components/schemas/SchedulerPdfOptions'
+    ChartScheduler:
+      allOf:
+      - $ref: '#/components/schemas/SchedulerBase'
+      - properties:
+          appUuid:
+            type:
+            - number
+            - 'null'
+            enum:
+            - null
+          savedSqlUuid:
+            type:
+            - number
+            - 'null'
+            enum:
+            - null
+          dashboardUuid:
+            type:
+            - number
+            - 'null'
+            enum:
+            - null
+          savedChartUuid:
+            type: string
+        required:
+        - appUuid
+        - savedSqlUuid
+        - dashboardUuid
+        - savedChartUuid
+        type: object
+    PartialFailureType.DASHBOARD_CHART:
+      enum:
+      - dashboard_chart
+      type: string
+    DashboardScheduler:
+      allOf:
+      - $ref: '#/components/schemas/SchedulerBase'
+      - properties:
+          selectedTabs:
+            items:
+              type: string
+            type:
+            - array
+            - 'null'
+          customViewportWidth:
+            type: number
+            format: double
+          parameters:
+            $ref: '#/components/schemas/ParametersValuesMap'
+          filters:
+            items:
+              $ref: '#/components/schemas/DashboardFilterRule'
+            type: array
+          appUuid:
+            type:
+            - number
+            - 'null'
+            enum:
+            - null
+          savedSqlUuid:
+            type:
+            - number
+            - 'null'
+            enum:
+            - null
+          dashboardUuid:
+            type: string
+          savedChartUuid:
+            type:
+            - number
+            - 'null'
+            enum:
+            - null
+        required:
+        - selectedTabs
+        - appUuid
+        - savedSqlUuid
+        - dashboardUuid
+        - savedChartUuid
+        type: object
+    NotificationFrequency:
+      enum:
+      - always
+      - once
+      type: string
+    ApiJobStatusResponse:
+      properties:
+        results:
+          properties:
+            details:
+              allOf:
+              - $ref: '#/components/schemas/Record_string.AnyType_'
+            status:
+              $ref: '#/components/schemas/SchedulerJobStatus'
+          required:
+          - details
+          - status
+          type: object
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
+    KnexPaginateArgs:
+      properties:
+        page:
+          type: number
+          format: double
+        pageSize:
+          type: number
+          format: double
+      required:
+      - page
+      - pageSize
+      type: object
+    SchedulerLog:
+      allOf:
+      - $ref: '#/components/schemas/BaseSchedulerLog'
+      - properties:
+          details:
+            $ref: '#/components/schemas/SchedulerDetails'
+          targetType:
+            $ref: '#/components/schemas/SchedulerTargetType'
+          target:
+            type: string
+          jobGroup:
+            type: string
+          schedulerUuid:
+            type: string
+        required:
+        - details
+        type: object
+    SchedulerTargetType:
+      type: string
+      enum:
+      - email
+      - slack
+      - gsheets
+      - msteams
+      - googlechat
+    SchedulerTaskName:
+      type: string
+      enum:
+      - slackAiPrompt
+      - aiAgentEvalResult
+      - aiAgentReviewClassifier
+      - aiAgentReviewWriteback
+      - aiAgentReviewRemediationPreview
+      - aiAgentReviewRemediationCompile
+      - aiAgentReviewRemediationRun
+      - embedArtifactVersion
+      - generateArtifactQuestion
+      - appGeneratePipeline
+      - sweepStaleAppLocks
+      - handleScheduledDelivery
+      - sendSlackNotification
+      - sendEmailNotification
+      - sendMsTeamsNotification
+      - sendGoogleChatNotification
+      - sendSlackBatchNotification
+      - sendEmailBatchNotification
+      - sendMsTeamsBatchNotification
+      - sendGoogleChatBatchNotification
+      - uploadGsheets
+      - uploadGsheetFromQuery
+      - validateProject
+      - compileProject
+      - createProjectWithCompile
+      - testAndCompileProject
+      - sqlRunner
+      - sqlRunnerPivotQuery
+      - replaceCustomFields
+      - indexCatalog
+      - generateDailyJobs
+      - exportCsvDashboard
+      - renameResources
+      - materializePreAggregate
+      - cleanQueryHistory
+      - downloadAsyncQueryResults
+      - syncSlackChannels
+      - generateSlackChannelSyncJobs
+      - checkForStuckJobs
+      - cleanDeploySessions
+      - managedAgentHeartbeat
+      - cleanExpiredPreviews
+      - ingestProjectContext
+    ThresholdStatus:
+      description: 'Outcome of evaluating a threshold-alert scheduler against the latest query results.
+
+        Emitted on `SchedulerDetails.thresholdStatus` and on the `scheduler_job.completed`
+
+        analytics event so downstream consumers (UI toasts, dashboards) can branch reliably.'
+      enum:
+      - met
+      - not_met
+      type: string
     MissingTargetsPartialFailure:
       properties:
         type:
@@ -1935,6 +1313,248 @@ components:
       required:
       - type
       type: object
+    ThresholdOperator:
+      enum:
+      - greaterThan
+      - lessThan
+      - increasedBy
+      - decreasedBy
+      type: string
+    KnexPaginatedData_SchedulerRun-Array_:
+      properties:
+        pagination:
+          allOf:
+          - $ref: '#/components/schemas/KnexPaginateArgs'
+          - properties:
+              totalResults:
+                type: number
+                format: double
+              totalPageCount:
+                type: number
+                format: double
+            required:
+            - totalResults
+            - totalPageCount
+            type: object
+        data:
+          items:
+            $ref: '#/components/schemas/SchedulerRun'
+          type: array
+      required:
+      - data
+      type: object
+    SchedulerFormat:
+      enum:
+      - csv
+      - xlsx
+      - image
+      - gsheets
+      - pdf
+      type: string
+    SchedulerEmailTarget:
+      properties:
+        recipient:
+          type: string
+        schedulerUuid:
+          type: string
+        updatedAt:
+          type: string
+          format: date-time
+        createdAt:
+          type: string
+          format: date-time
+        schedulerEmailTargetUuid:
+          type: string
+      required:
+      - recipient
+      - schedulerUuid
+      - updatedAt
+      - createdAt
+      - schedulerEmailTargetUuid
+      type: object
+    Record_string.never_:
+      properties: {}
+      type: object
+      description: Construct a type with a set of properties K of type T
+    DashboardTileTarget:
+      anyOf:
+      - $ref: '#/components/schemas/DashboardFieldTarget'
+      - type: boolean
+        enum:
+        - false
+    KnexPaginatedData_SchedulerWithLogs_:
+      properties:
+        pagination:
+          allOf:
+          - $ref: '#/components/schemas/KnexPaginateArgs'
+          - properties:
+              totalResults:
+                type: number
+                format: double
+              totalPageCount:
+                type: number
+                format: double
+            required:
+            - totalResults
+            - totalPageCount
+            type: object
+        data:
+          $ref: '#/components/schemas/SchedulerWithLogs'
+      required:
+      - data
+      type: object
+    ApiSchedulersResponse:
+      $ref: '#/components/schemas/ApiSuccess_KnexPaginatedData_SchedulerAndTargets-Array__'
+    SchedulerGsheetsOptions:
+      properties:
+        tabName:
+          type: string
+        url:
+          type: string
+        gdriveOrganizationName:
+          type: string
+        gdriveName:
+          type: string
+        gdriveId:
+          type: string
+      required:
+      - url
+      - gdriveOrganizationName
+      - gdriveName
+      - gdriveId
+      type: object
+    SchedulerRun:
+      properties:
+        format:
+          $ref: '#/components/schemas/SchedulerFormat'
+        createdByUserName:
+          type: string
+        createdByUserUuid:
+          type: string
+        resourceName:
+          type: string
+        resourceUuid:
+          type: string
+        resourceType:
+          $ref: '#/components/schemas/SchedulerResourceType'
+        logCounts:
+          $ref: '#/components/schemas/LogCounts'
+        details:
+          allOf:
+          - $ref: '#/components/schemas/Record_string.AnyType_'
+        createdAt:
+          type: string
+          format: date-time
+        runStatus:
+          $ref: '#/components/schemas/SchedulerRunStatus'
+        status:
+          $ref: '#/components/schemas/SchedulerJobStatus'
+        scheduledTime:
+          type: string
+          format: date-time
+        schedulerName:
+          type: string
+        schedulerUuid:
+          type: string
+        runId:
+          type: string
+      required:
+      - format
+      - createdByUserName
+      - createdByUserUuid
+      - resourceName
+      - resourceUuid
+      - resourceType
+      - logCounts
+      - details
+      - createdAt
+      - runStatus
+      - status
+      - scheduledTime
+      - schedulerName
+      - schedulerUuid
+      - runId
+      type: object
+    SchedulerMsTeamsTarget:
+      properties:
+        webhook:
+          type: string
+        schedulerUuid:
+          type: string
+        updatedAt:
+          type: string
+          format: date-time
+        createdAt:
+          type: string
+          format: date-time
+        schedulerMsTeamsTargetUuid:
+          type: string
+      required:
+      - webhook
+      - schedulerUuid
+      - updatedAt
+      - createdAt
+      - schedulerMsTeamsTargetUuid
+      type: object
+    SchedulerPdfOptions:
+      $ref: '#/components/schemas/Record_string.never_'
+    ApiSuccess_KnexPaginatedData_SchedulerRun-Array__:
+      properties:
+        results:
+          $ref: '#/components/schemas/KnexPaginatedData_SchedulerRun-Array_'
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
+    SchedulerResourceType:
+      enum:
+      - chart
+      - dashboard
+      - sqlChart
+      - app
+      type: string
+    FilterRule_FilterOperator.DashboardFieldTarget.AnyType.AnyType_:
+      properties:
+        values:
+          items:
+            $ref: '#/components/schemas/AnyType'
+          type: array
+          description: Values to filter by
+        operator:
+          $ref: '#/components/schemas/FilterOperator'
+          description: Filter operator
+        id:
+          type: string
+          description: Unique identifier for the filter
+        target:
+          $ref: '#/components/schemas/DashboardFieldTarget'
+          description: Target field for the filter
+        settings:
+          $ref: '#/components/schemas/AnyType'
+          description: Additional settings for date/time filters
+        disabled:
+          type: boolean
+          description: Whether this filter is disabled
+        required:
+          type: boolean
+          description: Whether this filter is required
+        caseSensitive:
+          type: boolean
+          description: 'Overrides the field/explore case-sensitivity for this rule only.
+
+            Used by internal features like autocomplete search that must always
+
+            match case-insensitively regardless of the field''s configured setting.'
+      required:
+      - operator
+      - id
+      - target
+      type: object
+      additionalProperties: true
     KnexPaginatedData_SchedulerAndTargets-Array_:
       properties:
         pagination:
@@ -1957,6 +1577,386 @@ components:
           type: array
       required:
       - data
+      type: object
+    FilterOperator:
+      enum:
+      - isNull
+      - notNull
+      - equals
+      - notEquals
+      - startsWith
+      - endsWith
+      - include
+      - doesNotInclude
+      - lessThan
+      - lessThanOrEqual
+      - greaterThan
+      - greaterThanOrEqual
+      - inThePast
+      - notInThePast
+      - inTheNext
+      - inTheCurrent
+      - notInTheCurrent
+      - inBetween
+      - notInBetween
+      - inPeriodToDate
+      type: string
+    ReassignSchedulerOwnerRequest:
+      properties:
+        newOwnerUserUuid:
+          type: string
+        schedulerUuids:
+          items:
+            type: string
+          type: array
+      required:
+      - newOwnerUserUuid
+      - schedulerUuids
+      type: object
+    ApiSchedulerLogsResponse:
+      $ref: '#/components/schemas/ApiSuccess_KnexPaginatedData_SchedulerWithLogs__'
+    ParameterValue:
+      anyOf:
+      - type: string
+      - type: number
+        format: double
+      - items:
+          type: string
+        type: array
+      - items:
+          type: number
+          format: double
+        type: array
+    SchedulerAndTargets:
+      allOf:
+      - $ref: '#/components/schemas/Scheduler'
+      - properties:
+          latestRun:
+            allOf:
+            - $ref: '#/components/schemas/SchedulerRun'
+          targets:
+            items:
+              anyOf:
+              - $ref: '#/components/schemas/SchedulerSlackTarget'
+              - $ref: '#/components/schemas/SchedulerEmailTarget'
+              - $ref: '#/components/schemas/SchedulerMsTeamsTarget'
+              - $ref: '#/components/schemas/SchedulerGoogleChatTarget'
+            type: array
+        required:
+        - targets
+        type: object
+    BaseSchedulerLog:
+      properties:
+        createdAt:
+          type: string
+          format: date-time
+        scheduledTime:
+          type: string
+          format: date-time
+        status:
+          $ref: '#/components/schemas/SchedulerJobStatus'
+        task:
+          $ref: '#/components/schemas/SchedulerTaskName'
+        jobId:
+          type: string
+      required:
+      - createdAt
+      - scheduledTime
+      - status
+      - task
+      - jobId
+      type: object
+    ApiReassignSchedulerOwnerResponse:
+      $ref: '#/components/schemas/ApiSuccess_SchedulerAndTargets-Array_'
+    DimensionType:
+      enum:
+      - string
+      - number
+      - timestamp
+      - date
+      - boolean
+      type: string
+    ApiScheduledJobsResponse:
+      properties:
+        results:
+          items:
+            $ref: '#/components/schemas/ScheduledJobs'
+          type: array
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
+    SchedulerCsvOptions:
+      properties:
+        exportPivotedData:
+          type: boolean
+        asAttachment:
+          type: boolean
+        limit:
+          anyOf:
+          - type: number
+            format: double
+          - type: string
+            enum:
+            - table
+            - all
+        formatted:
+          type: boolean
+      required:
+      - limit
+      - formatted
+      type: object
+    DashboardFieldTarget:
+      properties:
+        fallbackType:
+          $ref: '#/components/schemas/DimensionType'
+        isSqlColumn:
+          type: boolean
+        tableName:
+          type: string
+        fieldId:
+          type: string
+      required:
+      - tableName
+      - fieldId
+      type: object
+    PartialFailureType.DASHBOARD_SQL_CHART:
+      enum:
+      - dashboard_sql_chart
+      type: string
+    ApiSuccess_KnexPaginatedData_SchedulerWithLogs__:
+      properties:
+        results:
+          $ref: '#/components/schemas/KnexPaginatedData_SchedulerWithLogs_'
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
+    SchedulerSlackTarget:
+      properties:
+        channel:
+          type: string
+        schedulerUuid:
+          type: string
+        updatedAt:
+          type: string
+          format: date-time
+        createdAt:
+          type: string
+          format: date-time
+        schedulerSlackTargetUuid:
+          type: string
+      required:
+      - channel
+      - schedulerUuid
+      - updatedAt
+      - createdAt
+      - schedulerSlackTargetUuid
+      type: object
+    DashboardFilterRule:
+      allOf:
+      - $ref: '#/components/schemas/FilterRule_FilterOperator.DashboardFieldTarget.AnyType.AnyType_'
+      - properties:
+          lockedTabUuids:
+            items:
+              type: string
+            type: array
+            description: 'Tab UUIDs where this filter is locked. When the active tab is in this
+
+              list, viewers see the filter but cannot change it, and URL / embed
+
+              filter overrides targeting the same field are ignored on that tab.
+
+              Empty or omitted means the filter is not locked anywhere.'
+          singleValue:
+            type: boolean
+          label:
+            type: string
+          tileTargets:
+            $ref: '#/components/schemas/Record_string.DashboardTileTarget_'
+        type: object
+    SqlChartScheduler:
+      allOf:
+      - $ref: '#/components/schemas/SchedulerBase'
+      - properties:
+          appUuid:
+            type:
+            - number
+            - 'null'
+            enum:
+            - null
+          savedSqlUuid:
+            type: string
+          dashboardUuid:
+            type:
+            - number
+            - 'null'
+            enum:
+            - null
+          savedChartUuid:
+            type:
+            - number
+            - 'null'
+            enum:
+            - null
+        required:
+        - appUuid
+        - savedSqlUuid
+        - dashboardUuid
+        - savedChartUuid
+        type: object
+    ApiSuccess_SchedulerRunLogsResponse_:
+      properties:
+        results:
+          $ref: '#/components/schemas/SchedulerRunLogsResponse'
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
+    DashboardChartPartialFailure:
+      properties:
+        error:
+          type: string
+        tileUuid:
+          type: string
+        chartName:
+          type: string
+        chartUuid:
+          type: string
+        type:
+          $ref: '#/components/schemas/PartialFailureType.DASHBOARD_CHART'
+      required:
+      - error
+      - tileUuid
+      - chartName
+      - chartUuid
+      - type
+      type: object
+    ApiSuccess_KnexPaginatedData_SchedulerAndTargets-Array__:
+      properties:
+        results:
+          $ref: '#/components/schemas/KnexPaginatedData_SchedulerAndTargets-Array_'
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
+    ApiSchedulerRunLogsResponse:
+      $ref: '#/components/schemas/ApiSuccess_SchedulerRunLogsResponse_'
+    ApiSchedulerAndTargetsResponse:
+      properties:
+        results:
+          $ref: '#/components/schemas/SchedulerAndTargets'
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
+    ScheduledJobs:
+      properties:
+        id:
+          type: string
+        date:
+          type: string
+          format: date-time
+      required:
+      - id
+      - date
+      type: object
+    SchedulerRunLogsResponse:
+      properties:
+        createdByUserName:
+          type: string
+        createdByUserUuid:
+          type: string
+        resourceName:
+          type: string
+        resourceUuid:
+          type: string
+        resourceType:
+          $ref: '#/components/schemas/SchedulerResourceType'
+        logs:
+          items:
+            $ref: '#/components/schemas/SchedulerRunLog'
+          type: array
+        scheduledTime:
+          type: string
+          format: date-time
+        schedulerName:
+          type: string
+        schedulerUuid:
+          type: string
+        runId:
+          type: string
+      required:
+      - createdByUserName
+      - createdByUserUuid
+      - resourceName
+      - resourceUuid
+      - resourceType
+      - logs
+      - scheduledTime
+      - schedulerName
+      - schedulerUuid
+      - runId
+      type: object
+    ApiSchedulerRunsResponse:
+      $ref: '#/components/schemas/ApiSuccess_KnexPaginatedData_SchedulerRun-Array__'
+    DashboardSqlChartPartialFailure:
+      properties:
+        error:
+          type: string
+        tileUuid:
+          type: string
+        chartName:
+          type: string
+        savedSqlUuid:
+          type: string
+        type:
+          $ref: '#/components/schemas/PartialFailureType.DASHBOARD_SQL_CHART'
+      required:
+      - error
+      - tileUuid
+      - chartName
+      - savedSqlUuid
+      - type
+      type: object
+    PartialFailure:
+      anyOf:
+      - $ref: '#/components/schemas/DashboardChartPartialFailure'
+      - $ref: '#/components/schemas/DashboardSqlChartPartialFailure'
+      - $ref: '#/components/schemas/MissingTargetsPartialFailure'
+    ThresholdOptions:
+      properties:
+        value:
+          type: number
+          format: double
+        fieldId:
+          type: string
+        operator:
+          $ref: '#/components/schemas/ThresholdOperator'
+      required:
+      - value
+      - fieldId
+      - operator
       type: object
   securitySchemes:
     session_cookie:

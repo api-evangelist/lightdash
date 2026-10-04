@@ -190,45 +190,275 @@ paths:
           </Warning>'
 components:
   schemas:
-    ApiRunQueryResponse:
+    FieldUrl:
       properties:
-        results:
-          properties:
-            fields:
-              $ref: '#/components/schemas/Record_string.Item-or-AdditionalMetric_'
-            rows:
-              items:
-                $ref: '#/components/schemas/AnyType'
-              type: array
-            cacheMetadata:
-              $ref: '#/components/schemas/CacheMetadata'
-            metricQuery:
-              $ref: '#/components/schemas/MetricQueryResponse'
-          required:
-          - rows
-          - cacheMetadata
-          - metricQuery
-          type: object
-        status:
+        label:
           type: string
-          enum:
-          - ok
+        url:
+          type: string
       required:
-      - results
-      - status
+      - label
+      - url
       type: object
-    Format:
-      enum:
-      - km
-      - mi
-      - usd
-      - gbp
-      - eur
-      - jpy
-      - dkk
+    TemplateTableCalculation:
+      allOf:
+      - $ref: '#/components/schemas/TableCalculationBase'
+      - properties:
+          template:
+            $ref: '#/components/schemas/TableCalculationTemplate'
+            description: Template-based calculation (alternative to sql)
+        required:
+        - template
+        type: object
+    CustomRangeBinDimension:
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the custom dimension
+        name:
+          type: string
+          description: Display name for the custom dimension
+        table:
+          type: string
+          description: Table this custom dimension belongs to
+        type:
+          $ref: '#/components/schemas/CustomDimensionType.BIN'
+          description: Type of custom dimension (bin or sql)
+        dimensionId:
+          $ref: '#/components/schemas/FieldId'
+          description: Field ID of the parent dimension to bin
+        binType:
+          $ref: '#/components/schemas/BinType.CUSTOM_RANGE'
+        customRange:
+          items:
+            $ref: '#/components/schemas/BinRange'
+          type: array
+      required:
       - id
-      - percent
+      - name
+      - table
+      - type
+      - dimensionId
+      - binType
+      - customRange
+      type: object
+      additionalProperties: true
+    TableCalculationTemplateType.PERCENT_CHANGE_FROM_PREVIOUS:
+      enum:
+      - percent_change_from_previous
       type: string
+    PreAggregateMissReason.METRIC_NOT_IN_PRE_AGGREGATE:
+      enum:
+      - metric_not_in_pre_aggregate
+      type: string
+    Pick_Dimension.formatOptions_:
+      properties:
+        formatOptions:
+          $ref: '#/components/schemas/CustomFormat'
+      type: object
+      description: From T, pick a set of properties whose keys are in the union K
+    BinType.FIXED_NUMBER:
+      enum:
+      - fixed_number
+      type: string
+    CustomFormat:
+      properties:
+        type:
+          $ref: '#/components/schemas/CustomFormatType'
+          description: Format type
+        round:
+          type: number
+          format: double
+          description: Number of decimal places
+        separator:
+          $ref: '#/components/schemas/NumberSeparator'
+          description: Number separator style
+        currency:
+          type: string
+          description: Currency code (e.g., USD, GBP, EUR)
+        compact:
+          $ref: '#/components/schemas/CompactOrAlias'
+          description: Compact format for large numbers (K, M, B, T) or byte units
+        prefix:
+          type: string
+          description: Prefix to prepend to formatted values
+        suffix:
+          type: string
+          description: Suffix to append to formatted values
+        timeInterval:
+          $ref: '#/components/schemas/TimeFrames'
+          description: Time interval for date formatting
+        custom:
+          type: string
+          description: Custom format string
+      required:
+      - type
+      type: object
+      additionalProperties: true
+    FilterOperator:
+      enum:
+      - isNull
+      - notNull
+      - equals
+      - notEquals
+      - startsWith
+      - endsWith
+      - include
+      - doesNotInclude
+      - lessThan
+      - lessThanOrEqual
+      - greaterThan
+      - greaterThanOrEqual
+      - inThePast
+      - notInThePast
+      - inTheNext
+      - inTheCurrent
+      - notInTheCurrent
+      - inBetween
+      - notInBetween
+      - inPeriodToDate
+      type: string
+    BinRange:
+      properties:
+        to:
+          type: number
+          format: double
+          description: End value for this bin range (undefined for the last range)
+        from:
+          type: number
+          format: double
+          description: Start value for this bin range (undefined for the first range)
+      type: object
+    DimensionOverrides:
+      properties: {}
+      additionalProperties:
+        $ref: '#/components/schemas/Pick_Dimension.formatOptions_'
+      type: object
+    TableCalculationTemplateType.RANK_IN_COLUMN:
+      enum:
+      - rank_in_column
+      type: string
+    PreAggregateMissReason.CUSTOM_DIMENSION_PRESENT:
+      enum:
+      - custom_dimension_present
+      type: string
+    GroupValueRule:
+      properties:
+        value:
+          type: string
+        matchType:
+          $ref: '#/components/schemas/GroupValueMatchType'
+      required:
+      - value
+      - matchType
+      type: object
+    Record_string.Item-or-AdditionalMetric_:
+      properties: {}
+      additionalProperties:
+        anyOf:
+        - $ref: '#/components/schemas/Field'
+        - $ref: '#/components/schemas/Metric'
+        - $ref: '#/components/schemas/TableCalculation'
+        - $ref: '#/components/schemas/AdditionalMetric'
+        - $ref: '#/components/schemas/CustomDimension'
+      type: object
+      description: Construct a type with a set of properties K of type T
+    TimeFrames:
+      enum:
+      - RAW
+      - YEAR
+      - QUARTER
+      - MONTH
+      - WEEK
+      - DAY
+      - HOUR
+      - MINUTE
+      - SECOND
+      - MILLISECOND
+      - DAY_OF_WEEK_INDEX
+      - DAY_OF_MONTH_NUM
+      - DAY_OF_YEAR_NUM
+      - WEEK_NUM
+      - MONTH_NUM
+      - QUARTER_NUM
+      - YEAR_NUM
+      - DAY_OF_WEEK_NAME
+      - MONTH_NAME
+      - QUARTER_NAME
+      - HOUR_OF_DAY_NUM
+      - MINUTE_OF_HOUR_NUM
+      type: string
+    MetricType:
+      enum:
+      - percentile
+      - average
+      - count
+      - count_distinct
+      - sum
+      - sum_distinct
+      - average_distinct
+      - min
+      - max
+      - percent_of_previous
+      - percent_of_total
+      - running_total
+      - number
+      - median
+      - string
+      - date
+      - timestamp
+      - boolean
+      type: string
+    TableCalculationTemplateType.RUNNING_TOTAL:
+      enum:
+      - running_total
+      type: string
+    TableCalculationBase:
+      properties:
+        type:
+          $ref: '#/components/schemas/TableCalculationType'
+          description: Data type of the calculation result
+        format:
+          $ref: '#/components/schemas/CustomFormat'
+          description: Formatting options for the calculation
+        displayName:
+          type: string
+          description: Display name shown in the UI
+        name:
+          type: string
+          description: Internal name of the table calculation
+        index:
+          type: number
+          format: double
+          description: Display order index
+      required:
+      - displayName
+      - name
+      type: object
+    PreAggregateMissReason.PRE_AGGREGATE_FILTER_NOT_SATISFIED:
+      enum:
+      - pre_aggregate_filter_not_satisfied
+      type: string
+    SortField:
+      properties:
+        pivotValues:
+          items:
+            $ref: '#/components/schemas/PivotSortAnchor'
+          type: array
+          description: Pins the row-sort anchor to a specific pivot column. Ignored for non-pivoted results.
+        nullsFirst:
+          type: boolean
+          description: Sort null values first
+        descending:
+          type: boolean
+          description: Sort in descending order
+        fieldId:
+          type: string
+          description: Field ID to sort by
+      required:
+      - descending
+      - fieldId
+      type: object
     ApiErrorPayload:
       properties:
         error:
@@ -261,174 +491,6 @@ components:
       description: 'The Error object is returned from the api any time there is an error.
 
         The message contains'
-    CustomGroupBinDimension:
-      properties:
-        id:
-          type: string
-          description: Unique identifier for the custom dimension
-        name:
-          type: string
-          description: Display name for the custom dimension
-        table:
-          type: string
-          description: Table this custom dimension belongs to
-        type:
-          $ref: '#/components/schemas/CustomDimensionType.BIN'
-          description: Type of custom dimension (bin or sql)
-        dimensionId:
-          $ref: '#/components/schemas/FieldId'
-          description: Field ID of the parent dimension to bin
-        binType:
-          $ref: '#/components/schemas/BinType.CUSTOM_GROUP'
-        customGroups:
-          items:
-            $ref: '#/components/schemas/BinGroup'
-          type: array
-      required:
-      - id
-      - name
-      - table
-      - type
-      - dimensionId
-      - binType
-      - customGroups
-      type: object
-      additionalProperties: true
-    PreAggregateMissReason.FILTER_DIMENSION_NOT_IN_PRE_AGGREGATE:
-      enum:
-      - filter_dimension_not_in_pre_aggregate
-      type: string
-    FrameClause:
-      properties:
-        end:
-          $ref: '#/components/schemas/FrameBoundary'
-          description: End boundary of the frame
-        start:
-          $ref: '#/components/schemas/FrameBoundary'
-          description: Start boundary of the frame
-        frameType:
-          $ref: '#/components/schemas/FrameType'
-          description: Type of frame (ROWS or RANGE)
-      required:
-      - end
-      - frameType
-      type: object
-    FiltersResponse:
-      properties:
-        tableCalculations:
-          $ref: '#/components/schemas/FilterGroupResponse'
-        metrics:
-          $ref: '#/components/schemas/FilterGroupResponse'
-        dimensions:
-          $ref: '#/components/schemas/FilterGroupResponse'
-      type: object
-    FormulaTableCalculation:
-      allOf:
-      - $ref: '#/components/schemas/TableCalculationBase'
-      - properties:
-          formula:
-            type: string
-            description: Spreadsheet-like formula compiled to SQL at query time
-        required:
-        - formula
-        type: object
-    FieldUrl:
-      properties:
-        label:
-          type: string
-        url:
-          type: string
-      required:
-      - label
-      - url
-      type: object
-    PreAggregateMissReason.NO_ACTIVE_MATERIALIZATION:
-      enum:
-      - no_active_materialization
-      type: string
-    FrameBoundary:
-      properties:
-        offset:
-          type: number
-          format: double
-          description: Offset for PRECEDING/FOLLOWING
-        type:
-          $ref: '#/components/schemas/FrameBoundaryType'
-          description: Boundary type
-      required:
-      - type
-      type: object
-    Field:
-      properties:
-        fieldType:
-          $ref: '#/components/schemas/FieldType'
-        type:
-          type: string
-        name:
-          type: string
-        label:
-          type: string
-        table:
-          type: string
-        tableLabel:
-          type: string
-        sql:
-          type: string
-        description:
-          type: string
-        source:
-          $ref: '#/components/schemas/Source'
-        hidden:
-          type: boolean
-        compact:
-          $ref: '#/components/schemas/CompactOrAlias'
-        round:
-          type: number
-          format: double
-        format:
-          anyOf:
-          - $ref: '#/components/schemas/Format'
-          - type: string
-        separator:
-          $ref: '#/components/schemas/NumberSeparator'
-          description: 'Number separator style for grouping/decimal characters. Composes with
-
-            `format` (including ECMA-376 expressions) and `formatOptions` — it only
-
-            controls the separator characters, not the format shape.'
-        groupLabel:
-          type: string
-          deprecated: true
-        groups:
-          items:
-            type: string
-          type: array
-        urls:
-          items:
-            $ref: '#/components/schemas/FieldUrl'
-          type: array
-        index:
-          type: number
-          format: double
-        tags:
-          items:
-            type: string
-          type: array
-        parameterReferences:
-          items:
-            type: string
-          type: array
-      required:
-      - fieldType
-      - type
-      - name
-      - label
-      - table
-      - tableLabel
-      - sql
-      - hidden
-      type: object
-      additionalProperties: true
     ApiSqlQueryResults:
       properties:
         rows:
@@ -441,9 +503,19 @@ components:
       - rows
       - fields
       type: object
-    TableCalculationTemplateType.PERCENT_OF_PREVIOUS_VALUE:
+    AnyType:
+      description: 'This AnyType is an alias for any
+
+        The goal is to make it easier to identify any type in the codebase
+
+        without having to eslint-disable all the time
+
+        These are only used on legacy `any` types, don''t use it for new types.
+
+        This is added on a separate file to avoid circular dependencies.'
+    CustomDimensionType.SQL:
       enum:
-      - percent_of_previous_value
+      - sql
       type: string
     Source:
       properties:
@@ -476,231 +548,6 @@ components:
       - range
       - path
       type: object
-    GroupValueRule:
-      properties:
-        value:
-          type: string
-        matchType:
-          $ref: '#/components/schemas/GroupValueMatchType'
-      required:
-      - value
-      - matchType
-      type: object
-    DimensionType:
-      enum:
-      - string
-      - number
-      - timestamp
-      - date
-      - boolean
-      type: string
-    BinType.CUSTOM_RANGE:
-      enum:
-      - custom_range
-      type: string
-    SourcePosition:
-      properties:
-        character:
-          type: number
-          format: double
-        line:
-          type: number
-          format: double
-      required:
-      - character
-      - line
-      type: object
-    TableCalculationTemplateType.PERCENT_OF_COLUMN_TOTAL:
-      enum:
-      - percent_of_column_total
-      type: string
-    FieldType.METRIC:
-      enum:
-      - metric
-      type: string
-    PreAggregateMissReason.USER_BYPASS:
-      enum:
-      - user_bypass
-      type: string
-    FilterOperator:
-      enum:
-      - isNull
-      - notNull
-      - equals
-      - notEquals
-      - startsWith
-      - endsWith
-      - include
-      - doesNotInclude
-      - lessThan
-      - lessThanOrEqual
-      - greaterThan
-      - greaterThanOrEqual
-      - inThePast
-      - notInThePast
-      - inTheNext
-      - inTheCurrent
-      - notInTheCurrent
-      - inBetween
-      - notInBetween
-      - inPeriodToDate
-      type: string
-    SqlTableCalculation:
-      allOf:
-      - $ref: '#/components/schemas/TableCalculationBase'
-      - properties:
-          sql:
-            type: string
-            description: SQL expression for the calculation (can reference fields with ${table.field})
-        required:
-        - sql
-        type: object
-    PreAggregateMissReason.TABLE_CALCULATION_PRESENT:
-      enum:
-      - table_calculation_present
-      type: string
-    CustomFormatType:
-      enum:
-      - default
-      - percent
-      - currency
-      - number
-      - id
-      - date
-      - timestamp
-      - bytes_si
-      - bytes_iec
-      - custom
-      type: string
-    PreAggregateMissReason.NO_PRE_AGGREGATES_DEFINED:
-      enum:
-      - no_pre_aggregates_defined
-      type: string
-    CustomDimensionType.SQL:
-      enum:
-      - sql
-      type: string
-    FieldType:
-      enum:
-      - metric
-      - dimension
-      type: string
-    AnyType:
-      description: 'This AnyType is an alias for any
-
-        The goal is to make it easier to identify any type in the codebase
-
-        without having to eslint-disable all the time
-
-        These are only used on legacy `any` types, don''t use it for new types.
-
-        This is added on a separate file to avoid circular dependencies.'
-    TableCalculationTemplateType.PERCENT_CHANGE_FROM_PREVIOUS:
-      enum:
-      - percent_change_from_previous
-      type: string
-    FilterGroupResponse:
-      anyOf:
-      - properties:
-          or:
-            items:
-              $ref: '#/components/schemas/AnyType'
-            type: array
-          id:
-            type: string
-        required:
-        - or
-        - id
-        type: object
-      - properties:
-          and:
-            items:
-              $ref: '#/components/schemas/AnyType'
-            type: array
-          id:
-            type: string
-        required:
-        - and
-        - id
-        type: object
-    PreAggregateMissReason.NON_ADDITIVE_METRIC:
-      enum:
-      - non_additive_metric
-      type: string
-    PreAggregateMissReason.CUSTOM_SQL_METRIC:
-      enum:
-      - custom_sql_metric
-      type: string
-    MetricOverrides:
-      properties: {}
-      additionalProperties:
-        $ref: '#/components/schemas/Pick_Metric.formatOptions_'
-      type: object
-    SortField:
-      properties:
-        pivotValues:
-          items:
-            $ref: '#/components/schemas/PivotSortAnchor'
-          type: array
-          description: Pins the row-sort anchor to a specific pivot column. Ignored for non-pivoted results.
-        nullsFirst:
-          type: boolean
-          description: Sort null values first
-        descending:
-          type: boolean
-          description: Sort in descending order
-        fieldId:
-          type: string
-          description: Field ID to sort by
-      required:
-      - descending
-      - fieldId
-      type: object
-    MetricFilterRule:
-      description: Filter rule for metrics, targeting fields by reference
-      properties:
-        values:
-          items:
-            $ref: '#/components/schemas/AnyType'
-          type: array
-          description: Values to filter by
-        operator:
-          $ref: '#/components/schemas/FilterOperator'
-          description: Filter operator
-        id:
-          type: string
-          description: Unique identifier for the filter
-        target:
-          properties:
-            fieldRef:
-              type: string
-              description: Field reference to filter on (e.g., 'table_name.field_name')
-          required:
-          - fieldRef
-          type: object
-          description: Target field for the filter
-        settings:
-          $ref: '#/components/schemas/AnyType'
-          description: Additional settings for date/time filters
-        disabled:
-          type: boolean
-          description: Whether this filter is disabled
-        required:
-          type: boolean
-          description: Whether this filter is required
-        caseSensitive:
-          type: boolean
-          description: 'Overrides the field/explore case-sensitivity for this rule only.
-
-            Used by internal features like autocomplete search that must always
-
-            match case-insensitively regardless of the field''s configured setting.'
-      required:
-      - operator
-      - id
-      - target
-      type: object
-      additionalProperties: true
     TableCalculationTemplate:
       anyOf:
       - properties:
@@ -857,168 +704,19 @@ components:
         - windowFunction
         - type
         type: object
-    BinType.FIXED_NUMBER:
+    PreAggregateMissReason.DIMENSION_NOT_IN_PRE_AGGREGATE:
       enum:
-      - fixed_number
+      - dimension_not_in_pre_aggregate
       type: string
-    TableCalculationBase:
-      properties:
-        type:
-          $ref: '#/components/schemas/TableCalculationType'
-          description: Data type of the calculation result
-        format:
-          $ref: '#/components/schemas/CustomFormat'
-          description: Formatting options for the calculation
-        displayName:
-          type: string
-          description: Display name shown in the UI
-        name:
-          type: string
-          description: Internal name of the table calculation
-        index:
-          type: number
-          format: double
-          description: Display order index
-      required:
-      - displayName
-      - name
-      type: object
-    TimeFrames:
-      enum:
-      - RAW
-      - YEAR
-      - QUARTER
-      - MONTH
-      - WEEK
-      - DAY
-      - HOUR
-      - MINUTE
-      - SECOND
-      - MILLISECOND
-      - DAY_OF_WEEK_INDEX
-      - DAY_OF_MONTH_NUM
-      - DAY_OF_YEAR_NUM
-      - WEEK_NUM
-      - MONTH_NUM
-      - QUARTER_NUM
-      - YEAR_NUM
-      - DAY_OF_WEEK_NAME
-      - MONTH_NAME
-      - QUARTER_NAME
-      - HOUR_OF_DAY_NUM
-      - MINUTE_OF_HOUR_NUM
-      type: string
-    Record_string._type-DimensionType__:
+    MetricOverrides:
       properties: {}
       additionalProperties:
-        properties:
-          type:
-            $ref: '#/components/schemas/DimensionType'
-        required:
-        - type
-        type: object
-      type: object
-      description: Construct a type with a set of properties K of type T
-    MetricQueryResponse:
-      properties:
-        metadata:
-          properties:
-            hasADateDimension:
-              $ref: '#/components/schemas/Pick_CompiledDimension.label-or-name-or-table_'
-          required:
-          - hasADateDimension
-          type: object
-        customDimensions:
-          items:
-            $ref: '#/components/schemas/CustomDimension'
-          type: array
-        additionalMetrics:
-          items:
-            $ref: '#/components/schemas/AdditionalMetric'
-          type: array
-        tableCalculations:
-          items:
-            $ref: '#/components/schemas/TableCalculation'
-          type: array
-        limit:
-          type: number
-          format: double
-        sorts:
-          items:
-            $ref: '#/components/schemas/SortField'
-          type: array
-        filters:
-          $ref: '#/components/schemas/FiltersResponse'
-        metrics:
-          items:
-            $ref: '#/components/schemas/FieldId'
-          type: array
-        dimensions:
-          items:
-            $ref: '#/components/schemas/FieldId'
-          type: array
-        exploreName:
-          type: string
-      required:
-      - tableCalculations
-      - limit
-      - sorts
-      - filters
-      - metrics
-      - dimensions
-      - exploreName
-      type: object
-    CacheMetadata:
-      properties:
-        preAggregate:
-          properties:
-            reason:
-              $ref: '#/components/schemas/PreAggregateMatchMiss'
-            name:
-              type: string
-            hit:
-              type: boolean
-          required:
-          - hit
-          type: object
-        cacheHit:
-          type: boolean
-        cacheKey:
-          type: string
-        cacheExpiresAt:
-          type: string
-          format: date-time
-        cacheUpdatedTime:
-          type: string
-          format: date-time
-      required:
-      - cacheHit
+        $ref: '#/components/schemas/Pick_Metric.formatOptions_'
       type: object
     FrameType:
       enum:
       - rows
       - range
-      type: string
-    MetricType:
-      enum:
-      - percentile
-      - average
-      - count
-      - count_distinct
-      - sum
-      - sum_distinct
-      - average_distinct
-      - min
-      - max
-      - percent_of_previous
-      - percent_of_total
-      - running_total
-      - number
-      - median
-      - string
-      - date
-      - timestamp
-      - boolean
       type: string
     Metric:
       properties:
@@ -1156,16 +854,703 @@ components:
       - hidden
       type: object
       additionalProperties: true
+    FixedWidthBinDimension:
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the custom dimension
+        name:
+          type: string
+          description: Display name for the custom dimension
+        table:
+          type: string
+          description: Table this custom dimension belongs to
+        type:
+          $ref: '#/components/schemas/CustomDimensionType.BIN'
+          description: Type of custom dimension (bin or sql)
+        dimensionId:
+          $ref: '#/components/schemas/FieldId'
+          description: Field ID of the parent dimension to bin
+        binType:
+          $ref: '#/components/schemas/BinType.FIXED_WIDTH'
+        binWidth:
+          type: number
+          format: double
+      required:
+      - id
+      - name
+      - table
+      - type
+      - dimensionId
+      - binType
+      - binWidth
+      type: object
+      additionalProperties: true
+    Compact:
+      enum:
+      - thousands
+      - millions
+      - billions
+      - trillions
+      - kilobytes
+      - megabytes
+      - gigabytes
+      - terabytes
+      - petabytes
+      - kibibytes
+      - mebibytes
+      - gibibytes
+      - tebibytes
+      - pebibytes
+      type: string
+    PreAggregateMissReason.TABLE_CALCULATION_PRESENT:
+      enum:
+      - table_calculation_present
+      type: string
+    PreAggregateMissReason.EXPLORE_RESOLUTION_ERROR:
+      enum:
+      - explore_resolution_error
+      type: string
+    MetricQueryResponse:
+      properties:
+        metadata:
+          properties:
+            hasADateDimension:
+              $ref: '#/components/schemas/Pick_CompiledDimension.label-or-name-or-table_'
+          required:
+          - hasADateDimension
+          type: object
+        customDimensions:
+          items:
+            $ref: '#/components/schemas/CustomDimension'
+          type: array
+        additionalMetrics:
+          items:
+            $ref: '#/components/schemas/AdditionalMetric'
+          type: array
+        tableCalculations:
+          items:
+            $ref: '#/components/schemas/TableCalculation'
+          type: array
+        limit:
+          type: number
+          format: double
+        sorts:
+          items:
+            $ref: '#/components/schemas/SortField'
+          type: array
+        filters:
+          $ref: '#/components/schemas/FiltersResponse'
+        metrics:
+          items:
+            $ref: '#/components/schemas/FieldId'
+          type: array
+        dimensions:
+          items:
+            $ref: '#/components/schemas/FieldId'
+          type: array
+        exploreName:
+          type: string
+      required:
+      - tableCalculations
+      - limit
+      - sorts
+      - filters
+      - metrics
+      - dimensions
+      - exploreName
+      type: object
+    SqlTableCalculation:
+      allOf:
+      - $ref: '#/components/schemas/TableCalculationBase'
+      - properties:
+          sql:
+            type: string
+            description: SQL expression for the calculation (can reference fields with ${table.field})
+        required:
+        - sql
+        type: object
+    MetricFilterRule:
+      description: Filter rule for metrics, targeting fields by reference
+      properties:
+        values:
+          items:
+            $ref: '#/components/schemas/AnyType'
+          type: array
+          description: Values to filter by
+        operator:
+          $ref: '#/components/schemas/FilterOperator'
+          description: Filter operator
+        id:
+          type: string
+          description: Unique identifier for the filter
+        target:
+          properties:
+            fieldRef:
+              type: string
+              description: Field reference to filter on (e.g., 'table_name.field_name')
+          required:
+          - fieldRef
+          type: object
+          description: Target field for the filter
+        settings:
+          $ref: '#/components/schemas/AnyType'
+          description: Additional settings for date/time filters
+        disabled:
+          type: boolean
+          description: Whether this filter is disabled
+        required:
+          type: boolean
+          description: Whether this filter is required
+        caseSensitive:
+          type: boolean
+          description: 'Overrides the field/explore case-sensitivity for this rule only.
+
+            Used by internal features like autocomplete search that must always
+
+            match case-insensitively regardless of the field''s configured setting.'
+      required:
+      - operator
+      - id
+      - target
+      type: object
+      additionalProperties: true
+    Record_string.unknown_:
+      properties: {}
+      additionalProperties: {}
+      type: object
+      description: Construct a type with a set of properties K of type T
+    PreAggregateMissReason.NO_ACTIVE_MATERIALIZATION:
+      enum:
+      - no_active_materialization
+      type: string
+    Format:
+      enum:
+      - km
+      - mi
+      - usd
+      - gbp
+      - eur
+      - jpy
+      - dkk
+      - id
+      - percent
+      type: string
+    CustomSqlDimension:
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the custom dimension
+        name:
+          type: string
+          description: Display name for the custom dimension
+        table:
+          type: string
+          description: Table this custom dimension belongs to
+        type:
+          $ref: '#/components/schemas/CustomDimensionType.SQL'
+          description: Type of custom dimension (bin or sql)
+        sql:
+          type: string
+          description: SQL expression for the custom dimension
+        dimensionType:
+          $ref: '#/components/schemas/DimensionType'
+          description: Data type of the dimension result
+      required:
+      - id
+      - name
+      - table
+      - type
+      - sql
+      - dimensionType
+      type: object
+      additionalProperties: true
+    CustomDimension:
+      anyOf:
+      - $ref: '#/components/schemas/CustomBinDimension'
+      - $ref: '#/components/schemas/CustomSqlDimension'
+    NumberSeparator:
+      enum:
+      - default
+      - commaPeriod
+      - spacePeriod
+      - periodComma
+      - noSeparatorPeriod
+      - apostrophePeriod
+      type: string
+    Pick_Metric.formatOptions_:
+      properties:
+        formatOptions:
+          $ref: '#/components/schemas/CustomFormat'
+      type: object
+      description: From T, pick a set of properties whose keys are in the union K
     FieldId:
       type: string
-    DimensionOverrides:
+    GroupValueMatchType:
+      enum:
+      - exact
+      - startsWith
+      - endsWith
+      - includes
+      type: string
+    DateZoom:
+      properties:
+        xAxisFieldId:
+          type: string
+        granularity:
+          anyOf:
+          - $ref: '#/components/schemas/DateGranularity'
+          - type: string
+      type: object
+    CustomDimensionType.BIN:
+      enum:
+      - bin
+      type: string
+    PreAggregateMissReason.GRANULARITY_TOO_FINE:
+      enum:
+      - granularity_too_fine
+      type: string
+    FrameBoundaryType:
+      enum:
+      - unbounded_preceding
+      - preceding
+      - current_row
+      - following
+      - unbounded_following
+      type: string
+    PreAggregateMissReason.CUSTOM_METRIC_PRESENT:
+      enum:
+      - custom_metric_present
+      type: string
+    DateGranularity:
+      enum:
+      - Second
+      - Minute
+      - Hour
+      - Day
+      - Week
+      - Month
+      - Quarter
+      - Year
+      type: string
+    BinType.FIXED_WIDTH:
+      enum:
+      - fixed_width
+      type: string
+    Field:
+      properties:
+        fieldType:
+          $ref: '#/components/schemas/FieldType'
+        type:
+          type: string
+        name:
+          type: string
+        label:
+          type: string
+        table:
+          type: string
+        tableLabel:
+          type: string
+        sql:
+          type: string
+        description:
+          type: string
+        source:
+          $ref: '#/components/schemas/Source'
+        hidden:
+          type: boolean
+        compact:
+          $ref: '#/components/schemas/CompactOrAlias'
+        round:
+          type: number
+          format: double
+        format:
+          anyOf:
+          - $ref: '#/components/schemas/Format'
+          - type: string
+        separator:
+          $ref: '#/components/schemas/NumberSeparator'
+          description: 'Number separator style for grouping/decimal characters. Composes with
+
+            `format` (including ECMA-376 expressions) and `formatOptions` — it only
+
+            controls the separator characters, not the format shape.'
+        groupLabel:
+          type: string
+          deprecated: true
+        groups:
+          items:
+            type: string
+          type: array
+        urls:
+          items:
+            $ref: '#/components/schemas/FieldUrl'
+          type: array
+        index:
+          type: number
+          format: double
+        tags:
+          items:
+            type: string
+          type: array
+        parameterReferences:
+          items:
+            type: string
+          type: array
+      required:
+      - fieldType
+      - type
+      - name
+      - label
+      - table
+      - tableLabel
+      - sql
+      - hidden
+      type: object
+      additionalProperties: true
+    FiltersResponse:
+      properties:
+        tableCalculations:
+          $ref: '#/components/schemas/FilterGroupResponse'
+        metrics:
+          $ref: '#/components/schemas/FilterGroupResponse'
+        dimensions:
+          $ref: '#/components/schemas/FilterGroupResponse'
+      type: object
+    FieldType:
+      enum:
+      - metric
+      - dimension
+      type: string
+    CustomGroupBinDimension:
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the custom dimension
+        name:
+          type: string
+          description: Display name for the custom dimension
+        table:
+          type: string
+          description: Table this custom dimension belongs to
+        type:
+          $ref: '#/components/schemas/CustomDimensionType.BIN'
+          description: Type of custom dimension (bin or sql)
+        dimensionId:
+          $ref: '#/components/schemas/FieldId'
+          description: Field ID of the parent dimension to bin
+        binType:
+          $ref: '#/components/schemas/BinType.CUSTOM_GROUP'
+        customGroups:
+          items:
+            $ref: '#/components/schemas/BinGroup'
+          type: array
+      required:
+      - id
+      - name
+      - table
+      - type
+      - dimensionId
+      - binType
+      - customGroups
+      type: object
+      additionalProperties: true
+    FrameBoundary:
+      properties:
+        offset:
+          type: number
+          format: double
+          description: Offset for PRECEDING/FOLLOWING
+        type:
+          $ref: '#/components/schemas/FrameBoundaryType'
+          description: Boundary type
+      required:
+      - type
+      type: object
+    Record_string._type-DimensionType__:
       properties: {}
       additionalProperties:
-        $ref: '#/components/schemas/Pick_Dimension.formatOptions_'
+        properties:
+          type:
+            $ref: '#/components/schemas/DimensionType'
+        required:
+        - type
+        type: object
       type: object
-    PreAggregateMissReason.CUSTOM_DIMENSION_PRESENT:
+      description: Construct a type with a set of properties K of type T
+    CustomFormatType:
       enum:
-      - custom_dimension_present
+      - default
+      - percent
+      - currency
+      - number
+      - id
+      - date
+      - timestamp
+      - bytes_si
+      - bytes_iec
+      - custom
+      type: string
+    CustomBinDimension:
+      anyOf:
+      - $ref: '#/components/schemas/FixedNumberBinDimension'
+      - $ref: '#/components/schemas/FixedWidthBinDimension'
+      - $ref: '#/components/schemas/CustomRangeBinDimension'
+      - $ref: '#/components/schemas/CustomGroupBinDimension'
+    TableCalculation:
+      anyOf:
+      - $ref: '#/components/schemas/SqlTableCalculation'
+      - $ref: '#/components/schemas/TemplateTableCalculation'
+      - $ref: '#/components/schemas/FormulaTableCalculation'
+    FilterGroupResponse:
+      anyOf:
+      - properties:
+          or:
+            items:
+              $ref: '#/components/schemas/AnyType'
+            type: array
+          id:
+            type: string
+        required:
+        - or
+        - id
+        type: object
+      - properties:
+          and:
+            items:
+              $ref: '#/components/schemas/AnyType'
+            type: array
+          id:
+            type: string
+        required:
+        - and
+        - id
+        type: object
+    Pick_CompiledDimension.label-or-name-or-table_:
+      properties:
+        name:
+          type: string
+        label:
+          type: string
+        table:
+          type: string
+      required:
+      - name
+      - label
+      - table
+      type: object
+      description: From T, pick a set of properties whose keys are in the union K
+    BinGroup:
+      properties:
+        values:
+          items:
+            $ref: '#/components/schemas/GroupValueRule'
+          type: array
+          description: Rules that match values into this group
+        name:
+          type: string
+          description: Display name for this group (e.g. "North America")
+      required:
+      - values
+      - name
+      type: object
+    DimensionType:
+      enum:
+      - string
+      - number
+      - timestamp
+      - date
+      - boolean
+      type: string
+    AdditionalMetric:
+      properties:
+        label:
+          type: string
+          description: Display label for the metric
+        type:
+          $ref: '#/components/schemas/MetricType'
+          description: Aggregation type
+        description:
+          type: string
+          description: Description of what the metric measures
+        sql:
+          type: string
+          description: SQL expression (e.g., ${TABLE}.column_name)
+        hidden:
+          type: boolean
+          description: Whether the metric is hidden from users
+        round:
+          type: number
+          format: double
+          description: Number of decimal places
+        compact:
+          $ref: '#/components/schemas/CompactOrAlias'
+          description: Compact format for large numbers
+        format:
+          anyOf:
+          - $ref: '#/components/schemas/Format'
+          - type: string
+          description: Format string (legacy format specification)
+        separator:
+          $ref: '#/components/schemas/NumberSeparator'
+          description: Number separator style for grouping/decimal characters
+        table:
+          type: string
+          description: Table name the metric belongs to
+        name:
+          type: string
+          description: Internal name of the metric
+        index:
+          type: number
+          format: double
+          description: Display order index
+        filters:
+          items:
+            $ref: '#/components/schemas/MetricFilterRule'
+          type: array
+          description: Filters to apply to this metric
+        baseDimensionName:
+          type: string
+          description: Name of the base dimension/column this metric aggregates
+        uuid:
+          type:
+          - string
+          - 'null'
+          description: Unique identifier for the metric
+        percentile:
+          type: number
+          format: double
+          description: Percentile value for percentile metrics
+        distinctKeys:
+          items:
+            type: string
+          type: array
+        formatOptions:
+          $ref: '#/components/schemas/CustomFormat'
+          description: Formatting configuration
+        generationType:
+          type: string
+          enum:
+          - periodOverPeriod
+          description: 'Optional marker for metrics generated by the system.
+
+            Currently used for Period-over-Period (PoP) previous-period metrics.'
+        baseMetricId:
+          $ref: '#/components/schemas/FieldId'
+          description: For PoP-generated metrics, the base metric id that this metric is derived from.
+        timeDimensionId:
+          $ref: '#/components/schemas/FieldId'
+          description: For PoP-generated metrics, the time dimension id used for the comparison.
+        granularity:
+          $ref: '#/components/schemas/TimeFrames'
+          description: For PoP-generated metrics, the granularity used for the comparison.
+        periodOffset:
+          type: number
+          format: double
+          description: For PoP-generated metrics, the number of periods to offset by (>= 1).
+      required:
+      - type
+      - sql
+      - table
+      - name
+      type: object
+      additionalProperties: true
+    TableCalculationTemplateType.PERCENT_OF_PREVIOUS_VALUE:
+      enum:
+      - percent_of_previous_value
+      type: string
+    FieldType.METRIC:
+      enum:
+      - metric
+      type: string
+    ApiRunQueryResponse:
+      properties:
+        results:
+          properties:
+            fields:
+              $ref: '#/components/schemas/Record_string.Item-or-AdditionalMetric_'
+            rows:
+              items:
+                $ref: '#/components/schemas/AnyType'
+              type: array
+            cacheMetadata:
+              $ref: '#/components/schemas/CacheMetadata'
+            metricQuery:
+              $ref: '#/components/schemas/MetricQueryResponse'
+          required:
+          - rows
+          - cacheMetadata
+          - metricQuery
+          type: object
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
+    DefaultTimeDimension:
+      properties:
+        interval:
+          $ref: '#/components/schemas/TimeFrames'
+        field:
+          type: string
+      required:
+      - interval
+      - field
+      type: object
+    CacheMetadata:
+      properties:
+        preAggregate:
+          properties:
+            reason:
+              $ref: '#/components/schemas/PreAggregateMatchMiss'
+            name:
+              type: string
+            hit:
+              type: boolean
+          required:
+          - hit
+          type: object
+        cacheHit:
+          type: boolean
+        cacheKey:
+          type: string
+        cacheExpiresAt:
+          type: string
+          format: date-time
+        cacheUpdatedTime:
+          type: string
+          format: date-time
+      required:
+      - cacheHit
+      type: object
+    Record_string.string-or-string-Array_:
+      properties: {}
+      additionalProperties:
+        anyOf:
+        - type: string
+        - items:
+            type: string
+          type: array
+      type: object
+      description: Construct a type with a set of properties K of type T
+    SourcePosition:
+      properties:
+        character:
+          type: number
+          format: double
+        line:
+          type: number
+          format: double
+      required:
+      - character
+      - line
+      type: object
+    PreAggregateMissReason.NO_PRE_AGGREGATES_DEFINED:
+      enum:
+      - no_pre_aggregates_defined
       type: string
     PivotSortAnchor:
       properties:
@@ -1184,170 +1569,6 @@ components:
       description: 'Coordinates of a single pivot column, used to anchor a row sort to that
 
         specific column when results are pivoted.'
-    CustomDimensionType.BIN:
-      enum:
-      - bin
-      type: string
-    CustomDimension:
-      anyOf:
-      - $ref: '#/components/schemas/CustomBinDimension'
-      - $ref: '#/components/schemas/CustomSqlDimension'
-    TableCalculationTemplateType.WINDOW_FUNCTION:
-      enum:
-      - window_function
-      type: string
-    NumberSeparator:
-      enum:
-      - default
-      - commaPeriod
-      - spacePeriod
-      - periodComma
-      - noSeparatorPeriod
-      - apostrophePeriod
-      type: string
-    BinType.FIXED_WIDTH:
-      enum:
-      - fixed_width
-      type: string
-    CompactOrAlias:
-      anyOf:
-      - $ref: '#/components/schemas/Compact'
-      - type: string
-        enum:
-        - K
-        - thousand
-        - M
-        - million
-        - B
-        - billion
-        - T
-        - trillion
-        - KB
-        - kilobyte
-        - MB
-        - megabyte
-        - GB
-        - gigabyte
-        - TB
-        - terabyte
-        - PB
-        - petabyte
-        - KiB
-        - kibibyte
-        - MiB
-        - mebibyte
-        - GiB
-        - gibibyte
-        - TiB
-        - tebibyte
-        - PiB
-        - pebibyte
-    CustomRangeBinDimension:
-      properties:
-        id:
-          type: string
-          description: Unique identifier for the custom dimension
-        name:
-          type: string
-          description: Display name for the custom dimension
-        table:
-          type: string
-          description: Table this custom dimension belongs to
-        type:
-          $ref: '#/components/schemas/CustomDimensionType.BIN'
-          description: Type of custom dimension (bin or sql)
-        dimensionId:
-          $ref: '#/components/schemas/FieldId'
-          description: Field ID of the parent dimension to bin
-        binType:
-          $ref: '#/components/schemas/BinType.CUSTOM_RANGE'
-        customRange:
-          items:
-            $ref: '#/components/schemas/BinRange'
-          type: array
-      required:
-      - id
-      - name
-      - table
-      - type
-      - dimensionId
-      - binType
-      - customRange
-      type: object
-      additionalProperties: true
-    PreAggregateMissReason.DIMENSION_NOT_IN_PRE_AGGREGATE:
-      enum:
-      - dimension_not_in_pre_aggregate
-      type: string
-    Record_string.unknown_:
-      properties: {}
-      additionalProperties: {}
-      type: object
-      description: Construct a type with a set of properties K of type T
-    Pick_Metric.formatOptions_:
-      properties:
-        formatOptions:
-          $ref: '#/components/schemas/CustomFormat'
-      type: object
-      description: From T, pick a set of properties whose keys are in the union K
-    Record_string.Item-or-AdditionalMetric_:
-      properties: {}
-      additionalProperties:
-        anyOf:
-        - $ref: '#/components/schemas/Field'
-        - $ref: '#/components/schemas/Metric'
-        - $ref: '#/components/schemas/TableCalculation'
-        - $ref: '#/components/schemas/AdditionalMetric'
-        - $ref: '#/components/schemas/CustomDimension'
-      type: object
-      description: Construct a type with a set of properties K of type T
-    Pick_CompiledDimension.label-or-name-or-table_:
-      properties:
-        name:
-          type: string
-        label:
-          type: string
-        table:
-          type: string
-      required:
-      - name
-      - label
-      - table
-      type: object
-      description: From T, pick a set of properties whose keys are in the union K
-    DateZoom:
-      properties:
-        xAxisFieldId:
-          type: string
-        granularity:
-          anyOf:
-          - $ref: '#/components/schemas/DateGranularity'
-          - type: string
-      type: object
-    TemplateTableCalculation:
-      allOf:
-      - $ref: '#/components/schemas/TableCalculationBase'
-      - properties:
-          template:
-            $ref: '#/components/schemas/TableCalculationTemplate'
-            description: Template-based calculation (alternative to sql)
-        required:
-        - template
-        type: object
-    DefaultTimeDimension:
-      properties:
-        interval:
-          $ref: '#/components/schemas/TimeFrames'
-        field:
-          type: string
-      required:
-      - interval
-      - field
-      type: object
-    TableCalculationTemplateType.RUNNING_TOTAL:
-      enum:
-      - running_total
-      type: string
     PreAggregateMatchMiss:
       anyOf:
       - properties:
@@ -1473,35 +1694,14 @@ components:
         required:
         - reason
         type: object
-    PreAggregateMissReason.METRIC_NOT_IN_PRE_AGGREGATE:
+    BinType.CUSTOM_GROUP:
       enum:
-      - metric_not_in_pre_aggregate
+      - custom_group
       type: string
-    BinRange:
-      properties:
-        to:
-          type: number
-          format: double
-          description: End value for this bin range (undefined for the last range)
-        from:
-          type: number
-          format: double
-          description: Start value for this bin range (undefined for the first range)
-      type: object
-    BinGroup:
-      properties:
-        values:
-          items:
-            $ref: '#/components/schemas/GroupValueRule'
-          type: array
-          description: Rules that match values into this group
-        name:
-          type: string
-          description: Display name for this group (e.g. "North America")
-      required:
-      - values
-      - name
-      type: object
+    PreAggregateMissReason.FILTER_DIMENSION_NOT_IN_PRE_AGGREGATE:
+      enum:
+      - filter_dimension_not_in_pre_aggregate
+      type: string
     FixedNumberBinDimension:
       properties:
         id:
@@ -1534,31 +1734,91 @@ components:
       - binNumber
       type: object
       additionalProperties: true
-    PreAggregateMissReason.EXPLORE_RESOLUTION_ERROR:
+    TableCalculationType:
       enum:
-      - explore_resolution_error
+      - number
+      - string
+      - date
+      - timestamp
+      - boolean
       type: string
-    TableCalculation:
-      anyOf:
-      - $ref: '#/components/schemas/SqlTableCalculation'
-      - $ref: '#/components/schemas/TemplateTableCalculation'
-      - $ref: '#/components/schemas/FormulaTableCalculation'
-    Pick_Dimension.formatOptions_:
-      properties:
-        formatOptions:
-          $ref: '#/components/schemas/CustomFormat'
-      type: object
-      description: From T, pick a set of properties whose keys are in the union K
-    DateGranularity:
+    FormulaTableCalculation:
+      allOf:
+      - $ref: '#/components/schemas/TableCalculationBase'
+      - properties:
+          formula:
+            type: string
+            description: Spreadsheet-like formula compiled to SQL at query time
+        required:
+        - formula
+        type: object
+    TableCalculationTemplateType.WINDOW_FUNCTION:
       enum:
-      - Second
-      - Minute
-      - Hour
-      - Day
-      - Week
-      - Month
-      - Quarter
-      - Year
+      - window_function
+      type: string
+    FrameClause:
+      properties:
+        end:
+          $ref: '#/components/schemas/FrameBoundary'
+          description: End boundary of the frame
+        start:
+          $ref: '#/components/schemas/FrameBoundary'
+          description: Start boundary of the frame
+        frameType:
+          $ref: '#/components/schemas/FrameType'
+          description: Type of frame (ROWS or RANGE)
+      required:
+      - end
+      - frameType
+      type: object
+    PreAggregateMissReason.CUSTOM_SQL_METRIC:
+      enum:
+      - custom_sql_metric
+      type: string
+    TableCalculationTemplateType.PERCENT_OF_COLUMN_TOTAL:
+      enum:
+      - percent_of_column_total
+      type: string
+    CompactOrAlias:
+      anyOf:
+      - $ref: '#/components/schemas/Compact'
+      - type: string
+        enum:
+        - K
+        - thousand
+        - M
+        - million
+        - B
+        - billion
+        - T
+        - trillion
+        - KB
+        - kilobyte
+        - MB
+        - megabyte
+        - GB
+        - gigabyte
+        - TB
+        - terabyte
+        - PB
+        - petabyte
+        - KiB
+        - kibibyte
+        - MiB
+        - mebibyte
+        - GiB
+        - gibibyte
+        - TiB
+        - tebibyte
+        - PiB
+        - pebibyte
+    PreAggregateMissReason.USER_BYPASS:
+      enum:
+      - user_bypass
+      type: string
+    BinType.CUSTOM_RANGE:
+      enum:
+      - custom_range
       type: string
     WindowFunctionType:
       enum:
@@ -1571,184 +1831,6 @@ components:
       - count
       - min
       - max
-      type: string
-    CustomFormat:
-      properties:
-        type:
-          $ref: '#/components/schemas/CustomFormatType'
-          description: Format type
-        round:
-          type: number
-          format: double
-          description: Number of decimal places
-        separator:
-          $ref: '#/components/schemas/NumberSeparator'
-          description: Number separator style
-        currency:
-          type: string
-          description: Currency code (e.g., USD, GBP, EUR)
-        compact:
-          $ref: '#/components/schemas/CompactOrAlias'
-          description: Compact format for large numbers (K, M, B, T) or byte units
-        prefix:
-          type: string
-          description: Prefix to prepend to formatted values
-        suffix:
-          type: string
-          description: Suffix to append to formatted values
-        timeInterval:
-          $ref: '#/components/schemas/TimeFrames'
-          description: Time interval for date formatting
-        custom:
-          type: string
-          description: Custom format string
-      required:
-      - type
-      type: object
-      additionalProperties: true
-    PreAggregateMissReason.GRANULARITY_TOO_FINE:
-      enum:
-      - granularity_too_fine
-      type: string
-    Compact:
-      enum:
-      - thousands
-      - millions
-      - billions
-      - trillions
-      - kilobytes
-      - megabytes
-      - gigabytes
-      - terabytes
-      - petabytes
-      - kibibytes
-      - mebibytes
-      - gibibytes
-      - tebibytes
-      - pebibytes
-      type: string
-    AdditionalMetric:
-      properties:
-        label:
-          type: string
-          description: Display label for the metric
-        type:
-          $ref: '#/components/schemas/MetricType'
-          description: Aggregation type
-        description:
-          type: string
-          description: Description of what the metric measures
-        sql:
-          type: string
-          description: SQL expression (e.g., ${TABLE}.column_name)
-        hidden:
-          type: boolean
-          description: Whether the metric is hidden from users
-        round:
-          type: number
-          format: double
-          description: Number of decimal places
-        compact:
-          $ref: '#/components/schemas/CompactOrAlias'
-          description: Compact format for large numbers
-        format:
-          anyOf:
-          - $ref: '#/components/schemas/Format'
-          - type: string
-          description: Format string (legacy format specification)
-        separator:
-          $ref: '#/components/schemas/NumberSeparator'
-          description: Number separator style for grouping/decimal characters
-        table:
-          type: string
-          description: Table name the metric belongs to
-        name:
-          type: string
-          description: Internal name of the metric
-        index:
-          type: number
-          format: double
-          description: Display order index
-        filters:
-          items:
-            $ref: '#/components/schemas/MetricFilterRule'
-          type: array
-          description: Filters to apply to this metric
-        baseDimensionName:
-          type: string
-          description: Name of the base dimension/column this metric aggregates
-        uuid:
-          type:
-          - string
-          - 'null'
-          description: Unique identifier for the metric
-        percentile:
-          type: number
-          format: double
-          description: Percentile value for percentile metrics
-        distinctKeys:
-          items:
-            type: string
-          type: array
-        formatOptions:
-          $ref: '#/components/schemas/CustomFormat'
-          description: Formatting configuration
-        generationType:
-          type: string
-          enum:
-          - periodOverPeriod
-          description: 'Optional marker for metrics generated by the system.
-
-            Currently used for Period-over-Period (PoP) previous-period metrics.'
-        baseMetricId:
-          $ref: '#/components/schemas/FieldId'
-          description: For PoP-generated metrics, the base metric id that this metric is derived from.
-        timeDimensionId:
-          $ref: '#/components/schemas/FieldId'
-          description: For PoP-generated metrics, the time dimension id used for the comparison.
-        granularity:
-          $ref: '#/components/schemas/TimeFrames'
-          description: For PoP-generated metrics, the granularity used for the comparison.
-        periodOffset:
-          type: number
-          format: double
-          description: For PoP-generated metrics, the number of periods to offset by (>= 1).
-      required:
-      - type
-      - sql
-      - table
-      - name
-      type: object
-      additionalProperties: true
-    FrameBoundaryType:
-      enum:
-      - unbounded_preceding
-      - preceding
-      - current_row
-      - following
-      - unbounded_following
-      type: string
-    CustomBinDimension:
-      anyOf:
-      - $ref: '#/components/schemas/FixedNumberBinDimension'
-      - $ref: '#/components/schemas/FixedWidthBinDimension'
-      - $ref: '#/components/schemas/CustomRangeBinDimension'
-      - $ref: '#/components/schemas/CustomGroupBinDimension'
-    TableCalculationType:
-      enum:
-      - number
-      - string
-      - date
-      - timestamp
-      - boolean
-      type: string
-    PreAggregateMissReason.PRE_AGGREGATE_FILTER_NOT_SATISFIED:
-      enum:
-      - pre_aggregate_filter_not_satisfied
-      type: string
-    PreAggregateMissReason.CUSTOM_METRIC_PRESENT:
-      enum:
-      - custom_metric_present
       type: string
     MetricQueryRequest:
       properties:
@@ -1821,92 +1903,10 @@ components:
       - dimensions
       - exploreName
       type: object
-    BinType.CUSTOM_GROUP:
+    PreAggregateMissReason.NON_ADDITIVE_METRIC:
       enum:
-      - custom_group
+      - non_additive_metric
       type: string
-    TableCalculationTemplateType.RANK_IN_COLUMN:
-      enum:
-      - rank_in_column
-      type: string
-    GroupValueMatchType:
-      enum:
-      - exact
-      - startsWith
-      - endsWith
-      - includes
-      type: string
-    CustomSqlDimension:
-      properties:
-        id:
-          type: string
-          description: Unique identifier for the custom dimension
-        name:
-          type: string
-          description: Display name for the custom dimension
-        table:
-          type: string
-          description: Table this custom dimension belongs to
-        type:
-          $ref: '#/components/schemas/CustomDimensionType.SQL'
-          description: Type of custom dimension (bin or sql)
-        sql:
-          type: string
-          description: SQL expression for the custom dimension
-        dimensionType:
-          $ref: '#/components/schemas/DimensionType'
-          description: Data type of the dimension result
-      required:
-      - id
-      - name
-      - table
-      - type
-      - sql
-      - dimensionType
-      type: object
-      additionalProperties: true
-    Record_string.string-or-string-Array_:
-      properties: {}
-      additionalProperties:
-        anyOf:
-        - type: string
-        - items:
-            type: string
-          type: array
-      type: object
-      description: Construct a type with a set of properties K of type T
-    FixedWidthBinDimension:
-      properties:
-        id:
-          type: string
-          description: Unique identifier for the custom dimension
-        name:
-          type: string
-          description: Display name for the custom dimension
-        table:
-          type: string
-          description: Table this custom dimension belongs to
-        type:
-          $ref: '#/components/schemas/CustomDimensionType.BIN'
-          description: Type of custom dimension (bin or sql)
-        dimensionId:
-          $ref: '#/components/schemas/FieldId'
-          description: Field ID of the parent dimension to bin
-        binType:
-          $ref: '#/components/schemas/BinType.FIXED_WIDTH'
-        binWidth:
-          type: number
-          format: double
-      required:
-      - id
-      - name
-      - table
-      - type
-      - dimensionId
-      - binType
-      - binWidth
-      type: object
-      additionalProperties: true
   securitySchemes:
     session_cookie:
       type: apiKey

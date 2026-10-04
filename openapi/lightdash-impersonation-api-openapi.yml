@@ -76,13 +76,6 @@ components:
         These are only used on legacy `any` types, don''t use it for new types.
 
         This is added on a separate file to avoid circular dependencies.'
-    ApiStartImpersonationRequest:
-      properties:
-        targetUserUuid:
-          type: string
-      required:
-      - targetUserUuid
-      type: object
     ApiErrorPayload:
       properties:
         error:
@@ -115,6 +108,22 @@ components:
       description: 'The Error object is returned from the api any time there is an error.
 
         The message contains'
+    ApiStopImpersonationResponse:
+      properties:
+        results:
+          type:
+          - number
+          - 'null'
+          enum:
+          - null
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
     ApiStartImpersonationResponse:
       properties:
         results:
@@ -131,21 +140,12 @@ components:
       - results
       - status
       type: object
-    ApiStopImpersonationResponse:
+    ApiStartImpersonationRequest:
       properties:
-        results:
-          type:
-          - number
-          - 'null'
-          enum:
-          - null
-        status:
+        targetUserUuid:
           type: string
-          enum:
-          - ok
       required:
-      - results
-      - status
+      - targetUserUuid
       type: object
   securitySchemes:
     session_cookie:

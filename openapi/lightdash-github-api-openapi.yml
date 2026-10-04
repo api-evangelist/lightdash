@@ -240,21 +240,18 @@ paths:
       - Github
 components:
   schemas:
-    GitRepo:
+    ApiGithubUserCredentialResponse:
       properties:
-        defaultBranch:
+        results:
+          allOf:
+          - $ref: '#/components/schemas/GithubUserCredential'
+        status:
           type: string
-        ownerLogin:
-          type: string
-        fullName:
-          type: string
-        name:
-          type: string
+          enum:
+          - ok
       required:
-      - defaultBranch
-      - ownerLogin
-      - fullName
-      - name
+      - results
+      - status
       type: object
     GitIntegrationConfiguration:
       properties:
@@ -264,6 +261,16 @@ components:
           type: boolean
       required:
       - enabled
+      type: object
+    ApiSuccessEmpty:
+      properties:
+        results: {}
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - status
       type: object
     GithubUserCredential:
       properties:
@@ -279,28 +286,21 @@ components:
       description: 'A user''s personally linked GitHub account. When present, write-backs are
 
         authored as this user instead of the Lightdash GitHub App bot.'
-    ApiGithubUserCredentialResponse:
+    GitRepo:
       properties:
-        results:
-          allOf:
-          - $ref: '#/components/schemas/GithubUserCredential'
-        status:
+        defaultBranch:
           type: string
-          enum:
-          - ok
-      required:
-      - results
-      - status
-      type: object
-    ApiSuccessEmpty:
-      properties:
-        results: {}
-        status:
+        ownerLogin:
           type: string
-          enum:
-          - ok
+        fullName:
+          type: string
+        name:
+          type: string
       required:
-      - status
+      - defaultBranch
+      - ownerLogin
+      - fullName
+      - name
       type: object
   securitySchemes:
     session_cookie:

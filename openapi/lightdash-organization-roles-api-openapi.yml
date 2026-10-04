@@ -195,31 +195,42 @@ paths:
               $ref: '#/components/schemas/CreateRole'
 components:
   schemas:
-    AnyType:
-      description: 'This AnyType is an alias for any
-
-        The goal is to make it easier to identify any type in the codebase
-
-        without having to eslint-disable all the time
-
-        These are only used on legacy `any` types, don''t use it for new types.
-
-        This is added on a separate file to avoid circular dependencies.'
-    RoleWithScopes:
-      allOf:
-      - $ref: '#/components/schemas/Role'
-      - properties:
-          scopes:
-            items:
-              type: string
-            type: array
-        required:
-        - scopes
-        type: object
-    ApiRoleAssignmentResponse:
+    ApiRoleAssignmentListResponse:
       properties:
         results:
-          $ref: '#/components/schemas/RoleAssignment'
+          items:
+            $ref: '#/components/schemas/RoleAssignment'
+          type: array
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
+    ApiGetRolesResponse:
+      properties:
+        results:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/Role'
+            type: array
+          - items:
+              $ref: '#/components/schemas/RoleWithScopes'
+            type: array
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
+    ApiRoleWithScopesResponse:
+      properties:
+        results:
+          $ref: '#/components/schemas/RoleWithScopes'
         status:
           type: string
           enum:
@@ -260,10 +271,20 @@ components:
       description: 'The Error object is returned from the api any time there is an error.
 
         The message contains'
-    ApiRoleWithScopesResponse:
+    AnyType:
+      description: 'This AnyType is an alias for any
+
+        The goal is to make it easier to identify any type in the codebase
+
+        without having to eslint-disable all the time
+
+        These are only used on legacy `any` types, don''t use it for new types.
+
+        This is added on a separate file to avoid circular dependencies.'
+    ApiRoleAssignmentResponse:
       properties:
         results:
-          $ref: '#/components/schemas/RoleWithScopes'
+          $ref: '#/components/schemas/RoleAssignment'
         status:
           type: string
           enum:
@@ -272,37 +293,17 @@ components:
       - results
       - status
       type: object
-    CreateRole:
-      properties:
-        scopes:
-          items:
-            type: string
-          type: array
-        description:
-          type: string
-        name:
-          type: string
-      required:
-      - name
-      type: object
-    ApiGetRolesResponse:
-      properties:
-        results:
-          anyOf:
-          - items:
-              $ref: '#/components/schemas/Role'
+    RoleWithScopes:
+      allOf:
+      - $ref: '#/components/schemas/Role'
+      - properties:
+          scopes:
+            items:
+              type: string
             type: array
-          - items:
-              $ref: '#/components/schemas/RoleWithScopes'
-            type: array
-        status:
-          type: string
-          enum:
-          - ok
-      required:
-      - results
-      - status
-      type: object
+        required:
+        - scopes
+        type: object
     RoleAssignment:
       properties:
         updatedAt:
@@ -342,20 +343,6 @@ components:
       - ownerType
       - roleName
       - roleId
-      type: object
-    ApiRoleAssignmentListResponse:
-      properties:
-        results:
-          items:
-            $ref: '#/components/schemas/RoleAssignment'
-          type: array
-        status:
-          type: string
-          enum:
-          - ok
-      required:
-      - results
-      - status
       type: object
     Role:
       properties:
@@ -399,6 +386,19 @@ components:
       - description
       - name
       - roleUuid
+      type: object
+    CreateRole:
+      properties:
+        scopes:
+          items:
+            type: string
+          type: array
+        description:
+          type: string
+        name:
+          type: string
+      required:
+      - name
       type: object
   securitySchemes:
     session_cookie:

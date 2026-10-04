@@ -141,6 +141,58 @@ paths:
               $ref: '#/components/schemas/Record_string.LightdashProjectParameter_'
 components:
   schemas:
+    ParameterDefinitions:
+      $ref: '#/components/schemas/Record_string.LightdashProjectParameter_'
+    Record_string.LightdashProjectParameter_:
+      properties: {}
+      additionalProperties:
+        $ref: '#/components/schemas/LightdashProjectParameter'
+      type: object
+      description: Construct a type with a set of properties K of type T
+    KnexPaginateArgs:
+      properties:
+        page:
+          type: number
+          format: double
+        pageSize:
+          type: number
+          format: double
+      required:
+      - page
+      - pageSize
+      type: object
+    ApiErrorPayload:
+      properties:
+        error:
+          properties:
+            data:
+              $ref: '#/components/schemas/AnyType'
+              description: Optional data containing details of the error
+            message:
+              type: string
+              description: A friendly message summarising the error
+            name:
+              type: string
+              description: Unique name for the type of error
+            statusCode:
+              type: number
+              format: integer
+              description: HTTP status code
+          required:
+          - name
+          - statusCode
+          type: object
+        status:
+          type: string
+          enum:
+          - error
+      required:
+      - error
+      - status
+      type: object
+      description: 'The Error object is returned from the api any time there is an error.
+
+        The message contains'
     AnyType:
       description: 'This AnyType is an alias for any
 
@@ -151,18 +203,26 @@ components:
         These are only used on legacy `any` types, don''t use it for new types.
 
         This is added on a separate file to avoid circular dependencies.'
-    ApiSuccess_ApiGetProjectParametersResults_:
+    ProjectParameterSummary:
       properties:
-        results:
-          $ref: '#/components/schemas/ApiGetProjectParametersResults'
-        status:
+        modelName:
+          type: string
+        source:
           type: string
           enum:
-          - ok
+          - config
+          - model
+        config:
+          $ref: '#/components/schemas/LightdashProjectParameter'
+        name:
+          type: string
       required:
-      - results
-      - status
+      - source
+      - config
+      - name
       type: object
+    ApiGetProjectParametersListResults:
+      $ref: '#/components/schemas/KnexPaginatedData_ProjectParameterSummary-Array_'
     LightdashProjectParameter:
       properties:
         options_from_dimension:
@@ -203,40 +263,32 @@ components:
       required:
       - label
       type: object
-    ApiErrorPayload:
+    ApiGetProjectParametersResults:
+      $ref: '#/components/schemas/ParameterDefinitions'
+    ParameterValue:
+      anyOf:
+      - type: string
+      - type: number
+        format: double
+      - items:
+          type: string
+        type: array
+      - items:
+          type: number
+          format: double
+        type: array
+    ApiSuccess_ApiGetProjectParametersListResults_:
       properties:
-        error:
-          properties:
-            data:
-              $ref: '#/components/schemas/AnyType'
-              description: Optional data containing details of the error
-            message:
-              type: string
-              description: A friendly message summarising the error
-            name:
-              type: string
-              description: Unique name for the type of error
-            statusCode:
-              type: number
-              format: integer
-              description: HTTP status code
-          required:
-          - name
-          - statusCode
-          type: object
+        results:
+          $ref: '#/components/schemas/ApiGetProjectParametersListResults'
         status:
           type: string
           enum:
-          - error
+          - ok
       required:
-      - error
+      - results
       - status
       type: object
-      description: 'The Error object is returned from the api any time there is an error.
-
-        The message contains'
-    ApiGetProjectParametersListResults:
-      $ref: '#/components/schemas/KnexPaginatedData_ProjectParameterSummary-Array_'
     KnexPaginatedData_ProjectParameterSummary-Array_:
       properties:
         pagination:
@@ -260,46 +312,6 @@ components:
       required:
       - data
       type: object
-    ParameterDefinitions:
-      $ref: '#/components/schemas/Record_string.LightdashProjectParameter_'
-    ProjectParameterSummary:
-      properties:
-        modelName:
-          type: string
-        source:
-          type: string
-          enum:
-          - config
-          - model
-        config:
-          $ref: '#/components/schemas/LightdashProjectParameter'
-        name:
-          type: string
-      required:
-      - source
-      - config
-      - name
-      type: object
-    ParameterValue:
-      anyOf:
-      - type: string
-      - type: number
-        format: double
-      - items:
-          type: string
-        type: array
-      - items:
-          type: number
-          format: double
-        type: array
-    Record_string.LightdashProjectParameter_:
-      properties: {}
-      additionalProperties:
-        $ref: '#/components/schemas/LightdashProjectParameter'
-      type: object
-      description: Construct a type with a set of properties K of type T
-    ApiGetProjectParametersResults:
-      $ref: '#/components/schemas/ParameterDefinitions'
     ApiSuccess_undefined_:
       properties:
         results: {}
@@ -310,22 +322,10 @@ components:
       required:
       - status
       type: object
-    KnexPaginateArgs:
-      properties:
-        page:
-          type: number
-          format: double
-        pageSize:
-          type: number
-          format: double
-      required:
-      - page
-      - pageSize
-      type: object
-    ApiSuccess_ApiGetProjectParametersListResults_:
+    ApiSuccess_ApiGetProjectParametersResults_:
       properties:
         results:
-          $ref: '#/components/schemas/ApiGetProjectParametersListResults'
+          $ref: '#/components/schemas/ApiGetProjectParametersResults'
         status:
           type: string
           enum:

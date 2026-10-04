@@ -86,6 +86,61 @@ paths:
       x-operation-id-original: Bulk move content
 components:
   schemas:
+    ChartSourceType:
+      enum:
+      - dbt_explore
+      - sql
+      type: string
+    ContentActionMove:
+      properties:
+        targetSpaceUuid:
+          type:
+          - string
+          - 'null'
+        type:
+          type: string
+          enum:
+          - move
+      required:
+      - targetSpaceUuid
+      - type
+      type: object
+    ApiErrorPayload:
+      properties:
+        error:
+          properties:
+            data:
+              $ref: '#/components/schemas/AnyType'
+              description: Optional data containing details of the error
+            message:
+              type: string
+              description: A friendly message summarising the error
+            name:
+              type: string
+              description: Unique name for the type of error
+            statusCode:
+              type: number
+              format: integer
+              description: HTTP status code
+          required:
+          - name
+          - statusCode
+          type: object
+        status:
+          type: string
+          enum:
+          - error
+      required:
+      - error
+      - status
+      type: object
+      description: 'The Error object is returned from the api any time there is an error.
+
+        The message contains'
+    ContentType.CHART:
+      enum:
+      - chart
+      type: string
     AnyType:
       description: 'This AnyType is an alias for any
 
@@ -96,6 +151,40 @@ components:
         These are only used on legacy `any` types, don''t use it for new types.
 
         This is added on a separate file to avoid circular dependencies.'
+    ContentType.DATA_APP:
+      enum:
+      - data_app
+      type: string
+    ContentType.DASHBOARD:
+      enum:
+      - dashboard
+      type: string
+    ApiContentBulkActionBody_ContentActionMove_:
+      properties:
+        action:
+          $ref: '#/components/schemas/ContentActionMove'
+        content:
+          items:
+            $ref: '#/components/schemas/ItemPayload'
+          type: array
+      required:
+      - action
+      - content
+      type: object
+    ApiContentActionBody_ContentActionMove_:
+      properties:
+        action:
+          $ref: '#/components/schemas/ContentActionMove'
+        item:
+          $ref: '#/components/schemas/ItemPayload'
+      required:
+      - action
+      - item
+      type: object
+    ContentType.SPACE:
+      enum:
+      - space
+      type: string
     ItemPayload:
       anyOf:
       - properties:
@@ -137,95 +226,6 @@ components:
         - contentType
         - uuid
         type: object
-    ContentType.SPACE:
-      enum:
-      - space
-      type: string
-    ApiErrorPayload:
-      properties:
-        error:
-          properties:
-            data:
-              $ref: '#/components/schemas/AnyType'
-              description: Optional data containing details of the error
-            message:
-              type: string
-              description: A friendly message summarising the error
-            name:
-              type: string
-              description: Unique name for the type of error
-            statusCode:
-              type: number
-              format: integer
-              description: HTTP status code
-          required:
-          - name
-          - statusCode
-          type: object
-        status:
-          type: string
-          enum:
-          - error
-      required:
-      - error
-      - status
-      type: object
-      description: 'The Error object is returned from the api any time there is an error.
-
-        The message contains'
-    ApiContentActionBody_ContentActionMove_:
-      properties:
-        action:
-          $ref: '#/components/schemas/ContentActionMove'
-        item:
-          $ref: '#/components/schemas/ItemPayload'
-      required:
-      - action
-      - item
-      type: object
-    ContentType.DATA_APP:
-      enum:
-      - data_app
-      type: string
-    ContentActionMove:
-      properties:
-        targetSpaceUuid:
-          type:
-          - string
-          - 'null'
-        type:
-          type: string
-          enum:
-          - move
-      required:
-      - targetSpaceUuid
-      - type
-      type: object
-    ContentType.DASHBOARD:
-      enum:
-      - dashboard
-      type: string
-    ChartSourceType:
-      enum:
-      - dbt_explore
-      - sql
-      type: string
-    ContentType.CHART:
-      enum:
-      - chart
-      type: string
-    ApiContentBulkActionBody_ContentActionMove_:
-      properties:
-        action:
-          $ref: '#/components/schemas/ContentActionMove'
-        content:
-          items:
-            $ref: '#/components/schemas/ItemPayload'
-          type: array
-      required:
-      - action
-      - content
-      type: object
     ApiSuccessEmpty:
       properties:
         results: {}

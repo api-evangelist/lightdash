@@ -556,154 +556,32 @@ paths:
       parameters: []
 components:
   schemas:
-    Omit_Account.user-or-keyofAccountHelpers_:
-      $ref: '#/components/schemas/Pick_Account.Exclude_keyofAccount.user-or-keyofAccountHelpers__'
-      description: Construct a type with the properties of T except for those in type K.
-    ApiErrorPayload:
-      properties:
-        error:
-          properties:
-            data:
-              $ref: '#/components/schemas/AnyType'
-              description: Optional data containing details of the error
-            message:
-              type: string
-              description: A friendly message summarising the error
-            name:
-              type: string
-              description: Unique name for the type of error
-            statusCode:
-              type: number
-              format: integer
-              description: HTTP status code
-          required:
-          - name
-          - statusCode
-          type: object
-        status:
-          type: string
-          enum:
-          - error
-      required:
-      - error
-      - status
-      type: object
-      description: 'The Error object is returned from the api any time there is an error.
-
-        The message contains'
-    OpenIdIdentityIssuerType:
+    BigqueryAuthenticationType:
       enum:
-      - google
-      - okta
-      - oneLogin
-      - azuread
-      - oidc
-      - snowflake
-      - databricks
-      - slack
+      - sso
+      - private_key
+      - adc
       type: string
-    url.URL:
+    LocalIssuerTypes:
+      enum:
+      - email
+      - apiToken
       type: string
-      description: 'The URL interface represents an object providing static methods used for creating object URLs.
-
-
-        [MDN Reference](https://developer.mozilla.org/docs/Web/API/URL)
-
-        `URL` class is a global reference for `import { URL } from ''url''`
-
-        https://nodejs.org/api/url.html#the-whatwg-url-api'
-    AccountRequestContext:
-      properties:
-        requestId:
-          type: string
-        userAgent:
-          type: string
-        ip:
-          type: string
-      type: object
-      description: 'Per-request metadata captured by the auth middleware. Used by the audit log
-
-        to record the IP, user agent and request id alongside permission checks.'
-    ApiSuccessEmpty:
-      properties:
-        results: {}
-        status:
-          type: string
-          enum:
-          - ok
-      required:
-      - status
-      type: object
-    ApiRegisterUserResponse:
-      properties:
-        results:
-          $ref: '#/components/schemas/LightdashUser'
-        status:
-          type: string
-          enum:
-          - ok
-      required:
-      - results
-      - status
-      type: object
-    UserWarehouseCredentials:
-      properties:
-        project:
-          allOf:
-          - $ref: '#/components/schemas/UserWarehouseCredentialsProject'
-        credentials:
-          anyOf:
-          - $ref: '#/components/schemas/Pick_CreateRedshiftCredentials-or-CreatePostgresCredentials-or-CreateSnowflakeCredentials-or-CreateTrinoCredentials-or-CreateClickhouseCredentials.type-or-user_'
-          - $ref: '#/components/schemas/Pick_CreateBigqueryCredentials.type_'
-          - $ref: '#/components/schemas/Pick_CreateDatabricksCredentials.type_'
-          - $ref: '#/components/schemas/Pick_CreateAthenaCredentials.type_'
-          - $ref: '#/components/schemas/Pick_CreateDuckdbCredentials.type_'
-        updatedAt:
-          type: string
-          format: date-time
-        createdAt:
-          type: string
-          format: date-time
-        name:
-          type: string
-        userUuid:
-          type: string
-        uuid:
-          type: string
-      required:
-      - project
-      - credentials
-      - updatedAt
-      - createdAt
-      - name
-      - userUuid
-      - uuid
-      type: object
-    Pick_CreateTrinoCredentials.type-or-user-or-password_:
-      properties:
-        user:
-          type: string
-        type:
-          $ref: '#/components/schemas/WarehouseTypes.TRINO'
-        password:
-          type: string
-      required:
-      - user
-      - type
-      - password
-      type: object
-      description: From T, pick a set of properties whose keys are in the union K
-    EmbedWriteActions:
-      properties:
-        spaceUuid:
-          type: string
-        userUuid:
-          type: string
-        serviceAccountUserUuid:
-          type: string
-      required:
-      - spaceUuid
-      type: object
+    FilterInteractivityValues:
+      enum:
+      - some
+      - all
+      - none
+      type: string
+    PersonalAccessTokenWithToken:
+      allOf:
+      - $ref: '#/components/schemas/PersonalAccessToken'
+      - properties:
+          token:
+            type: string
+        required:
+        - token
+        type: object
     Pick_Account-at-user.Exclude_keyofAccount-at-user.ability-or-abilityRules__:
       properties:
         id:
@@ -724,112 +602,194 @@ components:
       - isActive
       type: object
       description: From T, pick a set of properties whose keys are in the union K
-    DatabricksAuthenticationType:
-      enum:
-      - personal_access_token
-      - oauth_m2m
-      - oauth_u2m
-      type: string
-    PersonalAccessToken:
-      properties:
-        description:
-          type: string
-        expiresAt:
-          type:
-          - string
-          - 'null'
-          format: date-time
-        rotatedAt:
-          type:
-          - string
-          - 'null'
-          format: date-time
-        lastUsedAt:
-          type:
-          - string
-          - 'null'
-          format: date-time
-        createdAt:
-          type: string
-          format: date-time
-        uuid:
-          type: string
-      required:
-      - description
-      - expiresAt
-      - rotatedAt
-      - lastUsedAt
-      - createdAt
-      - uuid
-      type: object
-    EmbedJwtContentDashboardSlug:
+    EmailStatusExpiring:
       allOf:
-      - $ref: '#/components/schemas/CommonEmbedJwtContent'
+      - $ref: '#/components/schemas/EmailStatus'
       - properties:
-          dashboardSlug:
-            type: string
-        required:
-        - dashboardSlug
+          otp:
+            $ref: '#/components/schemas/EmailOneTimePasswordExpiring'
+            description: 'One time passcode information
+
+              If there is no active passcode, this will be undefined'
         type: object
-    LocalIssuerTypes:
-      enum:
-      - email
-      - apiToken
-      type: string
-    JwtAuth:
+      description: Verification status of an email address
+    Pick_CreateDuckdbMotherduckCredentials.type-or-token_:
       properties:
-        source:
-          type: string
-        data:
-          $ref: '#/components/schemas/CreateEmbedJwt'
         type:
+          $ref: '#/components/schemas/WarehouseTypes.DUCKDB'
+        token:
           type: string
-          enum:
-          - jwt
       required:
-      - source
-      - data
+      - type
+      - token
+      type: object
+      description: From T, pick a set of properties whose keys are in the union K
+    LoginOptions:
+      properties:
+        redirectUri:
+          type: string
+        forceRedirect:
+          type: boolean
+        showOptions:
+          items:
+            $ref: '#/components/schemas/LoginOptionTypes'
+          type: array
+      required:
+      - showOptions
+      type: object
+    WarehouseTypes.TRINO:
+      enum:
+      - trino
+      type: string
+    Pick_CreateAthenaCredentials.type-or-accessKeyId-or-secretAccessKey_:
+      properties:
+        type:
+          $ref: '#/components/schemas/WarehouseTypes.ATHENA'
+        accessKeyId:
+          type: string
+        secretAccessKey:
+          type: string
+      required:
       - type
       type: object
-    EmbedJwtContentChart:
-      allOf:
-      - $ref: '#/components/schemas/CommonChartEmbedJwtContent'
-      - properties:
-          contentId:
-            type: string
-        required:
-        - contentId
-        type: object
-    UserAllowedOrganization:
+      description: From T, pick a set of properties whose keys are in the union K
+    ApiSuccessEmpty:
       properties:
-        membersCount:
-          type: number
-          format: double
-        name:
+        results: {}
+        status:
           type: string
-        organizationUuid:
-          type: string
+          enum:
+          - ok
       required:
-      - membersCount
-      - name
-      - organizationUuid
+      - status
       type: object
-    WarehouseTypes.BIGQUERY:
-      enum:
-      - bigquery
-      type: string
-    Pick_CreateRedshiftCredentials.type-or-user-or-password_:
+    Pick_CreatePostgresCredentials.type-or-user-or-password_:
       properties:
         user:
           type: string
         type:
-          $ref: '#/components/schemas/WarehouseTypes.REDSHIFT'
+          $ref: '#/components/schemas/WarehouseTypes.POSTGRES'
         password:
           type: string
       required:
       - user
       - type
       - password
+      type: object
+      description: From T, pick a set of properties whose keys are in the union K
+    Pick_CreateTrinoCredentials.type-or-user-or-password_:
+      properties:
+        user:
+          type: string
+        type:
+          $ref: '#/components/schemas/WarehouseTypes.TRINO'
+        password:
+          type: string
+      required:
+      - user
+      - type
+      - password
+      type: object
+      description: From T, pick a set of properties whose keys are in the union K
+    Pick_CreateClickhouseCredentials.type-or-user-or-password_:
+      properties:
+        user:
+          type: string
+        type:
+          $ref: '#/components/schemas/WarehouseTypes.CLICKHOUSE'
+        password:
+          type: string
+      required:
+      - user
+      - type
+      - password
+      type: object
+      description: From T, pick a set of properties whose keys are in the union K
+    ActivateUser:
+      properties:
+        password:
+          type: string
+        lastName:
+          type: string
+        firstName:
+          type: string
+      required:
+      - password
+      - lastName
+      - firstName
+      type: object
+    Record_string.string_:
+      properties: {}
+      additionalProperties:
+        type: string
+      type: object
+      description: Construct a type with a set of properties K of type T
+    UserWarehouseCredentialsProject:
+      properties:
+        type:
+          $ref: '#/components/schemas/ProjectType'
+        name:
+          type: string
+        projectUuid:
+          type: string
+      required:
+      - type
+      - name
+      - projectUuid
+      type: object
+    EmbedJwtContentDashboardUuid:
+      allOf:
+      - $ref: '#/components/schemas/CommonEmbedJwtContent'
+      - properties:
+          dashboardUuid:
+            type: string
+        required:
+        - dashboardUuid
+        type: object
+    RegisterOrActivateUser:
+      anyOf:
+      - $ref: '#/components/schemas/ActivateUserWithInviteCode'
+      - $ref: '#/components/schemas/CreateUserArgs'
+    EmailOneTimePasswordExpiring:
+      allOf:
+      - $ref: '#/components/schemas/EmailOneTimePassword'
+      - properties:
+          isMaxAttempts:
+            type: boolean
+          isExpired:
+            type: boolean
+          expiresAt:
+            type: string
+            format: date-time
+        required:
+        - isMaxAttempts
+        - isExpired
+        - expiresAt
+        type: object
+    Pick_Account.Exclude_keyofAccount.user-or-keyofAccountHelpers__:
+      properties:
+        organization:
+          $ref: '#/components/schemas/Partial_Pick_Organization.name-or-createdAt-or-organizationUuid__'
+        authentication:
+          anyOf:
+          - $ref: '#/components/schemas/SessionAuth'
+          - $ref: '#/components/schemas/JwtAuth'
+          - $ref: '#/components/schemas/ServiceAccountAuth'
+          - $ref: '#/components/schemas/PersonalAccessTokenAuth'
+          - $ref: '#/components/schemas/OauthAuth'
+        requestContext:
+          $ref: '#/components/schemas/AccountRequestContext'
+      required:
+      - organization
+      - authentication
+      type: object
+      description: From T, pick a set of properties whose keys are in the union K
+    Pick_CreateDuckdbCredentials.type_:
+      properties:
+        type:
+          $ref: '#/components/schemas/WarehouseTypes.DUCKDB'
+      required:
+      - type
       type: object
       description: From T, pick a set of properties whose keys are in the union K
     CommonEmbedJwtContent:
@@ -885,34 +845,90 @@ components:
       required:
       - type
       type: object
-    Record_string.string_:
-      properties: {}
-      additionalProperties:
-        type: string
-      type: object
-      description: Construct a type with a set of properties K of type T
-    LoginOptions:
+    OrganizationMemberRole:
+      enum:
+      - member
+      - viewer
+      - interactive_viewer
+      - editor
+      - developer
+      - admin
+      type: string
+    UserWarehouseCredentials:
       properties:
-        redirectUri:
+        project:
+          allOf:
+          - $ref: '#/components/schemas/UserWarehouseCredentialsProject'
+        credentials:
+          anyOf:
+          - $ref: '#/components/schemas/Pick_CreateRedshiftCredentials-or-CreatePostgresCredentials-or-CreateSnowflakeCredentials-or-CreateTrinoCredentials-or-CreateClickhouseCredentials.type-or-user_'
+          - $ref: '#/components/schemas/Pick_CreateBigqueryCredentials.type_'
+          - $ref: '#/components/schemas/Pick_CreateDatabricksCredentials.type_'
+          - $ref: '#/components/schemas/Pick_CreateAthenaCredentials.type_'
+          - $ref: '#/components/schemas/Pick_CreateDuckdbCredentials.type_'
+        updatedAt:
           type: string
-        forceRedirect:
-          type: boolean
-        showOptions:
-          items:
-            $ref: '#/components/schemas/LoginOptionTypes'
-          type: array
+          format: date-time
+        createdAt:
+          type: string
+          format: date-time
+        name:
+          type: string
+        userUuid:
+          type: string
+        uuid:
+          type: string
       required:
-      - showOptions
+      - project
+      - credentials
+      - updatedAt
+      - createdAt
+      - name
+      - userUuid
+      - uuid
       type: object
-    CreatePersonalAccessToken:
-      allOf:
-      - $ref: '#/components/schemas/Pick_PersonalAccessToken.expiresAt-or-description_'
-      - properties:
-          autoGenerated:
-            type: boolean
-        required:
-        - autoGenerated
-        type: object
+    ApiErrorPayload:
+      properties:
+        error:
+          properties:
+            data:
+              $ref: '#/components/schemas/AnyType'
+              description: Optional data containing details of the error
+            message:
+              type: string
+              description: A friendly message summarising the error
+            name:
+              type: string
+              description: Unique name for the type of error
+            statusCode:
+              type: number
+              format: integer
+              description: HTTP status code
+          required:
+          - name
+          - statusCode
+          type: object
+        status:
+          type: string
+          enum:
+          - error
+      required:
+      - error
+      - status
+      type: object
+      description: 'The Error object is returned from the api any time there is an error.
+
+        The message contains'
+    AnyType:
+      description: 'This AnyType is an alias for any
+
+        The goal is to make it easier to identify any type in the codebase
+
+        without having to eslint-disable all the time
+
+        These are only used on legacy `any` types, don''t use it for new types.
+
+        This is added on a separate file to avoid circular dependencies.'
     CreateEmbedJwt:
       properties:
         exp:
@@ -945,67 +961,372 @@ components:
       required:
       - content
       type: object
-    BigqueryAuthenticationType:
+    WarehouseTypes.ATHENA:
       enum:
-      - sso
-      - private_key
-      - adc
+      - athena
       type: string
-    EmailOneTimePasswordExpiring:
+    SerializedAccount:
       allOf:
-      - $ref: '#/components/schemas/EmailOneTimePassword'
+      - $ref: '#/components/schemas/Omit_Account.user-or-keyofAccountHelpers_'
       - properties:
-          isMaxAttempts:
-            type: boolean
-          isExpired:
-            type: boolean
-          expiresAt:
-            type: string
-            format: date-time
+          user:
+            $ref: '#/components/schemas/Omit_Account-at-user.ability-or-abilityRules_'
         required:
-        - isMaxAttempts
-        - isExpired
-        - expiresAt
+        - user
         type: object
+    Pick_CreateDatabricksCredentials.type-or-personalAccessToken-or-authenticationType-or-refreshToken_:
+      properties:
+        type:
+          $ref: '#/components/schemas/WarehouseTypes.DATABRICKS'
+        personalAccessToken:
+          type: string
+        refreshToken:
+          type: string
+        authenticationType:
+          $ref: '#/components/schemas/DatabricksAuthenticationType'
+      required:
+      - type
+      type: object
+      description: From T, pick a set of properties whose keys are in the union K
+    Pick_CreateDatabricksCredentials.type_:
+      properties:
+        type:
+          $ref: '#/components/schemas/WarehouseTypes.DATABRICKS'
+      required:
+      - type
+      type: object
+      description: From T, pick a set of properties whose keys are in the union K
+    Omit_Account-at-user.ability-or-abilityRules_:
+      $ref: '#/components/schemas/Pick_Account-at-user.Exclude_keyofAccount-at-user.ability-or-abilityRules__'
+      description: Construct a type with the properties of T except for those in type K.
+    ActivateUserWithInviteCode:
+      allOf:
+      - $ref: '#/components/schemas/ActivateUser'
+      - properties:
+          inviteCode:
+            type: string
+        required:
+        - inviteCode
+        type: object
+    WarehouseTypes.REDSHIFT:
+      enum:
+      - redshift
+      type: string
+    ApiEmailStatusResponse:
+      properties:
+        results:
+          $ref: '#/components/schemas/EmailStatusExpiring'
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
+      description: Shows the current verification status of an email address
+    EmbedJwtContentDashboardSlug:
+      allOf:
+      - $ref: '#/components/schemas/CommonEmbedJwtContent'
+      - properties:
+          dashboardSlug:
+            type: string
+        required:
+        - dashboardSlug
+        type: object
+    WarehouseTypes.CLICKHOUSE:
+      enum:
+      - clickhouse
+      type: string
+    AccountRequestContext:
+      properties:
+        requestId:
+          type: string
+        userAgent:
+          type: string
+        ip:
+          type: string
+      type: object
+      description: 'Per-request metadata captured by the auth middleware. Used by the audit log
+
+        to record the IP, user agent and request id alongside permission checks.'
+    ApiGetAccountResponse:
+      properties:
+        results:
+          $ref: '#/components/schemas/SerializedAccount'
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
+    LoginOptionTypes:
+      anyOf:
+      - $ref: '#/components/schemas/OpenIdIdentityIssuerType'
+      - $ref: '#/components/schemas/LocalIssuerTypes'
+    ImpersonationInfo:
+      properties:
+        adminUserUuid:
+          type: string
+        adminName:
+          type: string
+        impersonatedUserUuid:
+          type: string
+      required:
+      - adminUserUuid
+      - adminName
+      - impersonatedUserUuid
+      type: object
+      additionalProperties: true
+    ApiUserAllowedOrganizationsResponse:
+      properties:
+        results:
+          items:
+            $ref: '#/components/schemas/UserAllowedOrganization'
+          type: array
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
+    UpsertUserWarehouseCredentials:
+      properties:
+        credentials:
+          anyOf:
+          - $ref: '#/components/schemas/Pick_CreateRedshiftCredentials.type-or-user-or-password_'
+          - $ref: '#/components/schemas/Pick_CreatePostgresCredentials.type-or-user-or-password_'
+          - $ref: '#/components/schemas/Pick_CreateSnowflakeCredentials.type-or-user-or-password-or-authenticationType-or-refreshToken_'
+          - $ref: '#/components/schemas/Pick_CreateTrinoCredentials.type-or-user-or-password_'
+          - $ref: '#/components/schemas/Pick_CreateClickhouseCredentials.type-or-user-or-password_'
+          - $ref: '#/components/schemas/Pick_CreateBigqueryCredentials.type-or-keyfileContents-or-authenticationType_'
+          - allOf:
+            - $ref: '#/components/schemas/Pick_CreateDatabricksCredentials.type-or-personalAccessToken-or-authenticationType-or-refreshToken_'
+            - $ref: '#/components/schemas/Partial_Pick_CreateDatabricksCredentials.database-or-serverHostName-or-httpPath-or-oauthClientId__'
+          - $ref: '#/components/schemas/Pick_CreateAthenaCredentials.type-or-accessKeyId-or-secretAccessKey_'
+          - $ref: '#/components/schemas/Pick_CreateDuckdbMotherduckCredentials.type-or-token_'
+        name:
+          type: string
+      required:
+      - credentials
+      - name
+      type: object
+    JwtAuth:
+      properties:
+        source:
+          type: string
+        data:
+          $ref: '#/components/schemas/CreateEmbedJwt'
+        type:
+          type: string
+          enum:
+          - jwt
+      required:
+      - source
+      - data
+      - type
+      type: object
+    ApiGetLoginOptionsResponse:
+      properties:
+        results:
+          $ref: '#/components/schemas/LoginOptions'
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
     ProjectType:
       enum:
       - DEFAULT
       - PREVIEW
       type: string
-    AnyType:
-      description: 'This AnyType is an alias for any
-
-        The goal is to make it easier to identify any type in the codebase
-
-        without having to eslint-disable all the time
-
-        These are only used on legacy `any` types, don''t use it for new types.
-
-        This is added on a separate file to avoid circular dependencies.'
-    PersonalAccessTokenWithToken:
-      allOf:
-      - $ref: '#/components/schemas/PersonalAccessToken'
-      - properties:
-          token:
-            type: string
-        required:
-        - token
-        type: object
-    CreateUserArgs:
+    Partial_Pick_CreateDatabricksCredentials.database-or-serverHostName-or-httpPath-or-oauthClientId__:
       properties:
-        password:
+        oauthClientId:
           type: string
+        database:
+          type: string
+        serverHostName:
+          type: string
+        httpPath:
+          type: string
+      type: object
+      description: Make all properties in T optional
+    EmailOneTimePassword:
+      properties:
+        numberOfAttempts:
+          type: number
+          format: double
+          description: Number of times the passcode has been attempted
+        createdAt:
+          type: string
+          format: date-time
+          description: Time that the passcode was created
+      required:
+      - numberOfAttempts
+      - createdAt
+      type: object
+    Pick_CreateBigqueryCredentials.type-or-keyfileContents-or-authenticationType_:
+      properties:
+        type:
+          $ref: '#/components/schemas/WarehouseTypes.BIGQUERY'
+        keyfileContents:
+          $ref: '#/components/schemas/Record_string.string_'
+        authenticationType:
+          $ref: '#/components/schemas/BigqueryAuthenticationType'
+      required:
+      - type
+      - keyfileContents
+      type: object
+      description: From T, pick a set of properties whose keys are in the union K
+    SessionAuth:
+      properties:
+        source:
+          type: string
+        type:
+          type: string
+          enum:
+          - session
+      required:
+      - source
+      - type
+      type: object
+    EmailStatus:
+      properties:
+        otp:
+          $ref: '#/components/schemas/EmailOneTimePassword'
+        isVerified:
+          type: boolean
         email:
-          $ref: '#/components/schemas/Email'
-        lastName:
-          type: string
-        firstName:
           type: string
       required:
-      - password
+      - isVerified
       - email
-      - lastName
-      - firstName
+      type: object
+    Pick_CreateRedshiftCredentials.type-or-user-or-password_:
+      properties:
+        user:
+          type: string
+        type:
+          $ref: '#/components/schemas/WarehouseTypes.REDSHIFT'
+        password:
+          type: string
+      required:
+      - user
+      - type
+      - password
+      type: object
+      description: From T, pick a set of properties whose keys are in the union K
+    PersonalAccessTokenAuth:
+      properties:
+        source:
+          type: string
+        type:
+          type: string
+          enum:
+          - pat
+      required:
+      - source
+      - type
+      type: object
+    WarehouseTypes.DATABRICKS:
+      enum:
+      - databricks
+      type: string
+    Pick_CreateBigqueryCredentials.type_:
+      properties:
+        type:
+          $ref: '#/components/schemas/WarehouseTypes.BIGQUERY'
+      required:
+      - type
+      type: object
+      description: From T, pick a set of properties whose keys are in the union K
+    WarehouseTypes.SNOWFLAKE:
+      enum:
+      - snowflake
+      type: string
+    ApiRegisterUserResponse:
+      properties:
+        results:
+          $ref: '#/components/schemas/LightdashUser'
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
+    Email:
+      type: string
+      description: Email
+      pattern: ^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$
+    DatabricksAuthenticationType:
+      enum:
+      - personal_access_token
+      - oauth_m2m
+      - oauth_u2m
+      type: string
+    WarehouseTypes.POSTGRES:
+      enum:
+      - postgres
+      type: string
+    WarehouseTypes.DUCKDB:
+      enum:
+      - duckdb
+      type: string
+    OauthAuth:
+      properties:
+        resource:
+          $ref: '#/components/schemas/url.URL'
+        expiresAt:
+          type: number
+          format: double
+        scopes:
+          items:
+            type: string
+          type: array
+        clientId:
+          type: string
+        token:
+          type: string
+        source:
+          type: string
+        type:
+          type: string
+          enum:
+          - oauth
+      required:
+      - scopes
+      - clientId
+      - token
+      - source
+      - type
+      type: object
+    ServiceAccountAuth:
+      properties:
+        serviceAccountDescription:
+          type: string
+        serviceAccountUuid:
+          type: string
+        source:
+          type: string
+        type:
+          type: string
+          enum:
+          - service-account
+      required:
+      - serviceAccountDescription
+      - serviceAccountUuid
+      - source
+      - type
       type: object
     CommonChartEmbedJwtContent:
       properties:
@@ -1032,102 +1353,116 @@ components:
       required:
       - type
       type: object
-    WarehouseTypes.DATABRICKS:
-      enum:
-      - databricks
-      type: string
-    Pick_PersonalAccessToken.expiresAt-or-description_:
-      properties:
-        expiresAt:
-          type:
-          - string
-          - 'null'
-          format: date-time
-        description:
+    ? Pick_CreateRedshiftCredentials-or-CreatePostgresCredentials-or-CreateSnowflakeCredentials-or-CreateTrinoCredentials-or-CreateClickhouseCredentials.type-or-user_
+    : properties:
+        user:
           type: string
+        type:
+          anyOf:
+          - $ref: '#/components/schemas/WarehouseTypes.POSTGRES'
+          - $ref: '#/components/schemas/WarehouseTypes.REDSHIFT'
+          - $ref: '#/components/schemas/WarehouseTypes.SNOWFLAKE'
+          - $ref: '#/components/schemas/WarehouseTypes.TRINO'
+          - $ref: '#/components/schemas/WarehouseTypes.CLICKHOUSE'
       required:
-      - expiresAt
-      - description
+      - user
+      - type
       type: object
       description: From T, pick a set of properties whose keys are in the union K
-    SerializedAccount:
-      allOf:
-      - $ref: '#/components/schemas/Omit_Account.user-or-keyofAccountHelpers_'
-      - properties:
-          user:
-            $ref: '#/components/schemas/Omit_Account-at-user.ability-or-abilityRules_'
-        required:
-        - user
-        type: object
-    Partial_Pick_CreateDatabricksCredentials.database-or-serverHostName-or-httpPath-or-oauthClientId__:
+    CreateUserArgs:
       properties:
-        oauthClientId:
+        password:
           type: string
-        database:
+        email:
+          $ref: '#/components/schemas/Email'
+        lastName:
           type: string
-        serverHostName:
+        firstName:
           type: string
-        httpPath:
+      required:
+      - password
+      - email
+      - lastName
+      - firstName
+      type: object
+    Omit_Account.user-or-keyofAccountHelpers_:
+      $ref: '#/components/schemas/Pick_Account.Exclude_keyofAccount.user-or-keyofAccountHelpers__'
+      description: Construct a type with the properties of T except for those in type K.
+    Partial_Pick_Organization.name-or-createdAt-or-organizationUuid__:
+      properties:
+        name:
           type: string
+          description: The name of the organization
+        createdAt:
+          type: string
+          format: date-time
+        organizationUuid:
+          type: string
+          description: The unique identifier of the organization
+          format: uuid
       type: object
       description: Make all properties in T optional
-    EmailStatus:
+    Pick_CreateSnowflakeCredentials.type-or-user-or-password-or-authenticationType-or-refreshToken_:
       properties:
-        otp:
-          $ref: '#/components/schemas/EmailOneTimePassword'
-        isVerified:
-          type: boolean
-        email:
+        user:
+          type: string
+        type:
+          $ref: '#/components/schemas/WarehouseTypes.SNOWFLAKE'
+        password:
+          type: string
+        refreshToken:
+          type: string
+        authenticationType:
+          $ref: '#/components/schemas/SnowflakeAuthenticationType'
+      required:
+      - user
+      - type
+      type: object
+      description: From T, pick a set of properties whose keys are in the union K
+    EmbedJwtContentChart:
+      allOf:
+      - $ref: '#/components/schemas/CommonChartEmbedJwtContent'
+      - properties:
+          contentId:
+            type: string
+        required:
+        - contentId
+        type: object
+    EmbedWriteActions:
+      properties:
+        spaceUuid:
+          type: string
+        userUuid:
+          type: string
+        serviceAccountUserUuid:
           type: string
       required:
-      - isVerified
-      - email
+      - spaceUuid
       type: object
-    WarehouseTypes.REDSHIFT:
-      enum:
-      - redshift
+    url.URL:
       type: string
-    ApiGetAuthenticatedUserResponse:
+      description: 'The URL interface represents an object providing static methods used for creating object URLs.
+
+
+        [MDN Reference](https://developer.mozilla.org/docs/Web/API/URL)
+
+        `URL` class is a global reference for `import { URL } from ''url''`
+
+        https://nodejs.org/api/url.html#the-whatwg-url-api'
+    UserAllowedOrganization:
       properties:
-        results:
-          allOf:
-          - $ref: '#/components/schemas/LightdashUser'
-          - properties:
-              impersonation:
-                allOf:
-                - $ref: '#/components/schemas/ImpersonationInfo'
-            required:
-            - impersonation
-            type: object
-        status:
+        membersCount:
+          type: number
+          format: double
+        name:
           type: string
-          enum:
-          - ok
-      required:
-      - results
-      - status
-      type: object
-      description: Shows the authenticated user
-    ApiGetAccountResponse:
-      properties:
-        results:
-          $ref: '#/components/schemas/SerializedAccount'
-        status:
+        organizationUuid:
           type: string
-          enum:
-          - ok
       required:
-      - results
-      - status
+      - membersCount
+      - name
+      - organizationUuid
       type: object
-    SnowflakeAuthenticationType:
-      enum:
-      - password
-      - private_key
-      - sso
-      - external_browser
-      - none
-      type: string
     LightdashUser:
       properties:
         userUuid:
@@ -1186,10 +1521,18 @@ components:
       - timezone
       type: object
       additionalProperties: true
-    ApiGetLoginOptionsResponse:
+    ApiGetAuthenticatedUserResponse:
       properties:
         results:
-          $ref: '#/components/schemas/LoginOptions'
+          allOf:
+          - $ref: '#/components/schemas/LightdashUser'
+          - properties:
+              impersonation:
+                allOf:
+                - $ref: '#/components/schemas/ImpersonationInfo'
+            required:
+            - impersonation
+            type: object
         status:
           type: string
           enum:
@@ -1198,228 +1541,45 @@ components:
       - results
       - status
       type: object
-    WarehouseTypes.DUCKDB:
+      description: Shows the authenticated user
+    Pick_PersonalAccessToken.expiresAt-or-description_:
+      properties:
+        expiresAt:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        description:
+          type: string
+      required:
+      - expiresAt
+      - description
+      type: object
+      description: From T, pick a set of properties whose keys are in the union K
+    OpenIdIdentityIssuerType:
       enum:
-      - duckdb
-      type: string
-    WarehouseTypes.SNOWFLAKE:
-      enum:
+      - google
+      - okta
+      - oneLogin
+      - azuread
+      - oidc
       - snowflake
+      - databricks
+      - slack
       type: string
-    Pick_CreatePostgresCredentials.type-or-user-or-password_:
-      properties:
-        user:
-          type: string
-        type:
-          $ref: '#/components/schemas/WarehouseTypes.POSTGRES'
-        password:
-          type: string
-      required:
-      - user
-      - type
-      - password
-      type: object
-      description: From T, pick a set of properties whose keys are in the union K
-    Pick_Account.Exclude_keyofAccount.user-or-keyofAccountHelpers__:
-      properties:
-        organization:
-          $ref: '#/components/schemas/Partial_Pick_Organization.name-or-createdAt-or-organizationUuid__'
-        authentication:
-          anyOf:
-          - $ref: '#/components/schemas/SessionAuth'
-          - $ref: '#/components/schemas/JwtAuth'
-          - $ref: '#/components/schemas/ServiceAccountAuth'
-          - $ref: '#/components/schemas/PersonalAccessTokenAuth'
-          - $ref: '#/components/schemas/OauthAuth'
-        requestContext:
-          $ref: '#/components/schemas/AccountRequestContext'
-      required:
-      - organization
-      - authentication
-      type: object
-      description: From T, pick a set of properties whose keys are in the union K
-    LoginOptionTypes:
-      anyOf:
-      - $ref: '#/components/schemas/OpenIdIdentityIssuerType'
-      - $ref: '#/components/schemas/LocalIssuerTypes'
-    EmbedJwtContentDashboardUuid:
+    WarehouseTypes.BIGQUERY:
+      enum:
+      - bigquery
+      type: string
+    CreatePersonalAccessToken:
       allOf:
-      - $ref: '#/components/schemas/CommonEmbedJwtContent'
+      - $ref: '#/components/schemas/Pick_PersonalAccessToken.expiresAt-or-description_'
       - properties:
-          dashboardUuid:
-            type: string
+          autoGenerated:
+            type: boolean
         required:
-        - dashboardUuid
+        - autoGenerated
         type: object
-    Partial_Pick_Organization.name-or-createdAt-or-organizationUuid__:
-      properties:
-        name:
-          type: string
-          description: The name of the organization
-        createdAt:
-          type: string
-          format: date-time
-        organizationUuid:
-          type: string
-          description: The unique identifier of the organization
-          format: uuid
-      type: object
-      description: Make all properties in T optional
-    EmailStatusExpiring:
-      allOf:
-      - $ref: '#/components/schemas/EmailStatus'
-      - properties:
-          otp:
-            $ref: '#/components/schemas/EmailOneTimePasswordExpiring'
-            description: 'One time passcode information
-
-              If there is no active passcode, this will be undefined'
-        type: object
-      description: Verification status of an email address
-    Pick_CreateSnowflakeCredentials.type-or-user-or-password-or-authenticationType-or-refreshToken_:
-      properties:
-        user:
-          type: string
-        type:
-          $ref: '#/components/schemas/WarehouseTypes.SNOWFLAKE'
-        password:
-          type: string
-        refreshToken:
-          type: string
-        authenticationType:
-          $ref: '#/components/schemas/SnowflakeAuthenticationType'
-      required:
-      - user
-      - type
-      type: object
-      description: From T, pick a set of properties whose keys are in the union K
-    UpsertUserWarehouseCredentials:
-      properties:
-        credentials:
-          anyOf:
-          - $ref: '#/components/schemas/Pick_CreateRedshiftCredentials.type-or-user-or-password_'
-          - $ref: '#/components/schemas/Pick_CreatePostgresCredentials.type-or-user-or-password_'
-          - $ref: '#/components/schemas/Pick_CreateSnowflakeCredentials.type-or-user-or-password-or-authenticationType-or-refreshToken_'
-          - $ref: '#/components/schemas/Pick_CreateTrinoCredentials.type-or-user-or-password_'
-          - $ref: '#/components/schemas/Pick_CreateClickhouseCredentials.type-or-user-or-password_'
-          - $ref: '#/components/schemas/Pick_CreateBigqueryCredentials.type-or-keyfileContents-or-authenticationType_'
-          - allOf:
-            - $ref: '#/components/schemas/Pick_CreateDatabricksCredentials.type-or-personalAccessToken-or-authenticationType-or-refreshToken_'
-            - $ref: '#/components/schemas/Partial_Pick_CreateDatabricksCredentials.database-or-serverHostName-or-httpPath-or-oauthClientId__'
-          - $ref: '#/components/schemas/Pick_CreateAthenaCredentials.type-or-accessKeyId-or-secretAccessKey_'
-          - $ref: '#/components/schemas/Pick_CreateDuckdbMotherduckCredentials.type-or-token_'
-        name:
-          type: string
-      required:
-      - credentials
-      - name
-      type: object
-    RegisterOrActivateUser:
-      anyOf:
-      - $ref: '#/components/schemas/ActivateUserWithInviteCode'
-      - $ref: '#/components/schemas/CreateUserArgs'
-    Pick_CreateDatabricksCredentials.type_:
-      properties:
-        type:
-          $ref: '#/components/schemas/WarehouseTypes.DATABRICKS'
-      required:
-      - type
-      type: object
-      description: From T, pick a set of properties whose keys are in the union K
-    ? Pick_CreateRedshiftCredentials-or-CreatePostgresCredentials-or-CreateSnowflakeCredentials-or-CreateTrinoCredentials-or-CreateClickhouseCredentials.type-or-user_
-    : properties:
-        user:
-          type: string
-        type:
-          anyOf:
-          - $ref: '#/components/schemas/WarehouseTypes.POSTGRES'
-          - $ref: '#/components/schemas/WarehouseTypes.REDSHIFT'
-          - $ref: '#/components/schemas/WarehouseTypes.SNOWFLAKE'
-          - $ref: '#/components/schemas/WarehouseTypes.TRINO'
-          - $ref: '#/components/schemas/WarehouseTypes.CLICKHOUSE'
-      required:
-      - user
-      - type
-      type: object
-      description: From T, pick a set of properties whose keys are in the union K
-    SessionAuth:
-      properties:
-        source:
-          type: string
-        type:
-          type: string
-          enum:
-          - session
-      required:
-      - source
-      - type
-      type: object
-    WarehouseTypes.CLICKHOUSE:
-      enum:
-      - clickhouse
-      type: string
-    UserWarehouseCredentialsProject:
-      properties:
-        type:
-          $ref: '#/components/schemas/ProjectType'
-        name:
-          type: string
-        projectUuid:
-          type: string
-      required:
-      - type
-      - name
-      - projectUuid
-      type: object
-    WarehouseTypes.ATHENA:
-      enum:
-      - athena
-      type: string
-    ActivateUser:
-      properties:
-        password:
-          type: string
-        lastName:
-          type: string
-        firstName:
-          type: string
-      required:
-      - password
-      - lastName
-      - firstName
-      type: object
-    Pick_CreateDatabricksCredentials.type-or-personalAccessToken-or-authenticationType-or-refreshToken_:
-      properties:
-        type:
-          $ref: '#/components/schemas/WarehouseTypes.DATABRICKS'
-        personalAccessToken:
-          type: string
-        refreshToken:
-          type: string
-        authenticationType:
-          $ref: '#/components/schemas/DatabricksAuthenticationType'
-      required:
-      - type
-      type: object
-      description: From T, pick a set of properties whose keys are in the union K
-    EmailOneTimePassword:
-      properties:
-        numberOfAttempts:
-          type: number
-          format: double
-          description: Number of times the passcode has been attempted
-        createdAt:
-          type: string
-          format: date-time
-          description: Time that the passcode was created
-      required:
-      - numberOfAttempts
-      - createdAt
-      type: object
-    Email:
-      type: string
-      description: Email
-      pattern: ^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$
     Pick_CreateAthenaCredentials.type_:
       properties:
         type:
@@ -1428,206 +1588,46 @@ components:
       - type
       type: object
       description: From T, pick a set of properties whose keys are in the union K
-    ServiceAccountAuth:
-      properties:
-        serviceAccountDescription:
-          type: string
-        serviceAccountUuid:
-          type: string
-        source:
-          type: string
-        type:
-          type: string
-          enum:
-          - service-account
-      required:
-      - serviceAccountDescription
-      - serviceAccountUuid
-      - source
-      - type
-      type: object
-    ImpersonationInfo:
-      properties:
-        adminUserUuid:
-          type: string
-        adminName:
-          type: string
-        impersonatedUserUuid:
-          type: string
-      required:
-      - adminUserUuid
-      - adminName
-      - impersonatedUserUuid
-      type: object
-      additionalProperties: true
-    ActivateUserWithInviteCode:
-      allOf:
-      - $ref: '#/components/schemas/ActivateUser'
-      - properties:
-          inviteCode:
-            type: string
-        required:
-        - inviteCode
-        type: object
-    ApiUserAllowedOrganizationsResponse:
-      properties:
-        results:
-          items:
-            $ref: '#/components/schemas/UserAllowedOrganization'
-          type: array
-        status:
-          type: string
-          enum:
-          - ok
-      required:
-      - results
-      - status
-      type: object
-    Pick_CreateClickhouseCredentials.type-or-user-or-password_:
-      properties:
-        user:
-          type: string
-        type:
-          $ref: '#/components/schemas/WarehouseTypes.CLICKHOUSE'
-        password:
-          type: string
-      required:
-      - user
-      - type
+    SnowflakeAuthenticationType:
+      enum:
       - password
-      type: object
-      description: From T, pick a set of properties whose keys are in the union K
-    OrganizationMemberRole:
-      enum:
-      - member
-      - viewer
-      - interactive_viewer
-      - editor
-      - developer
-      - admin
-      type: string
-    Pick_CreateBigqueryCredentials.type_:
-      properties:
-        type:
-          $ref: '#/components/schemas/WarehouseTypes.BIGQUERY'
-      required:
-      - type
-      type: object
-      description: From T, pick a set of properties whose keys are in the union K
-    WarehouseTypes.POSTGRES:
-      enum:
-      - postgres
-      type: string
-    Omit_Account-at-user.ability-or-abilityRules_:
-      $ref: '#/components/schemas/Pick_Account-at-user.Exclude_keyofAccount-at-user.ability-or-abilityRules__'
-      description: Construct a type with the properties of T except for those in type K.
-    Pick_CreateDuckdbCredentials.type_:
-      properties:
-        type:
-          $ref: '#/components/schemas/WarehouseTypes.DUCKDB'
-      required:
-      - type
-      type: object
-      description: From T, pick a set of properties whose keys are in the union K
-    Pick_CreateDuckdbMotherduckCredentials.type-or-token_:
-      properties:
-        type:
-          $ref: '#/components/schemas/WarehouseTypes.DUCKDB'
-        token:
-          type: string
-      required:
-      - type
-      - token
-      type: object
-      description: From T, pick a set of properties whose keys are in the union K
-    Pick_CreateAthenaCredentials.type-or-accessKeyId-or-secretAccessKey_:
-      properties:
-        type:
-          $ref: '#/components/schemas/WarehouseTypes.ATHENA'
-        accessKeyId:
-          type: string
-        secretAccessKey:
-          type: string
-      required:
-      - type
-      type: object
-      description: From T, pick a set of properties whose keys are in the union K
-    ApiEmailStatusResponse:
-      properties:
-        results:
-          $ref: '#/components/schemas/EmailStatusExpiring'
-        status:
-          type: string
-          enum:
-          - ok
-      required:
-      - results
-      - status
-      type: object
-      description: Shows the current verification status of an email address
-    OauthAuth:
-      properties:
-        resource:
-          $ref: '#/components/schemas/url.URL'
-        expiresAt:
-          type: number
-          format: double
-        scopes:
-          items:
-            type: string
-          type: array
-        clientId:
-          type: string
-        token:
-          type: string
-        source:
-          type: string
-        type:
-          type: string
-          enum:
-          - oauth
-      required:
-      - scopes
-      - clientId
-      - token
-      - source
-      - type
-      type: object
-    WarehouseTypes.TRINO:
-      enum:
-      - trino
-      type: string
-    PersonalAccessTokenAuth:
-      properties:
-        source:
-          type: string
-        type:
-          type: string
-          enum:
-          - pat
-      required:
-      - source
-      - type
-      type: object
-    FilterInteractivityValues:
-      enum:
-      - some
-      - all
+      - private_key
+      - sso
+      - external_browser
       - none
       type: string
-    Pick_CreateBigqueryCredentials.type-or-keyfileContents-or-authenticationType_:
+    PersonalAccessToken:
       properties:
-        type:
-          $ref: '#/components/schemas/WarehouseTypes.BIGQUERY'
-        keyfileContents:
-          $ref: '#/components/schemas/Record_string.string_'
-        authenticationType:
-          $ref: '#/components/schemas/BigqueryAuthenticationType'
+        description:
+          type: string
+        expiresAt:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        rotatedAt:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        lastUsedAt:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        createdAt:
+          type: string
+          format: date-time
+        uuid:
+          type: string
       required:
-      - type
-      - keyfileContents
+      - description
+      - expiresAt
+      - rotatedAt
+      - lastUsedAt
+      - createdAt
+      - uuid
       type: object
-      description: From T, pick a set of properties whose keys are in the union K
   securitySchemes:
     session_cookie:
       type: apiKey

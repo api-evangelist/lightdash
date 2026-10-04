@@ -76,18 +76,27 @@ paths:
               $ref: '#/components/schemas/ApiNotificationUpdateParams'
 components:
   schemas:
-    ApiNotificationUpdateParams:
-      $ref: '#/components/schemas/Pick_Notification.viewed_'
-    AnyType:
-      description: 'This AnyType is an alias for any
-
-        The goal is to make it easier to identify any type in the codebase
-
-        without having to eslint-disable all the time
-
-        These are only used on legacy `any` types, don''t use it for new types.
-
-        This is added on a separate file to avoid circular dependencies.'
+    ApiNotificationsResults:
+      items:
+        $ref: '#/components/schemas/Notification'
+      type: array
+    NotificationDashboardTileCommentMetadata:
+      properties:
+        dashboardUuid:
+          type: string
+        dashboardName:
+          type: string
+        dashboardTileUuid:
+          type: string
+        dashboardTileName:
+          type: string
+      required:
+      - dashboardUuid
+      - dashboardName
+      - dashboardTileUuid
+      - dashboardTileName
+      type: object
+      additionalProperties: true
     Pick_Notification.viewed_:
       properties:
         viewed:
@@ -96,10 +105,6 @@ components:
       - viewed
       type: object
       description: From T, pick a set of properties whose keys are in the union K
-    ApiNotificationResourceType:
-      enum:
-      - dashboardComments
-      type: string
     ApiErrorPayload:
       properties:
         error:
@@ -132,6 +137,40 @@ components:
       description: 'The Error object is returned from the api any time there is an error.
 
         The message contains'
+    Notification:
+      $ref: '#/components/schemas/NotificationDashboardComment'
+    ApiNotificationResourceType.DashboardComments:
+      enum:
+      - dashboardComments
+      type: string
+    AnyType:
+      description: 'This AnyType is an alias for any
+
+        The goal is to make it easier to identify any type in the codebase
+
+        without having to eslint-disable all the time
+
+        These are only used on legacy `any` types, don''t use it for new types.
+
+        This is added on a separate file to avoid circular dependencies.'
+    ApiNotificationUpdateParams:
+      $ref: '#/components/schemas/Pick_Notification.viewed_'
+    ApiGetNotifications:
+      properties:
+        results:
+          $ref: '#/components/schemas/ApiNotificationsResults'
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
+    ApiNotificationResourceType:
+      enum:
+      - dashboardComments
+      type: string
     ApiSuccessEmpty:
       properties:
         results: {}
@@ -162,41 +201,6 @@ components:
       - createdAt
       - notificationId
       type: object
-    ApiGetNotifications:
-      properties:
-        results:
-          $ref: '#/components/schemas/ApiNotificationsResults'
-        status:
-          type: string
-          enum:
-          - ok
-      required:
-      - results
-      - status
-      type: object
-    NotificationDashboardTileCommentMetadata:
-      properties:
-        dashboardUuid:
-          type: string
-        dashboardName:
-          type: string
-        dashboardTileUuid:
-          type: string
-        dashboardTileName:
-          type: string
-      required:
-      - dashboardUuid
-      - dashboardName
-      - dashboardTileUuid
-      - dashboardTileName
-      type: object
-      additionalProperties: true
-    Notification:
-      $ref: '#/components/schemas/NotificationDashboardComment'
-    ApiNotificationResourceType.DashboardComments:
-      enum:
-      - dashboardComments
-      type: string
     NotificationDashboardComment:
       allOf:
       - $ref: '#/components/schemas/NotificationBase'
@@ -208,10 +212,6 @@ components:
         required:
         - resourceType
         type: object
-    ApiNotificationsResults:
-      items:
-        $ref: '#/components/schemas/Notification'
-      type: array
   securitySchemes:
     session_cookie:
       type: apiKey
