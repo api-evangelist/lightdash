@@ -100,51 +100,23 @@ paths:
               description: The funnel query configuration
 components:
   schemas:
-    FunnelQueryResult:
-      properties:
-        sql:
-          type: string
-        steps:
-          items:
-            $ref: '#/components/schemas/FunnelStepResult'
-          type: array
-      required:
-      - sql
-      - steps
-      type: object
     FunnelConversionWindowUnit:
       type: string
       enum:
       - hours
       - days
       - weeks
-    FunnelDateRange:
-      anyOf:
-      - properties:
-          preset:
-            $ref: '#/components/schemas/Exclude_FunnelDatePreset.custom_'
-          type:
-            type: string
-            enum:
-            - preset
-        required:
-        - preset
-        - type
-        type: object
-      - properties:
-          end:
-            type: string
-          start:
-            type: string
-          type:
-            type: string
-            enum:
-            - custom
-        required:
-        - end
-        - start
-        - type
-        type: object
+    FunnelStep:
+      properties:
+        eventName:
+          type: string
+        stepOrder:
+          type: number
+          format: double
+      required:
+      - eventName
+      - stepOrder
+      type: object
     FunnelStepResult:
       properties:
         breakdownValue:
@@ -176,6 +148,33 @@ components:
       - stepName
       - stepOrder
       type: object
+    FunnelDateRange:
+      anyOf:
+      - properties:
+          preset:
+            $ref: '#/components/schemas/Exclude_FunnelDatePreset.custom_'
+          type:
+            type: string
+            enum:
+            - preset
+        required:
+        - preset
+        - type
+        type: object
+      - properties:
+          end:
+            type: string
+          start:
+            type: string
+          type:
+            type: string
+            enum:
+            - custom
+        required:
+        - end
+        - start
+        - type
+        type: object
     AnyType:
       description: 'This AnyType is an alias for any
 
@@ -186,85 +185,17 @@ components:
         These are only used on legacy `any` types, don''t use it for new types.
 
         This is added on a separate file to avoid circular dependencies.'
-    ApiErrorPayload:
+    FunnelQueryResult:
       properties:
-        error:
-          properties:
-            data:
-              $ref: '#/components/schemas/AnyType'
-              description: Optional data containing details of the error
-            message:
-              type: string
-              description: A friendly message summarising the error
-            name:
-              type: string
-              description: Unique name for the type of error
-            statusCode:
-              type: number
-              format: integer
-              description: HTTP status code
-          required:
-          - name
-          - statusCode
-          type: object
-        status:
+        sql:
           type: string
-          enum:
-          - error
-      required:
-      - error
-      - status
-      type: object
-      description: 'The Error object is returned from the api any time there is an error.
-
-        The message contains'
-    FunnelStep:
-      properties:
-        eventName:
-          type: string
-        stepOrder:
-          type: number
-          format: double
-      required:
-      - eventName
-      - stepOrder
-      type: object
-    FunnelQueryRequest:
-      properties:
-        breakdownDimensionId:
-          type: string
-        conversionWindow:
-          properties:
-            unit:
-              $ref: '#/components/schemas/FunnelConversionWindowUnit'
-            value:
-              type: number
-              format: double
-          required:
-          - unit
-          - value
-          type: object
-        dateRange:
-          $ref: '#/components/schemas/FunnelDateRange'
         steps:
           items:
-            $ref: '#/components/schemas/FunnelStep'
+            $ref: '#/components/schemas/FunnelStepResult'
           type: array
-        eventNameFieldId:
-          type: string
-        userIdFieldId:
-          type: string
-        timestampFieldId:
-          type: string
-        exploreName:
-          type: string
       required:
-      - dateRange
+      - sql
       - steps
-      - eventNameFieldId
-      - userIdFieldId
-      - timestampFieldId
-      - exploreName
       type: object
     Exclude_FunnelDatePreset.custom_:
       type: string
@@ -301,6 +232,75 @@ components:
       required:
       - results
       - status
+      type: object
+    ApiErrorPayload:
+      properties:
+        error:
+          properties:
+            data:
+              $ref: '#/components/schemas/AnyType'
+              description: Optional data containing details of the error
+            message:
+              type: string
+              description: A friendly message summarising the error
+            name:
+              type: string
+              description: Unique name for the type of error
+            statusCode:
+              type: number
+              format: integer
+              description: HTTP status code
+          required:
+          - name
+          - statusCode
+          type: object
+        status:
+          type: string
+          enum:
+          - error
+      required:
+      - error
+      - status
+      type: object
+      description: 'The Error object is returned from the api any time there is an error.
+
+        The message contains'
+    FunnelQueryRequest:
+      properties:
+        breakdownDimensionId:
+          type: string
+        conversionWindow:
+          properties:
+            unit:
+              $ref: '#/components/schemas/FunnelConversionWindowUnit'
+            value:
+              type: number
+              format: double
+          required:
+          - unit
+          - value
+          type: object
+        dateRange:
+          $ref: '#/components/schemas/FunnelDateRange'
+        steps:
+          items:
+            $ref: '#/components/schemas/FunnelStep'
+          type: array
+        eventNameFieldId:
+          type: string
+        userIdFieldId:
+          type: string
+        timestampFieldId:
+          type: string
+        exploreName:
+          type: string
+      required:
+      - dateRange
+      - steps
+      - eventNameFieldId
+      - userIdFieldId
+      - timestampFieldId
+      - exploreName
       type: object
   securitySchemes:
     session_cookie:

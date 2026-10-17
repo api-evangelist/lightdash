@@ -239,52 +239,8 @@ paths:
       - Org
 components:
   schemas:
-    ApiAiRouterResponse:
-      $ref: '#/components/schemas/ApiSuccess_AiRouter_'
-    ApiAiRouterDecisionListResponse:
-      $ref: '#/components/schemas/ApiSuccess_AiRouterDecision-Array_'
-    ApiErrorPayload:
-      properties:
-        error:
-          properties:
-            data:
-              $ref: '#/components/schemas/AnyType'
-              description: Optional data containing details of the error
-            message:
-              type: string
-              description: A friendly message summarising the error
-            name:
-              type: string
-              description: Unique name for the type of error
-            statusCode:
-              type: number
-              format: integer
-              description: HTTP status code
-          required:
-          - name
-          - statusCode
-          type: object
-        status:
-          type: string
-          enum:
-          - error
-      required:
-      - error
-      - status
-      type: object
-      description: 'The Error object is returned from the api any time there is an error.
-
-        The message contains'
-    AiRouterDecisionCommitRequest:
-      properties:
-        threadUuid:
-          type: string
-        chosenAgentUuid:
-          type: string
-      required:
-      - threadUuid
-      - chosenAgentUuid
-      type: object
+    ApiAiRouterRouteResponse:
+      $ref: '#/components/schemas/ApiSuccess_AiRouterRouteResponseResult_'
     AiRouterDecision:
       properties:
         committedAt:
@@ -339,6 +295,35 @@ components:
       - routerUuid
       - decisionUuid
       type: object
+    ApiSuccess_AiRouterDecision-Array_:
+      properties:
+        results:
+          items:
+            $ref: '#/components/schemas/AiRouterDecision'
+          type: array
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
+    ApiSuccess_AiRouterInstruction-or-null_:
+      properties:
+        results:
+          allOf:
+          - $ref: '#/components/schemas/AiRouterInstruction'
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
+    ApiAiRouterResponse:
+      $ref: '#/components/schemas/ApiSuccess_AiRouter_'
     AnyType:
       description: 'This AnyType is an alias for any
 
@@ -359,119 +344,8 @@ components:
       - projectUuid
       - prompt
       type: object
-    ApiSuccess_AiRouterDecision-Array_:
-      properties:
-        results:
-          items:
-            $ref: '#/components/schemas/AiRouterDecision'
-          type: array
-        status:
-          type: string
-          enum:
-          - ok
-      required:
-      - results
-      - status
-      type: object
-    AiRouter:
-      properties:
-        updatedAt:
-          type: string
-          format: date-time
-        createdAt:
-          type: string
-          format: date-time
-        projectUuids:
-          items:
-            type: string
-          type: array
-        enabled:
-          type: boolean
-        organizationUuid:
-          type: string
-        routerUuid:
-          type: string
-      required:
-      - updatedAt
-      - createdAt
-      - projectUuids
-      - enabled
-      - organizationUuid
-      - routerUuid
-      type: object
-    UpsertAiRouterInstructionRequest:
-      properties:
-        taggedAgentUuids:
-          items:
-            type: string
-          type: array
-        instruction:
-          type: string
-      required:
-      - taggedAgentUuids
-      - instruction
-      type: object
-    ApiAiRouterRouteResponse:
-      $ref: '#/components/schemas/ApiSuccess_AiRouterRouteResponseResult_'
-    AiRouterRouteNextAction:
-      type: string
-      enum:
-      - create_thread
-      - show_picker
-    ApiSuccess_AiRouterRouteResponseResult_:
-      properties:
-        results:
-          $ref: '#/components/schemas/AiRouterRouteResponseResult'
-        status:
-          type: string
-          enum:
-          - ok
-      required:
-      - results
-      - status
-      type: object
-    AiRouterSelectionMode:
-      type: string
-      enum:
-      - auto_routed
-      - manual_pick
-    AiRouterDecisionCandidate:
-      properties:
-        description:
-          type:
-          - string
-          - 'null'
-        name:
-          type: string
-        agentUuid:
-          type: string
-      required:
-      - description
-      - name
-      - agentUuid
-      type: object
-    AiRouterRouteResponseResult:
-      properties:
-        nextAction:
-          $ref: '#/components/schemas/AiRouterRouteNextAction'
-        decision:
-          $ref: '#/components/schemas/AiRouterRouteDecision'
-      required:
-      - nextAction
-      - decision
-      type: object
-    ApiSuccessEmpty:
-      properties:
-        results: {}
-        status:
-          type: string
-          enum:
-          - ok
-      required:
-      - status
-      type: object
-    ApiAiRouterInstructionResponse:
-      $ref: '#/components/schemas/ApiSuccess_AiRouterInstruction-or-null_'
+    ApiAiRouterDecisionCommitResponse:
+      $ref: '#/components/schemas/ApiSuccessEmpty'
     UpsertAiRouterRequest:
       properties:
         projectUuids:
@@ -481,35 +355,6 @@ components:
         enabled:
           type: boolean
       type: object
-    ApiAiRouterDecisionCommitResponse:
-      $ref: '#/components/schemas/ApiSuccessEmpty'
-    AiRouterRouteDecision:
-      properties:
-        candidates:
-          items:
-            $ref: '#/components/schemas/AiRouterDecisionCandidate'
-          type: array
-        reasoning:
-          type: string
-        confidence:
-          $ref: '#/components/schemas/AiRouterDecisionConfidence'
-        suggestedAgentUuid:
-          type: string
-        decisionUuid:
-          type: string
-      required:
-      - candidates
-      - reasoning
-      - confidence
-      - suggestedAgentUuid
-      - decisionUuid
-      type: object
-    AiRouterDecisionConfidence:
-      type: string
-      enum:
-      - high
-      - medium
-      - low
     AiRouterInstruction:
       properties:
         createdAt:
@@ -544,6 +389,51 @@ components:
         `@[Agent Name](agent-uuid)` tokens; `taggedAgentUuids` is the extracted list,
 
         kept alongside the text so references can be validated and orphans detected.'
+    AiRouterRouteNextAction:
+      type: string
+      enum:
+      - create_thread
+      - show_picker
+    AiRouterRouteResponseResult:
+      properties:
+        nextAction:
+          $ref: '#/components/schemas/AiRouterRouteNextAction'
+        decision:
+          $ref: '#/components/schemas/AiRouterRouteDecision'
+      required:
+      - nextAction
+      - decision
+      type: object
+    AiRouterDecisionConfidence:
+      type: string
+      enum:
+      - high
+      - medium
+      - low
+    UpsertAiRouterInstructionRequest:
+      properties:
+        taggedAgentUuids:
+          items:
+            type: string
+          type: array
+        instruction:
+          type: string
+      required:
+      - taggedAgentUuids
+      - instruction
+      type: object
+    AiRouterDecisionCommitRequest:
+      properties:
+        threadUuid:
+          type: string
+        chosenAgentUuid:
+          type: string
+      required:
+      - threadUuid
+      - chosenAgentUuid
+      type: object
+    ApiAiRouterInstructionResponse:
+      $ref: '#/components/schemas/ApiSuccess_AiRouterInstruction-or-null_'
     ApiSuccess_AiRouter_:
       properties:
         results:
@@ -556,11 +446,114 @@ components:
       - results
       - status
       type: object
-    ApiSuccess_AiRouterInstruction-or-null_:
+    AiRouterRouteDecision:
+      properties:
+        candidates:
+          items:
+            $ref: '#/components/schemas/AiRouterDecisionCandidate'
+          type: array
+        reasoning:
+          type: string
+        confidence:
+          $ref: '#/components/schemas/AiRouterDecisionConfidence'
+        suggestedAgentUuid:
+          type: string
+        decisionUuid:
+          type: string
+      required:
+      - candidates
+      - reasoning
+      - confidence
+      - suggestedAgentUuid
+      - decisionUuid
+      type: object
+    ApiSuccessEmpty:
+      properties:
+        results: {}
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - status
+      type: object
+    AiRouter:
+      properties:
+        updatedAt:
+          type: string
+          format: date-time
+        createdAt:
+          type: string
+          format: date-time
+        projectUuids:
+          items:
+            type: string
+          type: array
+        enabled:
+          type: boolean
+        organizationUuid:
+          type: string
+        routerUuid:
+          type: string
+      required:
+      - updatedAt
+      - createdAt
+      - projectUuids
+      - enabled
+      - organizationUuid
+      - routerUuid
+      type: object
+    ApiErrorPayload:
+      properties:
+        error:
+          properties:
+            data:
+              $ref: '#/components/schemas/AnyType'
+              description: Optional data containing details of the error
+            message:
+              type: string
+              description: A friendly message summarising the error
+            name:
+              type: string
+              description: Unique name for the type of error
+            statusCode:
+              type: number
+              format: integer
+              description: HTTP status code
+          required:
+          - name
+          - statusCode
+          type: object
+        status:
+          type: string
+          enum:
+          - error
+      required:
+      - error
+      - status
+      type: object
+      description: 'The Error object is returned from the api any time there is an error.
+
+        The message contains'
+    AiRouterDecisionCandidate:
+      properties:
+        description:
+          type:
+          - string
+          - 'null'
+        name:
+          type: string
+        agentUuid:
+          type: string
+      required:
+      - description
+      - name
+      - agentUuid
+      type: object
+    ApiSuccess_AiRouterRouteResponseResult_:
       properties:
         results:
-          allOf:
-          - $ref: '#/components/schemas/AiRouterInstruction'
+          $ref: '#/components/schemas/AiRouterRouteResponseResult'
         status:
           type: string
           enum:
@@ -569,6 +562,13 @@ components:
       - results
       - status
       type: object
+    ApiAiRouterDecisionListResponse:
+      $ref: '#/components/schemas/ApiSuccess_AiRouterDecision-Array_'
+    AiRouterSelectionMode:
+      type: string
+      enum:
+      - auto_routed
+      - manual_pick
   securitySchemes:
     session_cookie:
       type: apiKey

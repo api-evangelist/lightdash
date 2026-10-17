@@ -76,10 +76,35 @@ paths:
               $ref: '#/components/schemas/ApiNotificationUpdateParams'
 components:
   schemas:
-    ApiNotificationsResults:
-      items:
-        $ref: '#/components/schemas/Notification'
-      type: array
+    ApiNotificationResourceType.DashboardComments:
+      enum:
+      - dashboardComments
+      type: string
+    NotificationDashboardComment:
+      allOf:
+      - $ref: '#/components/schemas/NotificationBase'
+      - properties:
+          metadata:
+            $ref: '#/components/schemas/NotificationDashboardTileCommentMetadata'
+          resourceType:
+            $ref: '#/components/schemas/ApiNotificationResourceType.DashboardComments'
+        required:
+        - resourceType
+        type: object
+    Notification:
+      $ref: '#/components/schemas/NotificationDashboardComment'
+    ApiGetNotifications:
+      properties:
+        results:
+          $ref: '#/components/schemas/ApiNotificationsResults'
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
     NotificationDashboardTileCommentMetadata:
       properties:
         dashboardUuid:
@@ -105,6 +130,56 @@ components:
       - viewed
       type: object
       description: From T, pick a set of properties whose keys are in the union K
+    AnyType:
+      description: 'This AnyType is an alias for any
+
+        The goal is to make it easier to identify any type in the codebase
+
+        without having to eslint-disable all the time
+
+        These are only used on legacy `any` types, don''t use it for new types.
+
+        This is added on a separate file to avoid circular dependencies.'
+    NotificationBase:
+      properties:
+        url:
+          type: string
+        message:
+          type: string
+        resourceUuid:
+          type: string
+        viewed:
+          type: boolean
+        createdAt:
+          type: string
+          format: date-time
+        notificationId:
+          type: string
+      required:
+      - viewed
+      - createdAt
+      - notificationId
+      type: object
+    ApiNotificationUpdateParams:
+      $ref: '#/components/schemas/Pick_Notification.viewed_'
+    ApiNotificationResourceType:
+      enum:
+      - dashboardComments
+      type: string
+    ApiSuccessEmpty:
+      properties:
+        results: {}
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - status
+      type: object
+    ApiNotificationsResults:
+      items:
+        $ref: '#/components/schemas/Notification'
+      type: array
     ApiErrorPayload:
       properties:
         error:
@@ -137,81 +212,6 @@ components:
       description: 'The Error object is returned from the api any time there is an error.
 
         The message contains'
-    Notification:
-      $ref: '#/components/schemas/NotificationDashboardComment'
-    ApiNotificationResourceType.DashboardComments:
-      enum:
-      - dashboardComments
-      type: string
-    AnyType:
-      description: 'This AnyType is an alias for any
-
-        The goal is to make it easier to identify any type in the codebase
-
-        without having to eslint-disable all the time
-
-        These are only used on legacy `any` types, don''t use it for new types.
-
-        This is added on a separate file to avoid circular dependencies.'
-    ApiNotificationUpdateParams:
-      $ref: '#/components/schemas/Pick_Notification.viewed_'
-    ApiGetNotifications:
-      properties:
-        results:
-          $ref: '#/components/schemas/ApiNotificationsResults'
-        status:
-          type: string
-          enum:
-          - ok
-      required:
-      - results
-      - status
-      type: object
-    ApiNotificationResourceType:
-      enum:
-      - dashboardComments
-      type: string
-    ApiSuccessEmpty:
-      properties:
-        results: {}
-        status:
-          type: string
-          enum:
-          - ok
-      required:
-      - status
-      type: object
-    NotificationBase:
-      properties:
-        url:
-          type: string
-        message:
-          type: string
-        resourceUuid:
-          type: string
-        viewed:
-          type: boolean
-        createdAt:
-          type: string
-          format: date-time
-        notificationId:
-          type: string
-      required:
-      - viewed
-      - createdAt
-      - notificationId
-      type: object
-    NotificationDashboardComment:
-      allOf:
-      - $ref: '#/components/schemas/NotificationBase'
-      - properties:
-          metadata:
-            $ref: '#/components/schemas/NotificationDashboardTileCommentMetadata'
-          resourceType:
-            $ref: '#/components/schemas/ApiNotificationResourceType.DashboardComments'
-        required:
-        - resourceType
-        type: object
   securitySchemes:
     session_cookie:
       type: apiKey

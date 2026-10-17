@@ -229,69 +229,6 @@ paths:
           type: string
 components:
   schemas:
-    ApiDefaultRoleResponse:
-      properties:
-        results:
-          $ref: '#/components/schemas/Role'
-        status:
-          type: string
-          enum:
-          - ok
-      required:
-      - results
-      - status
-      type: object
-    ApiErrorPayload:
-      properties:
-        error:
-          properties:
-            data:
-              $ref: '#/components/schemas/AnyType'
-              description: Optional data containing details of the error
-            message:
-              type: string
-              description: A friendly message summarising the error
-            name:
-              type: string
-              description: Unique name for the type of error
-            statusCode:
-              type: number
-              format: integer
-              description: HTTP status code
-          required:
-          - name
-          - statusCode
-          type: object
-        status:
-          type: string
-          enum:
-          - error
-      required:
-      - error
-      - status
-      type: object
-      description: 'The Error object is returned from the api any time there is an error.
-
-        The message contains'
-    AnyType:
-      description: 'This AnyType is an alias for any
-
-        The goal is to make it easier to identify any type in the codebase
-
-        without having to eslint-disable all the time
-
-        These are only used on legacy `any` types, don''t use it for new types.
-
-        This is added on a separate file to avoid circular dependencies.'
-    RoleAssigneeKind:
-      type: string
-      enum:
-      - organization_user
-      - project_user
-      - project_group
-      - service_account
-    ApiRemoveScopeFromRoleResponse:
-      $ref: '#/components/schemas/ApiSuccessEmpty'
     AddScopesToRole:
       properties:
         scopeNames:
@@ -301,6 +238,38 @@ components:
       required:
       - scopeNames
       type: object
+    RoleAssignee:
+      properties:
+        projectName:
+          type:
+          - string
+          - 'null'
+        projectUuid:
+          type:
+          - string
+          - 'null'
+        assigneeName:
+          type: string
+        assigneeId:
+          type: string
+        kind:
+          $ref: '#/components/schemas/RoleAssigneeKind'
+      required:
+      - projectName
+      - projectUuid
+      - assigneeName
+      - assigneeId
+      - kind
+      type: object
+    RoleAssigneeKind:
+      type: string
+      enum:
+      - organization_user
+      - project_user
+      - project_group
+      - service_account
+    ApiUnassignRoleFromUserResponse:
+      $ref: '#/components/schemas/ApiSuccessEmpty'
     ApiRoleAssigneesResponse:
       properties:
         results:
@@ -379,31 +348,16 @@ components:
       - name
       - roleUuid
       type: object
-    ApiUnassignRoleFromUserResponse:
-      $ref: '#/components/schemas/ApiSuccessEmpty'
-    RoleAssignee:
-      properties:
-        projectName:
-          type:
-          - string
-          - 'null'
-        projectUuid:
-          type:
-          - string
-          - 'null'
-        assigneeName:
-          type: string
-        assigneeId:
-          type: string
-        kind:
-          $ref: '#/components/schemas/RoleAssigneeKind'
-      required:
-      - projectName
-      - projectUuid
-      - assigneeName
-      - assigneeId
-      - kind
-      type: object
+    AnyType:
+      description: 'This AnyType is an alias for any
+
+        The goal is to make it easier to identify any type in the codebase
+
+        without having to eslint-disable all the time
+
+        These are only used on legacy `any` types, don''t use it for new types.
+
+        This is added on a separate file to avoid circular dependencies.'
     CreateRole:
       properties:
         scopes:
@@ -417,6 +371,8 @@ components:
       required:
       - name
       type: object
+    ApiRemoveScopeFromRoleResponse:
+      $ref: '#/components/schemas/ApiSuccessEmpty'
     ApiSuccessEmpty:
       properties:
         results: {}
@@ -425,6 +381,50 @@ components:
           enum:
           - ok
       required:
+      - status
+      type: object
+    ApiErrorPayload:
+      properties:
+        error:
+          properties:
+            data:
+              $ref: '#/components/schemas/AnyType'
+              description: Optional data containing details of the error
+            message:
+              type: string
+              description: A friendly message summarising the error
+            name:
+              type: string
+              description: Unique name for the type of error
+            statusCode:
+              type: number
+              format: integer
+              description: HTTP status code
+          required:
+          - name
+          - statusCode
+          type: object
+        status:
+          type: string
+          enum:
+          - error
+      required:
+      - error
+      - status
+      type: object
+      description: 'The Error object is returned from the api any time there is an error.
+
+        The message contains'
+    ApiDefaultRoleResponse:
+      properties:
+        results:
+          $ref: '#/components/schemas/Role'
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
       - status
       type: object
   securitySchemes:

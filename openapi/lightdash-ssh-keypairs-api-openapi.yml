@@ -38,6 +38,18 @@ paths:
       parameters: []
 components:
   schemas:
+    ApiSshKeyPairResponse:
+      properties:
+        results:
+          $ref: '#/components/schemas/Pick_SshKeyPair.publicKey_'
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
     Pick_SshKeyPair.publicKey_:
       properties:
         publicKey:
@@ -88,18 +100,6 @@ components:
       description: 'The Error object is returned from the api any time there is an error.
 
         The message contains'
-    ApiSshKeyPairResponse:
-      properties:
-        results:
-          $ref: '#/components/schemas/Pick_SshKeyPair.publicKey_'
-        status:
-          type: string
-          enum:
-          - ok
-      required:
-      - results
-      - status
-      type: object
   securitySchemes:
     session_cookie:
       type: apiKey

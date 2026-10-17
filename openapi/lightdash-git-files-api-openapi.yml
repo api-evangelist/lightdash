@@ -246,6 +246,26 @@ paths:
               $ref: '#/components/schemas/CreateGitPullRequestRequest'
 components:
   schemas:
+    ApiGitFileSavedResponse:
+      properties:
+        results:
+          properties:
+            path:
+              type: string
+            sha:
+              type: string
+          required:
+          - path
+          - sha
+          type: object
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
     PullRequestCreated:
       properties:
         prUrl:
@@ -256,60 +276,16 @@ components:
       - prUrl
       - prTitle
       type: object
-    ApiGitFileOrDirectoryResponse:
+    CreateGitPullRequestRequest:
       properties:
-        results:
-          $ref: '#/components/schemas/GitFileOrDirectory'
-        status:
+        description:
           type: string
-          enum:
-          - ok
-      required:
-      - results
-      - status
-      type: object
-    ApiErrorPayload:
-      properties:
-        error:
-          properties:
-            data:
-              $ref: '#/components/schemas/AnyType'
-              description: Optional data containing details of the error
-            message:
-              type: string
-              description: A friendly message summarising the error
-            name:
-              type: string
-              description: Unique name for the type of error
-            statusCode:
-              type: number
-              format: integer
-              description: HTTP status code
-          required:
-          - name
-          - statusCode
-          type: object
-        status:
+        title:
           type: string
-          enum:
-          - error
       required:
-      - error
-      - status
+      - description
+      - title
       type: object
-      description: 'The Error object is returned from the api any time there is an error.
-
-        The message contains'
-    AnyType:
-      description: 'This AnyType is an alias for any
-
-        The goal is to make it easier to identify any type in the codebase
-
-        without having to eslint-disable all the time
-
-        These are only used on legacy `any` types, don''t use it for new types.
-
-        This is added on a separate file to avoid circular dependencies.'
     ApiGitPullRequestCreatedResponse:
       properties:
         results:
@@ -334,92 +310,10 @@ components:
       - results
       - status
       type: object
-    GitFileOrDirectory:
-      anyOf:
-      - properties:
-          entries:
-            items:
-              $ref: '#/components/schemas/GitFileEntry'
-            type: array
-          type:
-            type: string
-            enum:
-            - directory
-        required:
-        - entries
-        - type
-        type: object
-      - properties:
-          path:
-            type: string
-          sha:
-            type: string
-          content:
-            type: string
-          type:
-            type: string
-            enum:
-            - file
-        required:
-        - path
-        - sha
-        - content
-        - type
-        type: object
-    CreateGitBranchRequest:
-      properties:
-        sourceBranch:
-          type: string
-        name:
-          type: string
-      required:
-      - sourceBranch
-      - name
-      type: object
-    CreateGitPullRequestRequest:
-      properties:
-        description:
-          type: string
-        title:
-          type: string
-      required:
-      - description
-      - title
-      type: object
-    GitFileEntry:
-      properties:
-        sha:
-          type: string
-        size:
-          type: number
-          format: double
-        type:
-          type: string
-          enum:
-          - file
-          - dir
-        path:
-          type: string
-        name:
-          type: string
-      required:
-      - sha
-      - size
-      - type
-      - path
-      - name
-      type: object
-    ApiGitFileDeletedResponse:
+    ApiGitFileOrDirectoryResponse:
       properties:
         results:
-          properties:
-            deleted:
-              type: boolean
-              enum:
-              - true
-          required:
-          - deleted
-          type: object
+          $ref: '#/components/schemas/GitFileOrDirectory'
         status:
           type: string
           enum:
@@ -453,17 +347,123 @@ components:
       - isProtected
       - name
       type: object
-    ApiGitFileSavedResponse:
+    AnyType:
+      description: 'This AnyType is an alias for any
+
+        The goal is to make it easier to identify any type in the codebase
+
+        without having to eslint-disable all the time
+
+        These are only used on legacy `any` types, don''t use it for new types.
+
+        This is added on a separate file to avoid circular dependencies.'
+    GitFileEntry:
+      properties:
+        sha:
+          type: string
+        size:
+          type: number
+          format: double
+        type:
+          type: string
+          enum:
+          - file
+          - dir
+        path:
+          type: string
+        name:
+          type: string
+      required:
+      - sha
+      - size
+      - type
+      - path
+      - name
+      type: object
+    CreateGitBranchRequest:
+      properties:
+        sourceBranch:
+          type: string
+        name:
+          type: string
+      required:
+      - sourceBranch
+      - name
+      type: object
+    GitFileOrDirectory:
+      anyOf:
+      - properties:
+          entries:
+            items:
+              $ref: '#/components/schemas/GitFileEntry'
+            type: array
+          type:
+            type: string
+            enum:
+            - directory
+        required:
+        - entries
+        - type
+        type: object
+      - properties:
+          path:
+            type: string
+          sha:
+            type: string
+          content:
+            type: string
+          type:
+            type: string
+            enum:
+            - file
+        required:
+        - path
+        - sha
+        - content
+        - type
+        type: object
+    ApiErrorPayload:
+      properties:
+        error:
+          properties:
+            data:
+              $ref: '#/components/schemas/AnyType'
+              description: Optional data containing details of the error
+            message:
+              type: string
+              description: A friendly message summarising the error
+            name:
+              type: string
+              description: Unique name for the type of error
+            statusCode:
+              type: number
+              format: integer
+              description: HTTP status code
+          required:
+          - name
+          - statusCode
+          type: object
+        status:
+          type: string
+          enum:
+          - error
+      required:
+      - error
+      - status
+      type: object
+      description: 'The Error object is returned from the api any time there is an error.
+
+        The message contains'
+    ApiGitFileDeletedResponse:
       properties:
         results:
           properties:
-            path:
-              type: string
-            sha:
-              type: string
+            deleted:
+              type: boolean
+              enum:
+              - true
           required:
-          - path
-          - sha
+          - deleted
           type: object
         status:
           type: string

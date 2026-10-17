@@ -240,6 +240,16 @@ paths:
       - Github
 components:
   schemas:
+    ApiSuccessEmpty:
+      properties:
+        results: {}
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - status
+      type: object
     ApiGithubUserCredentialResponse:
       properties:
         results:
@@ -251,25 +261,6 @@ components:
           - ok
       required:
       - results
-      - status
-      type: object
-    GitIntegrationConfiguration:
-      properties:
-        installationId:
-          type: string
-        enabled:
-          type: boolean
-      required:
-      - enabled
-      type: object
-    ApiSuccessEmpty:
-      properties:
-        results: {}
-        status:
-          type: string
-          enum:
-          - ok
-      required:
       - status
       type: object
     GithubUserCredential:
@@ -286,6 +277,15 @@ components:
       description: 'A user''s personally linked GitHub account. When present, write-backs are
 
         authored as this user instead of the Lightdash GitHub App bot.'
+    GitIntegrationConfiguration:
+      properties:
+        installationId:
+          type: string
+        enabled:
+          type: boolean
+      required:
+      - enabled
+      type: object
     GitRepo:
       properties:
         defaultBranch:

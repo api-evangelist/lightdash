@@ -54,29 +54,6 @@ components:
         These are only used on legacy `any` types, don''t use it for new types.
 
         This is added on a separate file to avoid circular dependencies.'
-    ApiCsvUrlResponse:
-      properties:
-        results:
-          properties:
-            truncated:
-              type: boolean
-            status:
-              type: string
-            url:
-              type: string
-          required:
-          - truncated
-          - status
-          - url
-          type: object
-        status:
-          type: string
-          enum:
-          - ok
-      required:
-      - results
-      - status
-      type: object
     ApiErrorPayload:
       properties:
         error:
@@ -109,6 +86,29 @@ components:
       description: 'The Error object is returned from the api any time there is an error.
 
         The message contains'
+    ApiCsvUrlResponse:
+      properties:
+        results:
+          properties:
+            truncated:
+              type: boolean
+            status:
+              type: string
+            url:
+              type: string
+          required:
+          - truncated
+          - status
+          - url
+          type: object
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
   securitySchemes:
     session_cookie:
       type: apiKey

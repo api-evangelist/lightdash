@@ -86,10 +86,109 @@ paths:
       x-operation-id-original: Bulk move content
 components:
   schemas:
+    ApiContentActionBody_ContentActionMove_:
+      properties:
+        action:
+          $ref: '#/components/schemas/ContentActionMove'
+        item:
+          $ref: '#/components/schemas/ItemPayload'
+      required:
+      - action
+      - item
+      type: object
+    ContentType.DASHBOARD:
+      enum:
+      - dashboard
+      type: string
+    ApiSuccessEmpty:
+      properties:
+        results: {}
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - status
+      type: object
+    ItemPayload:
+      anyOf:
+      - properties:
+          source:
+            $ref: '#/components/schemas/ChartSourceType'
+          contentType:
+            $ref: '#/components/schemas/ContentType.CHART'
+          uuid:
+            type: string
+        required:
+        - source
+        - contentType
+        - uuid
+        type: object
+      - properties:
+          contentType:
+            $ref: '#/components/schemas/ContentType.DASHBOARD'
+          uuid:
+            type: string
+        required:
+        - contentType
+        - uuid
+        type: object
+      - properties:
+          contentType:
+            $ref: '#/components/schemas/ContentType.SPACE'
+          uuid:
+            type: string
+        required:
+        - contentType
+        - uuid
+        type: object
+      - properties:
+          contentType:
+            $ref: '#/components/schemas/ContentType.DATA_APP'
+          uuid:
+            type: string
+        required:
+        - contentType
+        - uuid
+        type: object
+    AnyType:
+      description: 'This AnyType is an alias for any
+
+        The goal is to make it easier to identify any type in the codebase
+
+        without having to eslint-disable all the time
+
+        These are only used on legacy `any` types, don''t use it for new types.
+
+        This is added on a separate file to avoid circular dependencies.'
     ChartSourceType:
       enum:
       - dbt_explore
       - sql
+      type: string
+    ContentType.DATA_APP:
+      enum:
+      - data_app
+      type: string
+    ContentType.SPACE:
+      enum:
+      - space
+      type: string
+    ApiContentBulkActionBody_ContentActionMove_:
+      properties:
+        action:
+          $ref: '#/components/schemas/ContentActionMove'
+        content:
+          items:
+            $ref: '#/components/schemas/ItemPayload'
+          type: array
+      required:
+      - action
+      - content
+      type: object
+    ContentType.CHART:
+      enum:
+      - chart
       type: string
     ContentActionMove:
       properties:
@@ -137,105 +236,6 @@ components:
       description: 'The Error object is returned from the api any time there is an error.
 
         The message contains'
-    ContentType.CHART:
-      enum:
-      - chart
-      type: string
-    AnyType:
-      description: 'This AnyType is an alias for any
-
-        The goal is to make it easier to identify any type in the codebase
-
-        without having to eslint-disable all the time
-
-        These are only used on legacy `any` types, don''t use it for new types.
-
-        This is added on a separate file to avoid circular dependencies.'
-    ContentType.DATA_APP:
-      enum:
-      - data_app
-      type: string
-    ContentType.DASHBOARD:
-      enum:
-      - dashboard
-      type: string
-    ApiContentBulkActionBody_ContentActionMove_:
-      properties:
-        action:
-          $ref: '#/components/schemas/ContentActionMove'
-        content:
-          items:
-            $ref: '#/components/schemas/ItemPayload'
-          type: array
-      required:
-      - action
-      - content
-      type: object
-    ApiContentActionBody_ContentActionMove_:
-      properties:
-        action:
-          $ref: '#/components/schemas/ContentActionMove'
-        item:
-          $ref: '#/components/schemas/ItemPayload'
-      required:
-      - action
-      - item
-      type: object
-    ContentType.SPACE:
-      enum:
-      - space
-      type: string
-    ItemPayload:
-      anyOf:
-      - properties:
-          source:
-            $ref: '#/components/schemas/ChartSourceType'
-          contentType:
-            $ref: '#/components/schemas/ContentType.CHART'
-          uuid:
-            type: string
-        required:
-        - source
-        - contentType
-        - uuid
-        type: object
-      - properties:
-          contentType:
-            $ref: '#/components/schemas/ContentType.DASHBOARD'
-          uuid:
-            type: string
-        required:
-        - contentType
-        - uuid
-        type: object
-      - properties:
-          contentType:
-            $ref: '#/components/schemas/ContentType.SPACE'
-          uuid:
-            type: string
-        required:
-        - contentType
-        - uuid
-        type: object
-      - properties:
-          contentType:
-            $ref: '#/components/schemas/ContentType.DATA_APP'
-          uuid:
-            type: string
-        required:
-        - contentType
-        - uuid
-        type: object
-    ApiSuccessEmpty:
-      properties:
-        results: {}
-        status:
-          type: string
-          enum:
-          - ok
-      required:
-      - status
-      type: object
   securitySchemes:
     session_cookie:
       type: apiKey

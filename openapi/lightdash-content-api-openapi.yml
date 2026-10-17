@@ -437,14 +437,87 @@ paths:
       x-operation-id-original: Permanently delete content
 components:
   schemas:
-    PinnedItems:
-      items:
-        anyOf:
-        - $ref: '#/components/schemas/ResourceViewDashboardItem'
-        - $ref: '#/components/schemas/ResourceViewChartItem'
-        - $ref: '#/components/schemas/ResourceViewSpaceItem'
-        - $ref: '#/components/schemas/ResourceViewDataAppItem'
-      type: array
+    ResourceItemCategory:
+      enum:
+      - mostPopular
+      - recentlyUpdated
+      - pinned
+      - favorites
+      - verified
+      type: string
+    ContentType.DASHBOARD:
+      enum:
+      - dashboard
+      type: string
+    ApiToggleFavorite:
+      properties:
+        results:
+          $ref: '#/components/schemas/ToggleFavoriteResponse'
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
+    ApiRestoreContentBody:
+      properties:
+        item:
+          $ref: '#/components/schemas/DeletedContentItem'
+      required:
+      - item
+      type: object
+    DeletedDashboardContentSummary:
+      properties:
+        organizationUuid:
+          type: string
+        projectUuid:
+          type: string
+        spaceName:
+          type: string
+        spaceUuid:
+          type: string
+        deletedBy:
+          properties:
+            lastName:
+              type: string
+            firstName:
+              type: string
+            userUuid:
+              type: string
+          required:
+          - lastName
+          - firstName
+          - userUuid
+          type:
+          - object
+          - 'null'
+        deletedAt:
+          type: string
+          format: date-time
+        contentType:
+          $ref: '#/components/schemas/ContentType.DASHBOARD'
+        description:
+          type:
+          - string
+          - 'null'
+        name:
+          type: string
+        uuid:
+          type: string
+      required:
+      - organizationUuid
+      - projectUuid
+      - spaceName
+      - spaceUuid
+      - deletedBy
+      - deletedAt
+      - contentType
+      - description
+      - name
+      - uuid
+      type: object
     DeletedContentItem:
       anyOf:
       - properties:
@@ -485,651 +558,6 @@ components:
         required:
         - contentType
         - uuid
-        type: object
-    ChartKind:
-      enum:
-      - line
-      - horizontal_bar
-      - vertical_bar
-      - scatter
-      - area
-      - mixed
-      - pie
-      - table
-      - big_number
-      - funnel
-      - custom
-      - treemap
-      - gauge
-      - map
-      - sankey
-      type: string
-    ApiErrorPayload:
-      properties:
-        error:
-          properties:
-            data:
-              $ref: '#/components/schemas/AnyType'
-              description: Optional data containing details of the error
-            message:
-              type: string
-              description: A friendly message summarising the error
-            name:
-              type: string
-              description: Unique name for the type of error
-            statusCode:
-              type: number
-              format: integer
-              description: HTTP status code
-          required:
-          - name
-          - statusCode
-          type: object
-        status:
-          type: string
-          enum:
-          - error
-      required:
-      - error
-      - status
-      type: object
-      description: 'The Error object is returned from the api any time there is an error.
-
-        The message contains'
-    AnyType:
-      description: 'This AnyType is an alias for any
-
-        The goal is to make it easier to identify any type in the codebase
-
-        without having to eslint-disable all the time
-
-        These are only used on legacy `any` types, don''t use it for new types.
-
-        This is added on a separate file to avoid circular dependencies.'
-    ResourceViewSpaceItem:
-      properties:
-        data:
-          allOf:
-          - $ref: '#/components/schemas/Pick_Space.projectUuid-or-uuid-or-name-or-pinnedListUuid-or-pinnedListOrder-or-organizationUuid-or-parentSpaceUuid-or-path-or-inheritParentPermissions_'
-          - properties:
-              appCount:
-                type: number
-                format: double
-              childSpaceCount:
-                type: number
-                format: double
-              chartCount:
-                type: number
-                format: double
-              dashboardCount:
-                type: number
-                format: double
-              accessListLength:
-                type: number
-                format: double
-              access:
-                items:
-                  type: string
-                type: array
-            required:
-            - appCount
-            - childSpaceCount
-            - chartCount
-            - dashboardCount
-            - accessListLength
-            - access
-            type: object
-        type:
-          $ref: '#/components/schemas/ResourceViewItemType.SPACE'
-      required:
-      - data
-      - type
-      type: object
-    ? Pick_DashboardBasicDetails.uuid-or-spaceUuid-or-description-or-name-or-views-or-firstViewedAt-or-pinnedListUuid-or-pinnedListOrder-or-updatedAt-or-updatedByUser-or-validationErrors-or-verification_
-    : properties:
-        description:
-          type: string
-        name:
-          type: string
-        uuid:
-          type: string
-        pinnedListUuid:
-          type:
-          - string
-          - 'null'
-        pinnedListOrder:
-          type:
-          - number
-          - 'null'
-          format: double
-        updatedAt:
-          type: string
-          format: date-time
-        spaceUuid:
-          type: string
-        verification:
-          allOf:
-          - $ref: '#/components/schemas/ContentVerificationInfo'
-        updatedByUser:
-          $ref: '#/components/schemas/UpdatedByUser'
-        views:
-          type: number
-          format: double
-        firstViewedAt:
-          anyOf:
-          - type: string
-          - type: string
-            format: date-time
-        validationErrors:
-          items:
-            $ref: '#/components/schemas/ValidationSummary'
-          type: array
-      required:
-      - name
-      - uuid
-      - pinnedListUuid
-      - pinnedListOrder
-      - updatedAt
-      - spaceUuid
-      - verification
-      - views
-      - firstViewedAt
-      type: object
-      description: From T, pick a set of properties whose keys are in the union K
-    ContentType.DASHBOARD:
-      enum:
-      - dashboard
-      type: string
-    ApiContentActionBody_ContentActionMove_:
-      properties:
-        action:
-          $ref: '#/components/schemas/ContentActionMove'
-        item:
-          $ref: '#/components/schemas/ItemPayload'
-      required:
-      - action
-      - item
-      type: object
-    ApiFavoriteItems:
-      properties:
-        results:
-          $ref: '#/components/schemas/FavoriteItems'
-        status:
-          type: string
-          enum:
-          - ok
-      required:
-      - results
-      - status
-      type: object
-    ContentType.SPACE:
-      enum:
-      - space
-      type: string
-    ItemPayload:
-      anyOf:
-      - properties:
-          source:
-            $ref: '#/components/schemas/ChartSourceType'
-          contentType:
-            $ref: '#/components/schemas/ContentType.CHART'
-          uuid:
-            type: string
-        required:
-        - source
-        - contentType
-        - uuid
-        type: object
-      - properties:
-          contentType:
-            $ref: '#/components/schemas/ContentType.DASHBOARD'
-          uuid:
-            type: string
-        required:
-        - contentType
-        - uuid
-        type: object
-      - properties:
-          contentType:
-            $ref: '#/components/schemas/ContentType.SPACE'
-          uuid:
-            type: string
-        required:
-        - contentType
-        - uuid
-        type: object
-      - properties:
-          contentType:
-            $ref: '#/components/schemas/ContentType.DATA_APP'
-          uuid:
-            type: string
-        required:
-        - contentType
-        - uuid
-        type: object
-    FavoriteItems:
-      items:
-        anyOf:
-        - $ref: '#/components/schemas/ResourceViewChartItem'
-        - $ref: '#/components/schemas/ResourceViewDashboardItem'
-        - $ref: '#/components/schemas/ResourceViewSpaceItem'
-        - $ref: '#/components/schemas/ResourceViewDataAppItem'
-      type: array
-    ChartSourceType:
-      enum:
-      - dbt_explore
-      - sql
-      type: string
-    ResourceViewItemType.CHART:
-      enum:
-      - chart
-      type: string
-    ContentActionMove:
-      properties:
-        targetSpaceUuid:
-          type:
-          - string
-          - 'null'
-        type:
-          type: string
-          enum:
-          - move
-      required:
-      - targetSpaceUuid
-      - type
-      type: object
-    ContentType:
-      enum:
-      - chart
-      - dashboard
-      - space
-      - data_app
-      type: string
-    ApiDeletedContentResponse:
-      properties:
-        results:
-          $ref: '#/components/schemas/KnexPaginatedData_DeletedContentWithDescendants-Array_'
-        status:
-          type: string
-          enum:
-          - ok
-      required:
-      - results
-      - status
-      type: object
-    WithDescendantCounts_DeletedSqlChartContentSummary.never_:
-      $ref: '#/components/schemas/DeletedSqlChartContentSummary'
-    ChartSourceType.DBT_EXPLORE:
-      enum:
-      - dbt_explore
-      type: string
-    ResourceViewItemType.DATA_APP:
-      enum:
-      - data_app
-      type: string
-    ResourceViewChartItem:
-      properties:
-        category:
-          $ref: '#/components/schemas/ResourceItemCategory'
-        data:
-          allOf:
-          - $ref: '#/components/schemas/Pick_SpaceQuery.uuid-or-name-or-chartType-or-chartKind-or-firstViewedAt-or-views-or-pinnedListUuid-or-pinnedListOrder-or-spaceUuid-or-description-or-updatedAt-or-updatedByUser-or-validationErrors-or-verification-or-slug_'
-          - properties:
-              source:
-                $ref: '#/components/schemas/ChartSourceType'
-            type: object
-        type:
-          $ref: '#/components/schemas/ResourceViewItemType.CHART'
-      required:
-      - data
-      - type
-      type: object
-    ChartSourceType.SQL:
-      enum:
-      - sql
-      type: string
-    UpdatedByUser:
-      properties:
-        userUuid:
-          type: string
-        firstName:
-          type: string
-        lastName:
-          type: string
-      required:
-      - userUuid
-      - firstName
-      - lastName
-      type: object
-      additionalProperties: true
-    KnexPaginateArgs:
-      properties:
-        page:
-          type: number
-          format: double
-        pageSize:
-          type: number
-          format: double
-      required:
-      - page
-      - pageSize
-      type: object
-    ContentSortByColumns:
-      enum:
-      - name
-      - space_name
-      - last_updated_at
-      type: string
-    ToggleFavoriteRequest:
-      properties:
-        contentUuid:
-          type: string
-        contentType:
-          $ref: '#/components/schemas/ContentType'
-      required:
-      - contentUuid
-      - contentType
-      type: object
-    ResourceViewDataAppItem:
-      properties:
-        category:
-          $ref: '#/components/schemas/ResourceItemCategory'
-        data:
-          properties:
-            pinnedListOrder:
-              type:
-              - number
-              - 'null'
-              format: double
-            pinnedListUuid:
-              type:
-              - string
-              - 'null'
-            latestVersionStatus:
-              allOf:
-              - $ref: '#/components/schemas/AppVersionStatus'
-            latestVersionNumber:
-              type:
-              - number
-              - 'null'
-              format: double
-            firstViewedAt:
-              type:
-              - string
-              - 'null'
-              format: date-time
-            views:
-              type: number
-              format: double
-            updatedByUser:
-              properties:
-                lastName:
-                  type: string
-                firstName:
-                  type: string
-                userUuid:
-                  type: string
-              required:
-              - lastName
-              - firstName
-              - userUuid
-              type:
-              - object
-              - 'null'
-            updatedAt:
-              type: string
-              format: date-time
-            createdByUserUuid:
-              type:
-              - string
-              - 'null'
-            spaceUuid:
-              type:
-              - string
-              - 'null'
-            description:
-              type: string
-            name:
-              type: string
-            uuid:
-              type: string
-          required:
-          - pinnedListOrder
-          - pinnedListUuid
-          - latestVersionStatus
-          - latestVersionNumber
-          - firstViewedAt
-          - views
-          - updatedByUser
-          - updatedAt
-          - createdByUserUuid
-          - spaceUuid
-          - name
-          - uuid
-          type: object
-        type:
-          $ref: '#/components/schemas/ResourceViewItemType.DATA_APP'
-      required:
-      - data
-      - type
-      type: object
-    DeletedSqlChartContentSummary:
-      allOf:
-      - $ref: '#/components/schemas/DeletedChartBase'
-      - properties:
-          source:
-            $ref: '#/components/schemas/ChartSourceType.SQL'
-        required:
-        - source
-        type: object
-    DataAppContent:
-      properties:
-        contentType:
-          $ref: '#/components/schemas/ContentType.DATA_APP'
-        uuid:
-          type: string
-        slug:
-          type: string
-        name:
-          type: string
-        description:
-          type:
-          - string
-          - 'null'
-        createdAt:
-          type: string
-          format: date-time
-        createdBy:
-          properties:
-            lastName:
-              type: string
-            firstName:
-              type: string
-            uuid:
-              type: string
-          required:
-          - lastName
-          - firstName
-          - uuid
-          type:
-          - object
-          - 'null'
-        lastUpdatedAt:
-          type:
-          - string
-          - 'null'
-          format: date-time
-        lastUpdatedBy:
-          properties:
-            lastName:
-              type: string
-            firstName:
-              type: string
-            uuid:
-              type: string
-          required:
-          - lastName
-          - firstName
-          - uuid
-          type:
-          - object
-          - 'null'
-        project:
-          properties:
-            name:
-              type: string
-            uuid:
-              type: string
-          required:
-          - name
-          - uuid
-          type: object
-        organization:
-          properties:
-            name:
-              type: string
-            uuid:
-              type: string
-          required:
-          - name
-          - uuid
-          type: object
-        space:
-          properties:
-            name:
-              type: string
-            uuid:
-              type: string
-          required:
-          - name
-          - uuid
-          type: object
-        pinnedList:
-          properties:
-            order:
-              type: number
-              format: double
-            uuid:
-              type: string
-          required:
-          - order
-          - uuid
-          type:
-          - object
-          - 'null'
-        views:
-          type: number
-          format: double
-        firstViewedAt:
-          type:
-          - string
-          - 'null'
-          format: date-time
-        verification:
-          allOf:
-          - $ref: '#/components/schemas/ContentVerificationInfo'
-        latestVersionNumber:
-          type:
-          - number
-          - 'null'
-          format: double
-        latestVersionStatus:
-          allOf:
-          - $ref: '#/components/schemas/AppVersionStatus'
-      required:
-      - contentType
-      - uuid
-      - slug
-      - name
-      - description
-      - createdAt
-      - createdBy
-      - lastUpdatedAt
-      - lastUpdatedBy
-      - project
-      - organization
-      - space
-      - pinnedList
-      - views
-      - firstViewedAt
-      - verification
-      - latestVersionNumber
-      - latestVersionStatus
-      type: object
-      additionalProperties: true
-    ApiToggleFavorite:
-      properties:
-        results:
-          $ref: '#/components/schemas/ToggleFavoriteResponse'
-        status:
-          type: string
-          enum:
-          - ok
-      required:
-      - results
-      - status
-      type: object
-    ApiSuccessEmpty:
-      properties:
-        results: {}
-        status:
-          type: string
-          enum:
-          - ok
-      required:
-      - status
-      type: object
-    ValidationSummary:
-      $ref: '#/components/schemas/Pick_ValidationResponse.error-or-createdAt-or-validationUuid-or-validationId_'
-    ResourceItemCategory:
-      enum:
-      - mostPopular
-      - recentlyUpdated
-      - pinned
-      - favorites
-      - verified
-      type: string
-    WithDescendantCounts_DeletedDbtChartContentSummary.scheduler_:
-      allOf:
-      - $ref: '#/components/schemas/DeletedChartBase'
-      - properties:
-          source:
-            $ref: '#/components/schemas/ChartSourceType.DBT_EXPLORE'
-        required:
-        - source
-        type: object
-      - properties:
-          schedulerCount:
-            type: number
-            format: double
-        required:
-        - schedulerCount
-        type: object
-    WithDescendantCounts_DeletedSpaceContentSummary.nestedSpace-or-dashboard-or-chart-or-scheduler-or-app_:
-      allOf:
-      - $ref: '#/components/schemas/DeletedSpaceContentSummary'
-      - properties:
-          appCount:
-            type: number
-            format: double
-          nestedSpaceCount:
-            type: number
-            format: double
-          schedulerCount:
-            type: number
-            format: double
-          chartCount:
-            type: number
-            format: double
-          dashboardCount:
-            type: number
-            format: double
-        required:
-        - appCount
-        - nestedSpaceCount
-        - schedulerCount
-        - chartCount
-        - dashboardCount
         type: object
     ChartContent:
       properties:
@@ -1271,117 +699,123 @@ components:
       - dashboard
       type: object
       additionalProperties: true
-    ApiPinnedItems:
+    Pick_ValidationResponse.error-or-createdAt-or-validationUuid-or-validationId_:
       properties:
-        results:
-          $ref: '#/components/schemas/PinnedItems'
-        status:
-          type: string
-          enum:
-          - ok
-      required:
-      - results
-      - status
-      type: object
-    AppVersionStatus:
-      type: string
-      enum:
-      - pending
-      - sandbox
-      - catalog
-      - generating
-      - building
-      - packaging
-      - ready
-      - error
-    WithDescendantCounts_DeletedDataAppContentSummary.never_:
-      $ref: '#/components/schemas/DeletedDataAppContentSummary'
-    ContentVerificationInfo:
-      properties:
-        verifiedAt:
+        createdAt:
           type: string
           format: date-time
-        verifiedBy:
-          properties:
-            lastName:
-              type: string
-            firstName:
-              type: string
-            userUuid:
-              type: string
-          required:
-          - lastName
-          - firstName
-          - userUuid
-          type: object
+        error:
+          type: string
+        validationUuid:
+          type: string
+        validationId:
+          type:
+          - number
+          - 'null'
+          format: double
+          deprecated: true
       required:
-      - verifiedAt
-      - verifiedBy
+      - createdAt
+      - error
+      - validationUuid
+      - validationId
       type: object
-    DeletedDashboardContentSummary:
-      properties:
-        organizationUuid:
+      description: From T, pick a set of properties whose keys are in the union K
+    ChartSourceType.SQL:
+      enum:
+      - sql
+      type: string
+    AnyType:
+      description: 'This AnyType is an alias for any
+
+        The goal is to make it easier to identify any type in the codebase
+
+        without having to eslint-disable all the time
+
+        These are only used on legacy `any` types, don''t use it for new types.
+
+        This is added on a separate file to avoid circular dependencies.'
+    DeletedContentWithDescendants:
+      anyOf:
+      - $ref: '#/components/schemas/WithDescendantCounts_DeletedDbtChartContentSummary.scheduler_'
+      - $ref: '#/components/schemas/WithDescendantCounts_DeletedSqlChartContentSummary.never_'
+      - $ref: '#/components/schemas/WithDescendantCounts_DeletedDashboardContentSummary.chart-or-scheduler_'
+      - $ref: '#/components/schemas/WithDescendantCounts_DeletedSpaceContentSummary.nestedSpace-or-dashboard-or-chart-or-scheduler-or-app_'
+      - $ref: '#/components/schemas/WithDescendantCounts_DeletedDataAppContentSummary.never_'
+    ResourceViewItemType.DASHBOARD:
+      enum:
+      - dashboard
+      type: string
+    ResourceViewItemType.DATA_APP:
+      enum:
+      - data_app
+      type: string
+    ChartType:
+      enum:
+      - cartesian
+      - table
+      - big_number
+      - pie
+      - funnel
+      - treemap
+      - gauge
+      - custom
+      - map
+      - sankey
+      type: string
+    ? Pick_Space.projectUuid-or-uuid-or-name-or-pinnedListUuid-or-pinnedListOrder-or-organizationUuid-or-parentSpaceUuid-or-path-or-inheritParentPermissions_
+    : properties:
+        name:
           type: string
         projectUuid:
           type: string
-        spaceName:
+        organizationUuid:
           type: string
-        spaceUuid:
+        uuid:
           type: string
-        deletedBy:
-          properties:
-            lastName:
-              type: string
-            firstName:
-              type: string
-            userUuid:
-              type: string
-          required:
-          - lastName
-          - firstName
-          - userUuid
-          type:
-          - object
-          - 'null'
-        deletedAt:
-          type: string
-          format: date-time
-        contentType:
-          $ref: '#/components/schemas/ContentType.DASHBOARD'
-        description:
+        inheritParentPermissions:
+          type: boolean
+        pinnedListUuid:
           type:
           - string
           - 'null'
-        name:
-          type: string
-        uuid:
-          type: string
-      required:
-      - organizationUuid
-      - projectUuid
-      - spaceName
-      - spaceUuid
-      - deletedBy
-      - deletedAt
-      - contentType
-      - description
-      - name
-      - uuid
-      type: object
-    ? Pick_ResourceViewChartItem-at-data-or-ResourceViewDashboardItem-at-data-or-ResourceViewSpaceItem-at-data-or-ResourceViewDataAppItem-at-data.uuid-or-pinnedListOrder_
-    : properties:
-        uuid:
-          type: string
         pinnedListOrder:
           type:
           - number
           - 'null'
           format: double
+        parentSpaceUuid:
+          type:
+          - string
+          - 'null'
+        path:
+          type: string
       required:
+      - name
+      - projectUuid
+      - organizationUuid
       - uuid
+      - inheritParentPermissions
+      - pinnedListUuid
       - pinnedListOrder
+      - parentSpaceUuid
+      - path
       type: object
       description: From T, pick a set of properties whose keys are in the union K
+    ContentActionMove:
+      properties:
+        targetSpaceUuid:
+          type:
+          - string
+          - 'null'
+        type:
+          type: string
+          enum:
+          - move
+      required:
+      - targetSpaceUuid
+      - type
+      type: object
     DeletedSpaceContentSummary:
       properties:
         organizationUuid:
@@ -1432,130 +866,28 @@ components:
       - name
       - uuid
       type: object
-    ResourceViewDashboardItem:
+    ApiPermanentlyDeleteContentBody:
       properties:
-        category:
-          $ref: '#/components/schemas/ResourceItemCategory'
-        data:
-          $ref: '#/components/schemas/Pick_DashboardBasicDetails.uuid-or-spaceUuid-or-description-or-name-or-views-or-firstViewedAt-or-pinnedListUuid-or-pinnedListOrder-or-updatedAt-or-updatedByUser-or-validationErrors-or-verification_'
-        type:
-          $ref: '#/components/schemas/ResourceViewItemType.DASHBOARD'
+        item:
+          $ref: '#/components/schemas/DeletedContentItem'
       required:
-      - data
-      - type
+      - item
       type: object
-    ? Pick_SpaceQuery.uuid-or-name-or-chartType-or-chartKind-or-firstViewedAt-or-views-or-pinnedListUuid-or-pinnedListOrder-or-spaceUuid-or-description-or-updatedAt-or-updatedByUser-or-validationErrors-or-verification-or-slug_
-    : properties:
-        description:
-          type: string
-          description: Optional description of what this chart displays
-        name:
-          type: string
-          description: Display name of the chart
-        uuid:
-          type: string
-        pinnedListUuid:
-          type:
-          - string
-          - 'null'
-        pinnedListOrder:
-          type:
-          - number
-          - 'null'
-          format: double
-        slug:
-          type: string
-          description: Unique identifier slug for this chart
-        updatedAt:
+    DeletedSqlChartContentSummary:
+      allOf:
+      - $ref: '#/components/schemas/DeletedChartBase'
+      - properties:
+          source:
+            $ref: '#/components/schemas/ChartSourceType.SQL'
+        required:
+        - source
+        type: object
+    ContentVerificationInfo:
+      properties:
+        verifiedAt:
           type: string
           format: date-time
-          description: Timestamp when the chart was last updated
-        spaceUuid:
-          type: string
-        verification:
-          allOf:
-          - $ref: '#/components/schemas/ContentVerificationInfo'
-        updatedByUser:
-          $ref: '#/components/schemas/UpdatedByUser'
-        views:
-          type: number
-          format: double
-        firstViewedAt:
-          anyOf:
-          - type: string
-          - type: string
-            format: date-time
-        chartKind:
-          $ref: '#/components/schemas/ChartKind'
-        validationErrors:
-          items:
-            $ref: '#/components/schemas/ValidationSummary'
-          type: array
-        chartType:
-          $ref: '#/components/schemas/ChartType'
-      required:
-      - name
-      - uuid
-      - pinnedListUuid
-      - pinnedListOrder
-      - slug
-      - updatedAt
-      - spaceUuid
-      - verification
-      - views
-      - firstViewedAt
-      type: object
-      description: From T, pick a set of properties whose keys are in the union K
-    SummaryContent:
-      anyOf:
-      - $ref: '#/components/schemas/ChartContent'
-      - $ref: '#/components/schemas/DashboardContent'
-      - $ref: '#/components/schemas/SpaceContent'
-      - $ref: '#/components/schemas/DataAppContent'
-    ToggleFavoriteResponse:
-      properties:
-        contentUuid:
-          type: string
-        contentType:
-          $ref: '#/components/schemas/ContentType'
-        isFavorite:
-          type: boolean
-      required:
-      - contentUuid
-      - contentType
-      - isFavorite
-      type: object
-    DeletedContentWithDescendants:
-      anyOf:
-      - $ref: '#/components/schemas/WithDescendantCounts_DeletedDbtChartContentSummary.scheduler_'
-      - $ref: '#/components/schemas/WithDescendantCounts_DeletedSqlChartContentSummary.never_'
-      - $ref: '#/components/schemas/WithDescendantCounts_DeletedDashboardContentSummary.chart-or-scheduler_'
-      - $ref: '#/components/schemas/WithDescendantCounts_DeletedSpaceContentSummary.nestedSpace-or-dashboard-or-chart-or-scheduler-or-app_'
-      - $ref: '#/components/schemas/WithDescendantCounts_DeletedDataAppContentSummary.never_'
-    ChartType:
-      enum:
-      - cartesian
-      - table
-      - big_number
-      - pie
-      - funnel
-      - treemap
-      - gauge
-      - custom
-      - map
-      - sankey
-      type: string
-    DeletedChartBase:
-      properties:
-        organizationUuid:
-          type: string
-        projectUuid:
-          type: string
-        spaceName:
-          type: string
-        spaceUuid:
-          type: string
-        deletedBy:
+        verifiedBy:
           properties:
             lastName:
               type: string
@@ -1567,37 +899,10 @@ components:
           - lastName
           - firstName
           - userUuid
-          type:
-          - object
-          - 'null'
-        deletedAt:
-          type: string
-          format: date-time
-        chartKind:
-          allOf:
-          - $ref: '#/components/schemas/ChartKind'
-        contentType:
-          $ref: '#/components/schemas/ContentType.CHART'
-        description:
-          type:
-          - string
-          - 'null'
-        name:
-          type: string
-        uuid:
-          type: string
+          type: object
       required:
-      - organizationUuid
-      - projectUuid
-      - spaceName
-      - spaceUuid
-      - deletedBy
-      - deletedAt
-      - chartKind
-      - contentType
-      - description
-      - name
-      - uuid
+      - verifiedAt
+      - verifiedBy
       type: object
     SpaceContent:
       properties:
@@ -1756,199 +1061,6 @@ components:
       - access
       type: object
       additionalProperties: true
-    ? Pick_Space.projectUuid-or-uuid-or-name-or-pinnedListUuid-or-pinnedListOrder-or-organizationUuid-or-parentSpaceUuid-or-path-or-inheritParentPermissions_
-    : properties:
-        name:
-          type: string
-        projectUuid:
-          type: string
-        organizationUuid:
-          type: string
-        uuid:
-          type: string
-        inheritParentPermissions:
-          type: boolean
-        pinnedListUuid:
-          type:
-          - string
-          - 'null'
-        pinnedListOrder:
-          type:
-          - number
-          - 'null'
-          format: double
-        parentSpaceUuid:
-          type:
-          - string
-          - 'null'
-        path:
-          type: string
-      required:
-      - name
-      - projectUuid
-      - organizationUuid
-      - uuid
-      - inheritParentPermissions
-      - pinnedListUuid
-      - pinnedListOrder
-      - parentSpaceUuid
-      - path
-      type: object
-      description: From T, pick a set of properties whose keys are in the union K
-    ApiPermanentlyDeleteContentBody:
-      properties:
-        item:
-          $ref: '#/components/schemas/DeletedContentItem'
-      required:
-      - item
-      type: object
-    ApiContentResponse:
-      properties:
-        results:
-          $ref: '#/components/schemas/KnexPaginatedData_SummaryContent-Array_'
-        status:
-          type: string
-          enum:
-          - ok
-      required:
-      - results
-      - status
-      type: object
-    ContentType.CHART:
-      enum:
-      - chart
-      type: string
-    ContentType.DATA_APP:
-      enum:
-      - data_app
-      type: string
-    UpdatePinnedItemOrder:
-      properties:
-        data:
-          $ref: '#/components/schemas/Pick_ResourceViewChartItem-at-data-or-ResourceViewDashboardItem-at-data-or-ResourceViewSpaceItem-at-data-or-ResourceViewDataAppItem-at-data.uuid-or-pinnedListOrder_'
-        type:
-          $ref: '#/components/schemas/ResourceViewItemType'
-      required:
-      - data
-      - type
-      type: object
-    KnexPaginatedData_DeletedContentWithDescendants-Array_:
-      properties:
-        pagination:
-          allOf:
-          - $ref: '#/components/schemas/KnexPaginateArgs'
-          - properties:
-              totalResults:
-                type: number
-                format: double
-              totalPageCount:
-                type: number
-                format: double
-            required:
-            - totalResults
-            - totalPageCount
-            type: object
-        data:
-          items:
-            $ref: '#/components/schemas/DeletedContentWithDescendants'
-          type: array
-      required:
-      - data
-      type: object
-    WithDescendantCounts_DeletedDashboardContentSummary.chart-or-scheduler_:
-      allOf:
-      - $ref: '#/components/schemas/DeletedDashboardContentSummary'
-      - properties:
-          schedulerCount:
-            type: number
-            format: double
-          chartCount:
-            type: number
-            format: double
-        required:
-        - schedulerCount
-        - chartCount
-        type: object
-    ApiRestoreContentBody:
-      properties:
-        item:
-          $ref: '#/components/schemas/DeletedContentItem'
-      required:
-      - item
-      type: object
-    ResourceViewItemType:
-      enum:
-      - chart
-      - dashboard
-      - space
-      - data_app
-      type: string
-    ApiContentBulkActionBody_ContentActionMove_:
-      properties:
-        action:
-          $ref: '#/components/schemas/ContentActionMove'
-        content:
-          items:
-            $ref: '#/components/schemas/ItemPayload'
-          type: array
-      required:
-      - action
-      - content
-      type: object
-    DeletedDataAppContentSummary:
-      properties:
-        organizationUuid:
-          type: string
-        projectUuid:
-          type: string
-        spaceName:
-          type:
-          - string
-          - 'null'
-        spaceUuid:
-          type:
-          - string
-          - 'null'
-        deletedBy:
-          properties:
-            lastName:
-              type: string
-            firstName:
-              type: string
-            userUuid:
-              type: string
-          required:
-          - lastName
-          - firstName
-          - userUuid
-          type:
-          - object
-          - 'null'
-        deletedAt:
-          type: string
-          format: date-time
-        contentType:
-          $ref: '#/components/schemas/ContentType.DATA_APP'
-        description:
-          type:
-          - string
-          - 'null'
-        name:
-          type: string
-        uuid:
-          type: string
-      required:
-      - organizationUuid
-      - projectUuid
-      - spaceName
-      - spaceUuid
-      - deletedBy
-      - deletedAt
-      - contentType
-      - description
-      - name
-      - uuid
-      type: object
     DashboardContent:
       properties:
         contentType:
@@ -2070,32 +1182,869 @@ components:
       - verification
       type: object
       additionalProperties: true
-    Pick_ValidationResponse.error-or-createdAt-or-validationUuid-or-validationId_:
+    FavoriteItems:
+      items:
+        anyOf:
+        - $ref: '#/components/schemas/ResourceViewChartItem'
+        - $ref: '#/components/schemas/ResourceViewDashboardItem'
+        - $ref: '#/components/schemas/ResourceViewSpaceItem'
+        - $ref: '#/components/schemas/ResourceViewDataAppItem'
+      type: array
+    ContentSortByColumns:
+      enum:
+      - name
+      - space_name
+      - last_updated_at
+      type: string
+    WithDescendantCounts_DeletedDataAppContentSummary.never_:
+      $ref: '#/components/schemas/DeletedDataAppContentSummary'
+    ApiPinnedItems:
       properties:
+        results:
+          $ref: '#/components/schemas/PinnedItems'
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
+    WithDescendantCounts_DeletedSpaceContentSummary.nestedSpace-or-dashboard-or-chart-or-scheduler-or-app_:
+      allOf:
+      - $ref: '#/components/schemas/DeletedSpaceContentSummary'
+      - properties:
+          appCount:
+            type: number
+            format: double
+          nestedSpaceCount:
+            type: number
+            format: double
+          schedulerCount:
+            type: number
+            format: double
+          chartCount:
+            type: number
+            format: double
+          dashboardCount:
+            type: number
+            format: double
+        required:
+        - appCount
+        - nestedSpaceCount
+        - schedulerCount
+        - chartCount
+        - dashboardCount
+        type: object
+    DataAppContent:
+      properties:
+        contentType:
+          $ref: '#/components/schemas/ContentType.DATA_APP'
+        uuid:
+          type: string
+        slug:
+          type: string
+        name:
+          type: string
+        description:
+          type:
+          - string
+          - 'null'
         createdAt:
           type: string
           format: date-time
-        error:
-          type: string
-        validationUuid:
-          type: string
-        validationId:
+        createdBy:
+          properties:
+            lastName:
+              type: string
+            firstName:
+              type: string
+            uuid:
+              type: string
+          required:
+          - lastName
+          - firstName
+          - uuid
+          type:
+          - object
+          - 'null'
+        lastUpdatedAt:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        lastUpdatedBy:
+          properties:
+            lastName:
+              type: string
+            firstName:
+              type: string
+            uuid:
+              type: string
+          required:
+          - lastName
+          - firstName
+          - uuid
+          type:
+          - object
+          - 'null'
+        project:
+          properties:
+            name:
+              type: string
+            uuid:
+              type: string
+          required:
+          - name
+          - uuid
+          type: object
+        organization:
+          properties:
+            name:
+              type: string
+            uuid:
+              type: string
+          required:
+          - name
+          - uuid
+          type: object
+        space:
+          properties:
+            name:
+              type: string
+            uuid:
+              type: string
+          required:
+          - name
+          - uuid
+          type: object
+        pinnedList:
+          properties:
+            order:
+              type: number
+              format: double
+            uuid:
+              type: string
+          required:
+          - order
+          - uuid
+          type:
+          - object
+          - 'null'
+        views:
+          type: number
+          format: double
+        firstViewedAt:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        verification:
+          allOf:
+          - $ref: '#/components/schemas/ContentVerificationInfo'
+        latestVersionNumber:
           type:
           - number
           - 'null'
           format: double
-          deprecated: true
+        latestVersionStatus:
+          allOf:
+          - $ref: '#/components/schemas/AppVersionStatus'
       required:
+      - contentType
+      - uuid
+      - slug
+      - name
+      - description
       - createdAt
-      - error
-      - validationUuid
-      - validationId
+      - createdBy
+      - lastUpdatedAt
+      - lastUpdatedBy
+      - project
+      - organization
+      - space
+      - pinnedList
+      - views
+      - firstViewedAt
+      - verification
+      - latestVersionNumber
+      - latestVersionStatus
+      type: object
+      additionalProperties: true
+    ValidationSummary:
+      $ref: '#/components/schemas/Pick_ValidationResponse.error-or-createdAt-or-validationUuid-or-validationId_'
+    ResourceViewDataAppItem:
+      properties:
+        category:
+          $ref: '#/components/schemas/ResourceItemCategory'
+        data:
+          properties:
+            pinnedListOrder:
+              type:
+              - number
+              - 'null'
+              format: double
+            pinnedListUuid:
+              type:
+              - string
+              - 'null'
+            latestVersionStatus:
+              allOf:
+              - $ref: '#/components/schemas/AppVersionStatus'
+            latestVersionNumber:
+              type:
+              - number
+              - 'null'
+              format: double
+            firstViewedAt:
+              type:
+              - string
+              - 'null'
+              format: date-time
+            views:
+              type: number
+              format: double
+            updatedByUser:
+              properties:
+                lastName:
+                  type: string
+                firstName:
+                  type: string
+                userUuid:
+                  type: string
+              required:
+              - lastName
+              - firstName
+              - userUuid
+              type:
+              - object
+              - 'null'
+            updatedAt:
+              type: string
+              format: date-time
+            createdByUserUuid:
+              type:
+              - string
+              - 'null'
+            spaceUuid:
+              type:
+              - string
+              - 'null'
+            description:
+              type: string
+            name:
+              type: string
+            uuid:
+              type: string
+          required:
+          - pinnedListOrder
+          - pinnedListUuid
+          - latestVersionStatus
+          - latestVersionNumber
+          - firstViewedAt
+          - views
+          - updatedByUser
+          - updatedAt
+          - createdByUserUuid
+          - spaceUuid
+          - name
+          - uuid
+          type: object
+        type:
+          $ref: '#/components/schemas/ResourceViewItemType.DATA_APP'
+      required:
+      - data
+      - type
+      type: object
+    UpdatePinnedItemOrder:
+      properties:
+        data:
+          $ref: '#/components/schemas/Pick_ResourceViewChartItem-at-data-or-ResourceViewDashboardItem-at-data-or-ResourceViewSpaceItem-at-data-or-ResourceViewDataAppItem-at-data.uuid-or-pinnedListOrder_'
+        type:
+          $ref: '#/components/schemas/ResourceViewItemType'
+      required:
+      - data
+      - type
+      type: object
+    ContentType.SPACE:
+      enum:
+      - space
+      type: string
+    ChartSourceType:
+      enum:
+      - dbt_explore
+      - sql
+      type: string
+    ContentType.DATA_APP:
+      enum:
+      - data_app
+      type: string
+    ApiContentBulkActionBody_ContentActionMove_:
+      properties:
+        action:
+          $ref: '#/components/schemas/ContentActionMove'
+        content:
+          items:
+            $ref: '#/components/schemas/ItemPayload'
+          type: array
+      required:
+      - action
+      - content
+      type: object
+    WithDescendantCounts_DeletedDashboardContentSummary.chart-or-scheduler_:
+      allOf:
+      - $ref: '#/components/schemas/DeletedDashboardContentSummary'
+      - properties:
+          schedulerCount:
+            type: number
+            format: double
+          chartCount:
+            type: number
+            format: double
+        required:
+        - schedulerCount
+        - chartCount
+        type: object
+    ChartSourceType.DBT_EXPLORE:
+      enum:
+      - dbt_explore
+      type: string
+    ChartKind:
+      enum:
+      - line
+      - horizontal_bar
+      - vertical_bar
+      - scatter
+      - area
+      - mixed
+      - pie
+      - table
+      - big_number
+      - funnel
+      - custom
+      - treemap
+      - gauge
+      - map
+      - sankey
+      type: string
+    ContentType.CHART:
+      enum:
+      - chart
+      type: string
+    ContentType:
+      enum:
+      - chart
+      - dashboard
+      - space
+      - data_app
+      type: string
+    ResourceViewChartItem:
+      properties:
+        category:
+          $ref: '#/components/schemas/ResourceItemCategory'
+        data:
+          allOf:
+          - $ref: '#/components/schemas/Pick_SpaceQuery.uuid-or-name-or-chartType-or-chartKind-or-firstViewedAt-or-views-or-pinnedListUuid-or-pinnedListOrder-or-spaceUuid-or-description-or-updatedAt-or-updatedByUser-or-validationErrors-or-verification-or-slug_'
+          - properties:
+              source:
+                $ref: '#/components/schemas/ChartSourceType'
+            type: object
+        type:
+          $ref: '#/components/schemas/ResourceViewItemType.CHART'
+      required:
+      - data
+      - type
+      type: object
+    ToggleFavoriteResponse:
+      properties:
+        contentUuid:
+          type: string
+        contentType:
+          $ref: '#/components/schemas/ContentType'
+        isFavorite:
+          type: boolean
+      required:
+      - contentUuid
+      - contentType
+      - isFavorite
+      type: object
+    DeletedDataAppContentSummary:
+      properties:
+        organizationUuid:
+          type: string
+        projectUuid:
+          type: string
+        spaceName:
+          type:
+          - string
+          - 'null'
+        spaceUuid:
+          type:
+          - string
+          - 'null'
+        deletedBy:
+          properties:
+            lastName:
+              type: string
+            firstName:
+              type: string
+            userUuid:
+              type: string
+          required:
+          - lastName
+          - firstName
+          - userUuid
+          type:
+          - object
+          - 'null'
+        deletedAt:
+          type: string
+          format: date-time
+        contentType:
+          $ref: '#/components/schemas/ContentType.DATA_APP'
+        description:
+          type:
+          - string
+          - 'null'
+        name:
+          type: string
+        uuid:
+          type: string
+      required:
+      - organizationUuid
+      - projectUuid
+      - spaceName
+      - spaceUuid
+      - deletedBy
+      - deletedAt
+      - contentType
+      - description
+      - name
+      - uuid
+      type: object
+    ItemPayload:
+      anyOf:
+      - properties:
+          source:
+            $ref: '#/components/schemas/ChartSourceType'
+          contentType:
+            $ref: '#/components/schemas/ContentType.CHART'
+          uuid:
+            type: string
+        required:
+        - source
+        - contentType
+        - uuid
+        type: object
+      - properties:
+          contentType:
+            $ref: '#/components/schemas/ContentType.DASHBOARD'
+          uuid:
+            type: string
+        required:
+        - contentType
+        - uuid
+        type: object
+      - properties:
+          contentType:
+            $ref: '#/components/schemas/ContentType.SPACE'
+          uuid:
+            type: string
+        required:
+        - contentType
+        - uuid
+        type: object
+      - properties:
+          contentType:
+            $ref: '#/components/schemas/ContentType.DATA_APP'
+          uuid:
+            type: string
+        required:
+        - contentType
+        - uuid
+        type: object
+    ResourceViewSpaceItem:
+      properties:
+        data:
+          allOf:
+          - $ref: '#/components/schemas/Pick_Space.projectUuid-or-uuid-or-name-or-pinnedListUuid-or-pinnedListOrder-or-organizationUuid-or-parentSpaceUuid-or-path-or-inheritParentPermissions_'
+          - properties:
+              appCount:
+                type: number
+                format: double
+              childSpaceCount:
+                type: number
+                format: double
+              chartCount:
+                type: number
+                format: double
+              dashboardCount:
+                type: number
+                format: double
+              accessListLength:
+                type: number
+                format: double
+              access:
+                items:
+                  type: string
+                type: array
+            required:
+            - appCount
+            - childSpaceCount
+            - chartCount
+            - dashboardCount
+            - accessListLength
+            - access
+            type: object
+        type:
+          $ref: '#/components/schemas/ResourceViewItemType.SPACE'
+      required:
+      - data
+      - type
+      type: object
+    ApiFavoriteItems:
+      properties:
+        results:
+          $ref: '#/components/schemas/FavoriteItems'
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
+    ? Pick_ResourceViewChartItem-at-data-or-ResourceViewDashboardItem-at-data-or-ResourceViewSpaceItem-at-data-or-ResourceViewDataAppItem-at-data.uuid-or-pinnedListOrder_
+    : properties:
+        uuid:
+          type: string
+        pinnedListOrder:
+          type:
+          - number
+          - 'null'
+          format: double
+      required:
+      - uuid
+      - pinnedListOrder
       type: object
       description: From T, pick a set of properties whose keys are in the union K
-    ResourceViewItemType.DASHBOARD:
-      enum:
-      - dashboard
+    KnexPaginatedData_DeletedContentWithDescendants-Array_:
+      properties:
+        pagination:
+          allOf:
+          - $ref: '#/components/schemas/KnexPaginateArgs'
+          - properties:
+              totalResults:
+                type: number
+                format: double
+              totalPageCount:
+                type: number
+                format: double
+            required:
+            - totalResults
+            - totalPageCount
+            type: object
+        data:
+          items:
+            $ref: '#/components/schemas/DeletedContentWithDescendants'
+          type: array
+      required:
+      - data
+      type: object
+    AppVersionStatus:
       type: string
+      enum:
+      - pending
+      - sandbox
+      - catalog
+      - generating
+      - building
+      - packaging
+      - ready
+      - error
+    WithDescendantCounts_DeletedSqlChartContentSummary.never_:
+      $ref: '#/components/schemas/DeletedSqlChartContentSummary'
+    DeletedChartBase:
+      properties:
+        organizationUuid:
+          type: string
+        projectUuid:
+          type: string
+        spaceName:
+          type: string
+        spaceUuid:
+          type: string
+        deletedBy:
+          properties:
+            lastName:
+              type: string
+            firstName:
+              type: string
+            userUuid:
+              type: string
+          required:
+          - lastName
+          - firstName
+          - userUuid
+          type:
+          - object
+          - 'null'
+        deletedAt:
+          type: string
+          format: date-time
+        chartKind:
+          allOf:
+          - $ref: '#/components/schemas/ChartKind'
+        contentType:
+          $ref: '#/components/schemas/ContentType.CHART'
+        description:
+          type:
+          - string
+          - 'null'
+        name:
+          type: string
+        uuid:
+          type: string
+      required:
+      - organizationUuid
+      - projectUuid
+      - spaceName
+      - spaceUuid
+      - deletedBy
+      - deletedAt
+      - chartKind
+      - contentType
+      - description
+      - name
+      - uuid
+      type: object
+    ApiSuccessEmpty:
+      properties:
+        results: {}
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - status
+      type: object
+    ApiContentResponse:
+      properties:
+        results:
+          $ref: '#/components/schemas/KnexPaginatedData_SummaryContent-Array_'
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
+    ? Pick_SpaceQuery.uuid-or-name-or-chartType-or-chartKind-or-firstViewedAt-or-views-or-pinnedListUuid-or-pinnedListOrder-or-spaceUuid-or-description-or-updatedAt-or-updatedByUser-or-validationErrors-or-verification-or-slug_
+    : properties:
+        description:
+          type: string
+          description: Optional description of what this chart displays
+        name:
+          type: string
+          description: Display name of the chart
+        uuid:
+          type: string
+        pinnedListUuid:
+          type:
+          - string
+          - 'null'
+        pinnedListOrder:
+          type:
+          - number
+          - 'null'
+          format: double
+        slug:
+          type: string
+          description: Unique identifier slug for this chart
+        updatedAt:
+          type: string
+          format: date-time
+          description: Timestamp when the chart was last updated
+        spaceUuid:
+          type: string
+        verification:
+          allOf:
+          - $ref: '#/components/schemas/ContentVerificationInfo'
+        updatedByUser:
+          $ref: '#/components/schemas/UpdatedByUser'
+        views:
+          type: number
+          format: double
+        firstViewedAt:
+          anyOf:
+          - type: string
+          - type: string
+            format: date-time
+        chartKind:
+          $ref: '#/components/schemas/ChartKind'
+        validationErrors:
+          items:
+            $ref: '#/components/schemas/ValidationSummary'
+          type: array
+        chartType:
+          $ref: '#/components/schemas/ChartType'
+      required:
+      - name
+      - uuid
+      - pinnedListUuid
+      - pinnedListOrder
+      - slug
+      - updatedAt
+      - spaceUuid
+      - verification
+      - views
+      - firstViewedAt
+      type: object
+      description: From T, pick a set of properties whose keys are in the union K
+    ApiErrorPayload:
+      properties:
+        error:
+          properties:
+            data:
+              $ref: '#/components/schemas/AnyType'
+              description: Optional data containing details of the error
+            message:
+              type: string
+              description: A friendly message summarising the error
+            name:
+              type: string
+              description: Unique name for the type of error
+            statusCode:
+              type: number
+              format: integer
+              description: HTTP status code
+          required:
+          - name
+          - statusCode
+          type: object
+        status:
+          type: string
+          enum:
+          - error
+      required:
+      - error
+      - status
+      type: object
+      description: 'The Error object is returned from the api any time there is an error.
+
+        The message contains'
+    ToggleFavoriteRequest:
+      properties:
+        contentUuid:
+          type: string
+        contentType:
+          $ref: '#/components/schemas/ContentType'
+      required:
+      - contentUuid
+      - contentType
+      type: object
+    KnexPaginateArgs:
+      properties:
+        page:
+          type: number
+          format: double
+        pageSize:
+          type: number
+          format: double
+      required:
+      - page
+      - pageSize
+      type: object
+    ? Pick_DashboardBasicDetails.uuid-or-spaceUuid-or-description-or-name-or-views-or-firstViewedAt-or-pinnedListUuid-or-pinnedListOrder-or-updatedAt-or-updatedByUser-or-validationErrors-or-verification_
+    : properties:
+        description:
+          type: string
+        name:
+          type: string
+        uuid:
+          type: string
+        pinnedListUuid:
+          type:
+          - string
+          - 'null'
+        pinnedListOrder:
+          type:
+          - number
+          - 'null'
+          format: double
+        updatedAt:
+          type: string
+          format: date-time
+        spaceUuid:
+          type: string
+        verification:
+          allOf:
+          - $ref: '#/components/schemas/ContentVerificationInfo'
+        updatedByUser:
+          $ref: '#/components/schemas/UpdatedByUser'
+        views:
+          type: number
+          format: double
+        firstViewedAt:
+          anyOf:
+          - type: string
+          - type: string
+            format: date-time
+        validationErrors:
+          items:
+            $ref: '#/components/schemas/ValidationSummary'
+          type: array
+      required:
+      - name
+      - uuid
+      - pinnedListUuid
+      - pinnedListOrder
+      - updatedAt
+      - spaceUuid
+      - verification
+      - views
+      - firstViewedAt
+      type: object
+      description: From T, pick a set of properties whose keys are in the union K
+    ApiContentActionBody_ContentActionMove_:
+      properties:
+        action:
+          $ref: '#/components/schemas/ContentActionMove'
+        item:
+          $ref: '#/components/schemas/ItemPayload'
+      required:
+      - action
+      - item
+      type: object
+    WithDescendantCounts_DeletedDbtChartContentSummary.scheduler_:
+      allOf:
+      - $ref: '#/components/schemas/DeletedChartBase'
+      - properties:
+          source:
+            $ref: '#/components/schemas/ChartSourceType.DBT_EXPLORE'
+        required:
+        - source
+        type: object
+      - properties:
+          schedulerCount:
+            type: number
+            format: double
+        required:
+        - schedulerCount
+        type: object
+    ResourceViewDashboardItem:
+      properties:
+        category:
+          $ref: '#/components/schemas/ResourceItemCategory'
+        data:
+          $ref: '#/components/schemas/Pick_DashboardBasicDetails.uuid-or-spaceUuid-or-description-or-name-or-views-or-firstViewedAt-or-pinnedListUuid-or-pinnedListOrder-or-updatedAt-or-updatedByUser-or-validationErrors-or-verification_'
+        type:
+          $ref: '#/components/schemas/ResourceViewItemType.DASHBOARD'
+      required:
+      - data
+      - type
+      type: object
     KnexPaginatedData_SummaryContent-Array_:
       properties:
         pagination:
@@ -2123,6 +2072,57 @@ components:
       enum:
       - space
       type: string
+    SummaryContent:
+      anyOf:
+      - $ref: '#/components/schemas/ChartContent'
+      - $ref: '#/components/schemas/DashboardContent'
+      - $ref: '#/components/schemas/SpaceContent'
+      - $ref: '#/components/schemas/DataAppContent'
+    UpdatedByUser:
+      properties:
+        userUuid:
+          type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
+      required:
+      - userUuid
+      - firstName
+      - lastName
+      type: object
+      additionalProperties: true
+    ApiDeletedContentResponse:
+      properties:
+        results:
+          $ref: '#/components/schemas/KnexPaginatedData_DeletedContentWithDescendants-Array_'
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
+    ResourceViewItemType:
+      enum:
+      - chart
+      - dashboard
+      - space
+      - data_app
+      type: string
+    ResourceViewItemType.CHART:
+      enum:
+      - chart
+      type: string
+    PinnedItems:
+      items:
+        anyOf:
+        - $ref: '#/components/schemas/ResourceViewDashboardItem'
+        - $ref: '#/components/schemas/ResourceViewChartItem'
+        - $ref: '#/components/schemas/ResourceViewSpaceItem'
+        - $ref: '#/components/schemas/ResourceViewDataAppItem'
+      type: array
   securitySchemes:
     session_cookie:
       type: apiKey

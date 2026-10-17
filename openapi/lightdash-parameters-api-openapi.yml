@@ -141,14 +141,6 @@ paths:
               $ref: '#/components/schemas/Record_string.LightdashProjectParameter_'
 components:
   schemas:
-    ParameterDefinitions:
-      $ref: '#/components/schemas/Record_string.LightdashProjectParameter_'
-    Record_string.LightdashProjectParameter_:
-      properties: {}
-      additionalProperties:
-        $ref: '#/components/schemas/LightdashProjectParameter'
-      type: object
-      description: Construct a type with a set of properties K of type T
     KnexPaginateArgs:
       properties:
         page:
@@ -161,68 +153,33 @@ components:
       - page
       - pageSize
       type: object
-    ApiErrorPayload:
-      properties:
-        error:
-          properties:
-            data:
-              $ref: '#/components/schemas/AnyType'
-              description: Optional data containing details of the error
-            message:
-              type: string
-              description: A friendly message summarising the error
-            name:
-              type: string
-              description: Unique name for the type of error
-            statusCode:
-              type: number
-              format: integer
-              description: HTTP status code
-          required:
-          - name
-          - statusCode
-          type: object
-        status:
-          type: string
-          enum:
-          - error
-      required:
-      - error
-      - status
-      type: object
-      description: 'The Error object is returned from the api any time there is an error.
-
-        The message contains'
-    AnyType:
-      description: 'This AnyType is an alias for any
-
-        The goal is to make it easier to identify any type in the codebase
-
-        without having to eslint-disable all the time
-
-        These are only used on legacy `any` types, don''t use it for new types.
-
-        This is added on a separate file to avoid circular dependencies.'
-    ProjectParameterSummary:
-      properties:
-        modelName:
-          type: string
-        source:
-          type: string
-          enum:
-          - config
-          - model
-        config:
-          $ref: '#/components/schemas/LightdashProjectParameter'
-        name:
-          type: string
-      required:
-      - source
-      - config
-      - name
-      type: object
     ApiGetProjectParametersListResults:
       $ref: '#/components/schemas/KnexPaginatedData_ProjectParameterSummary-Array_'
+    KnexPaginatedData_ProjectParameterSummary-Array_:
+      properties:
+        pagination:
+          allOf:
+          - $ref: '#/components/schemas/KnexPaginateArgs'
+          - properties:
+              totalResults:
+                type: number
+                format: double
+              totalPageCount:
+                type: number
+                format: double
+            required:
+            - totalResults
+            - totalPageCount
+            type: object
+        data:
+          items:
+            $ref: '#/components/schemas/ProjectParameterSummary'
+          type: array
+      required:
+      - data
+      type: object
+    ApiGetProjectParametersResults:
+      $ref: '#/components/schemas/ParameterDefinitions'
     LightdashProjectParameter:
       properties:
         options_from_dimension:
@@ -263,8 +220,8 @@ components:
       required:
       - label
       type: object
-    ApiGetProjectParametersResults:
-      $ref: '#/components/schemas/ParameterDefinitions'
+    ParameterDefinitions:
+      $ref: '#/components/schemas/Record_string.LightdashProjectParameter_'
     ParameterValue:
       anyOf:
       - type: string
@@ -277,40 +234,29 @@ components:
           type: number
           format: double
         type: array
-    ApiSuccess_ApiGetProjectParametersListResults_:
+    Record_string.LightdashProjectParameter_:
+      properties: {}
+      additionalProperties:
+        $ref: '#/components/schemas/LightdashProjectParameter'
+      type: object
+      description: Construct a type with a set of properties K of type T
+    ProjectParameterSummary:
       properties:
-        results:
-          $ref: '#/components/schemas/ApiGetProjectParametersListResults'
-        status:
+        modelName:
+          type: string
+        source:
           type: string
           enum:
-          - ok
+          - config
+          - model
+        config:
+          $ref: '#/components/schemas/LightdashProjectParameter'
+        name:
+          type: string
       required:
-      - results
-      - status
-      type: object
-    KnexPaginatedData_ProjectParameterSummary-Array_:
-      properties:
-        pagination:
-          allOf:
-          - $ref: '#/components/schemas/KnexPaginateArgs'
-          - properties:
-              totalResults:
-                type: number
-                format: double
-              totalPageCount:
-                type: number
-                format: double
-            required:
-            - totalResults
-            - totalPageCount
-            type: object
-        data:
-          items:
-            $ref: '#/components/schemas/ProjectParameterSummary'
-          type: array
-      required:
-      - data
+      - source
+      - config
+      - name
       type: object
     ApiSuccess_undefined_:
       properties:
@@ -322,6 +268,16 @@ components:
       required:
       - status
       type: object
+    AnyType:
+      description: 'This AnyType is an alias for any
+
+        The goal is to make it easier to identify any type in the codebase
+
+        without having to eslint-disable all the time
+
+        These are only used on legacy `any` types, don''t use it for new types.
+
+        This is added on a separate file to avoid circular dependencies.'
     ApiSuccess_ApiGetProjectParametersResults_:
       properties:
         results:
@@ -334,6 +290,50 @@ components:
       - results
       - status
       type: object
+    ApiSuccess_ApiGetProjectParametersListResults_:
+      properties:
+        results:
+          $ref: '#/components/schemas/ApiGetProjectParametersListResults'
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
+    ApiErrorPayload:
+      properties:
+        error:
+          properties:
+            data:
+              $ref: '#/components/schemas/AnyType'
+              description: Optional data containing details of the error
+            message:
+              type: string
+              description: A friendly message summarising the error
+            name:
+              type: string
+              description: Unique name for the type of error
+            statusCode:
+              type: number
+              format: integer
+              description: HTTP status code
+          required:
+          - name
+          - statusCode
+          type: object
+        status:
+          type: string
+          enum:
+          - error
+      required:
+      - error
+      - status
+      type: object
+      description: 'The Error object is returned from the api any time there is an error.
+
+        The message contains'
   securitySchemes:
     session_cookie:
       type: apiKey

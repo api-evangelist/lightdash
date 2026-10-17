@@ -134,6 +134,23 @@ paths:
           type: string
 components:
   schemas:
+    Record_string.unknown_:
+      properties: {}
+      additionalProperties: {}
+      type: object
+      description: Construct a type with a set of properties K of type T
+    ChangesetTSOACompat:
+      $ref: '#/components/schemas/Record_string.unknown_'
+    AnyType:
+      description: 'This AnyType is an alias for any
+
+        The goal is to make it easier to identify any type in the codebase
+
+        without having to eslint-disable all the time
+
+        These are only used on legacy `any` types, don''t use it for new types.
+
+        This is added on a separate file to avoid circular dependencies.'
     ApiChangesetsResponseTSOACompat:
       properties:
         results:
@@ -148,16 +165,6 @@ components:
       - results
       - status
       type: object
-    AnyType:
-      description: 'This AnyType is an alias for any
-
-        The goal is to make it easier to identify any type in the codebase
-
-        without having to eslint-disable all the time
-
-        These are only used on legacy `any` types, don''t use it for new types.
-
-        This is added on a separate file to avoid circular dependencies.'
     ApiErrorPayload:
       properties:
         error:
@@ -190,12 +197,6 @@ components:
       description: 'The Error object is returned from the api any time there is an error.
 
         The message contains'
-    ChangeTSOACompat:
-      $ref: '#/components/schemas/Record_string.unknown_'
-    ChangesetTSOACompat:
-      $ref: '#/components/schemas/Record_string.unknown_'
-    ApiRevertChangeResponse:
-      $ref: '#/components/schemas/ApiSuccessEmpty'
     ApiSuccessEmpty:
       properties:
         results: {}
@@ -206,11 +207,8 @@ components:
       required:
       - status
       type: object
-    Record_string.unknown_:
-      properties: {}
-      additionalProperties: {}
-      type: object
-      description: Construct a type with a set of properties K of type T
+    ChangeTSOACompat:
+      $ref: '#/components/schemas/Record_string.unknown_'
     ApiGetChangeResponseTSOACompat:
       properties:
         results:
@@ -223,6 +221,8 @@ components:
       - results
       - status
       type: object
+    ApiRevertChangeResponse:
+      $ref: '#/components/schemas/ApiSuccessEmpty'
   securitySchemes:
     session_cookie:
       type: apiKey

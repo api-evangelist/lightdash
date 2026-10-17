@@ -323,103 +323,42 @@ paths:
           type: string
 components:
   schemas:
-    UpdateDBProjectGroupAccess:
+    Pick_CreateProjectGroupAccess.role_:
       properties:
-        role_uuid:
-          type:
-          - string
-          - 'null'
         role:
-          $ref: '#/components/schemas/ProjectMemberRole'
+          anyOf:
+          - $ref: '#/components/schemas/ProjectMemberRole'
+          - allOf:
+            - type: string
+            - properties: {}
+              type: object
       required:
       - role
       type: object
-    ApiGroupMembersResponse:
+      description: From T, pick a set of properties whose keys are in the union K
+    ApiGroupResponse:
       properties:
         results:
+          anyOf:
+          - $ref: '#/components/schemas/Group'
+          - $ref: '#/components/schemas/GroupWithMembers'
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
+    UpdateGroupWithMembers:
+      properties:
+        members:
           items:
-            $ref: '#/components/schemas/GroupMember'
+            $ref: '#/components/schemas/Pick_GroupMember.userUuid_'
           type: array
-        status:
+        name:
           type: string
-          enum:
-          - ok
-      required:
-      - results
-      - status
       type: object
-    ApiUpdateProjectGroupAccess:
-      properties:
-        results:
-          $ref: '#/components/schemas/ProjectGroupAccess'
-        status:
-          type: string
-          enum:
-          - ok
-      required:
-      - results
-      - status
-      type: object
-    GroupWithMembers:
-      allOf:
-      - $ref: '#/components/schemas/Group'
-      - properties:
-          memberUuids:
-            items:
-              type: string
-            type: array
-          members:
-            items:
-              $ref: '#/components/schemas/GroupMember'
-            type: array
-            description: A list of the group's members.
-        required:
-        - memberUuids
-        - members
-        type: object
-      description: Details for a group including a list of the group's members.
-    ApiErrorPayload:
-      properties:
-        error:
-          properties:
-            data:
-              $ref: '#/components/schemas/AnyType'
-              description: Optional data containing details of the error
-            message:
-              type: string
-              description: A friendly message summarising the error
-            name:
-              type: string
-              description: Unique name for the type of error
-            statusCode:
-              type: number
-              format: integer
-              description: HTTP status code
-          required:
-          - name
-          - statusCode
-          type: object
-        status:
-          type: string
-          enum:
-          - error
-      required:
-      - error
-      - status
-      type: object
-      description: 'The Error object is returned from the api any time there is an error.
-
-        The message contains'
-    AnyType:
-      description: 'This AnyType is an alias for any
-
-        The goal is to make it easier to identify any type in the codebase
-
-        without having to eslint-disable all the time
-
-        These are only used on legacy `any` types, don''t use it for new types.
-
-        This is added on a separate file to avoid circular dependencies.'
     Group:
       properties:
         organizationUuid:
@@ -458,15 +397,30 @@ components:
       - name
       - uuid
       type: object
-    ProjectMemberRole:
-      enum:
-      - viewer
-      - interactive_viewer
-      - editor
-      - developer
-      - admin
-      type: string
-    Pick_CreateProjectGroupAccess.role_:
+    ApiUpdateProjectGroupAccess:
+      properties:
+        results:
+          $ref: '#/components/schemas/ProjectGroupAccess'
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
+    UpdateDBProjectGroupAccess:
+      properties:
+        role_uuid:
+          type:
+          - string
+          - 'null'
+        role:
+          $ref: '#/components/schemas/ProjectMemberRole'
+      required:
+      - role
+      type: object
+    ProjectGroupAccess:
       properties:
         role:
           anyOf:
@@ -475,8 +429,127 @@ components:
             - type: string
             - properties: {}
               type: object
+        groupUuid:
+          type: string
+        projectUuid:
+          type: string
       required:
       - role
+      - groupUuid
+      - projectUuid
+      type: object
+    ApiGroupMembersResponse:
+      properties:
+        results:
+          items:
+            $ref: '#/components/schemas/GroupMember'
+          type: array
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
+    AnyType:
+      description: 'This AnyType is an alias for any
+
+        The goal is to make it easier to identify any type in the codebase
+
+        without having to eslint-disable all the time
+
+        These are only used on legacy `any` types, don''t use it for new types.
+
+        This is added on a separate file to avoid circular dependencies.'
+    ProjectMemberRole:
+      enum:
+      - viewer
+      - interactive_viewer
+      - editor
+      - developer
+      - admin
+      type: string
+    GroupWithMembers:
+      allOf:
+      - $ref: '#/components/schemas/Group'
+      - properties:
+          memberUuids:
+            items:
+              type: string
+            type: array
+          members:
+            items:
+              $ref: '#/components/schemas/GroupMember'
+            type: array
+            description: A list of the group's members.
+        required:
+        - memberUuids
+        - members
+        type: object
+      description: Details for a group including a list of the group's members.
+    ApiCreateProjectGroupAccess:
+      properties:
+        results:
+          $ref: '#/components/schemas/ProjectGroupAccess'
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
+    ApiSuccessEmpty:
+      properties:
+        results: {}
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - status
+      type: object
+    ApiErrorPayload:
+      properties:
+        error:
+          properties:
+            data:
+              $ref: '#/components/schemas/AnyType'
+              description: Optional data containing details of the error
+            message:
+              type: string
+              description: A friendly message summarising the error
+            name:
+              type: string
+              description: Unique name for the type of error
+            statusCode:
+              type: number
+              format: integer
+              description: HTTP status code
+          required:
+          - name
+          - statusCode
+          type: object
+        status:
+          type: string
+          enum:
+          - error
+      required:
+      - error
+      - status
+      type: object
+      description: 'The Error object is returned from the api any time there is an error.
+
+        The message contains'
+    Pick_GroupMember.userUuid_:
+      properties:
+        userUuid:
+          type: string
+          description: Unique id for the user
+          format: uuid
+      required:
+      - userUuid
       type: object
       description: From T, pick a set of properties whose keys are in the union K
     GroupMember:
@@ -501,79 +574,6 @@ components:
       - userUuid
       type: object
       description: A summary for a Lightdash user within a group
-    Pick_GroupMember.userUuid_:
-      properties:
-        userUuid:
-          type: string
-          description: Unique id for the user
-          format: uuid
-      required:
-      - userUuid
-      type: object
-      description: From T, pick a set of properties whose keys are in the union K
-    ApiGroupResponse:
-      properties:
-        results:
-          anyOf:
-          - $ref: '#/components/schemas/Group'
-          - $ref: '#/components/schemas/GroupWithMembers'
-        status:
-          type: string
-          enum:
-          - ok
-      required:
-      - results
-      - status
-      type: object
-    ApiCreateProjectGroupAccess:
-      properties:
-        results:
-          $ref: '#/components/schemas/ProjectGroupAccess'
-        status:
-          type: string
-          enum:
-          - ok
-      required:
-      - results
-      - status
-      type: object
-    ApiSuccessEmpty:
-      properties:
-        results: {}
-        status:
-          type: string
-          enum:
-          - ok
-      required:
-      - status
-      type: object
-    UpdateGroupWithMembers:
-      properties:
-        members:
-          items:
-            $ref: '#/components/schemas/Pick_GroupMember.userUuid_'
-          type: array
-        name:
-          type: string
-      type: object
-    ProjectGroupAccess:
-      properties:
-        role:
-          anyOf:
-          - $ref: '#/components/schemas/ProjectMemberRole'
-          - allOf:
-            - type: string
-            - properties: {}
-              type: object
-        groupUuid:
-          type: string
-        projectUuid:
-          type: string
-      required:
-      - role
-      - groupUuid
-      - projectUuid
-      type: object
   securitySchemes:
     session_cookie:
       type: apiKey
