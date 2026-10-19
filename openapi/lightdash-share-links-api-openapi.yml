@@ -1,7 +1,7 @@
 openapi: 3.2.0
 info:
   title: Lightdash Share links API
-  version: 0.3156.1
+  version: 2.616.2
   description: 'Open API documentation for all public Lightdash API endpoints. # Authentication Before you get started, you might need to create a Personal Access Token to authenticate via the API. You can create a token by following this guide: https://docs.lightdash.com/references/personal_tokens'
   license:
     name: MIT
@@ -74,21 +74,6 @@ paths:
               description: a full URL used to generate a short url id
 components:
   schemas:
-    Pick_ShareUrl.path-or-params_:
-      properties:
-        path:
-          type: string
-          description: The URL path of the full URL
-        params:
-          type: string
-      required:
-      - path
-      - params
-      type: object
-      description: From T, pick a set of properties whose keys are in the union K
-    CreateShareUrl:
-      $ref: '#/components/schemas/Pick_ShareUrl.path-or-params_'
-      description: Contains the detail of a full URL to generate a short URL id
     AnyType:
       description: 'This AnyType is an alias for any
 
@@ -99,50 +84,6 @@ components:
         These are only used on legacy `any` types, don''t use it for new types.
 
         This is added on a separate file to avoid circular dependencies.'
-    ApiShareResponse:
-      properties:
-        results:
-          $ref: '#/components/schemas/ShareUrl'
-        status:
-          type: string
-          enum:
-          - ok
-      required:
-      - results
-      - status
-      type: object
-    ApiErrorPayload:
-      properties:
-        error:
-          properties:
-            data:
-              $ref: '#/components/schemas/AnyType'
-              description: Optional data containing details of the error
-            message:
-              type: string
-              description: A friendly message summarising the error
-            name:
-              type: string
-              description: Unique name for the type of error
-            statusCode:
-              type: number
-              format: integer
-              description: HTTP status code
-          required:
-          - name
-          - statusCode
-          type: object
-        status:
-          type: string
-          enum:
-          - error
-      required:
-      - error
-      - status
-      type: object
-      description: 'The Error object is returned from the api any time there is an error.
-
-        The message contains'
     ShareUrl:
       properties:
         host:
@@ -175,6 +116,65 @@ components:
         in the Lightdash UI. This allows very long URLs
 
         to be represented by short ids.'
+    ApiErrorPayload:
+      properties:
+        error:
+          properties:
+            data:
+              $ref: '#/components/schemas/AnyType'
+              description: Optional data containing details of the error
+            message:
+              type: string
+              description: A friendly message summarising the error
+            name:
+              type: string
+              description: Unique name for the type of error
+            statusCode:
+              type: number
+              format: integer
+              description: HTTP status code
+          required:
+          - name
+          - statusCode
+          type: object
+        status:
+          type: string
+          enum:
+          - error
+      required:
+      - error
+      - status
+      type: object
+      description: 'The Error object is returned from the api any time there is an error.
+
+        The message contains'
+    Pick_ShareUrl.path-or-params_:
+      properties:
+        path:
+          type: string
+          description: The URL path of the full URL
+        params:
+          type: string
+      required:
+      - path
+      - params
+      type: object
+      description: From T, pick a set of properties whose keys are in the union K
+    ApiShareResponse:
+      properties:
+        results:
+          $ref: '#/components/schemas/ShareUrl'
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
+    CreateShareUrl:
+      $ref: '#/components/schemas/Pick_ShareUrl.path-or-params_'
+      description: Contains the detail of a full URL to generate a short URL id
   securitySchemes:
     session_cookie:
       type: apiKey

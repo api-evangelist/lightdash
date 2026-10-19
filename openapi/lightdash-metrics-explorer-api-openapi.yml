@@ -1,7 +1,7 @@
 openapi: 3.2.0
 info:
   title: Lightdash Metrics Explorer API
-  version: 0.3156.1
+  version: 2.616.2
   description: 'Open API documentation for all public Lightdash API endpoints. # Authentication Before you get started, you might need to create a Personal Access Token to authenticate via the API. You can create a token by following this guide: https://docs.lightdash.com/references/personal_tokens'
   license:
     name: MIT
@@ -83,6 +83,58 @@ paths:
                 comparisonType:
                   $ref: '#/components/schemas/MetricTotalComparisonType'
               type: object
+  /api/v1/projects/{projectUuid}/metricsExplorer/{explore}/{metric}/runMetricSeries:
+    post:
+      operationId: runMetricSeries
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiMetricsExplorerQueryResults'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: Run a metric time series query for a sparkline
+      summary: Run metric series query
+      tags:
+      - Metrics Explorer
+      security: []
+      parameters:
+      - in: path
+        name: projectUuid
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: explore
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: metric
+        required: true
+        schema:
+          type: string
+      - in: query
+        name: granularity
+        required: true
+        schema:
+          $ref: '#/components/schemas/TimeFrames'
+      - in: query
+        name: startDate
+        required: true
+        schema:
+          type: string
+      - in: query
+        name: endDate
+        required: true
+        schema:
+          type: string
   /api/v1/projects/{projectUuid}/metricsExplorer/{explore}/{metric}/compileMetricTotalQuery:
     post:
       operationId: compileMetricTotalQuery
@@ -164,62 +216,25 @@ paths:
               type: object
 components:
   schemas:
-    FieldType.DIMENSION:
-      enum:
-      - dimension
-      type: string
-    Source:
+    FilterAutocompleteValue:
       properties:
-        content:
+        label:
           type: string
-        highlight:
-          properties:
-            end:
-              $ref: '#/components/schemas/SourcePosition'
-            start:
-              $ref: '#/components/schemas/SourcePosition'
-          required:
-          - end
-          - start
-          type: object
-        range:
-          properties:
-            end:
-              $ref: '#/components/schemas/SourcePosition'
-            start:
-              $ref: '#/components/schemas/SourcePosition'
-          required:
-          - end
-          - start
-          type: object
-        path:
+        value:
           type: string
       required:
-      - content
-      - range
-      - path
+      - value
       type: object
-    MetricType:
-      enum:
-      - percentile
-      - average
-      - count
-      - count_distinct
-      - sum
-      - sum_distinct
-      - average_distinct
-      - min
-      - max
-      - percent_of_previous
-      - percent_of_total
-      - running_total
-      - number
-      - median
-      - string
-      - date
-      - timestamp
-      - boolean
-      type: string
+    AnyType:
+      description: 'This AnyType is an alias for any
+
+        The goal is to make it easier to identify any type in the codebase
+
+        without having to eslint-disable all the time
+
+        These are only used on legacy `any` types, don''t use it for new types.
+
+        This is added on a separate file to avoid circular dependencies.'
     ApiMetricsExplorerTotalResults:
       properties:
         results:
@@ -232,57 +247,163 @@ components:
       - results
       - status
       type: object
-    DefaultTimeDimension:
+    CompiledDimension:
+      allOf:
+      - $ref: '#/components/schemas/Dimension'
+      - $ref: '#/components/schemas/CompiledProperties'
+    Record_string.string_:
+      properties: {}
+      type: object
+      description: Construct a type with a set of properties K of type T
+    CompiledProperties:
       properties:
-        interval:
-          $ref: '#/components/schemas/TimeFrames'
-        field:
+        compiledTimestampFilters:
+          items:
+            $ref: '#/components/schemas/CompiledMetricTimestampFilter'
+          type: array
+        compiledRelativeDateFilters:
+          items:
+            $ref: '#/components/schemas/CompiledMetricRelativeDateFilter'
+          type: array
+        compiledDistinctKeys:
+          items:
+            type: string
+          type: array
+        compiledValueSql:
+          type: string
+        compilationError:
+          $ref: '#/components/schemas/FieldCompilationError'
+          description: 'When partial compilation mode is enabled, fields that fail to compile
+
+            will have this property set instead of causing the entire explore to fail.'
+        tablesAnyAttributes:
+          $ref: '#/components/schemas/Record_string.Record_string.string-or-string-Array__'
+        tablesRequiredAttributes:
+          $ref: '#/components/schemas/Record_string.Record_string.string-or-string-Array__'
+        tablesReferences:
+          items:
+            type: string
+          type: array
+        compiledSql:
           type: string
       required:
-      - interval
-      - field
+      - compiledSql
       type: object
-    AnyType:
-      description: 'This AnyType is an alias for any
-
-        The goal is to make it easier to identify any type in the codebase
-
-        without having to eslint-disable all the time
-
-        These are only used on legacy `any` types, don''t use it for new types.
-
-        This is added on a separate file to avoid circular dependencies.'
-    MetricWithAssociatedTimeDimension:
+    CompiledMetric:
       allOf:
-      - $ref: '#/components/schemas/CompiledMetric'
-      - properties:
-          availableTimeDimensions:
-            items:
-              allOf:
-              - $ref: '#/components/schemas/CompiledDimension'
-              - properties:
-                  type:
-                    anyOf:
-                    - $ref: '#/components/schemas/DimensionType.DATE'
-                    - $ref: '#/components/schemas/DimensionType.TIMESTAMP'
-                required:
-                - type
-                type: object
-            type: array
-          timeDimension:
-            allOf:
-            - $ref: '#/components/schemas/DefaultTimeDimension'
-            - properties:
-                table:
-                  type: string
-              required:
-              - table
-              type: object
-        type: object
+      - $ref: '#/components/schemas/Metric'
+      - $ref: '#/components/schemas/CompiledProperties'
+    TimestampDomain:
+      type: string
+      enum:
+      - aware
+      - naive
+      description: 'Whether a TIMESTAMP column stores an instant (''aware'') or a bare wall clock
+
+        (''naive''). Absent means unknown — never assume ''aware'' for a missing value.'
+    FilterOperator:
+      enum:
+      - isNull
+      - notNull
+      - equals
+      - notEquals
+      - startsWith
+      - endsWith
+      - include
+      - doesNotInclude
+      - lessThan
+      - lessThanOrEqual
+      - greaterThan
+      - greaterThanOrEqual
+      - inThePast
+      - notInThePast
+      - inTheNext
+      - inTheCurrent
+      - notInTheCurrent
+      - inBetween
+      - notInBetween
+      - inPeriodToDate
+      type: string
     DimensionType.DATE:
       enum:
       - date
       type: string
+    DimensionType.TIMESTAMP:
+      enum:
+      - timestamp
+      type: string
+    MetricFilterRule:
+      description: Filter rule for metrics, targeting fields by reference
+      properties:
+        includeNull:
+          type: boolean
+          description: 'For the `equals` operator on string fields, also match rows where the
+
+            field is null (compiles to `field IN (...) OR field IS NULL`). Lets users
+
+            combine null with selected values in a single "is" rule.'
+        values:
+          items:
+            $ref: '#/components/schemas/AnyType'
+          type: array
+          description: Values to filter by
+        operator:
+          $ref: '#/components/schemas/FilterOperator'
+          description: Filter operator
+        id:
+          type: string
+          description: Unique identifier for the filter
+        target:
+          properties:
+            fieldRef:
+              type: string
+              description: Field reference to filter on (e.g., 'table_name.field_name')
+          required:
+          - fieldRef
+          type: object
+          description: Target field for the filter
+        settings:
+          $ref: '#/components/schemas/AnyType'
+          description: Additional settings for date/time filters
+        disabled:
+          type: boolean
+          description: Whether this filter is disabled
+        required:
+          type: boolean
+          description: Whether this filter is required
+        caseSensitive:
+          type: boolean
+          description: 'Overrides the field/explore case-sensitivity for this rule only.
+
+            Used by internal features like autocomplete search that must always
+
+            match case-insensitively regardless of the field''s configured setting.'
+      required:
+      - operator
+      - id
+      - target
+      type: object
+      additionalProperties: true
+    FieldCompilationError:
+      properties:
+        message:
+          type: string
+      required:
+      - message
+      type: object
+      description: 'Error information stored on a field when compilation fails but
+
+        partial compilation mode is enabled.'
+    MetricExploreDataPointWithDateValue:
+      allOf:
+      - $ref: '#/components/schemas/MetricExploreDataPoint'
+      - properties:
+          dateValue:
+            type: number
+            format: double
+        required:
+        - dateValue
+        type: object
     CustomFormat:
       properties:
         type:
@@ -317,10 +438,109 @@ components:
       - type
       type: object
       additionalProperties: true
+    MetricTotalComparisonType:
+      enum:
+      - none
+      - previous_period
+      - rolling_days
+      type: string
+    MetricExploreDataPoint:
+      properties:
+        compareMetric:
+          properties:
+            label:
+              type:
+              - string
+              - 'null'
+            value:
+              type:
+              - number
+              - 'null'
+              format: double
+          required:
+          - label
+          - value
+          type: object
+        metric:
+          properties:
+            label:
+              type:
+              - string
+              - 'null'
+            value:
+              type:
+              - number
+              - 'null'
+              format: double
+          required:
+          - label
+          - value
+          type: object
+        segment:
+          type:
+          - string
+          - 'null'
+        date:
+          type: string
+          format: date-time
+      required:
+      - compareMetric
+      - metric
+      - segment
+      - date
+      type: object
+    FieldType.DIMENSION:
+      enum:
+      - dimension
+      type: string
+    MetricsExplorerQueryResults:
+      properties:
+        points:
+          items:
+            $ref: '#/components/schemas/MetricExploreDataPointWithDateValue'
+          type: array
+        metric:
+          $ref: '#/components/schemas/MetricWithAssociatedTimeDimension'
+      required:
+      - points
+      - metric
+      type: object
+    MetricType:
+      enum:
+      - percentile
+      - average
+      - count
+      - count_distinct
+      - sum
+      - sum_distinct
+      - average_distinct
+      - min
+      - max
+      - percent_of_previous
+      - percent_of_total
+      - running_total
+      - number
+      - median
+      - string
+      - date
+      - timestamp
+      - boolean
+      type: string
+    FieldUrl:
+      properties:
+        label:
+          type: string
+        url:
+          type: string
+      required:
+      - label
+      - url
+      type: object
     Format:
       enum:
       - km
       - mi
+      - si
       - usd
       - gbp
       - eur
@@ -328,14 +548,6 @@ components:
       - dkk
       - id
       - percent
-      type: string
-    DimensionType:
-      enum:
-      - string
-      - number
-      - timestamp
-      - date
-      - boolean
       type: string
     CustomFormatType:
       enum:
@@ -350,10 +562,100 @@ components:
       - bytes_iec
       - custom
       type: string
-    CompiledDimension:
-      allOf:
-      - $ref: '#/components/schemas/Dimension'
-      - $ref: '#/components/schemas/CompiledProperties'
+    ApiCompiledQueryResults:
+      properties:
+        compilationErrors:
+          items:
+            type: string
+          type: array
+        parameterReferences:
+          items:
+            type: string
+          type: array
+        pivotQuery:
+          type: string
+        query:
+          type: string
+      required:
+      - parameterReferences
+      - query
+      type: object
+    CompactOrAlias:
+      anyOf:
+      - $ref: '#/components/schemas/Compact'
+      - type: string
+        enum:
+        - K
+        - thousand
+        - M
+        - million
+        - B
+        - billion
+        - T
+        - trillion
+        - KB
+        - kilobyte
+        - MB
+        - megabyte
+        - GB
+        - gigabyte
+        - TB
+        - terabyte
+        - PB
+        - petabyte
+        - KiB
+        - kibibyte
+        - MiB
+        - mebibyte
+        - GiB
+        - gibibyte
+        - TiB
+        - tebibyte
+        - PiB
+        - pebibyte
+    TimeFrames:
+      enum:
+      - RAW
+      - YEAR
+      - QUARTER
+      - MONTH
+      - WEEK
+      - DAY
+      - HOUR
+      - MINUTE
+      - SECOND
+      - MILLISECOND
+      - DAY_OF_WEEK_INDEX
+      - DAY_OF_MONTH_NUM
+      - DAY_OF_YEAR_NUM
+      - WEEK_NUM
+      - MONTH_NUM
+      - QUARTER_NUM
+      - YEAR_NUM
+      - DAY_OF_WEEK_NAME
+      - MONTH_NAME
+      - QUARTER_NAME
+      - HOUR_OF_DAY_NUM
+      - MINUTE_OF_HOUR_NUM
+      type: string
+    Compact:
+      enum:
+      - auto
+      - thousands
+      - millions
+      - billions
+      - trillions
+      - kilobytes
+      - megabytes
+      - gigabytes
+      - terabytes
+      - petabytes
+      - kibibytes
+      - mebibytes
+      - gibibytes
+      - tebibytes
+      - pebibytes
+      type: string
     Dimension:
       properties:
         fieldType:
@@ -423,6 +725,13 @@ components:
           $ref: '#/components/schemas/Record_string.string-or-string-Array_'
         timeInterval:
           $ref: '#/components/schemas/TimeFrames'
+        timeIntervalLabel:
+          type: string
+          description: 'Overridden display label for this dimension''s grain (project
+
+            `granularity_labels`); undefined when no override — callers fall back
+
+            to `timeFrameConfigs[timeInterval].getLabel()`.'
         timeIntervalBaseDimensionName:
           type: string
         timeIntervalBaseDimensionType:
@@ -433,6 +742,8 @@ components:
           type: boolean
         skipTimezoneConversion:
           type: boolean
+        timestampDomain:
+          $ref: '#/components/schemas/TimestampDomain'
         colors:
           $ref: '#/components/schemas/Record_string.string_'
         isIntervalBase:
@@ -464,6 +775,8 @@ components:
           type: object
         richText:
           type: string
+        filterAutocomplete:
+          $ref: '#/components/schemas/FilterAutocompleteConfig'
         spotlight:
           properties:
             segmentBy:
@@ -482,156 +795,8 @@ components:
       - hidden
       type: object
       additionalProperties: true
-    FieldCompilationError:
-      properties:
-        message:
-          type: string
-      required:
-      - message
-      type: object
-      description: 'Error information stored on a field when compilation fails but
-
-        partial compilation mode is enabled.'
-    MetricTotalComparisonType:
-      enum:
-      - none
-      - previous_period
-      - rolling_days
-      type: string
-    MetricTotalResults:
-      properties:
-        metric:
-          $ref: '#/components/schemas/MetricWithAssociatedTimeDimension'
-        comparisonValue:
-          type:
-          - number
-          - 'null'
-          format: double
-        value:
-          type:
-          - number
-          - 'null'
-          format: double
-      required:
-      - metric
-      - comparisonValue
-      - value
-      type: object
-    CompiledProperties:
-      properties:
-        compiledDistinctKeys:
-          items:
-            type: string
-          type: array
-        compiledValueSql:
-          type: string
-        compilationError:
-          $ref: '#/components/schemas/FieldCompilationError'
-          description: 'When partial compilation mode is enabled, fields that fail to compile
-
-            will have this property set instead of causing the entire explore to fail.'
-        tablesAnyAttributes:
-          $ref: '#/components/schemas/Record_string.Record_string.string-or-string-Array__'
-        tablesRequiredAttributes:
-          $ref: '#/components/schemas/Record_string.Record_string.string-or-string-Array__'
-        tablesReferences:
-          items:
-            type: string
-          type: array
-        compiledSql:
-          type: string
-      required:
-      - compiledSql
-      type: object
-    FieldType.METRIC:
-      enum:
-      - metric
-      type: string
-    CompactOrAlias:
-      anyOf:
-      - $ref: '#/components/schemas/Compact'
-      - type: string
-        enum:
-        - K
-        - thousand
-        - M
-        - million
-        - B
-        - billion
-        - T
-        - trillion
-        - KB
-        - kilobyte
-        - MB
-        - megabyte
-        - GB
-        - gigabyte
-        - TB
-        - terabyte
-        - PB
-        - petabyte
-        - KiB
-        - kibibyte
-        - MiB
-        - mebibyte
-        - GiB
-        - gibibyte
-        - TiB
-        - tebibyte
-        - PiB
-        - pebibyte
-    Record_string.string_:
-      properties: {}
-      additionalProperties:
-        type: string
-      type: object
-      description: Construct a type with a set of properties K of type T
-    FilterOperator:
-      enum:
-      - isNull
-      - notNull
-      - equals
-      - notEquals
-      - startsWith
-      - endsWith
-      - include
-      - doesNotInclude
-      - lessThan
-      - lessThanOrEqual
-      - greaterThan
-      - greaterThanOrEqual
-      - inThePast
-      - notInThePast
-      - inTheNext
-      - inTheCurrent
-      - notInTheCurrent
-      - inBetween
-      - notInBetween
-      - inPeriodToDate
-      type: string
-    NumberSeparator:
-      enum:
-      - default
-      - commaPeriod
-      - spacePeriod
-      - periodComma
-      - noSeparatorPeriod
-      - apostrophePeriod
-      type: string
-    FieldUrl:
-      properties:
-        label:
-          type: string
-        url:
-          type: string
-      required:
-      - label
-      - url
-      type: object
-    CompiledMetric:
-      allOf:
-      - $ref: '#/components/schemas/Metric'
-      - $ref: '#/components/schemas/CompiledProperties'
+    CompiledMetricTimestampFilter:
+      $ref: '#/components/schemas/CompiledMetricRelativeDateFilter'
     Metric:
       properties:
         fieldType:
@@ -711,6 +876,10 @@ components:
           $ref: '#/components/schemas/CustomFormat'
         dimensionReference:
           type: string
+        baseDimensionType:
+          $ref: '#/components/schemas/DimensionType'
+        baseDimensionTimeInterval:
+          $ref: '#/components/schemas/TimeFrames'
         requiredAttributes:
           $ref: '#/components/schemas/Record_string.string-or-string-Array_'
         anyAttributes:
@@ -768,31 +937,18 @@ components:
       - hidden
       type: object
       additionalProperties: true
-    TimeFrames:
-      enum:
-      - RAW
-      - YEAR
-      - QUARTER
-      - MONTH
-      - WEEK
-      - DAY
-      - HOUR
-      - MINUTE
-      - SECOND
-      - MILLISECOND
-      - DAY_OF_WEEK_INDEX
-      - DAY_OF_MONTH_NUM
-      - DAY_OF_YEAR_NUM
-      - WEEK_NUM
-      - MONTH_NUM
-      - QUARTER_NUM
-      - YEAR_NUM
-      - DAY_OF_WEEK_NAME
-      - MONTH_NAME
-      - QUARTER_NAME
-      - HOUR_OF_DAY_NUM
-      - MINUTE_OF_HOUR_NUM
-      type: string
+    SourcePosition:
+      properties:
+        character:
+          type: number
+          format: double
+        line:
+          type: number
+          format: double
+      required:
+      - character
+      - line
+      type: object
     ApiErrorPayload:
       properties:
         error:
@@ -825,35 +981,45 @@ components:
       description: 'The Error object is returned from the api any time there is an error.
 
         The message contains'
-    SourcePosition:
+    MetricWithAssociatedTimeDimension:
+      allOf:
+      - $ref: '#/components/schemas/CompiledMetric'
+      - properties:
+          availableTimeDimensions:
+            items:
+              allOf:
+              - $ref: '#/components/schemas/CompiledDimension'
+              - properties:
+                  type:
+                    anyOf:
+                    - $ref: '#/components/schemas/DimensionType.DATE'
+                    - $ref: '#/components/schemas/DimensionType.TIMESTAMP'
+                required:
+                - type
+                type: object
+            type: array
+          timeDimension:
+            allOf:
+            - $ref: '#/components/schemas/DefaultTimeDimension'
+            - properties:
+                table:
+                  type: string
+              required:
+              - table
+              type: object
+        type: object
+    ApiMetricsExplorerQueryResults:
       properties:
-        character:
-          type: number
-          format: double
-        line:
-          type: number
-          format: double
+        results:
+          $ref: '#/components/schemas/MetricsExplorerQueryResults'
+        status:
+          type: string
+          enum:
+          - ok
       required:
-      - character
-      - line
+      - results
+      - status
       type: object
-    Compact:
-      enum:
-      - thousands
-      - millions
-      - billions
-      - trillions
-      - kilobytes
-      - megabytes
-      - gigabytes
-      - terabytes
-      - petabytes
-      - kibibytes
-      - mebibytes
-      - gibibytes
-      - tebibytes
-      - pebibytes
-      type: string
     Record_string.string-or-string-Array_:
       properties: {}
       additionalProperties:
@@ -864,23 +1030,69 @@ components:
           type: array
       type: object
       description: Construct a type with a set of properties K of type T
-    ApiCompiledQueryResults:
+    Source:
       properties:
-        compilationErrors:
-          items:
-            type: string
-          type: array
-        parameterReferences:
-          items:
-            type: string
-          type: array
-        pivotQuery:
+        content:
           type: string
-        query:
+        highlight:
+          properties:
+            end:
+              $ref: '#/components/schemas/SourcePosition'
+            start:
+              $ref: '#/components/schemas/SourcePosition'
+          required:
+          - end
+          - start
+          type: object
+        range:
+          properties:
+            end:
+              $ref: '#/components/schemas/SourcePosition'
+            start:
+              $ref: '#/components/schemas/SourcePosition'
+          required:
+          - end
+          - start
+          type: object
+        path:
           type: string
       required:
-      - parameterReferences
-      - query
+      - content
+      - range
+      - path
+      type: object
+    FieldType.METRIC:
+      enum:
+      - metric
+      type: string
+    MetricTotalResults:
+      properties:
+        metric:
+          $ref: '#/components/schemas/MetricWithAssociatedTimeDimension'
+        comparisonValue:
+          type:
+          - number
+          - 'null'
+          format: double
+        value:
+          type:
+          - number
+          - 'null'
+          format: double
+      required:
+      - metric
+      - comparisonValue
+      - value
+      type: object
+    DefaultTimeDimension:
+      properties:
+        interval:
+          $ref: '#/components/schemas/TimeFrames'
+        field:
+          type: string
+      required:
+      - interval
+      - field
       type: object
     Record_string.Record_string.string-or-string-Array__:
       properties: {}
@@ -888,54 +1100,60 @@ components:
         $ref: '#/components/schemas/Record_string.string-or-string-Array_'
       type: object
       description: Construct a type with a set of properties K of type T
-    MetricFilterRule:
-      description: Filter rule for metrics, targeting fields by reference
+    FilterAutocompleteConfig:
       properties:
+        optionsFromDimension:
+          properties:
+            labelDimension:
+              type: string
+            dimension:
+              type: string
+            model:
+              type: string
+          required:
+          - dimension
+          - model
+          type: object
+        labelDimension:
+          type: string
+        fetchFromWarehouse:
+          type: boolean
         values:
           items:
-            $ref: '#/components/schemas/AnyType'
+            $ref: '#/components/schemas/FilterAutocompleteValue'
           type: array
-          description: Values to filter by
-        operator:
-          $ref: '#/components/schemas/FilterOperator'
-          description: Filter operator
+      required:
+      - fetchFromWarehouse
+      type: object
+    DimensionType:
+      enum:
+      - string
+      - number
+      - timestamp
+      - date
+      - boolean
+      type: string
+    CompiledMetricRelativeDateFilter:
+      properties:
+        compiledSql:
+          type: string
+        fieldId:
+          type: string
         id:
           type: string
-          description: Unique identifier for the filter
-        target:
-          properties:
-            fieldRef:
-              type: string
-              description: Field reference to filter on (e.g., 'table_name.field_name')
-          required:
-          - fieldRef
-          type: object
-          description: Target field for the filter
-        settings:
-          $ref: '#/components/schemas/AnyType'
-          description: Additional settings for date/time filters
-        disabled:
-          type: boolean
-          description: Whether this filter is disabled
-        required:
-          type: boolean
-          description: Whether this filter is required
-        caseSensitive:
-          type: boolean
-          description: 'Overrides the field/explore case-sensitivity for this rule only.
-
-            Used by internal features like autocomplete search that must always
-
-            match case-insensitively regardless of the field''s configured setting.'
       required:
-      - operator
+      - compiledSql
+      - fieldId
       - id
-      - target
       type: object
-      additionalProperties: true
-    DimensionType.TIMESTAMP:
+    NumberSeparator:
       enum:
-      - timestamp
+      - default
+      - commaPeriod
+      - spacePeriod
+      - periodComma
+      - noSeparatorPeriod
+      - apostrophePeriod
       type: string
   securitySchemes:
     session_cookie:

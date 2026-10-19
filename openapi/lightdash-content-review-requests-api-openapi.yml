@@ -1,0 +1,2391 @@
+openapi: 3.2.0
+info:
+  title: Lightdash Content Review Requests API
+  version: 2.616.2
+  description: 'Open API documentation for all public Lightdash API endpoints. # Authentication Before you get started, you might need to create a Personal Access Token to authenticate via the API. You can create a token by following this guide: https://docs.lightdash.com/references/personal_tokens'
+  license:
+    name: MIT
+  contact:
+    name: Lightdash Support
+    email: support@lightdash.com
+    url: https://docs.lightdash.com/help-and-contact/contact/contact_info/
+servers:
+- url: /
+tags:
+- name: Content Review Requests
+paths:
+  /api/v1/projects/{projectUuid}/review-requests/settings:
+    get:
+      operationId: getContentReviewSettings
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiContentReviewSettingsResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: 'Review settings for a project: reviewer group, verify-on-approve default and Slack channel'
+      summary: Get review settings
+      tags:
+      - Content Review Requests
+      security: []
+      parameters:
+      - in: path
+        name: projectUuid
+        required: true
+        schema:
+          $ref: '#/components/schemas/UUID'
+    patch:
+      operationId: updateContentReviewSettings
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiContentReviewSettingsResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      summary: Update review settings
+      tags:
+      - Content Review Requests
+      security: []
+      parameters:
+      - in: path
+        name: projectUuid
+        required: true
+        schema:
+          $ref: '#/components/schemas/UUID'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateContentReviewSettings'
+  /api/v1/projects/{projectUuid}/review-requests/similar:
+    get:
+      operationId: findSimilarContentForReview
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiContentReviewSimilarContentResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: 'Deprecated — use POST /similar for AI-powered chart comparison instead.
+
+        Preserves name matching until 14 December 2026. The replacement requires Ambient AI and a saved chart UUID or metric query context.'
+      summary: Find similar content
+      tags:
+      - Content Review Requests
+      deprecated: true
+      security: []
+      parameters:
+      - in: path
+        name: projectUuid
+        required: true
+        schema:
+          $ref: '#/components/schemas/UUID'
+      - in: query
+        name: contentType
+        required: true
+        schema:
+          $ref: '#/components/schemas/ContentReviewContentType'
+      - in: query
+        name: name
+        required: true
+        schema:
+          type: string
+      - in: query
+        name: excludeContentUuid
+        required: false
+        schema:
+          $ref: '#/components/schemas/UUID'
+      x-mint:
+        content: <Warning>This endpoint is deprecated and scheduled for removal after 14 December 2026. Migrate to POST /api/v1/projects/{projectUuid}/review-requests/similar with contentType, name, excludeContentUuid, and chart query context when comparing unsaved charts. The replacement requires Ambient AI; it does not support name-only, SQL chart, or dashboard comparisons.</Warning>
+    post:
+      operationId: compareSimilarContentForReview
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiContentReviewSimilarContentResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      summary: Find related charts using names and query definitions
+      tags:
+      - Content Review Requests
+      security: []
+      parameters:
+      - in: path
+        name: projectUuid
+        required: true
+        schema:
+          $ref: '#/components/schemas/UUID'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FindSimilarContentBody'
+  /api/v1/projects/{projectUuid}/review-requests/content/{contentType}/{contentUuid}:
+    get:
+      operationId: getPendingContentReviewRequest
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiContentReviewRequestOrNullResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: The open review request on a chart or dashboard, if any
+      summary: Get the pending review request for content
+      tags:
+      - Content Review Requests
+      security: []
+      parameters:
+      - in: path
+        name: projectUuid
+        required: true
+        schema:
+          $ref: '#/components/schemas/UUID'
+      - in: path
+        name: contentType
+        required: true
+        schema:
+          $ref: '#/components/schemas/ContentReviewContentType'
+      - in: path
+        name: contentUuid
+        required: true
+        schema:
+          $ref: '#/components/schemas/UUID'
+  /api/v1/projects/{projectUuid}/review-requests:
+    get:
+      operationId: listContentReviewRequests
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiContentReviewRequestListResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: Requests to review (routed to the caller) or the caller's own requests
+      summary: List review requests
+      tags:
+      - Content Review Requests
+      security: []
+      parameters:
+      - in: path
+        name: projectUuid
+        required: true
+        schema:
+          $ref: '#/components/schemas/UUID'
+      - in: query
+        name: view
+        required: false
+        schema:
+          $ref: '#/components/schemas/ContentReviewRequestView'
+      - in: query
+        name: status
+        required: false
+        schema:
+          $ref: '#/components/schemas/ContentReviewRequestStatus'
+      - in: query
+        name: page
+        required: false
+        schema:
+          default: 1
+          format: double
+          type: number
+      - in: query
+        name: pageSize
+        required: false
+        schema:
+          default: 25
+          format: double
+          type: number
+    post:
+      operationId: createContentReviewRequest
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiContentReviewRequestResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: Ask for a chart or dashboard in your personal space to be reviewed and moved to a shared space
+      summary: Submit a review request
+      tags:
+      - Content Review Requests
+      security: []
+      parameters:
+      - in: path
+        name: projectUuid
+        required: true
+        schema:
+          $ref: '#/components/schemas/UUID'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateContentReviewRequestBody'
+  /api/v1/projects/{projectUuid}/review-requests/{requestUuid}:
+    get:
+      operationId: getContentReviewRequest
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiContentReviewRequestResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      summary: Get a review request
+      tags:
+      - Content Review Requests
+      security: []
+      parameters:
+      - in: path
+        name: projectUuid
+        required: true
+        schema:
+          $ref: '#/components/schemas/UUID'
+      - in: path
+        name: requestUuid
+        required: true
+        schema:
+          $ref: '#/components/schemas/UUID'
+  /api/v1/projects/{projectUuid}/review-requests/{requestUuid}/approve:
+    post:
+      operationId: approveContentReviewRequest
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiContentReviewRequestResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: Move the content to the target space and optionally verify it
+      summary: Approve a review request
+      tags:
+      - Content Review Requests
+      security: []
+      parameters:
+      - in: path
+        name: projectUuid
+        required: true
+        schema:
+          $ref: '#/components/schemas/UUID'
+      - in: path
+        name: requestUuid
+        required: true
+        schema:
+          $ref: '#/components/schemas/UUID'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApproveContentReviewRequestBody'
+  /api/v1/projects/{projectUuid}/review-requests/{requestUuid}/reject:
+    post:
+      operationId: rejectContentReviewRequest
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiContentReviewRequestResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      summary: Reject a review request
+      tags:
+      - Content Review Requests
+      security: []
+      parameters:
+      - in: path
+        name: projectUuid
+        required: true
+        schema:
+          $ref: '#/components/schemas/UUID'
+      - in: path
+        name: requestUuid
+        required: true
+        schema:
+          $ref: '#/components/schemas/UUID'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RejectContentReviewRequestBody'
+  /api/v1/projects/{projectUuid}/review-requests/{requestUuid}/cancel:
+    post:
+      operationId: cancelContentReviewRequest
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiContentReviewRequestResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      summary: Cancel your own review request
+      tags:
+      - Content Review Requests
+      security: []
+      parameters:
+      - in: path
+        name: projectUuid
+        required: true
+        schema:
+          $ref: '#/components/schemas/UUID'
+      - in: path
+        name: requestUuid
+        required: true
+        schema:
+          $ref: '#/components/schemas/UUID'
+components:
+  schemas:
+    TableCalculationTemplateType.PERCENT_OF_COLUMN_TOTAL:
+      enum:
+      - percent_of_column_total
+      type: string
+    BinType.FIXED_WIDTH:
+      enum:
+      - fixed_width
+      type: string
+    AnyType:
+      description: 'This AnyType is an alias for any
+
+        The goal is to make it easier to identify any type in the codebase
+
+        without having to eslint-disable all the time
+
+        These are only used on legacy `any` types, don''t use it for new types.
+
+        This is added on a separate file to avoid circular dependencies.'
+    FrameBoundary:
+      properties:
+        offset:
+          type: number
+          format: double
+          description: Offset for PRECEDING/FOLLOWING
+        type:
+          $ref: '#/components/schemas/FrameBoundaryType'
+          description: Boundary type
+      required:
+      - type
+      type: object
+    AndFilterGroup:
+      properties:
+        and:
+          items:
+            $ref: '#/components/schemas/FilterGroupItem'
+          type: array
+          description: Array of filters or nested groups combined with AND logic
+        id:
+          type: string
+          description: Unique identifier for the filter group
+      required:
+      - and
+      - id
+      type: object
+    SqlTableCalculation:
+      allOf:
+      - $ref: '#/components/schemas/TableCalculationBase'
+      - properties:
+          sql:
+            type: string
+            description: SQL expression for the calculation (can reference fields with ${table.field})
+        required:
+        - sql
+        type: object
+    BinRange:
+      properties:
+        to:
+          type: number
+          format: double
+          description: End value for this bin range (undefined for the last range)
+        from:
+          type: number
+          format: double
+          description: Start value for this bin range (undefined for the first range)
+      type: object
+    ApiContentReviewSettingsResponse:
+      properties:
+        results:
+          $ref: '#/components/schemas/ContentReviewSettings'
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
+    ContentReviewRequestStatus:
+      enum:
+      - pending
+      - approved
+      - rejected
+      - cancelled
+      type: string
+    TemplateTableCalculation:
+      allOf:
+      - $ref: '#/components/schemas/TableCalculationBase'
+      - properties:
+          template:
+            $ref: '#/components/schemas/TableCalculationTemplate'
+            description: Template-based calculation (alternative to sql)
+        required:
+        - template
+        type: object
+    MetricOverrides:
+      properties: {}
+      additionalProperties:
+        $ref: '#/components/schemas/Pick_Metric.formatOptions_'
+      type: object
+    PivotSortAnchor:
+      properties:
+        value:
+          anyOf:
+          - type: string
+          - type: number
+            format: double
+          - type: boolean
+        reference:
+          type: string
+      required:
+      - value
+      - reference
+      type: object
+      description: 'Coordinates of a single pivot column, used to anchor a row sort to that
+
+        specific column when results are pivoted.'
+    FrameClause:
+      properties:
+        end:
+          $ref: '#/components/schemas/FrameBoundary'
+          description: End boundary of the frame
+        start:
+          $ref: '#/components/schemas/FrameBoundary'
+          description: Start boundary of the frame
+        frameType:
+          $ref: '#/components/schemas/FrameType'
+          description: Type of frame (ROWS or RANGE)
+      required:
+      - end
+      - frameType
+      type: object
+    ContentReviewContentType:
+      enum:
+      - chart
+      - dashboard
+      - sql_chart
+      - document
+      type: string
+    TableCalculationBase:
+      properties:
+        totalMode:
+          $ref: '#/components/schemas/TableCalculationTotalMode'
+          description: How column totals are computed for this calculation
+        type:
+          $ref: '#/components/schemas/TableCalculationType'
+          description: Data type of the calculation result
+        format:
+          $ref: '#/components/schemas/CustomFormat'
+          description: Formatting options for the calculation
+        displayName:
+          type: string
+          description: Display name shown in the UI
+        name:
+          type: string
+          description: Internal name of the table calculation
+        index:
+          type: number
+          format: double
+          description: Display order index
+      required:
+      - displayName
+      - name
+      type: object
+    FrameType:
+      enum:
+      - rows
+      - range
+      type: string
+    SavedMergeDefinition:
+      properties:
+        tableCalculations:
+          items:
+            $ref: '#/components/schemas/MergeTableCalculation'
+          type: array
+        limit:
+          type: number
+          format: double
+        sort:
+          items:
+            $ref: '#/components/schemas/SavedMergeDefinitionSort'
+          type: array
+        keyNames:
+          properties: {}
+          additionalProperties:
+            type: string
+          type: object
+          description: The key column's name, when not the chart field's id.
+        keys:
+          properties: {}
+          additionalProperties:
+            items:
+              type: string
+            type: array
+          type: object
+          description: 'The join keys: each entry is the chart''s field and one `query.fieldId`
+
+            reference per other query. The key column takes the chart field''s id.'
+        join:
+          $ref: '#/components/schemas/MergeJoinType'
+        queries:
+          properties: {}
+          additionalProperties:
+            $ref: '#/components/schemas/SavedMergeDefinitionQuery'
+          type: object
+          description: The other queries, by the name they go by.
+        chartRepeats:
+          type: boolean
+          description: The chart's own query repeats its values. Omitted when off.
+        chartAs:
+          type: string
+          description: The chart query's name in merged column ids, when not its explore's.
+      required:
+      - limit
+      - keys
+      - join
+      - queries
+      type: object
+    ContentReviewGrantedPrincipal:
+      properties:
+        principal:
+          $ref: '#/components/schemas/DirectAccessPrincipalRef'
+        resourceUuid:
+          type: string
+        resourceType:
+          $ref: '#/components/schemas/DirectAccessResourceType'
+      required:
+      - principal
+      - resourceUuid
+      - resourceType
+      type: object
+    OrFilterGroup:
+      properties:
+        or:
+          items:
+            $ref: '#/components/schemas/FilterGroupItem'
+          type: array
+          description: Array of filters or nested groups combined with OR logic
+        id:
+          type: string
+          description: Unique identifier for the filter group
+      required:
+      - or
+      - id
+      type: object
+    MergeJoinKeyPart:
+      properties:
+        fieldIdBySourceId:
+          $ref: '#/components/schemas/Record_string.FieldId_'
+          description: The field each source joins on. Every source must have an entry.
+        name:
+          type: string
+          description: Column name this key part takes in the merged result.
+      required:
+      - fieldIdBySourceId
+      - name
+      type: object
+      description: 'One column of the join key. Sources name the same real-world key differently
+
+        (`orders.order_date` vs `users.created_date`), so the mapping is explicit per
+
+        source rather than positional.'
+    Filters:
+      properties:
+        tableCalculations:
+          $ref: '#/components/schemas/FilterGroup'
+          description: Table calculation filter group
+        metrics:
+          $ref: '#/components/schemas/FilterGroup'
+          description: Metric filter group
+        dimensions:
+          $ref: '#/components/schemas/FilterGroup'
+          description: Dimension filter group
+      type: object
+    TableCalculation:
+      anyOf:
+      - $ref: '#/components/schemas/SqlTableCalculation'
+      - $ref: '#/components/schemas/TemplateTableCalculation'
+      - $ref: '#/components/schemas/FormulaTableCalculation'
+    SavedMergeDefinitionQuery:
+      properties:
+        repeat:
+          type: boolean
+          description: See MergeQueryMetricSource.repeatValues. Omitted when off.
+        timezone:
+          type: string
+        dimensionOverrides:
+          $ref: '#/components/schemas/DimensionOverrides'
+        metricOverrides:
+          $ref: '#/components/schemas/MetricOverrides'
+        customDimensions:
+          items:
+            $ref: '#/components/schemas/CustomDimension'
+          type: array
+        additionalMetrics:
+          items:
+            $ref: '#/components/schemas/AdditionalMetric'
+          type: array
+        tableCalculations:
+          items:
+            $ref: '#/components/schemas/TableCalculation'
+          type: array
+        filters:
+          $ref: '#/components/schemas/Filters'
+        metrics:
+          items:
+            $ref: '#/components/schemas/FieldId'
+          type: array
+        dimensions:
+          items:
+            $ref: '#/components/schemas/FieldId'
+          type: array
+        explore:
+          type: string
+      required:
+      - metrics
+      - dimensions
+      - explore
+      type: object
+      description: A query the merge owns, run against an explore.
+    CreateContentReviewRequestBody:
+      properties:
+        similarContent:
+          items:
+            $ref: '#/components/schemas/ContentReviewSimilarContentItem'
+          type: array
+        note:
+          type:
+          - string
+          - 'null'
+        targetSpaceUuid:
+          type: string
+        contentUuid:
+          type: string
+        contentType:
+          $ref: '#/components/schemas/ContentReviewContentType'
+      required:
+      - similarContent
+      - note
+      - targetSpaceUuid
+      - contentUuid
+      - contentType
+      type: object
+    FrameBoundaryType:
+      enum:
+      - unbounded_preceding
+      - preceding
+      - current_row
+      - following
+      - unbounded_following
+      type: string
+    NumberSeparator:
+      enum:
+      - default
+      - commaPeriod
+      - spacePeriod
+      - periodComma
+      - noSeparatorPeriod
+      - apostrophePeriod
+      type: string
+    Pick_CompiledDimension.label-or-name-or-table_:
+      properties:
+        name:
+          type: string
+        label:
+          type: string
+        table:
+          type: string
+      required:
+      - name
+      - label
+      - table
+      type: object
+      description: From T, pick a set of properties whose keys are in the union K
+    DirectAccessResourceType:
+      description: 'Closed registry of resource types that support direct access grants.
+
+        Growing this union means adding a resource registry entry, an
+
+        `AccessTarget` mapping, and grant tables — never a new handler hierarchy.'
+      enum:
+      - document
+      - dashboard
+      - chart
+      - sqlChart
+      - app
+      type: string
+    Pick_Metric.formatOptions_:
+      properties:
+        formatOptions:
+          $ref: '#/components/schemas/CustomFormat'
+      type: object
+      description: From T, pick a set of properties whose keys are in the union K
+    FixedNumberBinDimension:
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the custom dimension
+        name:
+          type: string
+          description: Display name for the custom dimension
+        table:
+          type: string
+          description: Table this custom dimension belongs to
+        type:
+          $ref: '#/components/schemas/CustomDimensionType.BIN'
+          description: Type of custom dimension (bin or sql)
+        dimensionId:
+          $ref: '#/components/schemas/FieldId'
+          description: Field ID of the parent dimension to bin
+        binType:
+          $ref: '#/components/schemas/BinType.FIXED_NUMBER'
+        binNumber:
+          type: number
+          format: double
+      required:
+      - id
+      - name
+      - table
+      - type
+      - dimensionId
+      - binType
+      - binNumber
+      type: object
+      additionalProperties: true
+    TableCalculationTemplateType.RUNNING_TOTAL:
+      enum:
+      - running_total
+      type: string
+    TableCalculationTotalMode:
+      enum:
+      - formula
+      - sum_of_rows
+      - none
+      type: string
+    CustomRangeBinDimension:
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the custom dimension
+        name:
+          type: string
+          description: Display name for the custom dimension
+        table:
+          type: string
+          description: Table this custom dimension belongs to
+        type:
+          $ref: '#/components/schemas/CustomDimensionType.BIN'
+          description: Type of custom dimension (bin or sql)
+        dimensionId:
+          $ref: '#/components/schemas/FieldId'
+          description: Field ID of the parent dimension to bin
+        binType:
+          $ref: '#/components/schemas/BinType.CUSTOM_RANGE'
+        customRange:
+          items:
+            $ref: '#/components/schemas/BinRange'
+          type: array
+      required:
+      - id
+      - name
+      - table
+      - type
+      - dimensionId
+      - binType
+      - customRange
+      type: object
+      additionalProperties: true
+    TableCalculationTemplateType.RANK_IN_COLUMN:
+      enum:
+      - rank_in_column
+      type: string
+    ContentReviewRequestListItem:
+      allOf:
+      - $ref: '#/components/schemas/ContentReviewRequest'
+      - properties:
+          targetSpaceName:
+            type:
+            - string
+            - 'null'
+          sourceSpaceName:
+            type:
+            - string
+            - 'null'
+          content:
+            allOf:
+            - $ref: '#/components/schemas/ContentReviewContentSummary'
+        required:
+        - targetSpaceName
+        - sourceSpaceName
+        - content
+        type: object
+    Pick_Dimension.formatOptions_:
+      properties:
+        formatOptions:
+          $ref: '#/components/schemas/CustomFormat'
+      type: object
+      description: From T, pick a set of properties whose keys are in the union K
+    SavedMergeQuerySource:
+      anyOf:
+      - properties:
+          kind:
+            type: string
+            enum:
+            - chart
+          id:
+            type: string
+        required:
+        - kind
+        - id
+        type: object
+      - properties:
+          metricQuery:
+            $ref: '#/components/schemas/MetricQuery'
+          kind:
+            type: string
+            enum:
+            - query
+          id:
+            type: string
+        required:
+        - metricQuery
+        - kind
+        - id
+        type: object
+      description: 'A persisted merge source.
+
+
+        The chart source is a reference: its metric query already lives on the chart
+
+        version. Every additional source owns its query. This keeps one source of
+
+        truth while allowing more sources without adding `thirdQuery`, `fourthQuery`,
+
+        and so on.'
+    ApiContentReviewRequestListResponse:
+      properties:
+        results:
+          $ref: '#/components/schemas/KnexPaginatedData_ContentReviewRequestListItem-Array_'
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
+    FilterGroup:
+      anyOf:
+      - $ref: '#/components/schemas/OrFilterGroup'
+      - $ref: '#/components/schemas/AndFilterGroup'
+    RejectContentReviewRequestBody:
+      properties:
+        note:
+          type: string
+      required:
+      - note
+      type: object
+    ContentReviewSimilarContentItem:
+      properties:
+        explanation:
+          type: string
+        matchReason:
+          type: string
+          enum:
+          - same_name
+          - similar_name
+          - potential_duplicate
+          - related
+        score:
+          type: number
+          format: double
+        isVerified:
+          type: boolean
+        spaceName:
+          type: string
+        spaceUuid:
+          type: string
+        slug:
+          type: string
+        name:
+          type: string
+        contentUuid:
+          type: string
+        contentType:
+          $ref: '#/components/schemas/ContentReviewContentType'
+      required:
+      - score
+      - isVerified
+      - spaceName
+      - spaceUuid
+      - slug
+      - name
+      - contentUuid
+      - contentType
+      type: object
+    SavedMergeDefinitionSortDirection:
+      type: string
+      enum:
+      - asc
+      - desc
+    ChartSimilarityRequest:
+      properties:
+        merge:
+          anyOf:
+          - $ref: '#/components/schemas/SavedMergeDefinition'
+          - $ref: '#/components/schemas/SavedMergeQuery'
+        parameters:
+          $ref: '#/components/schemas/ParametersValuesMap'
+        metricQuery:
+          $ref: '#/components/schemas/MetricQuery'
+      required:
+      - metricQuery
+      type: object
+    MetricType:
+      enum:
+      - percentile
+      - average
+      - count
+      - count_distinct
+      - sum
+      - sum_distinct
+      - average_distinct
+      - min
+      - max
+      - percent_of_previous
+      - percent_of_total
+      - running_total
+      - number
+      - median
+      - string
+      - date
+      - timestamp
+      - boolean
+      type: string
+    ApiContentReviewRequestOrNullResponse:
+      properties:
+        results:
+          allOf:
+          - $ref: '#/components/schemas/ContentReviewRequest'
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
+    TableCalculationTemplateType.DIFFERENCE_FROM_PREVIOUS:
+      enum:
+      - difference_from_previous
+      type: string
+    FieldId:
+      type: string
+    CustomDimension:
+      anyOf:
+      - $ref: '#/components/schemas/CustomBinDimension'
+      - $ref: '#/components/schemas/CustomSqlDimension'
+    ContentReviewRequestDetail:
+      allOf:
+      - $ref: '#/components/schemas/ContentReviewRequestListItem'
+      - properties:
+          verifyByDefault:
+            type: boolean
+          canVerify:
+            type: boolean
+          canReview:
+            type: boolean
+          moveSet:
+            items:
+              $ref: '#/components/schemas/ContentReviewMovedItem'
+            type: array
+        required:
+        - verifyByDefault
+        - canVerify
+        - canReview
+        - moveSet
+        type: object
+    Compact:
+      enum:
+      - auto
+      - thousands
+      - millions
+      - billions
+      - trillions
+      - kilobytes
+      - megabytes
+      - gigabytes
+      - terabytes
+      - petabytes
+      - kibibytes
+      - mebibytes
+      - gibibytes
+      - tebibytes
+      - pebibytes
+      type: string
+    SavedMergeQuery:
+      properties:
+        repeatValuesSourceIds:
+          items:
+            type: string
+          type: array
+          description: 'Sources that repeat their values across the other sources'' extra
+
+            dimensions (MergeQueryMetricSource.repeatValues). Kept on the merge,
+
+            not the source, so the source shapes stay as they were saved.
+
+            Omitted when none repeat.'
+        tableCalculations:
+          items:
+            $ref: '#/components/schemas/MergeTableCalculation'
+          type: array
+        joinType:
+          $ref: '#/components/schemas/MergeJoinType'
+        joinKey:
+          items:
+            $ref: '#/components/schemas/MergeJoinKeyPart'
+          type: array
+        sources:
+          items:
+            $ref: '#/components/schemas/SavedMergeQuerySource'
+          type: array
+        primarySourceId:
+          type: string
+          description: Source whose rows a LEFT merge preserves.
+      required:
+      - tableCalculations
+      - joinType
+      - joinKey
+      - sources
+      - primarySourceId
+      type: object
+      description: 'Schema v2 of a merge stored on a chart version. Accepted on requests and
+
+        read from rows written before schema v3; rewritten to schema v3 by
+
+        upgradeSavedMergeQuery. Never written.'
+    MetricQuery:
+      properties:
+        metadata:
+          properties:
+            hasADateDimension:
+              $ref: '#/components/schemas/Pick_CompiledDimension.label-or-name-or-table_'
+          required:
+          - hasADateDimension
+          type: object
+        pivotDimensions:
+          items:
+            $ref: '#/components/schemas/FieldId'
+          type: array
+          description: 'Dimension field IDs used as pivot columns (from chart''s pivotConfig.columns).
+
+            Used by row_total() to determine non-pivot dimensions for GROUP BY.'
+        timezone:
+          type: string
+          description: Timezone for date/time values (e.g., 'America/Los_Angeles', 'UTC')
+        dimensionOverrides:
+          $ref: '#/components/schemas/DimensionOverrides'
+          description: Override formatting options for existing dimensions
+        metricOverrides:
+          $ref: '#/components/schemas/MetricOverrides'
+          description: Override formatting options for existing metrics
+        customDimensions:
+          items:
+            $ref: '#/components/schemas/CustomDimension'
+          type: array
+          description: Custom dimensions defined inline
+        additionalMetrics:
+          items:
+            $ref: '#/components/schemas/AdditionalMetric'
+          type: array
+          description: Custom metrics defined inline (ad-hoc metrics not in the dbt model)
+        tableCalculations:
+          items:
+            $ref: '#/components/schemas/TableCalculation'
+          type: array
+          description: Custom calculations to perform on query results
+        limit:
+          type: number
+          format: double
+          description: Maximum number of rows to return
+        sorts:
+          items:
+            $ref: '#/components/schemas/SortField'
+          type: array
+          description: Sort configuration for query results
+        filters:
+          $ref: '#/components/schemas/Filters'
+          description: Filter rules to apply to the query
+        metrics:
+          items:
+            $ref: '#/components/schemas/FieldId'
+          type: array
+          description: List of metric field IDs to include
+        dimensions:
+          items:
+            $ref: '#/components/schemas/FieldId'
+          type: array
+          description: List of dimension field IDs to include
+        exploreName:
+          type: string
+          description: The name of the explore to query
+      required:
+      - tableCalculations
+      - limit
+      - sorts
+      - filters
+      - metrics
+      - dimensions
+      - exploreName
+      type: object
+    FilterRule:
+      properties:
+        includeNull:
+          type: boolean
+          description: 'For the `equals` operator on string fields, also match rows where the
+
+            field is null (compiles to `field IN (...) OR field IS NULL`). Lets users
+
+            combine null with selected values in a single "is" rule.'
+        values:
+          items:
+            $ref: '#/components/schemas/AnyType'
+          type: array
+          description: Values to filter by
+        operator:
+          $ref: '#/components/schemas/FilterOperator'
+          description: Filter operator
+        id:
+          type: string
+          description: Unique identifier for the filter
+        target:
+          $ref: '#/components/schemas/FieldTarget'
+          description: Target field for the filter
+        settings:
+          $ref: '#/components/schemas/AnyType'
+          description: Additional settings for date/time filters
+        disabled:
+          type: boolean
+          description: Whether this filter is disabled
+        required:
+          type: boolean
+          description: Whether this filter is required
+        caseSensitive:
+          type: boolean
+          description: 'Overrides the field/explore case-sensitivity for this rule only.
+
+            Used by internal features like autocomplete search that must always
+
+            match case-insensitively regardless of the field''s configured setting.'
+      required:
+      - operator
+      - id
+      - target
+      type: object
+      additionalProperties: true
+    BinType.CUSTOM_RANGE:
+      enum:
+      - custom_range
+      type: string
+    ApproveContentReviewRequestBody:
+      properties:
+        note:
+          type:
+          - string
+          - 'null'
+        verify:
+          type: boolean
+      required:
+      - note
+      - verify
+      type: object
+    DirectAccessPrincipalType:
+      enum:
+      - user
+      - group
+      type: string
+    GroupValueMatchType:
+      enum:
+      - exact
+      - startsWith
+      - endsWith
+      - includes
+      type: string
+    ContentReviewSettings:
+      properties:
+        slackChannelId:
+          type:
+          - string
+          - 'null'
+        verifyOnApproveDefault:
+          type: boolean
+        reviewerGroupUuid:
+          type:
+          - string
+          - 'null'
+        projectUuid:
+          type: string
+      required:
+      - slackChannelId
+      - verifyOnApproveDefault
+      - reviewerGroupUuid
+      - projectUuid
+      type: object
+    ContentReviewRequest:
+      properties:
+        updatedAt:
+          type: string
+          format: date-time
+        createdAt:
+          type: string
+          format: date-time
+        grantedPrincipals:
+          items:
+            $ref: '#/components/schemas/ContentReviewGrantedPrincipal'
+          type: array
+        movedContent:
+          items:
+            $ref: '#/components/schemas/ContentReviewMovedItem'
+          type: array
+        verifiedOnApprove:
+          type:
+          - boolean
+          - 'null'
+        reviewNote:
+          type:
+          - string
+          - 'null'
+        reviewedAt:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        reviewedBy:
+          allOf:
+          - $ref: '#/components/schemas/ContentReviewUser'
+        status:
+          $ref: '#/components/schemas/ContentReviewRequestStatus'
+        similarContent:
+          items:
+            $ref: '#/components/schemas/ContentReviewSimilarContentItem'
+          type: array
+        requestNote:
+          type:
+          - string
+          - 'null'
+        requestedBy:
+          $ref: '#/components/schemas/ContentReviewUser'
+        targetSpaceUuid:
+          type:
+          - string
+          - 'null'
+        sourceSpaceUuid:
+          type: string
+        contentUuid:
+          type: string
+        contentType:
+          $ref: '#/components/schemas/ContentReviewContentType'
+        projectUuid:
+          type: string
+        uuid:
+          type: string
+      required:
+      - updatedAt
+      - createdAt
+      - grantedPrincipals
+      - movedContent
+      - verifiedOnApprove
+      - reviewNote
+      - reviewedAt
+      - reviewedBy
+      - status
+      - similarContent
+      - requestNote
+      - requestedBy
+      - targetSpaceUuid
+      - sourceSpaceUuid
+      - contentUuid
+      - contentType
+      - projectUuid
+      - uuid
+      type: object
+    DimensionOverrides:
+      properties: {}
+      additionalProperties:
+        $ref: '#/components/schemas/Pick_Dimension.formatOptions_'
+      type: object
+    KnexPaginateArgs:
+      properties:
+        page:
+          type: number
+          format: double
+        pageSize:
+          type: number
+          format: double
+      required:
+      - page
+      - pageSize
+      type: object
+    GroupValueRule:
+      properties:
+        value:
+          type: string
+        matchType:
+          $ref: '#/components/schemas/GroupValueMatchType'
+      required:
+      - value
+      - matchType
+      type: object
+    BinType.FIXED_NUMBER:
+      enum:
+      - fixed_number
+      type: string
+    MergeTableCalculation:
+      properties:
+        format:
+          $ref: '#/components/schemas/CustomFormat'
+          description: How the calculation's values are displayed.
+        formula:
+          type: string
+          description: Spreadsheet-like formula over merged field ids.
+        sql:
+          type: string
+          description: 'Legacy SQL expression. Kept required for API/storage compatibility;
+
+            formula calculations store an empty string here and compile `formula`
+
+            on the compose engine instead.'
+        displayName:
+          type: string
+        name:
+          type: string
+      required:
+      - sql
+      - displayName
+      - name
+      type: object
+      description: 'A calculation over the *merged* result, where a row-wise calculation across
+
+        source queries can correctly live. Formula references use merged field ids;
+
+        legacy SQL references use `${sourceId.fieldId}`.'
+    FilterOperator:
+      enum:
+      - isNull
+      - notNull
+      - equals
+      - notEquals
+      - startsWith
+      - endsWith
+      - include
+      - doesNotInclude
+      - lessThan
+      - lessThanOrEqual
+      - greaterThan
+      - greaterThanOrEqual
+      - inThePast
+      - notInThePast
+      - inTheNext
+      - inTheCurrent
+      - notInTheCurrent
+      - inBetween
+      - notInBetween
+      - inPeriodToDate
+      type: string
+    MetricFilterRule:
+      description: Filter rule for metrics, targeting fields by reference
+      properties:
+        includeNull:
+          type: boolean
+          description: 'For the `equals` operator on string fields, also match rows where the
+
+            field is null (compiles to `field IN (...) OR field IS NULL`). Lets users
+
+            combine null with selected values in a single "is" rule.'
+        values:
+          items:
+            $ref: '#/components/schemas/AnyType'
+          type: array
+          description: Values to filter by
+        operator:
+          $ref: '#/components/schemas/FilterOperator'
+          description: Filter operator
+        id:
+          type: string
+          description: Unique identifier for the filter
+        target:
+          properties:
+            fieldRef:
+              type: string
+              description: Field reference to filter on (e.g., 'table_name.field_name')
+          required:
+          - fieldRef
+          type: object
+          description: Target field for the filter
+        settings:
+          $ref: '#/components/schemas/AnyType'
+          description: Additional settings for date/time filters
+        disabled:
+          type: boolean
+          description: Whether this filter is disabled
+        required:
+          type: boolean
+          description: Whether this filter is required
+        caseSensitive:
+          type: boolean
+          description: 'Overrides the field/explore case-sensitivity for this rule only.
+
+            Used by internal features like autocomplete search that must always
+
+            match case-insensitively regardless of the field''s configured setting.'
+      required:
+      - operator
+      - id
+      - target
+      type: object
+      additionalProperties: true
+    Record_string.FieldId_:
+      properties: {}
+      additionalProperties:
+        type: string
+      type: object
+      description: Construct a type with a set of properties K of type T
+    Format:
+      enum:
+      - km
+      - mi
+      - si
+      - usd
+      - gbp
+      - eur
+      - jpy
+      - dkk
+      - id
+      - percent
+      type: string
+    CompactOrAlias:
+      anyOf:
+      - $ref: '#/components/schemas/Compact'
+      - type: string
+        enum:
+        - K
+        - thousand
+        - M
+        - million
+        - B
+        - billion
+        - T
+        - trillion
+        - KB
+        - kilobyte
+        - MB
+        - megabyte
+        - GB
+        - gigabyte
+        - TB
+        - terabyte
+        - PB
+        - petabyte
+        - KiB
+        - kibibyte
+        - MiB
+        - mebibyte
+        - GiB
+        - gibibyte
+        - TiB
+        - tebibyte
+        - PiB
+        - pebibyte
+    TimeFrames:
+      enum:
+      - RAW
+      - YEAR
+      - QUARTER
+      - MONTH
+      - WEEK
+      - DAY
+      - HOUR
+      - MINUTE
+      - SECOND
+      - MILLISECOND
+      - DAY_OF_WEEK_INDEX
+      - DAY_OF_MONTH_NUM
+      - DAY_OF_YEAR_NUM
+      - WEEK_NUM
+      - MONTH_NUM
+      - QUARTER_NUM
+      - YEAR_NUM
+      - DAY_OF_WEEK_NAME
+      - MONTH_NAME
+      - QUARTER_NAME
+      - HOUR_OF_DAY_NUM
+      - MINUTE_OF_HOUR_NUM
+      type: string
+    CustomSqlDimension:
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the custom dimension
+        name:
+          type: string
+          description: Display name for the custom dimension
+        table:
+          type: string
+          description: Table this custom dimension belongs to
+        type:
+          $ref: '#/components/schemas/CustomDimensionType.SQL'
+          description: Type of custom dimension (bin or sql)
+        sql:
+          type: string
+          description: SQL expression for the custom dimension
+        dimensionType:
+          $ref: '#/components/schemas/DimensionType'
+          description: Data type of the dimension result
+      required:
+      - id
+      - name
+      - table
+      - type
+      - sql
+      - dimensionType
+      type: object
+      additionalProperties: true
+    FixedWidthBinDimension:
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the custom dimension
+        name:
+          type: string
+          description: Display name for the custom dimension
+        table:
+          type: string
+          description: Table this custom dimension belongs to
+        type:
+          $ref: '#/components/schemas/CustomDimensionType.BIN'
+          description: Type of custom dimension (bin or sql)
+        dimensionId:
+          $ref: '#/components/schemas/FieldId'
+          description: Field ID of the parent dimension to bin
+        binType:
+          $ref: '#/components/schemas/BinType.FIXED_WIDTH'
+        binWidth:
+          type: number
+          format: double
+      required:
+      - id
+      - name
+      - table
+      - type
+      - dimensionId
+      - binType
+      - binWidth
+      type: object
+      additionalProperties: true
+    Record_string.ParameterValue_:
+      properties: {}
+      additionalProperties:
+        $ref: '#/components/schemas/ParameterValue'
+      type: object
+      description: Construct a type with a set of properties K of type T
+    TableCalculationTemplateType.PERCENT_OF_PREVIOUS_VALUE:
+      enum:
+      - percent_of_previous_value
+      type: string
+    TableCalculationType:
+      enum:
+      - number
+      - string
+      - date
+      - timestamp
+      - boolean
+      type: string
+    CustomDimensionType.BIN:
+      enum:
+      - bin
+      type: string
+    AdditionalMetric:
+      properties:
+        label:
+          type: string
+          description: Display label for the metric
+        type:
+          $ref: '#/components/schemas/MetricType'
+          description: Aggregation type
+        description:
+          type: string
+          description: Description of what the metric measures
+        sql:
+          type: string
+          description: SQL expression (e.g., ${TABLE}.column_name)
+        hidden:
+          type: boolean
+          description: Whether the metric is hidden from users
+        round:
+          type: number
+          format: double
+          description: Number of decimal places
+        compact:
+          $ref: '#/components/schemas/CompactOrAlias'
+          description: Compact format for large numbers
+        format:
+          anyOf:
+          - $ref: '#/components/schemas/Format'
+          - type: string
+          description: Format string (legacy format specification)
+        separator:
+          $ref: '#/components/schemas/NumberSeparator'
+          description: Number separator style for grouping/decimal characters
+        table:
+          type: string
+          description: Table name the metric belongs to
+        name:
+          type: string
+          description: Internal name of the metric
+        index:
+          type: number
+          format: double
+          description: Display order index
+        filters:
+          items:
+            $ref: '#/components/schemas/MetricFilterRule'
+          type: array
+          description: Filters to apply to this metric
+        baseDimensionName:
+          type: string
+          description: Name of the base dimension/column this metric aggregates
+        baseMetricName:
+          type: string
+          description: Name of the explore metric this metric was cloned from
+        uuid:
+          type:
+          - string
+          - 'null'
+          description: Unique identifier for the metric
+        percentile:
+          type: number
+          format: double
+          description: Percentile value for percentile metrics
+        distinctKeys:
+          items:
+            type: string
+          type: array
+        formatOptions:
+          $ref: '#/components/schemas/CustomFormat'
+          description: Formatting configuration
+        generationType:
+          type: string
+          enum:
+          - periodOverPeriod
+          description: 'Optional marker for metrics generated by the system.
+
+            Currently used for Period-over-Period (PoP) previous-period metrics.'
+        baseMetricId:
+          $ref: '#/components/schemas/FieldId'
+          description: For PoP-generated metrics, the base metric id that this metric is derived from.
+        timeDimensionId:
+          $ref: '#/components/schemas/FieldId'
+          description: For PoP-generated metrics, the time dimension id used for the comparison.
+        granularity:
+          $ref: '#/components/schemas/TimeFrames'
+          description: For PoP-generated metrics, the granularity used for the comparison.
+        periodOffset:
+          type: number
+          format: double
+          description: For PoP-generated metrics, the number of periods to offset by (>= 1).
+      required:
+      - type
+      - sql
+      - table
+      - name
+      type: object
+      additionalProperties: true
+    FormulaTableCalculation:
+      allOf:
+      - $ref: '#/components/schemas/TableCalculationBase'
+      - properties:
+          formula:
+            type: string
+            description: Spreadsheet-like formula compiled to SQL at query time
+        required:
+        - formula
+        type: object
+    BinType.CUSTOM_GROUP:
+      enum:
+      - custom_group
+      type: string
+    CustomGroupBinDimension:
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the custom dimension
+        name:
+          type: string
+          description: Display name for the custom dimension
+        table:
+          type: string
+          description: Table this custom dimension belongs to
+        type:
+          $ref: '#/components/schemas/CustomDimensionType.BIN'
+          description: Type of custom dimension (bin or sql)
+        dimensionId:
+          $ref: '#/components/schemas/FieldId'
+          description: Field ID of the parent dimension to bin
+        binType:
+          $ref: '#/components/schemas/BinType.CUSTOM_GROUP'
+        customGroups:
+          items:
+            $ref: '#/components/schemas/BinGroup'
+          type: array
+      required:
+      - id
+      - name
+      - table
+      - type
+      - dimensionId
+      - binType
+      - customGroups
+      type: object
+      additionalProperties: true
+    DirectAccessPrincipalRef:
+      properties:
+        uuid:
+          $ref: '#/components/schemas/UUID'
+        type:
+          $ref: '#/components/schemas/DirectAccessPrincipalType'
+      required:
+      - uuid
+      - type
+      type: object
+      description: Principal reference used by administration requests and imports.
+    TableCalculationTemplate:
+      anyOf:
+      - properties:
+          partitionBy:
+            items:
+              type: string
+            type: array
+          orderBy:
+            items:
+              properties:
+                order:
+                  type:
+                  - string
+                  - 'null'
+                  enum:
+                  - asc
+                  - desc
+                  - null
+                fieldId:
+                  type: string
+              required:
+              - order
+              - fieldId
+              type: object
+            type: array
+            description: Fields to order by for window functions
+          fieldId:
+            type: string
+            description: Field ID to apply the template to
+          type:
+            $ref: '#/components/schemas/TableCalculationTemplateType.DIFFERENCE_FROM_PREVIOUS'
+            description: Type of template calculation
+        required:
+        - orderBy
+        - fieldId
+        - type
+        type: object
+      - properties:
+          partitionBy:
+            items:
+              type: string
+            type: array
+          orderBy:
+            items:
+              properties:
+                order:
+                  type:
+                  - string
+                  - 'null'
+                  enum:
+                  - asc
+                  - desc
+                  - null
+                fieldId:
+                  type: string
+              required:
+              - order
+              - fieldId
+              type: object
+            type: array
+            description: Fields to order by for window functions
+          fieldId:
+            type: string
+            description: Field ID to apply the template to
+          type:
+            $ref: '#/components/schemas/TableCalculationTemplateType.PERCENT_CHANGE_FROM_PREVIOUS'
+            description: Type of template calculation
+        required:
+        - orderBy
+        - fieldId
+        - type
+        type: object
+      - properties:
+          partitionBy:
+            items:
+              type: string
+            type: array
+          orderBy:
+            items:
+              properties:
+                order:
+                  type:
+                  - string
+                  - 'null'
+                  enum:
+                  - asc
+                  - desc
+                  - null
+                fieldId:
+                  type: string
+              required:
+              - order
+              - fieldId
+              type: object
+            type: array
+            description: Fields to order by for window functions
+          fieldId:
+            type: string
+            description: Field ID to apply the template to
+          type:
+            $ref: '#/components/schemas/TableCalculationTemplateType.PERCENT_OF_PREVIOUS_VALUE'
+            description: Type of template calculation
+        required:
+        - orderBy
+        - fieldId
+        - type
+        type: object
+      - properties:
+          partitionBy:
+            items:
+              type: string
+            type: array
+            description: Fields to partition by
+          fieldId:
+            type: string
+            description: Field ID to apply the template to
+          type:
+            $ref: '#/components/schemas/TableCalculationTemplateType.PERCENT_OF_COLUMN_TOTAL'
+            description: Type of template calculation
+        required:
+        - fieldId
+        - type
+        type: object
+      - properties:
+          fieldId:
+            type: string
+            description: Field ID to apply the template to
+          type:
+            $ref: '#/components/schemas/TableCalculationTemplateType.RANK_IN_COLUMN'
+            description: Type of template calculation
+        required:
+        - fieldId
+        - type
+        type: object
+      - properties:
+          orderBy:
+            items:
+              properties:
+                order:
+                  type:
+                  - string
+                  - 'null'
+                  enum:
+                  - asc
+                  - desc
+                  - null
+                fieldId:
+                  type: string
+              required:
+              - order
+              - fieldId
+              type: object
+            type: array
+            description: Fields to order by for the running total
+          fieldId:
+            type: string
+            description: Field ID to apply the template to
+          type:
+            $ref: '#/components/schemas/TableCalculationTemplateType.RUNNING_TOTAL'
+            description: Type of template calculation
+        required:
+        - fieldId
+        - type
+        type: object
+      - properties:
+          frame:
+            $ref: '#/components/schemas/FrameClause'
+            description: Frame clause for window functions
+          partitionBy:
+            items:
+              type: string
+            type: array
+            description: Fields to partition by for window functions
+          orderBy:
+            items:
+              properties:
+                order:
+                  type:
+                  - string
+                  - 'null'
+                  enum:
+                  - asc
+                  - desc
+                  - null
+                fieldId:
+                  type: string
+              required:
+              - order
+              - fieldId
+              type: object
+            type: array
+            description: Fields to order by for window functions
+          fieldId:
+            type:
+            - string
+            - 'null'
+            description: Field ID to apply the template to
+          windowFunction:
+            $ref: '#/components/schemas/WindowFunctionType'
+            description: Window function type
+          type:
+            $ref: '#/components/schemas/TableCalculationTemplateType.WINDOW_FUNCTION'
+            description: Type of template calculation
+        required:
+        - partitionBy
+        - orderBy
+        - fieldId
+        - windowFunction
+        - type
+        type: object
+    FilterGroupItem:
+      anyOf:
+      - $ref: '#/components/schemas/FilterGroup'
+      - $ref: '#/components/schemas/FilterRule'
+    BinGroup:
+      properties:
+        values:
+          items:
+            $ref: '#/components/schemas/GroupValueRule'
+          type: array
+          description: Rules that match values into this group
+        name:
+          type: string
+          description: Display name for this group (e.g. "North America")
+      required:
+      - values
+      - name
+      type: object
+    SavedMergeDefinitionSort:
+      properties:
+        direction:
+          $ref: '#/components/schemas/SavedMergeDefinitionSortDirection'
+        by:
+          type: string
+      required:
+      - direction
+      - by
+      type: object
+      description: 'A sort of the merged result. `by` is a chart field id, a `query.fieldId`
+
+        reference into another query, or the name of a merge table calculation.
+
+        A chart field that is a join key sorts the key column.'
+    ContentReviewContentSummary:
+      properties:
+        slug:
+          type: string
+        name:
+          type: string
+      required:
+      - slug
+      - name
+      type: object
+    CustomDimensionType.SQL:
+      enum:
+      - sql
+      type: string
+    MergeJoinType:
+      description: How unmatched keys survive the merge. Mirrors the SQL join it compiles to.
+      enum:
+      - full
+      - left
+      - inner
+      type: string
+    TableCalculationTemplateType.WINDOW_FUNCTION:
+      enum:
+      - window_function
+      type: string
+    ContentReviewUser:
+      properties:
+        lastName:
+          type: string
+        firstName:
+          type: string
+        userUuid:
+          type: string
+      required:
+      - lastName
+      - firstName
+      - userUuid
+      type: object
+    CustomFormat:
+      properties:
+        type:
+          $ref: '#/components/schemas/CustomFormatType'
+          description: Format type
+        round:
+          type: number
+          format: double
+          description: Number of decimal places
+        separator:
+          $ref: '#/components/schemas/NumberSeparator'
+          description: Number separator style
+        currency:
+          type: string
+          description: Currency code (e.g., USD, GBP, EUR)
+        compact:
+          $ref: '#/components/schemas/CompactOrAlias'
+          description: Compact format for large numbers (K, M, B, T) or byte units
+        prefix:
+          type: string
+          description: Prefix to prepend to formatted values
+        suffix:
+          type: string
+          description: Suffix to append to formatted values
+        timeInterval:
+          $ref: '#/components/schemas/TimeFrames'
+          description: Time interval for date formatting
+        custom:
+          type: string
+          description: Custom format string
+      required:
+      - type
+      type: object
+      additionalProperties: true
+    ApiContentReviewRequestResponse:
+      properties:
+        results:
+          $ref: '#/components/schemas/ContentReviewRequestDetail'
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
+    FindSimilarContentBody:
+      properties:
+        chart:
+          $ref: '#/components/schemas/ChartSimilarityRequest'
+        excludeContentUuid:
+          type:
+          - string
+          - 'null'
+        name:
+          type: string
+        contentType:
+          $ref: '#/components/schemas/ContentReviewContentType'
+      required:
+      - excludeContentUuid
+      - name
+      - contentType
+      type: object
+    ParameterValue:
+      anyOf:
+      - type: string
+      - type: number
+        format: double
+      - items:
+          type: string
+        type: array
+      - items:
+          type: number
+          format: double
+        type: array
+    CustomFormatType:
+      enum:
+      - default
+      - percent
+      - currency
+      - number
+      - id
+      - date
+      - timestamp
+      - bytes_si
+      - bytes_iec
+      - custom
+      type: string
+    TableCalculationTemplateType.PERCENT_CHANGE_FROM_PREVIOUS:
+      enum:
+      - percent_change_from_previous
+      type: string
+    ContentReviewMovedItem:
+      properties:
+        name:
+          type: string
+        contentUuid:
+          type: string
+        contentType:
+          $ref: '#/components/schemas/ContentReviewContentType'
+      required:
+      - name
+      - contentUuid
+      - contentType
+      type: object
+    UUID:
+      type: string
+      format: uuid
+      description: 'Stringified UUIDv4.
+
+        See [RFC 4112](https://tools.ietf.org/html/rfc4122)'
+      pattern: '[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-4[0-9A-Fa-f]{3}-[89ABab][0-9A-Fa-f]{3}-[0-9A-Fa-f]{12}'
+    KnexPaginatedData_ContentReviewRequestListItem-Array_:
+      properties:
+        pagination:
+          allOf:
+          - $ref: '#/components/schemas/KnexPaginateArgs'
+          - properties:
+              totalResults:
+                type: number
+                format: double
+              totalPageCount:
+                type: number
+                format: double
+            required:
+            - totalResults
+            - totalPageCount
+            type: object
+        data:
+          items:
+            $ref: '#/components/schemas/ContentReviewRequestListItem'
+          type: array
+      required:
+      - data
+      type: object
+    ApiErrorPayload:
+      properties:
+        error:
+          properties:
+            data:
+              $ref: '#/components/schemas/AnyType'
+              description: Optional data containing details of the error
+            message:
+              type: string
+              description: A friendly message summarising the error
+            name:
+              type: string
+              description: Unique name for the type of error
+            statusCode:
+              type: number
+              format: integer
+              description: HTTP status code
+          required:
+          - name
+          - statusCode
+          type: object
+        status:
+          type: string
+          enum:
+          - error
+      required:
+      - error
+      - status
+      type: object
+      description: 'The Error object is returned from the api any time there is an error.
+
+        The message contains'
+    CustomBinDimension:
+      anyOf:
+      - $ref: '#/components/schemas/FixedNumberBinDimension'
+      - $ref: '#/components/schemas/FixedWidthBinDimension'
+      - $ref: '#/components/schemas/CustomRangeBinDimension'
+      - $ref: '#/components/schemas/CustomGroupBinDimension'
+    ContentReviewRequestView:
+      enum:
+      - to-review
+      - mine
+      type: string
+    UpdateContentReviewSettings:
+      $ref: '#/components/schemas/Partial_Omit_ContentReviewSettings.projectUuid__'
+    ParametersValuesMap:
+      $ref: '#/components/schemas/Record_string.ParameterValue_'
+    WindowFunctionType:
+      enum:
+      - row_number
+      - percent_rank
+      - cume_dist
+      - rank
+      - sum
+      - avg
+      - count
+      - min
+      - max
+      type: string
+    Partial_Omit_ContentReviewSettings.projectUuid__:
+      properties:
+        reviewerGroupUuid:
+          type:
+          - string
+          - 'null'
+        verifyOnApproveDefault:
+          type: boolean
+        slackChannelId:
+          type:
+          - string
+          - 'null'
+      type: object
+      description: Make all properties in T optional
+    FieldTarget:
+      properties:
+        fieldId:
+          type: string
+          description: Field ID to filter on
+      required:
+      - fieldId
+      type: object
+    SortField:
+      properties:
+        pivotValues:
+          items:
+            $ref: '#/components/schemas/PivotSortAnchor'
+          type: array
+          description: Pins the row-sort anchor to a specific pivot column. Ignored for non-pivoted results.
+        nullsFirst:
+          type: boolean
+          description: Sort null values first
+        descending:
+          type: boolean
+          description: Sort in descending order
+        fieldId:
+          type: string
+          description: Field ID to sort by
+      required:
+      - descending
+      - fieldId
+      type: object
+    DimensionType:
+      enum:
+      - string
+      - number
+      - timestamp
+      - date
+      - boolean
+      type: string
+    ApiContentReviewSimilarContentResponse:
+      properties:
+        results:
+          items:
+            $ref: '#/components/schemas/ContentReviewSimilarContentItem'
+          type: array
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
+  securitySchemes:
+    session_cookie:
+      type: apiKey
+      in: cookie
+      name: connect.sid
+    api_key:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: Value should be 'ApiKey <your key>'

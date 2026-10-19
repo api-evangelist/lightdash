@@ -1,0 +1,2093 @@
+openapi: 3.2.0
+info:
+  title: Lightdash Homepage API
+  version: 2.616.2
+  description: 'Open API documentation for all public Lightdash API endpoints. # Authentication Before you get started, you might need to create a Personal Access Token to authenticate via the API. You can create a token by following this guide: https://docs.lightdash.com/references/personal_tokens'
+  license:
+    name: MIT
+  contact:
+    name: Lightdash Support
+    email: support@lightdash.com
+    url: https://docs.lightdash.com/help-and-contact/contact/contact_info/
+servers:
+- url: /
+tags:
+- name: Homepage
+paths:
+  /api/v1/projects/{projectUuid}/homepage:
+    get:
+      operationId: getResolvedProjectHomepage
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResolvedHomepageResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      tags:
+      - Homepage
+      security: []
+      parameters:
+      - in: path
+        name: projectUuid
+        required: true
+        schema:
+          $ref: '#/components/schemas/UUID'
+      summary: Get resolved project homepage
+      x-summary-source: derived
+    post:
+      operationId: createProjectHomepage
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiProjectHomepageResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      tags:
+      - Homepage
+      security: []
+      parameters:
+      - in: path
+        name: projectUuid
+        required: true
+        schema:
+          $ref: '#/components/schemas/UUID'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateProjectHomepageRequest'
+      summary: Create project homepage
+      x-summary-source: derived
+  /api/v1/projects/{projectUuid}/homepage/view-as:
+    get:
+      operationId: viewHomepageAs
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiHomepageViewAsResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      tags:
+      - Homepage
+      security: []
+      parameters:
+      - in: path
+        name: projectUuid
+        required: true
+        schema:
+          $ref: '#/components/schemas/UUID'
+      - in: query
+        name: targetType
+        required: true
+        schema:
+          type: string
+          enum:
+          - user
+          - group
+          - role
+      - in: query
+        name: userUuid
+        required: false
+        schema:
+          $ref: '#/components/schemas/UUID'
+      - in: query
+        name: groupUuid
+        required: false
+        schema:
+          $ref: '#/components/schemas/UUID'
+      - in: query
+        name: role
+        required: false
+        schema:
+          $ref: '#/components/schemas/ProjectMemberRole'
+      summary: View homepage as
+      x-summary-source: derived
+  /api/v1/projects/{projectUuid}/homepage/builder:
+    get:
+      operationId: getProjectHomepageForBuilder
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiProjectHomepageOrNullResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      tags:
+      - Homepage
+      security: []
+      parameters:
+      - in: path
+        name: projectUuid
+        required: true
+        schema:
+          $ref: '#/components/schemas/UUID'
+      - in: query
+        name: homepageUuid
+        required: false
+        schema:
+          $ref: '#/components/schemas/UUID'
+      summary: Get project homepage for builder
+      x-summary-source: derived
+  /api/v1/projects/{projectUuid}/homepage/link-metadata:
+    get:
+      operationId: getHomepageLinkMetadata
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiHomepageLinkMetadataResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      tags:
+      - Homepage
+      security: []
+      parameters:
+      - in: path
+        name: projectUuid
+        required: true
+        schema:
+          $ref: '#/components/schemas/UUID'
+      - in: query
+        name: url
+        required: true
+        schema:
+          type: string
+      summary: Get homepage link metadata
+      x-summary-source: derived
+  /api/v1/projects/{projectUuid}/homepage/recently-viewed:
+    get:
+      operationId: getHomepageRecentlyViewed
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiRecentlyViewedResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      tags:
+      - Homepage
+      security: []
+      parameters:
+      - in: path
+        name: projectUuid
+        required: true
+        schema:
+          $ref: '#/components/schemas/UUID'
+      summary: Get homepage recently viewed
+      x-summary-source: derived
+  /api/v1/projects/{projectUuid}/homepage/assignments:
+    get:
+      operationId: getHomepageAssignments
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiHomepageAssignmentsResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      tags:
+      - Homepage
+      security: []
+      parameters:
+      - in: path
+        name: projectUuid
+        required: true
+        schema:
+          $ref: '#/components/schemas/UUID'
+      summary: Get homepage assignments
+      x-summary-source: derived
+  /api/v1/projects/{projectUuid}/homepage/group-priorities:
+    patch:
+      operationId: updateHomepageGroupPriorities
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiSuccessEmpty'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      tags:
+      - Homepage
+      security: []
+      parameters:
+      - in: path
+        name: projectUuid
+        required: true
+        schema:
+          $ref: '#/components/schemas/UUID'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateHomepageGroupPrioritiesRequest'
+      summary: Update homepage group priorities
+      x-summary-source: derived
+  /api/v1/projects/{projectUuid}/homepage/list:
+    get:
+      operationId: listProjectHomepages
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiProjectHomepagesResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      tags:
+      - Homepage
+      security: []
+      parameters:
+      - in: path
+        name: projectUuid
+        required: true
+        schema:
+          $ref: '#/components/schemas/UUID'
+      summary: List project homepages
+      x-summary-source: derived
+  /api/v1/projects/{projectUuid}/homepage/{homepageUuid}:
+    patch:
+      operationId: updateProjectHomepageDraft
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiProjectHomepageResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      tags:
+      - Homepage
+      security: []
+      parameters:
+      - in: path
+        name: projectUuid
+        required: true
+        schema:
+          $ref: '#/components/schemas/UUID'
+      - in: path
+        name: homepageUuid
+        required: true
+        schema:
+          $ref: '#/components/schemas/UUID'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateProjectHomepageDraftRequest'
+      summary: Update project homepage draft
+      x-summary-source: derived
+    delete:
+      operationId: deleteProjectHomepage
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiSuccessEmpty'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      tags:
+      - Homepage
+      security: []
+      parameters:
+      - in: path
+        name: projectUuid
+        required: true
+        schema:
+          $ref: '#/components/schemas/UUID'
+      - in: path
+        name: homepageUuid
+        required: true
+        schema:
+          $ref: '#/components/schemas/UUID'
+      summary: Delete project homepage
+      x-summary-source: derived
+  /api/v1/projects/{projectUuid}/homepage/{homepageUuid}/discard-draft:
+    post:
+      operationId: discardProjectHomepageDraft
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiProjectHomepageResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      tags:
+      - Homepage
+      security: []
+      parameters:
+      - in: path
+        name: projectUuid
+        required: true
+        schema:
+          $ref: '#/components/schemas/UUID'
+      - in: path
+        name: homepageUuid
+        required: true
+        schema:
+          $ref: '#/components/schemas/UUID'
+      summary: Discard project homepage draft
+      x-summary-source: derived
+  /api/v1/projects/{projectUuid}/homepage/{homepageUuid}/publish:
+    post:
+      operationId: publishProjectHomepage
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiProjectHomepageResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      tags:
+      - Homepage
+      security: []
+      parameters:
+      - in: path
+        name: projectUuid
+        required: true
+        schema:
+          $ref: '#/components/schemas/UUID'
+      - in: path
+        name: homepageUuid
+        required: true
+        schema:
+          $ref: '#/components/schemas/UUID'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PublishProjectHomepageRequest'
+      summary: Publish project homepage
+      x-summary-source: derived
+  /api/v1/projects/{projectUuid}/announcements:
+    get:
+      operationId: listProjectAnnouncements
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiAnnouncementsResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      tags:
+      - Homepage
+      security: []
+      parameters:
+      - in: path
+        name: projectUuid
+        required: true
+        schema:
+          $ref: '#/components/schemas/UUID'
+      - in: query
+        name: page
+        required: false
+        schema:
+          default: 1
+          format: double
+          type: number
+      - in: query
+        name: pageSize
+        required: false
+        schema:
+          default: 25
+          format: double
+          type: number
+      - in: query
+        name: includeUnpublished
+        required: false
+        schema:
+          type: boolean
+      summary: List project announcements
+      x-summary-source: derived
+    post:
+      operationId: createProjectAnnouncement
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiAnnouncementResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      tags:
+      - Homepage
+      security: []
+      parameters:
+      - in: path
+        name: projectUuid
+        required: true
+        schema:
+          $ref: '#/components/schemas/UUID'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateAnnouncementRequest'
+      summary: Create project announcement
+      x-summary-source: derived
+  /api/v1/projects/{projectUuid}/announcements/{announcementUuid}:
+    patch:
+      operationId: updateProjectAnnouncement
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiAnnouncementResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      tags:
+      - Homepage
+      security: []
+      parameters:
+      - in: path
+        name: projectUuid
+        required: true
+        schema:
+          $ref: '#/components/schemas/UUID'
+      - in: path
+        name: announcementUuid
+        required: true
+        schema:
+          $ref: '#/components/schemas/UUID'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateAnnouncementRequest'
+      summary: Update project announcement
+      x-summary-source: derived
+    delete:
+      operationId: deleteProjectAnnouncement
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiSuccessEmpty'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      tags:
+      - Homepage
+      security: []
+      parameters:
+      - in: path
+        name: projectUuid
+        required: true
+        schema:
+          $ref: '#/components/schemas/UUID'
+      - in: path
+        name: announcementUuid
+        required: true
+        schema:
+          $ref: '#/components/schemas/UUID'
+      summary: Delete project announcement
+      x-summary-source: derived
+  /api/v1/projects/{projectUuid}/announcements/images:
+    post:
+      operationId: uploadProjectAnnouncementImage
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiAnnouncementImageUploadResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      tags:
+      - Homepage
+      security: []
+      parameters:
+      - in: path
+        name: projectUuid
+        required: true
+        schema:
+          $ref: '#/components/schemas/UUID'
+      summary: Upload project announcement image
+      x-summary-source: derived
+  /api/v1/org/homepage-settings:
+    get:
+      operationId: getOrganizationHomepageSettings
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiOrganizationHomepageSettingsResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      tags:
+      - Homepage
+      security: []
+      parameters: []
+      summary: Get organization homepage settings
+      x-summary-source: derived
+    patch:
+      operationId: updateOrganizationHomepageSettings
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiOrganizationHomepageSettingsResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      tags:
+      - Homepage
+      security: []
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateOrganizationHomepageSettings'
+      summary: Update organization homepage settings
+      x-summary-source: derived
+  /api/v1/ee/homepage/recommended-action-skips:
+    get:
+      operationId: listHomepageRecommendedActionSkips
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiHomepageRecommendedActionSkipsResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      tags:
+      - Homepage
+      security: []
+      parameters:
+      - in: query
+        name: projectUuid
+        required: false
+        schema:
+          $ref: '#/components/schemas/UUID'
+      summary: List homepage recommended action skips
+      x-summary-source: derived
+    post:
+      operationId: skipHomepageRecommendedAction
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiSuccessEmpty'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      tags:
+      - Homepage
+      security: []
+      parameters:
+      - in: query
+        name: projectUuid
+        required: false
+        schema:
+          $ref: '#/components/schemas/UUID'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SkipHomepageRecommendedActionRequest'
+      summary: Skip homepage recommended action
+      x-summary-source: derived
+  /api/v1/ee/homepage/recommended-action-skips/{actionKey}:
+    delete:
+      operationId: unskipHomepageRecommendedAction
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiSuccessEmpty'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      tags:
+      - Homepage
+      security: []
+      parameters:
+      - in: path
+        name: actionKey
+        required: true
+        schema:
+          $ref: '#/components/schemas/HomepageRecommendedActionKey'
+      - in: query
+        name: projectUuid
+        required: false
+        schema:
+          $ref: '#/components/schemas/UUID'
+      summary: Unskip homepage recommended action
+      x-summary-source: derived
+components:
+  schemas:
+    HomepageAskAiHeroBlock:
+      properties:
+        config:
+          properties:
+            density:
+              $ref: '#/components/schemas/HomepageHeroDensity'
+            showRecommendedActions:
+              type: boolean
+              description: 'Replaces the prompt suggestions with the setup checklist.
+
+                Optional for configs persisted before this field existed.'
+            showGreeting:
+              type: boolean
+          required:
+          - showGreeting
+          type: object
+        type:
+          type: string
+          enum:
+          - ask-ai-hero
+        id:
+          type: string
+      required:
+      - config
+      - type
+      - id
+      type: object
+    HomepageMarkdownBlock:
+      properties:
+        config:
+          properties:
+            content:
+              type: string
+          required:
+          - content
+          type: object
+        type:
+          type: string
+          enum:
+          - markdown
+        id:
+          type: string
+      required:
+      - config
+      - type
+      - id
+      type: object
+    AnyType:
+      description: 'This AnyType is an alias for any
+
+        The goal is to make it easier to identify any type in the codebase
+
+        without having to eslint-disable all the time
+
+        These are only used on legacy `any` types, don''t use it for new types.
+
+        This is added on a separate file to avoid circular dependencies.'
+    HomepageRecentBlock:
+      properties:
+        config:
+          properties:
+            title:
+              type: string
+          required:
+          - title
+          type: object
+        type:
+          type: string
+          enum:
+          - recent
+        id:
+          type: string
+      required:
+      - config
+      - type
+      - id
+      type: object
+    ApiSuccessEmpty:
+      properties:
+        results: {}
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - status
+      type: object
+    ApiSuccess_ProjectHomepage-Array_:
+      properties:
+        results:
+          items:
+            $ref: '#/components/schemas/ProjectHomepage'
+          type: array
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
+    ApiSuccess_HomepageViewAsResult_:
+      properties:
+        results:
+          $ref: '#/components/schemas/HomepageViewAsResult'
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
+    HomepageConfig:
+      properties:
+        rows:
+          items:
+            $ref: '#/components/schemas/HomepageRow'
+          type: array
+        version:
+          type: number
+          enum:
+          - 1
+      required:
+      - rows
+      - version
+      type: object
+    UpdateAnnouncementRequest:
+      properties:
+        publishNow:
+          type: boolean
+          description: 'Unpublished only: publish immediately (fires the pending Slack
+
+            notification, cancels any schedule). Cannot combine with
+
+            `scheduledPublishAt`.'
+        scheduledPublishAt:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: 'Unpublished only: set a future UTC instant to schedule (or reschedule)
+
+            automatic publishing, null to unschedule back to a plain draft.'
+        slackChannelId:
+          type:
+          - string
+          - 'null'
+          description: 'Only drafts: set to retarget the Slack notification, null to cancel it'
+        pinned:
+          type: boolean
+        category:
+          allOf:
+          - $ref: '#/components/schemas/AnnouncementCategory'
+        body:
+          type:
+          - string
+          - 'null'
+        title:
+          type: string
+      type: object
+      description: 'PATCH semantics: omitted fields are left unchanged'
+    SkippableHomepageRecommendedActionKey:
+      type: string
+      enum:
+      - add-semantic-layer
+      - connect-source-control
+      - connect-slack
+    HomepageQuickActionTarget:
+      anyOf:
+      - properties:
+          type:
+            type: string
+            enum:
+            - ask-ai
+        required:
+        - type
+        type: object
+      - properties:
+          type:
+            type: string
+            enum:
+            - run-query
+        required:
+        - type
+        type: object
+      - properties:
+          type:
+            type: string
+            enum:
+            - browse-dashboards
+        required:
+        - type
+        type: object
+      - properties:
+          type:
+            type: string
+            enum:
+            - browse-spaces
+        required:
+        - type
+        type: object
+      - properties:
+          label:
+            type: string
+          dashboardUuid:
+            type: string
+          type:
+            type: string
+            enum:
+            - dashboard
+        required:
+        - label
+        - dashboardUuid
+        - type
+        type: object
+      - properties:
+          label:
+            type: string
+          spaceUuid:
+            type: string
+          type:
+            type: string
+            enum:
+            - space
+        required:
+        - label
+        - spaceUuid
+        - type
+        type: object
+      - properties:
+          type:
+            type: string
+            enum:
+            - my-space
+        required:
+        - type
+        type: object
+    HomepageCollectionSource:
+      type: string
+      enum:
+      - manual
+      - most-viewed
+      - recently-updated
+      - pinned
+      - favorites
+      - recently-viewed
+      - verified
+      description: 'Where a collection block''s items come from.
+
+
+        `manual` reads the block''s own `items`. Every other source is a live rule
+
+        resolved per viewer at render time — which is the point: a snapshot of
+
+        "most viewed" is stale the week after it''s taken, and a frozen copy of the
+
+        pin list stops tracking pins the moment it''s published.
+
+
+        `favorites` and `recently-viewed` are per-viewer; the rest are project-wide.'
+    UpdateOrganizationHomepageSettings:
+      properties:
+        opening:
+          allOf:
+          - $ref: '#/components/schemas/HomepageOpening'
+        enabled:
+          type: boolean
+      required:
+      - opening
+      - enabled
+      type: object
+    ApiProjectHomepagesResponse:
+      $ref: '#/components/schemas/ApiSuccess_ProjectHomepage-Array_'
+    HomepageRecommendedActionKey:
+      type: string
+      enum:
+      - connect-warehouse
+      - add-semantic-layer
+      - connect-source-control
+      - connect-slack
+    ApiHomepageAssignmentsResponse:
+      $ref: '#/components/schemas/ApiSuccess_HomepageAssignment-Array_'
+    PublishProjectHomepageRequest:
+      properties:
+        audience:
+          $ref: '#/components/schemas/HomepageAudience'
+      required:
+      - audience
+      type: object
+    ProjectAnnouncement:
+      properties:
+        updatedAt:
+          type: string
+          format: date-time
+        createdAt:
+          type: string
+          format: date-time
+        authorName:
+          type:
+          - string
+          - 'null'
+        createdByUserUuid:
+          type:
+          - string
+          - 'null'
+        scheduledPublishAt:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: 'When set (and unpublished), the announcement publishes automatically at
+
+            this UTC instant. Null once published or for plain drafts.'
+        pendingSlackChannelId:
+          type:
+          - string
+          - 'null'
+          description: 'Slack channel the announcement will notify when it publishes. Always
+
+            null once published (consumed) — only drafts carry a value, and drafts
+
+            are only visible to users who can manage announcements.'
+        published:
+          type: boolean
+        pinned:
+          type: boolean
+        category:
+          allOf:
+          - $ref: '#/components/schemas/AnnouncementCategory'
+        body:
+          type:
+          - string
+          - 'null'
+        title:
+          type: string
+        projectUuid:
+          type: string
+        announcementUuid:
+          type: string
+      required:
+      - updatedAt
+      - createdAt
+      - authorName
+      - createdByUserUuid
+      - scheduledPublishAt
+      - pendingSlackChannelId
+      - published
+      - pinned
+      - category
+      - body
+      - title
+      - projectUuid
+      - announcementUuid
+      type: object
+    ApiHomepageLinkMetadataResponse:
+      $ref: '#/components/schemas/ApiSuccess_HomepageLinkMetadata_'
+    HomepageOpening:
+      type: string
+      enum:
+      - ask-first
+      - content-first
+      description: 'Which hero opens the homepage: the Ask AI composer or greeting + quick
+
+        actions. An admin''s layout decision, independent of whether AI is licensed.'
+    CreateProjectHomepageRequest:
+      properties:
+        duplicateFrom:
+          type: string
+        name:
+          type: string
+      required:
+      - name
+      type: object
+    HomepageRow:
+      properties:
+        blocks:
+          items:
+            $ref: '#/components/schemas/HomepageBlock'
+          type: array
+        id:
+          type: string
+      required:
+      - blocks
+      - id
+      type: object
+    UpdateHomepageGroupPrioritiesRequest:
+      properties:
+        groupUuids:
+          items:
+            type: string
+          type: array
+          description: Group uuids in priority order — first wins for multi-group users
+      required:
+      - groupUuids
+      type: object
+    ApiSuccess_ResolvedHomepage-or-null_:
+      properties:
+        results:
+          allOf:
+          - $ref: '#/components/schemas/ResolvedHomepage'
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
+    ApiAnnouncementImageUploadResponse:
+      $ref: '#/components/schemas/ApiSuccess__url-string__'
+    OrganizationHomepageSettings:
+      properties:
+        opening:
+          allOf:
+          - $ref: '#/components/schemas/HomepageOpening'
+        enabled:
+          type: boolean
+        organizationUuid:
+          type: string
+      required:
+      - opening
+      - enabled
+      - organizationUuid
+      type: object
+      description: 'Org-wide homepage v2 state. `enabled` turns the new homepage on for every
+
+        project in the organization; the commercial flag remains as a kill-switch.
+
+        `opening: null` means "auto" — AI availability decides, which is the legacy
+
+        behaviour for orgs enabled via the flag before this setting existed.'
+    ApiSuccess_ProjectHomepage-or-null_:
+      properties:
+        results:
+          allOf:
+          - $ref: '#/components/schemas/ProjectHomepage'
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
+    HomepageCtaTheme:
+      type: string
+      enum:
+      - brand
+      - accent
+      - dark
+      - neutral
+      - custom
+      description: 'Semantic theme tokens, resolved at render from the org''s brand colors —
+
+        a rebrand restyles every CTA without touching stored configs. `custom`
+
+        reads the block''s own `customColor`.'
+    HomepageCtaAlign:
+      type: string
+      enum:
+      - left
+      - center
+      - right
+      description: Where a bare (title-less) CTA button sits in its row.
+    ApiSuccess_HomepageAssignment-Array_:
+      properties:
+        results:
+          items:
+            $ref: '#/components/schemas/HomepageAssignment'
+          type: array
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
+    PublishedProjectHomepage:
+      properties:
+        config:
+          $ref: '#/components/schemas/HomepageConfig'
+        name:
+          type: string
+        homepageUuid:
+          type: string
+      required:
+      - config
+      - name
+      - homepageUuid
+      type: object
+    RecentContentType:
+      type: string
+      enum:
+      - chart
+      - dashboard
+      - data_app
+    ApiSuccess_OrganizationHomepageSettings_:
+      properties:
+        results:
+          $ref: '#/components/schemas/OrganizationHomepageSettings'
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
+    HomepageLinkMetadata:
+      properties:
+        imageUrl:
+          type:
+          - string
+          - 'null'
+        description:
+          type:
+          - string
+          - 'null'
+        title:
+          type:
+          - string
+          - 'null'
+        kind:
+          $ref: '#/components/schemas/HomepageResourceKind'
+      required:
+      - imageUrl
+      - description
+      - title
+      - kind
+      type: object
+      description: Detected metadata for a pasted resource URL (Claude Artifact / YouTube).
+    SkipHomepageRecommendedActionRequest:
+      properties:
+        actionKey:
+          $ref: '#/components/schemas/HomepageRecommendedActionKey'
+      required:
+      - actionKey
+      type: object
+    ProjectMemberRole:
+      enum:
+      - viewer
+      - interactive_viewer
+      - editor
+      - developer
+      - admin
+      type: string
+    HomepageQuickActionsBlock:
+      properties:
+        config:
+          properties:
+            actions:
+              items:
+                $ref: '#/components/schemas/HomepageQuickAction'
+              type: array
+          required:
+          - actions
+          type: object
+        type:
+          type: string
+          enum:
+          - quick-actions
+        id:
+          type: string
+      required:
+      - config
+      - type
+      - id
+      type: object
+    RecentContentItem:
+      properties:
+        viewedAt:
+          type: string
+          format: date-time
+        uuid:
+          type: string
+        contentType:
+          $ref: '#/components/schemas/RecentContentType'
+      required:
+      - viewedAt
+      - uuid
+      - contentType
+      type: object
+    ApiProjectHomepageOrNullResponse:
+      $ref: '#/components/schemas/ApiSuccess_ProjectHomepage-or-null_'
+    ProjectHomepage:
+      properties:
+        updatedAt:
+          type: string
+          format: date-time
+        createdAt:
+          type: string
+          format: date-time
+        createdByUserUuid:
+          type:
+          - string
+          - 'null'
+        isDefault:
+          type: boolean
+        publishedConfig:
+          allOf:
+          - $ref: '#/components/schemas/HomepageConfig'
+        draftConfig:
+          $ref: '#/components/schemas/HomepageConfig'
+        name:
+          type: string
+        projectUuid:
+          type: string
+        homepageUuid:
+          type: string
+      required:
+      - updatedAt
+      - createdAt
+      - createdByUserUuid
+      - isDefault
+      - publishedConfig
+      - draftConfig
+      - name
+      - projectUuid
+      - homepageUuid
+      type: object
+    ApiAnnouncementResponse:
+      $ref: '#/components/schemas/ApiSuccess_ProjectAnnouncement_'
+    ApiSuccess_HomepageRecentlyViewedItem-Array_:
+      properties:
+        results:
+          items:
+            $ref: '#/components/schemas/HomepageRecentlyViewedItem'
+          type: array
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
+    AnnouncementsPage:
+      properties:
+        totalCount:
+          type: number
+          format: double
+        items:
+          items:
+            $ref: '#/components/schemas/ProjectAnnouncement'
+          type: array
+      required:
+      - totalCount
+      - items
+      type: object
+    HomepageResourcesBlock:
+      properties:
+        config:
+          properties:
+            showDescriptions:
+              type: boolean
+            layout:
+              $ref: '#/components/schemas/HomepageResourcesLayout'
+            items:
+              items:
+                $ref: '#/components/schemas/HomepageResourceItem'
+              type: array
+            title:
+              type: string
+          required:
+          - items
+          - title
+          type: object
+        type:
+          type: string
+          enum:
+          - resources
+        id:
+          type: string
+      required:
+      - config
+      - type
+      - id
+      type: object
+    ApiRecentlyViewedResponse:
+      $ref: '#/components/schemas/ApiSuccess_HomepageRecentlyViewedItem-Array_'
+    HomepageResourceKind:
+      type: string
+      enum:
+      - video
+      - doc
+      - link
+      - claude
+      - youtube
+      - data-app
+    HomepageMetricsBlock:
+      properties:
+        config:
+          properties:
+            items:
+              items:
+                $ref: '#/components/schemas/HomepageMetricRef'
+              type: array
+            title:
+              type: string
+          required:
+          - items
+          - title
+          type: object
+        type:
+          type: string
+          enum:
+          - metrics
+        id:
+          type: string
+      required:
+      - config
+      - type
+      - id
+      type: object
+    HomepageCollectionBlock:
+      properties:
+        config:
+          properties:
+            contentTypes:
+              items:
+                type: string
+                enum:
+                - chart
+                - dashboard
+                - space
+                - data_app
+                - document
+              type: array
+              description: 'Narrows live sources to these content types. Ignored for `manual`
+
+                (hand-picking is already the filter) and when absent or empty.'
+            layout:
+              $ref: '#/components/schemas/HomepageContentLayout'
+            limit:
+              type: number
+              format: double
+              description: How many items to show. Absent means DEFAULT_COLLECTION_LIMIT.
+            verifiedOnly:
+              type: boolean
+              description: Applies to every source, including manual.
+            source:
+              $ref: '#/components/schemas/HomepageCollectionSource'
+            items:
+              items:
+                $ref: '#/components/schemas/HomepageCollectionItemRef'
+              type: array
+              description: 'The hand-picked items. Read only when `source` is `manual`, which
+
+                is what an absent `source` means — every config stored before
+
+                sources existed is a manual collection.'
+            title:
+              type: string
+          required:
+          - items
+          - title
+          type: object
+        type:
+          type: string
+          enum:
+          - collection
+        id:
+          type: string
+      required:
+      - config
+      - type
+      - id
+      type: object
+    HomepageAudience:
+      anyOf:
+      - properties:
+          type:
+            type: string
+            enum:
+            - everyone
+        required:
+        - type
+        type: object
+      - properties:
+          groupUuids:
+            items:
+              type: string
+            type: array
+          type:
+            type: string
+            enum:
+            - groups
+        required:
+        - groupUuids
+        - type
+        type: object
+      - properties:
+          roles:
+            items:
+              $ref: '#/components/schemas/ProjectMemberRole'
+            type: array
+          type:
+            type: string
+            enum:
+            - roles
+        required:
+        - roles
+        - type
+        type: object
+    HomepageContentLayout:
+      type: string
+      enum:
+      - card
+      - list
+      description: 'Shared display vocabulary for content-listing blocks: media-rich cards, or
+
+        a compact mode whose geometry (tile columns vs single-column rows) resolves
+
+        from the block''s width rather than being a third admin choice.'
+    HomepageBlock:
+      anyOf:
+      - $ref: '#/components/schemas/HomepageMarkdownBlock'
+      - $ref: '#/components/schemas/HomepageAskAiHeroBlock'
+      - $ref: '#/components/schemas/HomepageGreetingBlock'
+      - $ref: '#/components/schemas/HomepageCollectionBlock'
+      - $ref: '#/components/schemas/HomepageResourcesBlock'
+      - $ref: '#/components/schemas/HomepageAnnouncementsBlock'
+      - $ref: '#/components/schemas/HomepageMetricsBlock'
+      - $ref: '#/components/schemas/HomepageQuickActionsBlock'
+      - $ref: '#/components/schemas/HomepageCtaBlock'
+      - $ref: '#/components/schemas/HomepageFavoritesBlock'
+      - $ref: '#/components/schemas/HomepageRecentBlock'
+    HomepageResolutionSource:
+      anyOf:
+      - properties:
+          priority:
+            type: number
+            format: double
+          groupUuid:
+            type: string
+          type:
+            type: string
+            enum:
+            - group
+        required:
+        - priority
+        - groupUuid
+        - type
+        type: object
+      - properties:
+          role:
+            $ref: '#/components/schemas/ProjectMemberRole'
+          type:
+            type: string
+            enum:
+            - role
+        required:
+        - role
+        - type
+        type: object
+      - properties:
+          type:
+            type: string
+            enum:
+            - default
+        required:
+        - type
+        type: object
+    HomepageAnnouncementsBlock:
+      properties:
+        config:
+          properties:
+            collapseAfterFirst:
+              type: boolean
+            title:
+              type: string
+          required:
+          - title
+          type: object
+          description: Feed reference — items live in `project_announcements`.
+        type:
+          type: string
+          enum:
+          - announcements
+        id:
+          type: string
+      required:
+      - config
+      - type
+      - id
+      type: object
+    HomepageMetricRef:
+      properties:
+        label:
+          type: string
+        metricName:
+          type: string
+        tableName:
+          type: string
+      required:
+      - label
+      - metricName
+      - tableName
+      type: object
+    CreateAnnouncementRequest:
+      properties:
+        scheduledPublishAt:
+          type: string
+          format: date-time
+          description: 'Future UTC instant at which the announcement publishes automatically
+
+            (Slack notification fires then). Mutually exclusive with `publishNow`.'
+        publishNow:
+          type: boolean
+          description: 'When true the announcement goes live immediately and its Slack
+
+            notification (if any) fires now, instead of waiting for the next
+
+            homepage publish. Used when posting from the published homepage.
+
+            Mutually exclusive with `scheduledPublishAt`.'
+        slackChannelId:
+          type:
+          - string
+          - 'null'
+          description: 'Transient (not persisted): when set, publishing posts a notification to
+
+            this Slack channel. Requires the org to have Slack installed.'
+        category:
+          allOf:
+          - $ref: '#/components/schemas/AnnouncementCategory'
+        body:
+          type:
+          - string
+          - 'null'
+        title:
+          type: string
+      required:
+      - category
+      - body
+      - title
+      type: object
+    HomepageResourcesLayout:
+      $ref: '#/components/schemas/HomepageContentLayout'
+    ApiProjectHomepageResponse:
+      $ref: '#/components/schemas/ApiSuccess_ProjectHomepage_'
+    ApiHomepageRecommendedActionSkipsResponse:
+      $ref: '#/components/schemas/ApiSuccess_SkippableHomepageRecommendedActionKey-Array_'
+    AnnouncementCategory:
+      description: 'Curated announcement categories a data team uses to signal intent to
+
+        business users. Fixed set (not user-managed) — each maps to a label + colour
+
+        in `ANNOUNCEMENT_CATEGORY_META`.'
+      enum:
+      - launch
+      - update
+      - heads_up
+      type: string
+    HomepageRecentlyViewedItem:
+      $ref: '#/components/schemas/RecentContentItem'
+    ApiSuccess_ProjectHomepage_:
+      properties:
+        results:
+          $ref: '#/components/schemas/ProjectHomepage'
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
+    ApiResolvedHomepageResponse:
+      $ref: '#/components/schemas/ApiSuccess_ResolvedHomepage-or-null_'
+    ApiSuccess_HomepageLinkMetadata_:
+      properties:
+        results:
+          $ref: '#/components/schemas/HomepageLinkMetadata'
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
+    ApiOrganizationHomepageSettingsResponse:
+      $ref: '#/components/schemas/ApiSuccess_OrganizationHomepageSettings_'
+    ApiAnnouncementsResponse:
+      $ref: '#/components/schemas/ApiSuccess_AnnouncementsPage_'
+    ApiSuccess__url-string__:
+      properties:
+        results:
+          properties:
+            url:
+              type: string
+          required:
+          - url
+          type: object
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
+    HomepageResourceItem:
+      properties:
+        appUuid:
+          type: string
+        imageUrl:
+          type: string
+        description:
+          type: string
+        kind:
+          $ref: '#/components/schemas/HomepageResourceKind'
+        url:
+          type: string
+        title:
+          type: string
+      required:
+      - kind
+      - url
+      - title
+      type: object
+    ApiSuccess_SkippableHomepageRecommendedActionKey-Array_:
+      properties:
+        results:
+          items:
+            $ref: '#/components/schemas/SkippableHomepageRecommendedActionKey'
+          type: array
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
+    HomepageViewAsReason:
+      $ref: '#/components/schemas/HomepageResolutionSource'
+    HomepageAssignment:
+      properties:
+        priority:
+          type: number
+          format: double
+        role:
+          allOf:
+          - $ref: '#/components/schemas/ProjectMemberRole'
+        groupName:
+          type:
+          - string
+          - 'null'
+        groupUuid:
+          type:
+          - string
+          - 'null'
+        targetType:
+          type: string
+          enum:
+          - group
+          - role
+        homepageName:
+          type: string
+        homepageUuid:
+          type: string
+        assignmentUuid:
+          type: string
+      required:
+      - priority
+      - role
+      - groupName
+      - groupUuid
+      - targetType
+      - homepageName
+      - homepageUuid
+      - assignmentUuid
+      type: object
+    HomepageGreetingBlock:
+      properties:
+        config:
+          properties:
+            density:
+              $ref: '#/components/schemas/HomepageHeroDensity'
+            subtitle:
+              type: string
+          required:
+          - subtitle
+          type: object
+        type:
+          type: string
+          enum:
+          - greeting
+        id:
+          type: string
+      required:
+      - config
+      - type
+      - id
+      type: object
+      description: 'Day-part greeting ("Good afternoon, Ada") with an optional line under it.
+
+        The AI hero has its own built-in greeting; this is the standalone one for
+
+        pages that don''t lead with a composer.'
+    HomepageCtaBackground:
+      type: string
+      enum:
+      - none
+      - card
+      - theme
+      description: 'The block''s container: invisible (just the button on the page), a neutral
+
+        card, or a surface painted with the theme (the button then inverts it).'
+    UpdateProjectHomepageDraftRequest:
+      properties:
+        baseUpdatedAt:
+          type: string
+          format: date-time
+          description: 'Compare-and-set token: the updatedAt the client based its edit on'
+        draftConfig:
+          $ref: '#/components/schemas/HomepageConfig'
+        name:
+          type: string
+      required:
+      - baseUpdatedAt
+      - draftConfig
+      type: object
+    HomepageViewAsResult:
+      properties:
+        reason:
+          allOf:
+          - $ref: '#/components/schemas/HomepageViewAsReason'
+        resolved:
+          allOf:
+          - $ref: '#/components/schemas/ResolvedHomepage'
+      required:
+      - reason
+      - resolved
+      type: object
+    ApiSuccess_ProjectAnnouncement_:
+      properties:
+        results:
+          $ref: '#/components/schemas/ProjectAnnouncement'
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
+    HomepageQuickAction:
+      allOf:
+      - $ref: '#/components/schemas/HomepageQuickActionTarget'
+      - properties:
+          primary:
+            type: boolean
+        type: object
+      description: 'Any quick action can be promoted to the row''s primary one, which renders
+
+        as the same chip inverted. Optional so older configs still load.'
+    UUID:
+      type: string
+      format: uuid
+      description: 'Stringified UUIDv4.
+
+        See [RFC 4112](https://tools.ietf.org/html/rfc4122)'
+      pattern: '[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-4[0-9A-Fa-f]{3}-[89ABab][0-9A-Fa-f]{3}-[0-9A-Fa-f]{12}'
+    ApiErrorPayload:
+      properties:
+        error:
+          properties:
+            data:
+              $ref: '#/components/schemas/AnyType'
+              description: Optional data containing details of the error
+            message:
+              type: string
+              description: A friendly message summarising the error
+            name:
+              type: string
+              description: Unique name for the type of error
+            statusCode:
+              type: number
+              format: integer
+              description: HTTP status code
+          required:
+          - name
+          - statusCode
+          type: object
+        status:
+          type: string
+          enum:
+          - error
+      required:
+      - error
+      - status
+      type: object
+      description: 'The Error object is returned from the api any time there is an error.
+
+        The message contains'
+    HomepageCtaTarget:
+      anyOf:
+      - $ref: '#/components/schemas/HomepageQuickActionTarget'
+      - properties:
+          url:
+            type: string
+          type:
+            type: string
+            enum:
+            - link
+        required:
+        - url
+        - type
+        type: object
+      description: 'Where the CTA button leads: the quick-action vocabulary plus a free URL.'
+    ResolvedHomepage:
+      properties:
+        homepage:
+          $ref: '#/components/schemas/PublishedProjectHomepage'
+        type:
+          type: string
+          enum:
+          - homepage
+      required:
+      - homepage
+      - type
+      type: object
+    HomepageHeroDensity:
+      type: string
+      enum:
+      - full
+      - compact
+      description: 'How much of the opening view the hero claims. `full` centres it in the
+
+        viewport; `compact` gives it only the height of its own content. Absent in
+
+        stored configs means "let the layout decide" — see resolveHeroDensity.'
+    ApiSuccess_AnnouncementsPage_:
+      properties:
+        results:
+          $ref: '#/components/schemas/AnnouncementsPage'
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
+    HomepageCtaBlock:
+      properties:
+        config:
+          properties:
+            align:
+              $ref: '#/components/schemas/HomepageCtaAlign'
+            background:
+              $ref: '#/components/schemas/HomepageCtaBackground'
+            customColor:
+              type: string
+              description: Hex color used when `theme` is `custom`.
+            theme:
+              $ref: '#/components/schemas/HomepageCtaTheme'
+            target:
+              $ref: '#/components/schemas/HomepageCtaTarget'
+            buttonLabel:
+              type: string
+            description:
+              type: string
+            title:
+              type: string
+              description: 'Optional: without it the CTA is just its button.'
+          required:
+          - target
+          - buttonLabel
+          type: object
+        type:
+          type: string
+          enum:
+          - cta
+        id:
+          type: string
+      required:
+      - config
+      - type
+      - id
+      type: object
+    HomepageCollectionItemRef:
+      properties:
+        uuid:
+          type: string
+        contentType:
+          type: string
+          enum:
+          - chart
+          - dashboard
+          - space
+          - data_app
+          - document
+      required:
+      - uuid
+      - contentType
+      type: object
+    HomepageFavoritesBlock:
+      properties:
+        config:
+          properties:
+            title:
+              type: string
+          required:
+          - title
+          type: object
+        type:
+          type: string
+          enum:
+          - favorites
+        id:
+          type: string
+      required:
+      - config
+      - type
+      - id
+      type: object
+    ApiHomepageViewAsResponse:
+      $ref: '#/components/schemas/ApiSuccess_HomepageViewAsResult_'
+  securitySchemes:
+    session_cookie:
+      type: apiKey
+      in: cookie
+      name: connect.sid
+    api_key:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: Value should be 'ApiKey <your key>'

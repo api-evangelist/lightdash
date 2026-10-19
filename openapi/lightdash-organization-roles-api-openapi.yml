@@ -1,7 +1,7 @@
 openapi: 3.2.0
 info:
   title: Lightdash Organization Roles API
-  version: 0.3156.1
+  version: 2.616.2
   description: 'Open API documentation for all public Lightdash API endpoints. # Authentication Before you get started, you might need to create a Personal Access Token to authenticate via the API. You can create a token by following this guide: https://docs.lightdash.com/references/personal_tokens'
   license:
     name: MIT
@@ -42,7 +42,7 @@ paths:
         name: orgUuid
         required: true
         schema:
-          type: string
+          $ref: '#/components/schemas/UUID'
       - in: query
         name: load
         required: false
@@ -79,12 +79,12 @@ paths:
         name: orgUuid
         required: true
         schema:
-          type: string
+          $ref: '#/components/schemas/UUID'
       - in: path
         name: roleUuid
         required: true
         schema:
-          type: string
+          $ref: '#/components/schemas/UUID'
   /api/v2/orgs/{orgUuid}/roles/assignments:
     get:
       operationId: GetOrganizationRoleAssignments
@@ -101,7 +101,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiErrorPayload'
-      description: List organization role assignments (system roles only)
       summary: List organization role assignments
       tags:
       - Organization Roles
@@ -111,7 +110,7 @@ paths:
         name: orgUuid
         required: true
         schema:
-          type: string
+          $ref: '#/components/schemas/UUID'
   /api/v2/orgs/{orgUuid}/roles/assignments/user/{userId}:
     post:
       operationId: UpsertOrganizationUserRoleAssignment
@@ -128,7 +127,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiErrorPayload'
-      description: Assign system role to user at organization level
+      description: Assign system or organization-level custom role to user at organization level
       summary: Assign organization role to user
       tags:
       - Organization Roles
@@ -138,12 +137,12 @@ paths:
         name: orgUuid
         required: true
         schema:
-          type: string
+          $ref: '#/components/schemas/UUID'
       - in: path
         name: userId
         required: true
         schema:
-          type: string
+          $ref: '#/components/schemas/UUID'
       requestBody:
         required: true
         content:
@@ -155,6 +154,81 @@ paths:
               required:
               - roleId
               type: object
+  /api/v2/orgs/{orgUuid}/roles/assignments/user/{userId}/set:
+    get:
+      operationId: GetOrganizationUserRoleSet
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiOrganizationRoleSetResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: 'Get the complete role set (system role plus custom roles) a user holds in the organization.
+
+        Requires custom roles (Enterprise).'
+      summary: Get organization role set for user
+      tags:
+      - Organization Roles
+      security: []
+      parameters:
+      - in: path
+        name: orgUuid
+        required: true
+        schema:
+          $ref: '#/components/schemas/UUID'
+      - in: path
+        name: userId
+        required: true
+        schema:
+          $ref: '#/components/schemas/UUID'
+    put:
+      operationId: ReplaceOrganizationUserRoleSet
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiOrganizationRoleSetResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: 'Atomically replace the complete role set a user holds in the organization.
+
+        At most one system role plus any number of custom roles; the set must not be empty.
+
+        Requires custom roles (Enterprise).'
+      summary: Replace organization role set for user
+      tags:
+      - Organization Roles
+      security: []
+      parameters:
+      - in: path
+        name: orgUuid
+        required: true
+        schema:
+          $ref: '#/components/schemas/UUID'
+      - in: path
+        name: userId
+        required: true
+        schema:
+          $ref: '#/components/schemas/UUID'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrganizationRoleSet'
   /api/v2/orgs/{orgUuid}/roles/{roleId}/duplicate:
     post:
       operationId: DuplicateRole
@@ -181,7 +255,7 @@ paths:
         name: orgUuid
         required: true
         schema:
-          type: string
+          $ref: '#/components/schemas/UUID'
       - in: path
         name: roleId
         required: true
@@ -195,86 +269,20 @@ paths:
               $ref: '#/components/schemas/CreateRole'
 components:
   schemas:
-    ApiRoleWithScopesResponse:
+    CreateRole:
       properties:
-        results:
-          $ref: '#/components/schemas/RoleWithScopes'
-        status:
-          type: string
-          enum:
-          - ok
-      required:
-      - results
-      - status
-      type: object
-    ApiRoleAssignmentListResponse:
-      properties:
-        results:
+        scopes:
           items:
-            $ref: '#/components/schemas/RoleAssignment'
+            type: string
           type: array
-        status:
-          type: string
-          enum:
-          - ok
-      required:
-      - results
-      - status
-      type: object
-    Role:
-      properties:
-        updatedAt:
-          type:
-          - string
-          - 'null'
-          format: date-time
-        createdAt:
-          type:
-          - string
-          - 'null'
-          format: date-time
-        createdBy:
-          type:
-          - string
-          - 'null'
-        ownerType:
-          type: string
-          enum:
-          - user
-          - system
-        organizationUuid:
-          type:
-          - string
-          - 'null'
+        level:
+          $ref: '#/components/schemas/RoleLevel'
         description:
-          type:
-          - string
-          - 'null'
+          type: string
         name:
           type: string
-        roleUuid:
-          type: string
       required:
-      - updatedAt
-      - createdAt
-      - createdBy
-      - ownerType
-      - organizationUuid
-      - description
       - name
-      - roleUuid
-      type: object
-    ApiRoleAssignmentResponse:
-      properties:
-        results:
-          $ref: '#/components/schemas/RoleAssignment'
-        status:
-          type: string
-          enum:
-          - ok
-      required:
-      - results
-      - status
       type: object
     RoleWithScopes:
       allOf:
@@ -287,39 +295,10 @@ components:
         required:
         - scopes
         type: object
-    AnyType:
-      description: 'This AnyType is an alias for any
-
-        The goal is to make it easier to identify any type in the codebase
-
-        without having to eslint-disable all the time
-
-        These are only used on legacy `any` types, don''t use it for new types.
-
-        This is added on a separate file to avoid circular dependencies.'
-    CreateRole:
-      properties:
-        scopes:
-          items:
-            type: string
-          type: array
-        description:
-          type: string
-        name:
-          type: string
-      required:
-      - name
-      type: object
-    ApiGetRolesResponse:
+    ApiOrganizationRoleSetResponse:
       properties:
         results:
-          anyOf:
-          - items:
-              $ref: '#/components/schemas/Role'
-            type: array
-          - items:
-              $ref: '#/components/schemas/RoleWithScopes'
-            type: array
+          $ref: '#/components/schemas/OrganizationRoleSet'
         status:
           type: string
           enum:
@@ -330,6 +309,9 @@ components:
       type: object
     RoleAssignment:
       properties:
+        hasMultipleRoles:
+          type: boolean
+          description: True when the assignee holds extra custom roles beyond `roleId` (see role sets).
         updatedAt:
           type: string
           format: date-time
@@ -368,6 +350,81 @@ components:
       - roleName
       - roleId
       type: object
+    AnyType:
+      description: 'This AnyType is an alias for any
+
+        The goal is to make it easier to identify any type in the codebase
+
+        without having to eslint-disable all the time
+
+        These are only used on legacy `any` types, don''t use it for new types.
+
+        This is added on a separate file to avoid circular dependencies.'
+    ApiGetRolesResponse:
+      properties:
+        results:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/Role'
+            type: array
+          - items:
+              $ref: '#/components/schemas/RoleWithScopes'
+            type: array
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
+    OrganizationMemberRole:
+      enum:
+      - member
+      - viewer
+      - interactive_viewer
+      - editor
+      - developer
+      - admin
+      type: string
+    UUID:
+      type: string
+      format: uuid
+      description: 'Stringified UUIDv4.
+
+        See [RFC 4112](https://tools.ietf.org/html/rfc4122)'
+      pattern: '[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-4[0-9A-Fa-f]{3}-[89ABab][0-9A-Fa-f]{3}-[0-9A-Fa-f]{12}'
+    ApiRoleAssignmentListResponse:
+      properties:
+        results:
+          items:
+            $ref: '#/components/schemas/RoleAssignment'
+          type: array
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
+    RoleLevel:
+      type: string
+      enum:
+      - project
+      - organization
+    ApiRoleWithScopesResponse:
+      properties:
+        results:
+          $ref: '#/components/schemas/RoleWithScopes'
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
     ApiErrorPayload:
       properties:
         error:
@@ -400,6 +457,80 @@ components:
       description: 'The Error object is returned from the api any time there is an error.
 
         The message contains'
+    Role:
+      properties:
+        updatedAt:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        createdAt:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        createdBy:
+          type:
+          - string
+          - 'null'
+        ownerType:
+          type: string
+          enum:
+          - user
+          - system
+        organizationUuid:
+          type:
+          - string
+          - 'null'
+        level:
+          $ref: '#/components/schemas/RoleLevel'
+        description:
+          type:
+          - string
+          - 'null'
+        name:
+          type: string
+        roleUuid:
+          type: string
+      required:
+      - updatedAt
+      - createdAt
+      - createdBy
+      - ownerType
+      - organizationUuid
+      - level
+      - description
+      - name
+      - roleUuid
+      type: object
+    OrganizationRoleSet:
+      properties:
+        customRoleUuids:
+          items:
+            type: string
+          type: array
+        systemRole:
+          allOf:
+          - $ref: '#/components/schemas/OrganizationMemberRole'
+      required:
+      - customRoleUuids
+      - systemRole
+      type: object
+      description: 'Complete set of roles held at one level: at most one system role plus any
+
+        number of custom roles. Permissions are the union of all held roles.'
+    ApiRoleAssignmentResponse:
+      properties:
+        results:
+          $ref: '#/components/schemas/RoleAssignment'
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
   securitySchemes:
     session_cookie:
       type: apiKey

@@ -1,7 +1,7 @@
 openapi: 3.2.0
 info:
   title: Lightdash User attributes API
-  version: 0.3156.1
+  version: 2.616.2
   description: 'Open API documentation for all public Lightdash API endpoints. # Authentication Before you get started, you might need to create a Personal Access Token to authenticate via the API. You can create a token by following this guide: https://docs.lightdash.com/references/personal_tokens'
   license:
     name: MIT
@@ -14,6 +14,65 @@ servers:
 tags:
 - name: User Attributes
 paths:
+  /api/v2/orgs/{orgUuid}/code/userAttributes:
+    get:
+      operationId: GetCodeUserAttributes
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiUserAttributeAsCodeListResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      tags:
+      - User Attributes
+      security: []
+      parameters:
+      - in: path
+        name: orgUuid
+        required: true
+        schema:
+          type: string
+      summary: Get code user attributes
+      x-summary-source: derived
+    post:
+      operationId: UpsertCodeUserAttribute
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiUserAttributeAsCodeUpsertResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      tags:
+      - User Attributes
+      security: []
+      parameters:
+      - in: path
+        name: orgUuid
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserAttributeAsCode'
+      summary: Upsert code user attribute
+      x-summary-source: derived
   /api/v1/org/attributes:
     get:
       operationId: getUserAttributes
@@ -130,35 +189,207 @@ paths:
           type: string
 components:
   schemas:
-    Omit_UserAttributeValue.email_:
-      $ref: '#/components/schemas/Pick_UserAttributeValue.Exclude_keyofUserAttributeValue.email__'
-      description: Construct a type with the properties of T except for those in type K.
-    GroupAttributeValue:
+    AnyType:
+      description: 'This AnyType is an alias for any
+
+        The goal is to make it easier to identify any type in the codebase
+
+        without having to eslint-disable all the time
+
+        These are only used on legacy `any` types, don''t use it for new types.
+
+        This is added on a separate file to avoid circular dependencies.'
+    CreateUserAttributeValue:
       properties:
         value:
           type: string
-        groupUuid:
+          deprecated: true
+        values:
+          items:
+            type: string
+          type: array
+        userUuid:
+          type: string
+      required:
+      - userUuid
+      type: object
+    ApiSuccessEmpty:
+      properties:
+        results: {}
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - status
+      type: object
+    PromotionAction.NO_CHANGES:
+      enum:
+      - no changes
+      type: string
+    PromotionAction.UPDATE:
+      enum:
+      - update
+      type: string
+    PromotionAction.CREATE:
+      enum:
+      - create
+      type: string
+    UserAttributeValue:
+      properties:
+        value:
+          type: string
+          deprecated: true
+        values:
+          items:
+            type: string
+          type: array
+        email:
+          type: string
+        userUuid:
           type: string
       required:
       - value
-      - groupUuid
+      - values
+      - email
+      - userUuid
       type: object
     CreateUserAttribute:
-      allOf:
-      - $ref: '#/components/schemas/Pick_UserAttribute.name-or-description-or-attributeDefault_'
-      - properties:
-          groups:
-            items:
-              $ref: '#/components/schemas/CreateGroupAttributeValue'
+      properties:
+        groups:
+          items:
+            $ref: '#/components/schemas/CreateGroupAttributeValue'
+          type: array
+        users:
+          items:
+            $ref: '#/components/schemas/CreateUserAttributeValue'
+          type: array
+        attributeDefault:
+          anyOf:
+          - items:
+              type: string
             type: array
-          users:
-            items:
-              $ref: '#/components/schemas/CreateUserAttributeValue'
-            type: array
-        required:
-        - groups
-        - users
-        type: object
+          - type: string
+          deprecated: true
+        attributeDefaults:
+          items:
+            type: string
+          type:
+          - array
+          - 'null'
+          description: Canonical default value(s). null/empty means no default.
+        description:
+          type: string
+        name:
+          type: string
+      required:
+      - groups
+      - users
+      - name
+      type: object
+    UserAttributeAsCode:
+      properties:
+        groups:
+          items:
+            properties:
+              values:
+                items:
+                  type: string
+                type: array
+              name:
+                type: string
+            required:
+            - values
+            - name
+            type: object
+          type: array
+        users:
+          items:
+            properties:
+              values:
+                items:
+                  type: string
+                type: array
+              email:
+                type: string
+            required:
+            - values
+            - email
+            type: object
+          type: array
+        attributeDefaults:
+          items:
+            type: string
+          type:
+          - array
+          - 'null'
+        description:
+          type:
+          - string
+          - 'null'
+        name:
+          type: string
+        version:
+          type: number
+          enum:
+          - 1
+      required:
+      - groups
+      - users
+      - attributeDefaults
+      - description
+      - name
+      - version
+      type: object
+    ApiCreateUserAttributeResponse:
+      properties:
+        results:
+          $ref: '#/components/schemas/UserAttribute'
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
+    CreateGroupAttributeValue:
+      properties:
+        value:
+          type: string
+          deprecated: true
+        values:
+          items:
+            type: string
+          type: array
+        groupUuid:
+          type: string
+      required:
+      - groupUuid
+      type: object
+    Record_never.never_:
+      properties: {}
+      type: object
+      description: Construct a type with a set of properties K of type T
+    ApiContentAsCodeUpsertResponse:
+      properties:
+        results:
+          allOf:
+          - properties:
+              action:
+                $ref: '#/components/schemas/ContentAsCodeUpsertAction'
+            required:
+            - action
+            type: object
+          - $ref: '#/components/schemas/Record_never.never_'
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
     ApiUserAttributesResponse:
       properties:
         results:
@@ -173,54 +404,11 @@ components:
       - results
       - status
       type: object
-    UserAttributeValue:
-      properties:
-        value:
-          type: string
-        email:
-          type: string
-        userUuid:
-          type: string
-      required:
-      - value
-      - email
-      - userUuid
-      type: object
-    Pick_UserAttributeValue.Exclude_keyofUserAttributeValue.email__:
-      properties:
-        userUuid:
-          type: string
-        value:
-          type: string
-      required:
-      - userUuid
-      - value
-      type: object
-      description: From T, pick a set of properties whose keys are in the union K
-    ApiCreateUserAttributeResponse:
-      properties:
-        results:
-          $ref: '#/components/schemas/UserAttribute'
-        status:
-          type: string
-          enum:
-          - ok
-      required:
-      - results
-      - status
-      type: object
-    CreateGroupAttributeValue:
-      $ref: '#/components/schemas/GroupAttributeValue'
-    AnyType:
-      description: 'This AnyType is an alias for any
-
-        The goal is to make it easier to identify any type in the codebase
-
-        without having to eslint-disable all the time
-
-        These are only used on legacy `any` types, don''t use it for new types.
-
-        This is added on a separate file to avoid circular dependencies.'
+    ContentAsCodeUpsertAction:
+      anyOf:
+      - $ref: '#/components/schemas/PromotionAction.CREATE'
+      - $ref: '#/components/schemas/PromotionAction.UPDATE'
+      - $ref: '#/components/schemas/PromotionAction.NO_CHANGES'
     ApiErrorPayload:
       properties:
         error:
@@ -253,38 +441,37 @@ components:
       description: 'The Error object is returned from the api any time there is an error.
 
         The message contains'
-    ApiSuccessEmpty:
+    ApiContentAsCodeListResponse__userAttributes-UserAttributeAsCode-Array__:
       properties:
-        results: {}
+        results:
+          properties:
+            userAttributes:
+              items:
+                $ref: '#/components/schemas/UserAttributeAsCode'
+              type: array
+          required:
+          - userAttributes
+          type: object
         status:
           type: string
           enum:
           - ok
       required:
+      - results
       - status
       type: object
-    Pick_UserAttribute.name-or-description-or-attributeDefault_:
-      properties:
-        description:
-          type: string
-        name:
-          type: string
-        attributeDefault:
-          type:
-          - string
-          - 'null'
-      required:
-      - name
-      - attributeDefault
-      type: object
-      description: From T, pick a set of properties whose keys are in the union K
-    CreateUserAttributeValue:
-      $ref: '#/components/schemas/Omit_UserAttributeValue.email_'
     UserAttribute:
       properties:
         attributeDefault:
           type:
           - string
+          - 'null'
+          deprecated: true
+        attributeDefaults:
+          items:
+            type: string
+          type:
+          - array
           - 'null'
         groups:
           items:
@@ -307,6 +494,7 @@ components:
           type: string
       required:
       - attributeDefault
+      - attributeDefaults
       - groups
       - users
       - organizationUuid
@@ -314,6 +502,26 @@ components:
       - createdAt
       - uuid
       type: object
+    GroupAttributeValue:
+      properties:
+        value:
+          type: string
+          deprecated: true
+        values:
+          items:
+            type: string
+          type: array
+        groupUuid:
+          type: string
+      required:
+      - value
+      - values
+      - groupUuid
+      type: object
+    ApiUserAttributeAsCodeListResponse:
+      $ref: '#/components/schemas/ApiContentAsCodeListResponse__userAttributes-UserAttributeAsCode-Array__'
+    ApiUserAttributeAsCodeUpsertResponse:
+      $ref: '#/components/schemas/ApiContentAsCodeUpsertResponse'
   securitySchemes:
     session_cookie:
       type: apiKey

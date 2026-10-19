@@ -1,0 +1,442 @@
+openapi: 3.2.0
+info:
+  title: Lightdash AI API
+  version: 2.616.2
+  description: 'Open API documentation for all public Lightdash API endpoints. # Authentication Before you get started, you might need to create a Personal Access Token to authenticate via the API. You can create a token by following this guide: https://docs.lightdash.com/references/personal_tokens'
+  license:
+    name: MIT
+  contact:
+    name: Lightdash Support
+    email: support@lightdash.com
+    url: https://docs.lightdash.com/help-and-contact/contact/contact_info/
+servers:
+- url: /
+tags:
+- name: AI
+paths:
+  /api/v1/ai/provider-credentials:
+    get:
+      operationId: listAiProviderCredentials
+      responses:
+        '200':
+          description: Retrieved AI provider credentials
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiAiProviderCredentialsResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      security: []
+      parameters: []
+      tags:
+      - AI
+      summary: List ai provider credentials
+      x-summary-source: derived
+    post:
+      operationId: createAiProviderCredential
+      responses:
+        '201':
+          description: Created AI provider credential
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiAiProviderCredentialCreatedResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      security: []
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateAiProviderCredential'
+      tags:
+      - AI
+      summary: Create ai provider credential
+      x-summary-source: derived
+  /api/v1/ai/provider-credentials/adopt-legacy:
+    post:
+      operationId: adoptLegacyAiProviderCredential
+      responses:
+        '200':
+          description: Converted the legacy Bedrock configuration
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiSuccessEmpty'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      summary: Convert a legacy Bedrock configuration into a managed credential Lets an…
+      security: []
+      parameters: []
+      tags:
+      - AI
+  /api/v1/ai/provider-credentials/{credentialUuid}:
+    patch:
+      operationId: updateAiProviderCredential
+      responses:
+        '200':
+          description: Updated AI provider credential
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiSuccessEmpty'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      security: []
+      parameters:
+      - in: path
+        name: credentialUuid
+        required: true
+        schema:
+          $ref: '#/components/schemas/UUID'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateAiProviderCredential'
+      tags:
+      - AI
+      summary: Update ai provider credential
+      x-summary-source: derived
+    put:
+      operationId: replaceAiProviderCredential
+      responses:
+        '200':
+          description: Replaced AI provider credential
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiSuccessEmpty'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      summary: Replace an AI provider credential Full replacement.
+      security: []
+      parameters:
+      - in: path
+        name: credentialUuid
+        required: true
+        schema:
+          $ref: '#/components/schemas/UUID'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateAiProviderCredential'
+      tags:
+      - AI
+    delete:
+      operationId: deleteAiProviderCredential
+      responses:
+        '200':
+          description: Deleted AI provider credential
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiSuccessEmpty'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      security: []
+      parameters:
+      - in: path
+        name: credentialUuid
+        required: true
+        schema:
+          $ref: '#/components/schemas/UUID'
+      tags:
+      - AI
+      summary: Delete ai provider credential
+      x-summary-source: derived
+  /api/v1/ai/provider-credentials/{credentialUuid}/default:
+    put:
+      operationId: setDefaultAiProviderCredential
+      responses:
+        '200':
+          description: Set default AI provider credential
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiSuccessEmpty'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      security: []
+      parameters:
+      - in: path
+        name: credentialUuid
+        required: true
+        schema:
+          $ref: '#/components/schemas/UUID'
+      tags:
+      - AI
+      summary: Set default ai provider credential
+      x-summary-source: derived
+components:
+  schemas:
+    CreateAiProviderCredential:
+      properties:
+        inferenceGeography:
+          $ref: '#/components/schemas/BedrockInferenceGeography'
+        apiKey:
+          type: string
+        allowedModels:
+          items:
+            type: string
+          type: array
+        region:
+          type: string
+        label:
+          type: string
+        provider:
+          $ref: '#/components/schemas/MultiCredentialAiProvider'
+      required:
+      - apiKey
+      - allowedModels
+      - region
+      - label
+      - provider
+      type: object
+    AiProviderCredentialsList:
+      properties:
+        unreadableCredentials:
+          items:
+            $ref: '#/components/schemas/UnreadableAiProviderCredential'
+          type: array
+        legacyBedrock:
+          allOf:
+          - $ref: '#/components/schemas/LegacyBedrockCredential'
+        credentials:
+          items:
+            $ref: '#/components/schemas/AiProviderCredential'
+          type: array
+      required:
+      - unreadableCredentials
+      - legacyBedrock
+      - credentials
+      type: object
+    ApiAiProviderCredentialsResponse:
+      $ref: '#/components/schemas/ApiSuccess_AiProviderCredentialsList_'
+    ApiSuccess__uuid-string__:
+      properties:
+        results:
+          properties:
+            uuid:
+              type: string
+          required:
+          - uuid
+          type: object
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
+    AnyType:
+      description: 'This AnyType is an alias for any
+
+        The goal is to make it easier to identify any type in the codebase
+
+        without having to eslint-disable all the time
+
+        These are only used on legacy `any` types, don''t use it for new types.
+
+        This is added on a separate file to avoid circular dependencies.'
+    MultiCredentialAiProvider:
+      type: string
+      enum:
+      - bedrock
+    LegacyBedrockCredential:
+      properties:
+        apiKeyHint:
+          type: string
+        allowedModels:
+          items:
+            type: string
+          type: array
+        region:
+          type: string
+      required:
+      - apiKeyHint
+      - allowedModels
+      - region
+      type: object
+      description: 'Bedrock config still held in the organization''s legacy single-key blob,
+
+        surfaced so an organization that configured Bedrock before named credentials
+
+        existed does not open the page to an empty list. Adopted as a real
+
+        credential the first time any credential is created.'
+    UnreadableAiProviderCredential:
+      properties:
+        label:
+          type: string
+        uuid:
+          type: string
+      required:
+      - label
+      - uuid
+      type: object
+      description: A credential row whose ciphertext could not be read with the current secret.
+    UUID:
+      type: string
+      format: uuid
+      description: 'Stringified UUIDv4.
+
+        See [RFC 4112](https://tools.ietf.org/html/rfc4122)'
+      pattern: '[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-4[0-9A-Fa-f]{3}-[89ABab][0-9A-Fa-f]{3}-[0-9A-Fa-f]{12}'
+    UpdateAiProviderCredential:
+      properties:
+        inferenceGeography:
+          $ref: '#/components/schemas/BedrockInferenceGeography'
+        apiKey:
+          type: string
+        allowedModels:
+          items:
+            type: string
+          type: array
+        region:
+          type: string
+        label:
+          type: string
+      type: object
+    ApiAiProviderCredentialCreatedResponse:
+      $ref: '#/components/schemas/ApiSuccess__uuid-string__'
+    ApiSuccessEmpty:
+      properties:
+        results: {}
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - status
+      type: object
+    BedrockInferenceGeography:
+      type: string
+      enum:
+      - jp
+      - us
+      - eu
+      - apac
+      - global
+    ApiSuccess_AiProviderCredentialsList_:
+      properties:
+        results:
+          $ref: '#/components/schemas/AiProviderCredentialsList'
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
+    ApiErrorPayload:
+      properties:
+        error:
+          properties:
+            data:
+              $ref: '#/components/schemas/AnyType'
+              description: Optional data containing details of the error
+            message:
+              type: string
+              description: A friendly message summarising the error
+            name:
+              type: string
+              description: Unique name for the type of error
+            statusCode:
+              type: number
+              format: integer
+              description: HTTP status code
+          required:
+          - name
+          - statusCode
+          type: object
+        status:
+          type: string
+          enum:
+          - error
+      required:
+      - error
+      - status
+      type: object
+      description: 'The Error object is returned from the api any time there is an error.
+
+        The message contains'
+    AiProviderCredential:
+      properties:
+        inferenceGeography:
+          $ref: '#/components/schemas/BedrockInferenceGeography'
+          description: Effective geography — the stored choice or the region's default.
+        isDefault:
+          type: boolean
+        apiKeyHint:
+          type: string
+        allowedModels:
+          items:
+            type: string
+          type: array
+        region:
+          type: string
+        label:
+          type: string
+        provider:
+          $ref: '#/components/schemas/MultiCredentialAiProvider'
+        uuid:
+          type: string
+      required:
+      - inferenceGeography
+      - isDefault
+      - apiKeyHint
+      - allowedModels
+      - region
+      - label
+      - provider
+      - uuid
+      type: object
+      description: 'A named credential as exposed over the API: everything needed to identify
+
+        and pick it, never the key itself.'
+  securitySchemes:
+    session_cookie:
+      type: apiKey
+      in: cookie
+      name: connect.sid
+    api_key:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: Value should be 'ApiKey <your key>'

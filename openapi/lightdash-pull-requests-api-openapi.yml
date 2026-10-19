@@ -1,7 +1,7 @@
 openapi: 3.2.0
 info:
   title: Lightdash Pull Requests API
-  version: 0.3156.1
+  version: 2.616.2
   description: 'Open API documentation for all public Lightdash API endpoints. # Authentication Before you get started, you might need to create a Personal Access Token to authenticate via the API. You can create a token by following this guide: https://docs.lightdash.com/references/personal_tokens'
   license:
     name: MIT
@@ -55,6 +55,130 @@ paths:
           type: number
 components:
   schemas:
+    AiAgentRootCause:
+      type: string
+      enum:
+      - semantic_layer
+      - project_context
+      - agent_configuration
+      - product_capability
+      - runtime_reliability
+      - feedback_quality
+      - not_a_failure
+      - ambiguous
+    PullRequestSource:
+      enum:
+      - custom_metric
+      - custom_dimension
+      - sql_runner
+      - source_editor
+      - ai_agent
+      - content_as_code
+      type: string
+    AnyType:
+      description: 'This AnyType is an alias for any
+
+        The goal is to make it easier to identify any type in the codebase
+
+        without having to eslint-disable all the time
+
+        These are only used on legacy `any` types, don''t use it for new types.
+
+        This is added on a separate file to avoid circular dependencies.'
+    AiAgentReviewItemStatus:
+      type: string
+      enum:
+      - triage
+      - open
+      - in_progress
+      - resolved
+      - dismissed
+      - duplicate
+    ApiPullRequestsResponse:
+      properties:
+        results:
+          $ref: '#/components/schemas/KnexPaginatedData_PullRequestWithStatus-Array_'
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
+    KnexPaginateArgs:
+      properties:
+        page:
+          type: number
+          format: double
+        pageSize:
+          type: number
+          format: double
+      required:
+      - page
+      - pageSize
+      type: object
+    PullRequestReviewContext:
+      properties:
+        sourceAgentUuid:
+          type: string
+        sourceProjectUuid:
+          type: string
+        sourceThreadUuid:
+          type:
+          - string
+          - 'null'
+        sourceFindingUuid:
+          type:
+          - string
+          - 'null'
+        primaryRootCause:
+          $ref: '#/components/schemas/AiAgentRootCause'
+        reviewStatus:
+          $ref: '#/components/schemas/AiAgentReviewItemStatus'
+        reviewTitle:
+          type: string
+        reviewItemFingerprint:
+          type: string
+        reviewItemUuid:
+          type: string
+      required:
+      - sourceAgentUuid
+      - sourceProjectUuid
+      - sourceThreadUuid
+      - sourceFindingUuid
+      - primaryRootCause
+      - reviewStatus
+      - reviewTitle
+      - reviewItemFingerprint
+      - reviewItemUuid
+      type: object
+    PullRequestWithStatus:
+      allOf:
+      - $ref: '#/components/schemas/PullRequest'
+      - properties:
+          state:
+            allOf:
+            - $ref: '#/components/schemas/PullRequestState'
+          title:
+            type:
+            - string
+            - 'null'
+        required:
+        - state
+        - title
+        type: object
+      description: 'A stored pull request enriched with its live title/state resolved from the
+
+        provider API. `title`/`state` are null when the live lookup fails (e.g. the
+
+        PR was deleted or the token lost access) — `prUrl` always remains usable.'
+    PullRequestState:
+      enum:
+      - open
+      - closed
+      - merged
+      type: string
     KnexPaginatedData_PullRequestWithStatus-Array_:
       properties:
         pagination:
@@ -78,25 +202,43 @@ components:
       required:
       - data
       type: object
-    KnexPaginateArgs:
+    ApiErrorPayload:
       properties:
-        page:
-          type: number
-          format: double
-        pageSize:
-          type: number
-          format: double
+        error:
+          properties:
+            data:
+              $ref: '#/components/schemas/AnyType'
+              description: Optional data containing details of the error
+            message:
+              type: string
+              description: A friendly message summarising the error
+            name:
+              type: string
+              description: Unique name for the type of error
+            statusCode:
+              type: number
+              format: integer
+              description: HTTP status code
+          required:
+          - name
+          - statusCode
+          type: object
+        status:
+          type: string
+          enum:
+          - error
       required:
-      - page
-      - pageSize
+      - error
+      - status
       type: object
-    PullRequestSource:
+      description: 'The Error object is returned from the api any time there is an error.
+
+        The message contains'
+    PullRequestProvider:
       enum:
-      - custom_metric
-      - custom_dimension
-      - sql_runner
-      - source_editor
-      - ai_agent
+      - github
+      - gitlab
+      - bitbucket
       type: string
     PullRequest:
       properties:
@@ -178,142 +320,7 @@ components:
 
         persisted; the live title/state are resolved at runtime from the
 
-        GitHub/GitLab API using provider + owner + repo + prNumber.'
-    PullRequestWithStatus:
-      allOf:
-      - $ref: '#/components/schemas/PullRequest'
-      - properties:
-          state:
-            allOf:
-            - $ref: '#/components/schemas/PullRequestState'
-          title:
-            type:
-            - string
-            - 'null'
-        required:
-        - state
-        - title
-        type: object
-      description: 'A stored pull request enriched with its live title/state resolved from the
-
-        provider API. `title`/`state` are null when the live lookup fails (e.g. the
-
-        PR was deleted or the token lost access) — `prUrl` always remains usable.'
-    PullRequestReviewContext:
-      properties:
-        sourceAgentUuid:
-          type: string
-        sourceProjectUuid:
-          type: string
-        sourceThreadUuid:
-          type: string
-        sourceFindingUuid:
-          type: string
-        primaryRootCause:
-          $ref: '#/components/schemas/AiAgentRootCause'
-        reviewStatus:
-          $ref: '#/components/schemas/AiAgentReviewItemStatus'
-        reviewTitle:
-          type: string
-        reviewItemFingerprint:
-          type: string
-        reviewItemUuid:
-          type: string
-      required:
-      - sourceAgentUuid
-      - sourceProjectUuid
-      - sourceThreadUuid
-      - sourceFindingUuid
-      - primaryRootCause
-      - reviewStatus
-      - reviewTitle
-      - reviewItemFingerprint
-      - reviewItemUuid
-      type: object
-    PullRequestProvider:
-      enum:
-      - github
-      - gitlab
-      type: string
-    AiAgentRootCause:
-      type: string
-      enum:
-      - semantic_layer
-      - project_context
-      - agent_configuration
-      - product_capability
-      - runtime_reliability
-      - feedback_quality
-      - not_a_failure
-      - ambiguous
-    AnyType:
-      description: 'This AnyType is an alias for any
-
-        The goal is to make it easier to identify any type in the codebase
-
-        without having to eslint-disable all the time
-
-        These are only used on legacy `any` types, don''t use it for new types.
-
-        This is added on a separate file to avoid circular dependencies.'
-    PullRequestState:
-      enum:
-      - open
-      - closed
-      - merged
-      type: string
-    AiAgentReviewItemStatus:
-      type: string
-      enum:
-      - open
-      - in_progress
-      - resolved
-      - dismissed
-      - duplicate
-    ApiErrorPayload:
-      properties:
-        error:
-          properties:
-            data:
-              $ref: '#/components/schemas/AnyType'
-              description: Optional data containing details of the error
-            message:
-              type: string
-              description: A friendly message summarising the error
-            name:
-              type: string
-              description: Unique name for the type of error
-            statusCode:
-              type: number
-              format: integer
-              description: HTTP status code
-          required:
-          - name
-          - statusCode
-          type: object
-        status:
-          type: string
-          enum:
-          - error
-      required:
-      - error
-      - status
-      type: object
-      description: 'The Error object is returned from the api any time there is an error.
-
-        The message contains'
-    ApiPullRequestsResponse:
-      properties:
-        results:
-          $ref: '#/components/schemas/KnexPaginatedData_PullRequestWithStatus-Array_'
-        status:
-          type: string
-          enum:
-          - ok
-      required:
-      - results
-      - status
-      type: object
+        Git provider API using provider + owner + repo + prNumber.'
   securitySchemes:
     session_cookie:
       type: apiKey

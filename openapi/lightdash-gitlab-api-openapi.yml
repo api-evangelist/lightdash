@@ -1,7 +1,7 @@
 openapi: 3.2.0
 info:
   title: Lightdash GitLab API
-  version: 0.3156.1
+  version: 2.616.2
   description: 'Open API documentation for all public Lightdash API endpoints. # Authentication Before you get started, you might need to create a Personal Access Token to authenticate via the API. You can create a token by following this guide: https://docs.lightdash.com/references/personal_tokens'
   license:
     name: MIT
@@ -108,8 +108,25 @@ paths:
       - Gitlab
 components:
   schemas:
+    ApiSuccessEmpty:
+      properties:
+        results: {}
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - status
+      type: object
     GitRepo:
       properties:
+        writable:
+          type: boolean
+        provider:
+          type: string
+          enum:
+          - github
+          - gitlab
         defaultBranch:
           type: string
         ownerLogin:
@@ -123,16 +140,6 @@ components:
       - ownerLogin
       - fullName
       - name
-      type: object
-    ApiSuccessEmpty:
-      properties:
-        results: {}
-        status:
-          type: string
-          enum:
-          - ok
-      required:
-      - status
       type: object
   securitySchemes:
     session_cookie:

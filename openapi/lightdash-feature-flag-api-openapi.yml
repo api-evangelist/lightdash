@@ -1,7 +1,7 @@
 openapi: 3.2.0
 info:
   title: Lightdash Feature Flag API
-  version: 0.3156.1
+  version: 2.616.2
   description: 'Open API documentation for all public Lightdash API endpoints. # Authentication Before you get started, you might need to create a Personal Access Token to authenticate via the API. You can create a token by following this guide: https://docs.lightdash.com/references/personal_tokens'
   license:
     name: MIT
@@ -14,6 +14,44 @@ servers:
 tags:
 - name: Feature Flag
 paths:
+  /api/v2/feature-flag:
+    get:
+      operationId: ListFeatureFlags
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                properties:
+                  results:
+                    items:
+                      $ref: '#/components/schemas/FeatureFlag'
+                    type: array
+                  status:
+                    type: string
+                    enum:
+                    - ok
+                required:
+                - results
+                - status
+                type: object
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: 'List every known feature flag with its resolved value for the requesting
+
+        user. Preview environments only.'
+      summary: List feature flags
+      tags:
+      - Feature Flag
+      security: []
+      parameters: []
+      x-operation-id-source: normalized
+      x-operation-id-original: List feature flags
   /api/v2/feature-flag/{featureFlagId}:
     get:
       operationId: GetFeatureFlag
@@ -52,28 +90,99 @@ paths:
           type: string
       x-operation-id-source: normalized
       x-operation-id-original: Get feature flag
+    post:
+      operationId: SetFeatureFlagOverride
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                properties:
+                  results:
+                    $ref: '#/components/schemas/FeatureFlag'
+                  status:
+                    type: string
+                    enum:
+                    - ok
+                required:
+                - results
+                - status
+                type: object
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: 'Override a feature flag for the requesting user''s organization. Preview
+
+        environments only — lets QA toggle flags without a redeploy.'
+      summary: Set feature flag override
+      tags:
+      - Feature Flag
+      security: []
+      parameters:
+      - in: path
+        name: featureFlagId
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              properties:
+                enabled:
+                  type: boolean
+              required:
+              - enabled
+              type: object
+      x-operation-id-source: normalized
+      x-operation-id-original: Set feature flag override
+    delete:
+      operationId: DeleteFeatureFlagOverride
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                properties:
+                  results:
+                    $ref: '#/components/schemas/FeatureFlag'
+                  status:
+                    type: string
+                    enum:
+                    - ok
+                required:
+                - results
+                - status
+                type: object
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: 'Remove the organization override for a feature flag, restoring the
+
+        environment default. Preview environments only.'
+      summary: Delete feature flag override
+      tags:
+      - Feature Flag
+      security: []
+      parameters:
+      - in: path
+        name: featureFlagId
+        required: true
+        schema:
+          type: string
+      x-operation-id-source: normalized
+      x-operation-id-original: Delete feature flag override
 components:
   schemas:
-    FeatureFlag:
-      properties:
-        enabled:
-          type: boolean
-        id:
-          type: string
-      required:
-      - enabled
-      - id
-      type: object
-    AnyType:
-      description: 'This AnyType is an alias for any
-
-        The goal is to make it easier to identify any type in the codebase
-
-        without having to eslint-disable all the time
-
-        These are only used on legacy `any` types, don''t use it for new types.
-
-        This is added on a separate file to avoid circular dependencies.'
     ApiErrorPayload:
       properties:
         error:
@@ -106,6 +215,26 @@ components:
       description: 'The Error object is returned from the api any time there is an error.
 
         The message contains'
+    FeatureFlag:
+      properties:
+        enabled:
+          type: boolean
+        id:
+          type: string
+      required:
+      - enabled
+      - id
+      type: object
+    AnyType:
+      description: 'This AnyType is an alias for any
+
+        The goal is to make it easier to identify any type in the codebase
+
+        without having to eslint-disable all the time
+
+        These are only used on legacy `any` types, don''t use it for new types.
+
+        This is added on a separate file to avoid circular dependencies.'
   securitySchemes:
     session_cookie:
       type: apiKey

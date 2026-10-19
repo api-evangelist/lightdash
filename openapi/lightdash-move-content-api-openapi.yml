@@ -1,7 +1,7 @@
 openapi: 3.2.0
 info:
   title: Lightdash Move content API
-  version: 0.3156.1
+  version: 2.616.2
   description: 'Open API documentation for all public Lightdash API endpoints. # Authentication Before you get started, you might need to create a Personal Access Token to authenticate via the API. You can create a token by following this guide: https://docs.lightdash.com/references/personal_tokens'
   license:
     name: MIT
@@ -86,29 +86,24 @@ paths:
       x-operation-id-original: Bulk move content
 components:
   schemas:
-    ApiContentActionBody_ContentActionMove_:
-      properties:
-        action:
-          $ref: '#/components/schemas/ContentActionMove'
-        item:
-          $ref: '#/components/schemas/ItemPayload'
-      required:
-      - action
-      - item
-      type: object
-    ContentType.DASHBOARD:
+    ChartSourceType:
       enum:
-      - dashboard
+      - dbt_explore
+      - sql
       type: string
-    ApiSuccessEmpty:
+    ContentActionMove:
       properties:
-        results: {}
-        status:
+        targetSpaceUuid:
+          type:
+          - string
+          - 'null'
+        type:
           type: string
           enum:
-          - ok
+          - move
       required:
-      - status
+      - targetSpaceUuid
+      - type
       type: object
     ItemPayload:
       anyOf:
@@ -151,6 +146,15 @@ components:
         - contentType
         - uuid
         type: object
+      - properties:
+          contentType:
+            $ref: '#/components/schemas/ContentType.DOCUMENT'
+          uuid:
+            type: string
+        required:
+        - contentType
+        - uuid
+        type: object
     AnyType:
       description: 'This AnyType is an alias for any
 
@@ -161,19 +165,6 @@ components:
         These are only used on legacy `any` types, don''t use it for new types.
 
         This is added on a separate file to avoid circular dependencies.'
-    ChartSourceType:
-      enum:
-      - dbt_explore
-      - sql
-      type: string
-    ContentType.DATA_APP:
-      enum:
-      - data_app
-      type: string
-    ContentType.SPACE:
-      enum:
-      - space
-      type: string
     ApiContentBulkActionBody_ContentActionMove_:
       properties:
         action:
@@ -186,24 +177,42 @@ components:
       - action
       - content
       type: object
+    ContentType.DASHBOARD:
+      enum:
+      - dashboard
+      type: string
     ContentType.CHART:
       enum:
       - chart
       type: string
-    ContentActionMove:
+    ContentType.DATA_APP:
+      enum:
+      - data_app
+      type: string
+    ApiContentActionBody_ContentActionMove_:
       properties:
-        targetSpaceUuid:
-          type:
-          - string
-          - 'null'
-        type:
+        action:
+          $ref: '#/components/schemas/ContentActionMove'
+        item:
+          $ref: '#/components/schemas/ItemPayload'
+      required:
+      - action
+      - item
+      type: object
+    ApiSuccessEmpty:
+      properties:
+        results: {}
+        status:
           type: string
           enum:
-          - move
+          - ok
       required:
-      - targetSpaceUuid
-      - type
+      - status
       type: object
+    ContentType.SPACE:
+      enum:
+      - space
+      type: string
     ApiErrorPayload:
       properties:
         error:
@@ -236,6 +245,10 @@ components:
       description: 'The Error object is returned from the api any time there is an error.
 
         The message contains'
+    ContentType.DOCUMENT:
+      enum:
+      - document
+      type: string
   securitySchemes:
     session_cookie:
       type: apiKey

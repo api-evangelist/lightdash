@@ -1,7 +1,7 @@
 openapi: 3.2.0
 info:
   title: Lightdash Integrations API
-  version: 0.3156.1
+  version: 2.616.2
   description: 'Open API documentation for all public Lightdash API endpoints. # Authentication Before you get started, you might need to create a Personal Access Token to authenticate via the API. You can create a token by following this guide: https://docs.lightdash.com/references/personal_tokens'
   license:
     name: MIT
@@ -237,6 +237,49 @@ paths:
         required: true
         schema:
           type: string
+  /api/v1/slack/card-image/{id}:
+    get:
+      operationId: getSlackCardImage
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                anyOf:
+                - type: string
+                  format: byte
+                - {}
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: 'Get a Slack AI agent card image.
+
+        Falls back to a placeholder image if the image is not found.
+
+
+        Intentionally public (no auth): Slack''s unfurl bot fetches preview images
+
+        without user credentials. Access is guarded by an unguessable 21-char
+
+        nanoid (only minted server-side and shared with Slack during the unfurl of
+
+        a resource the user already has access to), strict `{id}` validation, and
+
+        no-store / noindex response headers.'
+      summary: Get Slack card image
+      tags:
+      - Integrations
+      security: []
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
   /api/v1/slack/install:
     get:
       operationId: installSlack
@@ -251,6 +294,371 @@ paths:
                 $ref: '#/components/schemas/ApiErrorPayload'
       description: Start the Slack installation flow
       summary: Install Slack
+      tags:
+      - Integrations
+      security: []
+      parameters: []
+  /api/v1/linear/install:
+    get:
+      operationId: installLinearIntegration
+      responses:
+        '302':
+          description: Redirect to Linear OAuth
+      description: Start Linear OAuth with PKCE
+      summary: Connect Linear
+      tags:
+      - Integrations
+      security: []
+      parameters:
+      - in: query
+        name: clientId
+        required: false
+        schema:
+          type: string
+  /api/v1/linear/oauth/callback:
+    get:
+      operationId: linearOauthCallback
+      responses:
+        '204':
+          description: No content
+      description: Finish Linear OAuth and return to Ask AI settings
+      summary: Linear OAuth callback
+      tags:
+      - Integrations
+      security: []
+      parameters:
+      - in: query
+        name: code
+        required: false
+        schema:
+          type: string
+      - in: query
+        name: state
+        required: false
+        schema:
+          type: string
+  /api/v1/linear:
+    get:
+      operationId: getLinearInstallation
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                properties:
+                  results:
+                    $ref: '#/components/schemas/LinearInstallation'
+                  status:
+                    type: string
+                    enum:
+                    - ok
+                required:
+                - results
+                - status
+                type: object
+      description: Get the current Linear workspace connected to the organization
+      summary: Get Linear installation
+      tags:
+      - Integrations
+      security: []
+      parameters: []
+  /api/v1/linear/uninstall:
+    delete:
+      operationId: uninstallLinearIntegration
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiSuccessEmpty'
+      description: Uninstall Linear integration from the organization
+      summary: Uninstall Linear integration
+      tags:
+      - Integrations
+      security: []
+      parameters: []
+  /api/v1/linear/teams:
+    get:
+      operationId: getLinearTeams
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                properties:
+                  results:
+                    items:
+                      $ref: '#/components/schemas/LinearTeam'
+                    type: array
+                  status:
+                    type: string
+                    enum:
+                    - ok
+                required:
+                - results
+                - status
+                type: object
+      description: List Linear teams accessible via the integration
+      summary: List Linear teams
+      tags:
+      - Integrations
+      security: []
+      parameters: []
+  /api/v1/linear/projects:
+    get:
+      operationId: getLinearProjects
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                properties:
+                  results:
+                    items:
+                      $ref: '#/components/schemas/LinearProject'
+                    type: array
+                  status:
+                    type: string
+                    enum:
+                    - ok
+                required:
+                - results
+                - status
+                type: object
+      description: List the Linear projects belonging to a team
+      summary: List Linear projects
+      tags:
+      - Integrations
+      security: []
+      parameters:
+      - in: query
+        name: teamId
+        required: true
+        schema:
+          type: string
+  /api/v1/jira/install:
+    post:
+      operationId: installJiraIntegration
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiJiraInstallUrlResponse'
+      description: Start Jira OAuth with the organization's own Atlassian OAuth 2.0 app
+      summary: Connect Jira
+      tags:
+      - Integrations
+      security: []
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/JiraOAuthCredentials'
+    get:
+      operationId: reconnectJiraIntegration
+      responses:
+        '302':
+          description: Redirect to Jira OAuth
+      description: Restart Jira OAuth with the credentials already saved for the organization
+      summary: Reconnect Jira
+      tags:
+      - Integrations
+      security: []
+      parameters: []
+  /api/v1/jira/oauth/callback:
+    get:
+      operationId: jiraOauthCallback
+      responses:
+        '204':
+          description: No content
+      description: Finish Jira OAuth and return to Ask AI settings
+      summary: Jira OAuth callback
+      tags:
+      - Integrations
+      security: []
+      parameters:
+      - in: query
+        name: code
+        required: false
+        schema:
+          type: string
+      - in: query
+        name: state
+        required: false
+        schema:
+          type: string
+  /api/v1/jira:
+    get:
+      operationId: getJiraInstallation
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                properties:
+                  results:
+                    $ref: '#/components/schemas/JiraInstallation'
+                  status:
+                    type: string
+                    enum:
+                    - ok
+                required:
+                - results
+                - status
+                type: object
+      description: Get the Jira site connected to the organization
+      summary: Get Jira installation
+      tags:
+      - Integrations
+      security: []
+      parameters: []
+  /api/v1/jira/sites:
+    get:
+      operationId: getJiraSites
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                properties:
+                  results:
+                    items:
+                      $ref: '#/components/schemas/JiraSite'
+                    type: array
+                  status:
+                    type: string
+                    enum:
+                    - ok
+                required:
+                - results
+                - status
+                type: object
+      description: List Jira sites available through the connection
+      summary: List Jira sites
+      tags:
+      - Integrations
+      security: []
+      parameters: []
+  /api/v1/jira/site:
+    put:
+      operationId: selectJiraSite
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                properties:
+                  results:
+                    $ref: '#/components/schemas/JiraInstallation'
+                  status:
+                    type: string
+                    enum:
+                    - ok
+                required:
+                - results
+                - status
+                type: object
+      description: Select the Jira site used by the organization
+      summary: Select Jira site
+      tags:
+      - Integrations
+      security: []
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              properties:
+                siteId:
+                  type: string
+              required:
+              - siteId
+              type: object
+  /api/v1/jira/projects:
+    get:
+      operationId: getJiraProjects
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                properties:
+                  results:
+                    items:
+                      $ref: '#/components/schemas/JiraProject'
+                    type: array
+                  status:
+                    type: string
+                    enum:
+                    - ok
+                required:
+                - results
+                - status
+                type: object
+      description: List Jira projects accessible through the connection
+      summary: List Jira projects
+      tags:
+      - Integrations
+      security: []
+      parameters: []
+  /api/v1/jira/issue-types:
+    get:
+      operationId: getJiraIssueTypes
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                properties:
+                  results:
+                    items:
+                      $ref: '#/components/schemas/JiraIssueType'
+                    type: array
+                  status:
+                    type: string
+                    enum:
+                    - ok
+                required:
+                - results
+                - status
+                type: object
+      description: List Jira issue types available in a project
+      summary: List Jira issue types
+      tags:
+      - Integrations
+      security: []
+      parameters:
+      - in: query
+        name: projectId
+        required: true
+        schema:
+          type: string
+  /api/v1/jira/uninstall:
+    delete:
+      operationId: uninstallJiraIntegration
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiSuccessEmpty'
+      description: Uninstall Jira integration from the organization
+      summary: Uninstall Jira integration
       tags:
       - Integrations
       security: []
@@ -305,10 +713,1130 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/UploadMetricGsheet'
+  /api/v1/gdrive/upload-gsheet-from-rows:
+    post:
+      operationId: uploadGsheetFromRows
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiJobScheduledResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: Upload client-supplied rows to a new Google Sheet (data apps).
+      summary: Upload rows to Google Sheet
+      tags:
+      - Integrations
+      security: []
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UploadGsheetFromRows'
 components:
   schemas:
+    TableCalculationTemplateType.PERCENT_OF_COLUMN_TOTAL:
+      enum:
+      - percent_of_column_total
+      type: string
+    BinType.FIXED_WIDTH:
+      enum:
+      - fixed_width
+      type: string
+    AnyType:
+      description: 'This AnyType is an alias for any
+
+        The goal is to make it easier to identify any type in the codebase
+
+        without having to eslint-disable all the time
+
+        These are only used on legacy `any` types, don''t use it for new types.
+
+        This is added on a separate file to avoid circular dependencies.'
+    ApiSlackChannelsResponse:
+      $ref: '#/components/schemas/ApiSuccess_SlackChannel-Array-or-undefined_'
+    FrameBoundary:
+      properties:
+        offset:
+          type: number
+          format: double
+          description: Offset for PRECEDING/FOLLOWING
+        type:
+          $ref: '#/components/schemas/FrameBoundaryType'
+          description: Boundary type
+      required:
+      - type
+      type: object
+    ApiSuccessEmpty:
+      properties:
+        results: {}
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - status
+      type: object
+    SqlTableCalculation:
+      allOf:
+      - $ref: '#/components/schemas/TableCalculationBase'
+      - properties:
+          sql:
+            type: string
+            description: SQL expression for the calculation (can reference fields with ${table.field})
+        required:
+        - sql
+        type: object
+    BinRange:
+      properties:
+        to:
+          type: number
+          format: double
+          description: End value for this bin range (undefined for the last range)
+        from:
+          type: number
+          format: double
+          description: Start value for this bin range (undefined for the first range)
+      type: object
+    TemplateTableCalculation:
+      allOf:
+      - $ref: '#/components/schemas/TableCalculationBase'
+      - properties:
+          template:
+            $ref: '#/components/schemas/TableCalculationTemplate'
+            description: Template-based calculation (alternative to sql)
+        required:
+        - template
+        type: object
+    PivotSortAnchor:
+      properties:
+        value:
+          anyOf:
+          - type: string
+          - type: number
+            format: double
+          - type: boolean
+        reference:
+          type: string
+      required:
+      - value
+      - reference
+      type: object
+      description: 'Coordinates of a single pivot column, used to anchor a row sort to that
+
+        specific column when results are pivoted.'
+    FrameClause:
+      properties:
+        end:
+          $ref: '#/components/schemas/FrameBoundary'
+          description: End boundary of the frame
+        start:
+          $ref: '#/components/schemas/FrameBoundary'
+          description: Start boundary of the frame
+        frameType:
+          $ref: '#/components/schemas/FrameType'
+          description: Type of frame (ROWS or RANGE)
+      required:
+      - end
+      - frameType
+      type: object
+    SlackFeatureAvailability:
+      properties:
+        missingScopes:
+          items:
+            type: string
+          type: array
+        available:
+          type: boolean
+      required:
+      - missingScopes
+      - available
+      type: object
+    TableCalculationBase:
+      properties:
+        totalMode:
+          $ref: '#/components/schemas/TableCalculationTotalMode'
+          description: How column totals are computed for this calculation
+        type:
+          $ref: '#/components/schemas/TableCalculationType'
+          description: Data type of the calculation result
+        format:
+          $ref: '#/components/schemas/CustomFormat'
+          description: Formatting options for the calculation
+        displayName:
+          type: string
+          description: Display name shown in the UI
+        name:
+          type: string
+          description: Internal name of the table calculation
+        index:
+          type: number
+          format: double
+          description: Display order index
+      required:
+      - displayName
+      - name
+      type: object
+    FrameType:
+      enum:
+      - rows
+      - range
+      type: string
+    LinearInstallation:
+      properties:
+        requiresReconnect:
+          type: boolean
+        organizationUrlKey:
+          type: string
+        organizationName:
+          type: string
+        organizationUuid:
+          type: string
+      required:
+      - requiresReconnect
+      - organizationUrlKey
+      - organizationName
+      - organizationUuid
+      type: object
+    SlackSettings:
+      properties:
+        aiAgentsEnabled:
+          type: boolean
+        unfurlsEnabled:
+          type: boolean
+        aiMultiAgentProjectUuids:
+          items:
+            type: string
+          type:
+          - array
+          - 'null'
+        aiMultiAgentChannelId:
+          type: string
+        aiLinksOnly:
+          type: boolean
+        aiRequireOAuth:
+          type: boolean
+        features:
+          $ref: '#/components/schemas/SlackFeatureAvailabilityMap'
+        hasRequiredScopes:
+          type: boolean
+        aiThreadAccessConsent:
+          type: boolean
+        slackChannelProjectMappings:
+          items:
+            $ref: '#/components/schemas/SlackChannelProjectMapping'
+          type: array
+        appProfilePhotoUrl:
+          type: string
+        notificationChannel:
+          type: string
+        scopes:
+          items:
+            type: string
+          type: array
+        token:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        appName:
+          type: string
+        slackTeamName:
+          type: string
+        organizationUuid:
+          type: string
+      required:
+      - features
+      - hasRequiredScopes
+      - scopes
+      - createdAt
+      - slackTeamName
+      - organizationUuid
+      type: object
+    TableCalculation:
+      anyOf:
+      - $ref: '#/components/schemas/SqlTableCalculation'
+      - $ref: '#/components/schemas/TemplateTableCalculation'
+      - $ref: '#/components/schemas/FormulaTableCalculation'
+    GsheetColumn:
+      properties:
+        type:
+          $ref: '#/components/schemas/GsheetColumnType'
+        label:
+          type: string
+        key:
+          type: string
+      required:
+      - key
+      type: object
+    FrameBoundaryType:
+      enum:
+      - unbounded_preceding
+      - preceding
+      - current_row
+      - following
+      - unbounded_following
+      type: string
+    ApiJiraInstallUrlResponse:
+      $ref: '#/components/schemas/ApiSuccess_JiraInstallUrl_'
+    Pick_CompiledDimension.label-or-name-or-table_:
+      properties:
+        name:
+          type: string
+        label:
+          type: string
+        table:
+          type: string
+      required:
+      - name
+      - label
+      - table
+      type: object
+      description: From T, pick a set of properties whose keys are in the union K
+    NumberSeparator:
+      enum:
+      - default
+      - commaPeriod
+      - spacePeriod
+      - periodComma
+      - noSeparatorPeriod
+      - apostrophePeriod
+      type: string
+    FixedNumberBinDimension:
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the custom dimension
+        name:
+          type: string
+          description: Display name for the custom dimension
+        table:
+          type: string
+          description: Table this custom dimension belongs to
+        type:
+          $ref: '#/components/schemas/CustomDimensionType.BIN'
+          description: Type of custom dimension (bin or sql)
+        dimensionId:
+          $ref: '#/components/schemas/FieldId'
+          description: Field ID of the parent dimension to bin
+        binType:
+          $ref: '#/components/schemas/BinType.FIXED_NUMBER'
+        binNumber:
+          type: number
+          format: double
+      required:
+      - id
+      - name
+      - table
+      - type
+      - dimensionId
+      - binType
+      - binNumber
+      type: object
+      additionalProperties: true
+    TableCalculationTemplateType.RUNNING_TOTAL:
+      enum:
+      - running_total
+      type: string
+    TableCalculationTotalMode:
+      enum:
+      - formula
+      - sum_of_rows
+      - none
+      type: string
+    CustomRangeBinDimension:
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the custom dimension
+        name:
+          type: string
+          description: Display name for the custom dimension
+        table:
+          type: string
+          description: Table this custom dimension belongs to
+        type:
+          $ref: '#/components/schemas/CustomDimensionType.BIN'
+          description: Type of custom dimension (bin or sql)
+        dimensionId:
+          $ref: '#/components/schemas/FieldId'
+          description: Field ID of the parent dimension to bin
+        binType:
+          $ref: '#/components/schemas/BinType.CUSTOM_RANGE'
+        customRange:
+          items:
+            $ref: '#/components/schemas/BinRange'
+          type: array
+      required:
+      - id
+      - name
+      - table
+      - type
+      - dimensionId
+      - binType
+      - customRange
+      type: object
+      additionalProperties: true
+    TableCalculationTemplateType.RANK_IN_COLUMN:
+      enum:
+      - rank_in_column
+      type: string
+    ApiJobScheduledResponse:
+      properties:
+        results:
+          properties:
+            jobId:
+              type: string
+          required:
+          - jobId
+          type: object
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
+    SlackChannel:
+      properties:
+        name:
+          type: string
+        id:
+          type: string
+      required:
+      - name
+      - id
+      type: object
+    MetricType:
+      enum:
+      - percentile
+      - average
+      - count
+      - count_distinct
+      - sum
+      - sum_distinct
+      - average_distinct
+      - min
+      - max
+      - percent_of_previous
+      - percent_of_total
+      - running_total
+      - number
+      - median
+      - string
+      - date
+      - timestamp
+      - boolean
+      type: string
+    PivotConfig:
+      properties:
+        hiddenDimensionFieldIds:
+          items:
+            type: string
+          type: array
+          description: 'Dimensions (row-index or pivot-column-header) hidden from the rendered
+
+            pivot and from exports. The dimension still participates in the
+
+            underlying query and can drive sort order; it just doesn''t render and
+
+            is filtered out of CSV/XLSX. Mirrors `hiddenMetricFieldIds` for the
+
+            dimension side.'
+        rowTotals:
+          type: boolean
+        columnTotals:
+          type: boolean
+        visibleMetricFieldIds:
+          items:
+            type: string
+          type: array
+        hiddenMetricFieldIds:
+          items:
+            type: string
+          type: array
+        columnOrder:
+          items:
+            type: string
+          type: array
+        rowFieldIds:
+          items:
+            type: string
+          type: array
+          description: Ordered dimension and value field IDs rendered once on the row axis.
+        metricsAsRows:
+          type: boolean
+        pivotDimensions:
+          items:
+            type: string
+          type: array
+      required:
+      - metricsAsRows
+      - pivotDimensions
+      type: object
+    ApiSlackCustomSettingsResponse:
+      $ref: '#/components/schemas/ApiSuccessEmpty'
+    JiraSite:
+      properties:
+        url:
+          type: string
+        name:
+          type: string
+        id:
+          type: string
+      required:
+      - url
+      - name
+      - id
+      type: object
+    TableCalculationTemplateType.DIFFERENCE_FROM_PREVIOUS:
+      enum:
+      - difference_from_previous
+      type: string
+    FieldId:
+      type: string
+    CustomDimension:
+      anyOf:
+      - $ref: '#/components/schemas/CustomBinDimension'
+      - $ref: '#/components/schemas/CustomSqlDimension'
+    Compact:
+      enum:
+      - auto
+      - thousands
+      - millions
+      - billions
+      - trillions
+      - kilobytes
+      - megabytes
+      - gigabytes
+      - terabytes
+      - petabytes
+      - kibibytes
+      - mebibytes
+      - gibibytes
+      - tebibytes
+      - pebibytes
+      type: string
+    CustomLabel:
+      properties: {}
+      additionalProperties:
+        type: string
+      type: object
+    UploadMetricGsheet:
+      properties:
+        parameters:
+          $ref: '#/components/schemas/ParametersValuesMap'
+        pivotConfig:
+          $ref: '#/components/schemas/PivotConfig'
+        hiddenFields:
+          items:
+            type: string
+          type: array
+        customLabels:
+          $ref: '#/components/schemas/CustomLabel'
+        columnOrder:
+          items:
+            type: string
+          type: array
+        showTableNames:
+          type: boolean
+        metricQuery:
+          $ref: '#/components/schemas/MetricQueryResponse'
+        exploreId:
+          type: string
+        projectUuid:
+          type: string
+      required:
+      - columnOrder
+      - showTableNames
+      - metricQuery
+      - exploreId
+      - projectUuid
+      type: object
+    LinearTeam:
+      properties:
+        key:
+          type: string
+        name:
+          type: string
+        id:
+          type: string
+      required:
+      - key
+      - name
+      - id
+      type: object
+    BinType.CUSTOM_RANGE:
+      enum:
+      - custom_range
+      type: string
+    FiltersResponse:
+      properties:
+        tableCalculations:
+          $ref: '#/components/schemas/FilterGroupResponse'
+        metrics:
+          $ref: '#/components/schemas/FilterGroupResponse'
+        dimensions:
+          $ref: '#/components/schemas/FilterGroupResponse'
+      type: object
+    GroupValueMatchType:
+      enum:
+      - exact
+      - startsWith
+      - endsWith
+      - includes
+      type: string
+    JiraIssueType:
+      properties:
+        subtask:
+          type: boolean
+        name:
+          type: string
+        id:
+          type: string
+      required:
+      - subtask
+      - name
+      - id
+      type: object
+    ApiSuccess_SlackChannel-Array-or-undefined_:
+      properties:
+        results:
+          items:
+            $ref: '#/components/schemas/SlackChannel'
+          type: array
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - status
+      type: object
+    GroupValueRule:
+      properties:
+        value:
+          type: string
+        matchType:
+          $ref: '#/components/schemas/GroupValueMatchType'
+      required:
+      - value
+      - matchType
+      type: object
+    BinType.FIXED_NUMBER:
+      enum:
+      - fixed_number
+      type: string
+    ApiSlackGetInstallationResponse:
+      $ref: '#/components/schemas/ApiSuccess_SlackSettings-or-undefined_'
+    FilterOperator:
+      enum:
+      - isNull
+      - notNull
+      - equals
+      - notEquals
+      - startsWith
+      - endsWith
+      - include
+      - doesNotInclude
+      - lessThan
+      - lessThanOrEqual
+      - greaterThan
+      - greaterThanOrEqual
+      - inThePast
+      - notInThePast
+      - inTheNext
+      - inTheCurrent
+      - notInTheCurrent
+      - inBetween
+      - notInBetween
+      - inPeriodToDate
+      type: string
+    LinearProject:
+      properties:
+        name:
+          type: string
+        id:
+          type: string
+      required:
+      - name
+      - id
+      type: object
+    MetricFilterRule:
+      description: Filter rule for metrics, targeting fields by reference
+      properties:
+        includeNull:
+          type: boolean
+          description: 'For the `equals` operator on string fields, also match rows where the
+
+            field is null (compiles to `field IN (...) OR field IS NULL`). Lets users
+
+            combine null with selected values in a single "is" rule.'
+        values:
+          items:
+            $ref: '#/components/schemas/AnyType'
+          type: array
+          description: Values to filter by
+        operator:
+          $ref: '#/components/schemas/FilterOperator'
+          description: Filter operator
+        id:
+          type: string
+          description: Unique identifier for the filter
+        target:
+          properties:
+            fieldRef:
+              type: string
+              description: Field reference to filter on (e.g., 'table_name.field_name')
+          required:
+          - fieldRef
+          type: object
+          description: Target field for the filter
+        settings:
+          $ref: '#/components/schemas/AnyType'
+          description: Additional settings for date/time filters
+        disabled:
+          type: boolean
+          description: Whether this filter is disabled
+        required:
+          type: boolean
+          description: Whether this filter is required
+        caseSensitive:
+          type: boolean
+          description: 'Overrides the field/explore case-sensitivity for this rule only.
+
+            Used by internal features like autocomplete search that must always
+
+            match case-insensitively regardless of the field''s configured setting.'
+      required:
+      - operator
+      - id
+      - target
+      type: object
+      additionalProperties: true
+    ApiSuccess_JiraInstallUrl_:
+      properties:
+        results:
+          $ref: '#/components/schemas/JiraInstallUrl'
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
+    Format:
+      enum:
+      - km
+      - mi
+      - si
+      - usd
+      - gbp
+      - eur
+      - jpy
+      - dkk
+      - id
+      - percent
+      type: string
+    SlackFeatureAvailabilityMap:
+      properties:
+        aiAgent:
+          $ref: '#/components/schemas/SlackFeatureAvailability'
+        writebackReactions:
+          $ref: '#/components/schemas/SlackFeatureAvailability'
+        linkUnfurling:
+          $ref: '#/components/schemas/SlackFeatureAvailability'
+        customAppProfile:
+          $ref: '#/components/schemas/SlackFeatureAvailability'
+        scheduledDeliveries:
+          $ref: '#/components/schemas/SlackFeatureAvailability'
+      required:
+      - aiAgent
+      - writebackReactions
+      - linkUnfurling
+      - customAppProfile
+      - scheduledDeliveries
+      type: object
+    CompactOrAlias:
+      anyOf:
+      - $ref: '#/components/schemas/Compact'
+      - type: string
+        enum:
+        - K
+        - thousand
+        - M
+        - million
+        - B
+        - billion
+        - T
+        - trillion
+        - KB
+        - kilobyte
+        - MB
+        - megabyte
+        - GB
+        - gigabyte
+        - TB
+        - terabyte
+        - PB
+        - petabyte
+        - KiB
+        - kibibyte
+        - MiB
+        - mebibyte
+        - GiB
+        - gibibyte
+        - TiB
+        - tebibyte
+        - PiB
+        - pebibyte
+    TimeFrames:
+      enum:
+      - RAW
+      - YEAR
+      - QUARTER
+      - MONTH
+      - WEEK
+      - DAY
+      - HOUR
+      - MINUTE
+      - SECOND
+      - MILLISECOND
+      - DAY_OF_WEEK_INDEX
+      - DAY_OF_MONTH_NUM
+      - DAY_OF_YEAR_NUM
+      - WEEK_NUM
+      - MONTH_NUM
+      - QUARTER_NUM
+      - YEAR_NUM
+      - DAY_OF_WEEK_NAME
+      - MONTH_NAME
+      - QUARTER_NAME
+      - HOUR_OF_DAY_NUM
+      - MINUTE_OF_HOUR_NUM
+      type: string
+    GsheetColumnType:
+      type: string
+      enum:
+      - string
+      - number
+      - date
+      - timestamp
+      - boolean
+    CustomSqlDimension:
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the custom dimension
+        name:
+          type: string
+          description: Display name for the custom dimension
+        table:
+          type: string
+          description: Table this custom dimension belongs to
+        type:
+          $ref: '#/components/schemas/CustomDimensionType.SQL'
+          description: Type of custom dimension (bin or sql)
+        sql:
+          type: string
+          description: SQL expression for the custom dimension
+        dimensionType:
+          $ref: '#/components/schemas/DimensionType'
+          description: Data type of the dimension result
+      required:
+      - id
+      - name
+      - table
+      - type
+      - sql
+      - dimensionType
+      type: object
+      additionalProperties: true
+    FixedWidthBinDimension:
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the custom dimension
+        name:
+          type: string
+          description: Display name for the custom dimension
+        table:
+          type: string
+          description: Table this custom dimension belongs to
+        type:
+          $ref: '#/components/schemas/CustomDimensionType.BIN'
+          description: Type of custom dimension (bin or sql)
+        dimensionId:
+          $ref: '#/components/schemas/FieldId'
+          description: Field ID of the parent dimension to bin
+        binType:
+          $ref: '#/components/schemas/BinType.FIXED_WIDTH'
+        binWidth:
+          type: number
+          format: double
+      required:
+      - id
+      - name
+      - table
+      - type
+      - dimensionId
+      - binType
+      - binWidth
+      type: object
+      additionalProperties: true
+    Record_string.ParameterValue_:
+      properties: {}
+      additionalProperties:
+        $ref: '#/components/schemas/ParameterValue'
+      type: object
+      description: Construct a type with a set of properties K of type T
+    TableCalculationTemplateType.PERCENT_OF_PREVIOUS_VALUE:
+      enum:
+      - percent_of_previous_value
+      type: string
+    ApiSuccess_SlackChannel-or-null_:
+      properties:
+        results:
+          allOf:
+          - $ref: '#/components/schemas/SlackChannel'
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
+    TableCalculationType:
+      enum:
+      - number
+      - string
+      - date
+      - timestamp
+      - boolean
+      type: string
+    CustomDimensionType.BIN:
+      enum:
+      - bin
+      type: string
+    AdditionalMetric:
+      properties:
+        label:
+          type: string
+          description: Display label for the metric
+        type:
+          $ref: '#/components/schemas/MetricType'
+          description: Aggregation type
+        description:
+          type: string
+          description: Description of what the metric measures
+        sql:
+          type: string
+          description: SQL expression (e.g., ${TABLE}.column_name)
+        hidden:
+          type: boolean
+          description: Whether the metric is hidden from users
+        round:
+          type: number
+          format: double
+          description: Number of decimal places
+        compact:
+          $ref: '#/components/schemas/CompactOrAlias'
+          description: Compact format for large numbers
+        format:
+          anyOf:
+          - $ref: '#/components/schemas/Format'
+          - type: string
+          description: Format string (legacy format specification)
+        separator:
+          $ref: '#/components/schemas/NumberSeparator'
+          description: Number separator style for grouping/decimal characters
+        table:
+          type: string
+          description: Table name the metric belongs to
+        name:
+          type: string
+          description: Internal name of the metric
+        index:
+          type: number
+          format: double
+          description: Display order index
+        filters:
+          items:
+            $ref: '#/components/schemas/MetricFilterRule'
+          type: array
+          description: Filters to apply to this metric
+        baseDimensionName:
+          type: string
+          description: Name of the base dimension/column this metric aggregates
+        baseMetricName:
+          type: string
+          description: Name of the explore metric this metric was cloned from
+        uuid:
+          type:
+          - string
+          - 'null'
+          description: Unique identifier for the metric
+        percentile:
+          type: number
+          format: double
+          description: Percentile value for percentile metrics
+        distinctKeys:
+          items:
+            type: string
+          type: array
+        formatOptions:
+          $ref: '#/components/schemas/CustomFormat'
+          description: Formatting configuration
+        generationType:
+          type: string
+          enum:
+          - periodOverPeriod
+          description: 'Optional marker for metrics generated by the system.
+
+            Currently used for Period-over-Period (PoP) previous-period metrics.'
+        baseMetricId:
+          $ref: '#/components/schemas/FieldId'
+          description: For PoP-generated metrics, the base metric id that this metric is derived from.
+        timeDimensionId:
+          $ref: '#/components/schemas/FieldId'
+          description: For PoP-generated metrics, the time dimension id used for the comparison.
+        granularity:
+          $ref: '#/components/schemas/TimeFrames'
+          description: For PoP-generated metrics, the granularity used for the comparison.
+        periodOffset:
+          type: number
+          format: double
+          description: For PoP-generated metrics, the number of periods to offset by (>= 1).
+      required:
+      - type
+      - sql
+      - table
+      - name
+      type: object
+      additionalProperties: true
+    FormulaTableCalculation:
+      allOf:
+      - $ref: '#/components/schemas/TableCalculationBase'
+      - properties:
+          formula:
+            type: string
+            description: Spreadsheet-like formula compiled to SQL at query time
+        required:
+        - formula
+        type: object
+    BinType.CUSTOM_GROUP:
+      enum:
+      - custom_group
+      type: string
+    SlackChannelProjectMapping:
+      properties:
+        availableTags:
+          items:
+            type: string
+          type:
+          - array
+          - 'null'
+        slackChannelId:
+          type: string
+        projectUuid:
+          type: string
+      required:
+      - availableTags
+      - slackChannelId
+      - projectUuid
+      type: object
+    CustomGroupBinDimension:
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the custom dimension
+        name:
+          type: string
+          description: Display name for the custom dimension
+        table:
+          type: string
+          description: Table this custom dimension belongs to
+        type:
+          $ref: '#/components/schemas/CustomDimensionType.BIN'
+          description: Type of custom dimension (bin or sql)
+        dimensionId:
+          $ref: '#/components/schemas/FieldId'
+          description: Field ID of the parent dimension to bin
+        binType:
+          $ref: '#/components/schemas/BinType.CUSTOM_GROUP'
+        customGroups:
+          items:
+            $ref: '#/components/schemas/BinGroup'
+          type: array
+      required:
+      - id
+      - name
+      - table
+      - type
+      - dimensionId
+      - binType
+      - customGroups
+      type: object
+      additionalProperties: true
+    ApiGdriveAccessTokenResponse:
+      properties:
+        results:
+          type: string
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
     TableCalculationTemplate:
       anyOf:
+      - properties:
+          partitionBy:
+            items:
+              type: string
+            type: array
+          orderBy:
+            items:
+              properties:
+                order:
+                  type:
+                  - string
+                  - 'null'
+                  enum:
+                  - asc
+                  - desc
+                  - null
+                fieldId:
+                  type: string
+              required:
+              - order
+              - fieldId
+              type: object
+            type: array
+            description: Fields to order by for window functions
+          fieldId:
+            type: string
+            description: Field ID to apply the template to
+          type:
+            $ref: '#/components/schemas/TableCalculationTemplateType.DIFFERENCE_FROM_PREVIOUS'
+            description: Type of template calculation
+        required:
+        - orderBy
+        - fieldId
+        - type
+        type: object
       - properties:
           partitionBy:
             items:
@@ -407,6 +1935,25 @@ components:
         - type
         type: object
       - properties:
+          orderBy:
+            items:
+              properties:
+                order:
+                  type:
+                  - string
+                  - 'null'
+                  enum:
+                  - asc
+                  - desc
+                  - null
+                fieldId:
+                  type: string
+              required:
+              - order
+              - fieldId
+              type: object
+            type: array
+            description: Fields to order by for the running total
           fieldId:
             type: string
             description: Field ID to apply the template to
@@ -463,297 +2010,93 @@ components:
         - windowFunction
         - type
         type: object
-    AdditionalMetric:
+    BinGroup:
       properties:
-        label:
-          type: string
-          description: Display label for the metric
-        type:
-          $ref: '#/components/schemas/MetricType'
-          description: Aggregation type
-        description:
-          type: string
-          description: Description of what the metric measures
-        sql:
-          type: string
-          description: SQL expression (e.g., ${TABLE}.column_name)
-        hidden:
-          type: boolean
-          description: Whether the metric is hidden from users
-        round:
-          type: number
-          format: double
-          description: Number of decimal places
-        compact:
-          $ref: '#/components/schemas/CompactOrAlias'
-          description: Compact format for large numbers
-        format:
-          anyOf:
-          - $ref: '#/components/schemas/Format'
-          - type: string
-          description: Format string (legacy format specification)
-        separator:
-          $ref: '#/components/schemas/NumberSeparator'
-          description: Number separator style for grouping/decimal characters
-        table:
-          type: string
-          description: Table name the metric belongs to
+        values:
+          items:
+            $ref: '#/components/schemas/GroupValueRule'
+          type: array
+          description: Rules that match values into this group
         name:
           type: string
-          description: Internal name of the metric
-        index:
-          type: number
-          format: double
-          description: Display order index
-        filters:
-          items:
-            $ref: '#/components/schemas/MetricFilterRule'
-          type: array
-          description: Filters to apply to this metric
-        baseDimensionName:
-          type: string
-          description: Name of the base dimension/column this metric aggregates
-        uuid:
-          type:
-          - string
-          - 'null'
-          description: Unique identifier for the metric
-        percentile:
-          type: number
-          format: double
-          description: Percentile value for percentile metrics
-        distinctKeys:
-          items:
-            type: string
-          type: array
-        formatOptions:
-          $ref: '#/components/schemas/CustomFormat'
-          description: Formatting configuration
-        generationType:
-          type: string
-          enum:
-          - periodOverPeriod
-          description: 'Optional marker for metrics generated by the system.
-
-            Currently used for Period-over-Period (PoP) previous-period metrics.'
-        baseMetricId:
-          $ref: '#/components/schemas/FieldId'
-          description: For PoP-generated metrics, the base metric id that this metric is derived from.
-        timeDimensionId:
-          $ref: '#/components/schemas/FieldId'
-          description: For PoP-generated metrics, the time dimension id used for the comparison.
-        granularity:
-          $ref: '#/components/schemas/TimeFrames'
-          description: For PoP-generated metrics, the granularity used for the comparison.
-        periodOffset:
-          type: number
-          format: double
-          description: For PoP-generated metrics, the number of periods to offset by (>= 1).
+          description: Display name for this group (e.g. "North America")
       required:
-      - type
+      - values
+      - name
+      type: object
+    JiraInstallUrl:
+      properties:
+        installUrl:
+          type: string
+      required:
+      - installUrl
+      type: object
+    Record_string.string-or-number-or-boolean-or-null_:
+      properties: {}
+      additionalProperties:
+        anyOf:
+        - type: string
+        - type: number
+          format: double
+        - type: boolean
+      type: object
+      description: Construct a type with a set of properties K of type T
+    FilterGroupResponse:
+      anyOf:
+      - properties:
+          or:
+            items:
+              $ref: '#/components/schemas/AnyType'
+            type: array
+          id:
+            type: string
+        required:
+        - or
+        - id
+        type: object
+      - properties:
+          and:
+            items:
+              $ref: '#/components/schemas/AnyType'
+            type: array
+          id:
+            type: string
+        required:
+        - and
+        - id
+        type: object
+    GsheetRow:
+      $ref: '#/components/schemas/Record_string.string-or-number-or-boolean-or-null_'
+    JiraProject:
+      properties:
+        name:
+          type: string
+        key:
+          type: string
+        id:
+          type: string
+      required:
+      - name
+      - key
+      - id
+      type: object
+    CustomDimensionType.SQL:
+      enum:
       - sql
-      - table
-      - name
-      type: object
-      additionalProperties: true
-    CustomRangeBinDimension:
-      properties:
-        id:
-          type: string
-          description: Unique identifier for the custom dimension
-        name:
-          type: string
-          description: Display name for the custom dimension
-        table:
-          type: string
-          description: Table this custom dimension belongs to
-        type:
-          $ref: '#/components/schemas/CustomDimensionType.BIN'
-          description: Type of custom dimension (bin or sql)
-        dimensionId:
-          $ref: '#/components/schemas/FieldId'
-          description: Field ID of the parent dimension to bin
-        binType:
-          $ref: '#/components/schemas/BinType.CUSTOM_RANGE'
-        customRange:
-          items:
-            $ref: '#/components/schemas/BinRange'
-          type: array
-      required:
-      - id
-      - name
-      - table
-      - type
-      - dimensionId
-      - binType
-      - customRange
-      type: object
-      additionalProperties: true
-    CustomGroupBinDimension:
-      properties:
-        id:
-          type: string
-          description: Unique identifier for the custom dimension
-        name:
-          type: string
-          description: Display name for the custom dimension
-        table:
-          type: string
-          description: Table this custom dimension belongs to
-        type:
-          $ref: '#/components/schemas/CustomDimensionType.BIN'
-          description: Type of custom dimension (bin or sql)
-        dimensionId:
-          $ref: '#/components/schemas/FieldId'
-          description: Field ID of the parent dimension to bin
-        binType:
-          $ref: '#/components/schemas/BinType.CUSTOM_GROUP'
-        customGroups:
-          items:
-            $ref: '#/components/schemas/BinGroup'
-          type: array
-      required:
-      - id
-      - name
-      - table
-      - type
-      - dimensionId
-      - binType
-      - customGroups
-      type: object
-      additionalProperties: true
-    SlackChannelProjectMapping:
-      properties:
-        availableTags:
-          items:
-            type: string
-          type:
-          - array
-          - 'null'
-        slackChannelId:
-          type: string
-        projectUuid:
-          type: string
-      required:
-      - availableTags
-      - slackChannelId
-      - projectUuid
-      type: object
-    TableCalculationTemplateType.PERCENT_OF_PREVIOUS_VALUE:
-      enum:
-      - percent_of_previous_value
       type: string
-    WindowFunctionType:
-      enum:
-      - row_number
-      - percent_rank
-      - cume_dist
-      - rank
-      - sum
-      - avg
-      - count
-      - min
-      - max
-      type: string
-    MetricType:
-      enum:
-      - percentile
-      - average
-      - count
-      - count_distinct
-      - sum
-      - sum_distinct
-      - average_distinct
-      - min
-      - max
-      - percent_of_previous
-      - percent_of_total
-      - running_total
-      - number
-      - median
-      - string
-      - date
-      - timestamp
-      - boolean
-      type: string
-    ApiGdriveAccessTokenResponse:
+    JiraOAuthCredentials:
       properties:
-        results:
+        clientSecret:
           type: string
-        status:
+        clientId:
           type: string
-          enum:
-          - ok
       required:
-      - results
-      - status
+      - clientSecret
+      - clientId
       type: object
-    AnyType:
-      description: 'This AnyType is an alias for any
-
-        The goal is to make it easier to identify any type in the codebase
-
-        without having to eslint-disable all the time
-
-        These are only used on legacy `any` types, don''t use it for new types.
-
-        This is added on a separate file to avoid circular dependencies.'
-    ApiSlackChannelsResponse:
-      $ref: '#/components/schemas/ApiSuccess_SlackChannel-Array-or-undefined_'
-    FrameBoundary:
-      properties:
-        offset:
-          type: number
-          format: double
-          description: Offset for PRECEDING/FOLLOWING
-        type:
-          $ref: '#/components/schemas/FrameBoundaryType'
-          description: Boundary type
-      required:
-      - type
-      type: object
-    BinType.CUSTOM_RANGE:
+    TableCalculationTemplateType.WINDOW_FUNCTION:
       enum:
-      - custom_range
-      type: string
-    FixedNumberBinDimension:
-      properties:
-        id:
-          type: string
-          description: Unique identifier for the custom dimension
-        name:
-          type: string
-          description: Display name for the custom dimension
-        table:
-          type: string
-          description: Table this custom dimension belongs to
-        type:
-          $ref: '#/components/schemas/CustomDimensionType.BIN'
-          description: Type of custom dimension (bin or sql)
-        dimensionId:
-          $ref: '#/components/schemas/FieldId'
-          description: Field ID of the parent dimension to bin
-        binType:
-          $ref: '#/components/schemas/BinType.FIXED_NUMBER'
-        binNumber:
-          type: number
-          format: double
-      required:
-      - id
-      - name
-      - table
-      - type
-      - dimensionId
-      - binType
-      - binNumber
-      type: object
-      additionalProperties: true
-    GroupValueMatchType:
-      enum:
-      - exact
-      - startsWith
-      - endsWith
-      - includes
+      - window_function
       type: string
     CustomFormat:
       properties:
@@ -789,32 +2132,170 @@ components:
       - type
       type: object
       additionalProperties: true
+    ParameterValue:
+      anyOf:
+      - type: string
+      - type: number
+        format: double
+      - items:
+          type: string
+        type: array
+      - items:
+          type: number
+          format: double
+        type: array
+    CustomFormatType:
+      enum:
+      - default
+      - percent
+      - currency
+      - number
+      - id
+      - date
+      - timestamp
+      - bytes_si
+      - bytes_iec
+      - custom
+      type: string
+    JiraInstallation:
+      properties:
+        requiresSiteSelection:
+          type: boolean
+        siteUrl:
+          type:
+          - string
+          - 'null'
+        siteName:
+          type:
+          - string
+          - 'null'
+        siteId:
+          type:
+          - string
+          - 'null'
+        clientId:
+          type: string
+        organizationUuid:
+          type: string
+      required:
+      - requiresSiteSelection
+      - siteUrl
+      - siteName
+      - siteId
+      - clientId
+      - organizationUuid
+      type: object
+    TableCalculationTemplateType.PERCENT_CHANGE_FROM_PREVIOUS:
+      enum:
+      - percent_change_from_previous
+      type: string
+    UploadGsheetFromRows:
+      properties:
+        rows:
+          items:
+            $ref: '#/components/schemas/GsheetRow'
+          type: array
+        columns:
+          items:
+            $ref: '#/components/schemas/GsheetColumn'
+          type: array
+        title:
+          type: string
+        projectUuid:
+          type: string
+      required:
+      - rows
+      - columns
+      - title
+      - projectUuid
+      type: object
+    ApiSuccess_SlackSettings-or-undefined_:
+      properties:
+        results:
+          $ref: '#/components/schemas/SlackSettings'
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - status
+      type: object
+    ApiErrorPayload:
+      properties:
+        error:
+          properties:
+            data:
+              $ref: '#/components/schemas/AnyType'
+              description: Optional data containing details of the error
+            message:
+              type: string
+              description: A friendly message summarising the error
+            name:
+              type: string
+              description: Unique name for the type of error
+            statusCode:
+              type: number
+              format: integer
+              description: HTTP status code
+          required:
+          - name
+          - statusCode
+          type: object
+        status:
+          type: string
+          enum:
+          - error
+      required:
+      - error
+      - status
+      type: object
+      description: 'The Error object is returned from the api any time there is an error.
+
+        The message contains'
     CustomBinDimension:
       anyOf:
       - $ref: '#/components/schemas/FixedNumberBinDimension'
       - $ref: '#/components/schemas/FixedWidthBinDimension'
       - $ref: '#/components/schemas/CustomRangeBinDimension'
       - $ref: '#/components/schemas/CustomGroupBinDimension'
-    DimensionType:
-      enum:
-      - string
-      - number
-      - timestamp
-      - date
-      - boolean
-      type: string
-    Format:
-      enum:
-      - km
-      - mi
-      - usd
-      - gbp
-      - eur
-      - jpy
-      - dkk
-      - id
-      - percent
-      type: string
+    ApiSlackChannelResponse:
+      $ref: '#/components/schemas/ApiSuccess_SlackChannel-or-null_'
+    SlackAppCustomSettings:
+      properties:
+        aiAgentsEnabled:
+          type: boolean
+        unfurlsEnabled:
+          type: boolean
+        aiMultiAgentProjectUuids:
+          items:
+            type: string
+          type:
+          - array
+          - 'null'
+        aiMultiAgentChannelId:
+          type: string
+        aiLinksOnly:
+          type: boolean
+        aiRequireOAuth:
+          type: boolean
+        aiThreadAccessConsent:
+          type: boolean
+        slackChannelProjectMappings:
+          items:
+            $ref: '#/components/schemas/SlackChannelProjectMapping'
+          type: array
+        appProfilePhotoUrl:
+          type:
+          - string
+          - 'null'
+        notificationChannel:
+          type:
+          - string
+          - 'null'
+      required:
+      - appProfilePhotoUrl
+      - notificationChannel
+      type: object
     MetricQueryResponse:
       properties:
         metadata:
@@ -864,586 +2345,19 @@ components:
       - dimensions
       - exploreName
       type: object
-    CustomFormatType:
+    ParametersValuesMap:
+      $ref: '#/components/schemas/Record_string.ParameterValue_'
+    WindowFunctionType:
       enum:
-      - default
-      - percent
-      - currency
-      - number
-      - id
-      - date
-      - timestamp
-      - bytes_si
-      - bytes_iec
-      - custom
-      type: string
-    TableCalculationType:
-      enum:
-      - number
-      - string
-      - date
-      - timestamp
-      - boolean
-      type: string
-    ApiSlackGetInstallationResponse:
-      $ref: '#/components/schemas/ApiSuccess_SlackSettings-or-undefined_'
-    FiltersResponse:
-      properties:
-        tableCalculations:
-          $ref: '#/components/schemas/FilterGroupResponse'
-        metrics:
-          $ref: '#/components/schemas/FilterGroupResponse'
-        dimensions:
-          $ref: '#/components/schemas/FilterGroupResponse'
-      type: object
-    SqlTableCalculation:
-      allOf:
-      - $ref: '#/components/schemas/TableCalculationBase'
-      - properties:
-          sql:
-            type: string
-            description: SQL expression for the calculation (can reference fields with ${table.field})
-        required:
-        - sql
-        type: object
-    CustomDimensionType.BIN:
-      enum:
-      - bin
-      type: string
-    TableCalculationTemplateType.PERCENT_OF_COLUMN_TOTAL:
-      enum:
-      - percent_of_column_total
-      type: string
-    CustomSqlDimension:
-      properties:
-        id:
-          type: string
-          description: Unique identifier for the custom dimension
-        name:
-          type: string
-          description: Display name for the custom dimension
-        table:
-          type: string
-          description: Table this custom dimension belongs to
-        type:
-          $ref: '#/components/schemas/CustomDimensionType.SQL'
-          description: Type of custom dimension (bin or sql)
-        sql:
-          type: string
-          description: SQL expression for the custom dimension
-        dimensionType:
-          $ref: '#/components/schemas/DimensionType'
-          description: Data type of the dimension result
-      required:
-      - id
-      - name
-      - table
-      - type
-      - sql
-      - dimensionType
-      type: object
-      additionalProperties: true
-    FilterGroupResponse:
-      anyOf:
-      - properties:
-          or:
-            items:
-              $ref: '#/components/schemas/AnyType'
-            type: array
-          id:
-            type: string
-        required:
-        - or
-        - id
-        type: object
-      - properties:
-          and:
-            items:
-              $ref: '#/components/schemas/AnyType'
-            type: array
-          id:
-            type: string
-        required:
-        - and
-        - id
-        type: object
-    CompactOrAlias:
-      anyOf:
-      - $ref: '#/components/schemas/Compact'
-      - type: string
-        enum:
-        - K
-        - thousand
-        - M
-        - million
-        - B
-        - billion
-        - T
-        - trillion
-        - KB
-        - kilobyte
-        - MB
-        - megabyte
-        - GB
-        - gigabyte
-        - TB
-        - terabyte
-        - PB
-        - petabyte
-        - KiB
-        - kibibyte
-        - MiB
-        - mebibyte
-        - GiB
-        - gibibyte
-        - TiB
-        - tebibyte
-        - PiB
-        - pebibyte
-    FrameBoundaryType:
-      enum:
-      - unbounded_preceding
-      - preceding
-      - current_row
-      - following
-      - unbounded_following
-      type: string
-    ApiSuccess_SlackChannel-Array-or-undefined_:
-      properties:
-        results:
-          items:
-            $ref: '#/components/schemas/SlackChannel'
-          type: array
-        status:
-          type: string
-          enum:
-          - ok
-      required:
-      - status
-      type: object
-    FixedWidthBinDimension:
-      properties:
-        id:
-          type: string
-          description: Unique identifier for the custom dimension
-        name:
-          type: string
-          description: Display name for the custom dimension
-        table:
-          type: string
-          description: Table this custom dimension belongs to
-        type:
-          $ref: '#/components/schemas/CustomDimensionType.BIN'
-          description: Type of custom dimension (bin or sql)
-        dimensionId:
-          $ref: '#/components/schemas/FieldId'
-          description: Field ID of the parent dimension to bin
-        binType:
-          $ref: '#/components/schemas/BinType.FIXED_WIDTH'
-        binWidth:
-          type: number
-          format: double
-      required:
-      - id
-      - name
-      - table
-      - type
-      - dimensionId
-      - binType
-      - binWidth
-      type: object
-      additionalProperties: true
-    PivotSortAnchor:
-      properties:
-        value:
-          anyOf:
-          - type: string
-          - type: number
-            format: double
-          - type: boolean
-        reference:
-          type: string
-      required:
-      - value
-      - reference
-      type: object
-      description: 'Coordinates of a single pivot column, used to anchor a row sort to that
-
-        specific column when results are pivoted.'
-    GroupValueRule:
-      properties:
-        value:
-          type: string
-        matchType:
-          $ref: '#/components/schemas/GroupValueMatchType'
-      required:
-      - value
-      - matchType
-      type: object
-    ApiJobScheduledResponse:
-      properties:
-        results:
-          properties:
-            jobId:
-              type: string
-          required:
-          - jobId
-          type: object
-        status:
-          type: string
-          enum:
-          - ok
-      required:
-      - results
-      - status
-      type: object
-    CustomDimension:
-      anyOf:
-      - $ref: '#/components/schemas/CustomBinDimension'
-      - $ref: '#/components/schemas/CustomSqlDimension'
-    NumberSeparator:
-      enum:
-      - default
-      - commaPeriod
-      - spacePeriod
-      - periodComma
-      - noSeparatorPeriod
-      - apostrophePeriod
-      type: string
-    TableCalculationTemplateType.RANK_IN_COLUMN:
-      enum:
-      - rank_in_column
-      type: string
-    BinType.FIXED_NUMBER:
-      enum:
-      - fixed_number
-      type: string
-    TableCalculationBase:
-      properties:
-        type:
-          $ref: '#/components/schemas/TableCalculationType'
-          description: Data type of the calculation result
-        format:
-          $ref: '#/components/schemas/CustomFormat'
-          description: Formatting options for the calculation
-        displayName:
-          type: string
-          description: Display name shown in the UI
-        name:
-          type: string
-          description: Internal name of the table calculation
-        index:
-          type: number
-          format: double
-          description: Display order index
-      required:
-      - displayName
-      - name
-      type: object
-    FilterOperator:
-      enum:
-      - isNull
-      - notNull
-      - equals
-      - notEquals
-      - startsWith
-      - endsWith
-      - include
-      - doesNotInclude
-      - lessThan
-      - lessThanOrEqual
-      - greaterThan
-      - greaterThanOrEqual
-      - inThePast
-      - notInThePast
-      - inTheNext
-      - inTheCurrent
-      - notInTheCurrent
-      - inBetween
-      - notInBetween
-      - inPeriodToDate
-      type: string
-    TableCalculation:
-      anyOf:
-      - $ref: '#/components/schemas/SqlTableCalculation'
-      - $ref: '#/components/schemas/TemplateTableCalculation'
-      - $ref: '#/components/schemas/FormulaTableCalculation'
-    BinType.FIXED_WIDTH:
-      enum:
-      - fixed_width
-      type: string
-    ApiSuccess_SlackSettings-or-undefined_:
-      properties:
-        results:
-          $ref: '#/components/schemas/SlackSettings'
-        status:
-          type: string
-          enum:
-          - ok
-      required:
-      - status
-      type: object
-    FrameClause:
-      properties:
-        end:
-          $ref: '#/components/schemas/FrameBoundary'
-          description: End boundary of the frame
-        start:
-          $ref: '#/components/schemas/FrameBoundary'
-          description: Start boundary of the frame
-        frameType:
-          $ref: '#/components/schemas/FrameType'
-          description: Type of frame (ROWS or RANGE)
-      required:
-      - end
-      - frameType
-      type: object
-    SlackSettings:
-      properties:
-        unfurlsEnabled:
-          type: boolean
-        aiMultiAgentProjectUuids:
-          items:
-            type: string
-          type:
-          - array
-          - 'null'
-        aiMultiAgentChannelId:
-          type: string
-        aiRequireOAuth:
-          type: boolean
-        hasRequiredScopes:
-          type: boolean
-        aiThreadAccessConsent:
-          type: boolean
-        slackChannelProjectMappings:
-          items:
-            $ref: '#/components/schemas/SlackChannelProjectMapping'
-          type: array
-        appProfilePhotoUrl:
-          type: string
-        notificationChannel:
-          type: string
-        scopes:
-          items:
-            type: string
-          type: array
-        token:
-          type: string
-        createdAt:
-          type: string
-          format: date-time
-        appName:
-          type: string
-        slackTeamName:
-          type: string
-        organizationUuid:
-          type: string
-      required:
-      - hasRequiredScopes
-      - scopes
-      - createdAt
-      - slackTeamName
-      - organizationUuid
-      type: object
-    ApiSuccessEmpty:
-      properties:
-        results: {}
-        status:
-          type: string
-          enum:
-          - ok
-      required:
-      - status
-      type: object
-    ApiSlackCustomSettingsResponse:
-      $ref: '#/components/schemas/ApiSuccessEmpty'
-    TimeFrames:
-      enum:
-      - RAW
-      - YEAR
-      - QUARTER
-      - MONTH
-      - WEEK
-      - DAY
-      - HOUR
-      - MINUTE
-      - SECOND
-      - MILLISECOND
-      - DAY_OF_WEEK_INDEX
-      - DAY_OF_MONTH_NUM
-      - DAY_OF_YEAR_NUM
-      - WEEK_NUM
-      - MONTH_NUM
-      - QUARTER_NUM
-      - YEAR_NUM
-      - DAY_OF_WEEK_NAME
-      - MONTH_NAME
-      - QUARTER_NAME
-      - HOUR_OF_DAY_NUM
-      - MINUTE_OF_HOUR_NUM
-      type: string
-    BinType.CUSTOM_GROUP:
-      enum:
-      - custom_group
-      type: string
-    ApiErrorPayload:
-      properties:
-        error:
-          properties:
-            data:
-              $ref: '#/components/schemas/AnyType'
-              description: Optional data containing details of the error
-            message:
-              type: string
-              description: A friendly message summarising the error
-            name:
-              type: string
-              description: Unique name for the type of error
-            statusCode:
-              type: number
-              format: integer
-              description: HTTP status code
-          required:
-          - name
-          - statusCode
-          type: object
-        status:
-          type: string
-          enum:
-          - error
-      required:
-      - error
-      - status
-      type: object
-      description: 'The Error object is returned from the api any time there is an error.
-
-        The message contains'
-    ApiSuccess_SlackChannel-or-null_:
-      properties:
-        results:
-          allOf:
-          - $ref: '#/components/schemas/SlackChannel'
-        status:
-          type: string
-          enum:
-          - ok
-      required:
-      - results
-      - status
-      type: object
-    TableCalculationTemplateType.RUNNING_TOTAL:
-      enum:
-      - running_total
-      type: string
-    UploadMetricGsheet:
-      properties:
-        pivotConfig:
-          $ref: '#/components/schemas/PivotConfig'
-        hiddenFields:
-          items:
-            type: string
-          type: array
-        customLabels:
-          $ref: '#/components/schemas/CustomLabel'
-        columnOrder:
-          items:
-            type: string
-          type: array
-        showTableNames:
-          type: boolean
-        metricQuery:
-          $ref: '#/components/schemas/MetricQueryResponse'
-        exploreId:
-          type: string
-        projectUuid:
-          type: string
-      required:
-      - columnOrder
-      - showTableNames
-      - metricQuery
-      - exploreId
-      - projectUuid
-      type: object
-    ApiSlackChannelResponse:
-      $ref: '#/components/schemas/ApiSuccess_SlackChannel-or-null_'
-    Compact:
-      enum:
-      - thousands
-      - millions
-      - billions
-      - trillions
-      - kilobytes
-      - megabytes
-      - gigabytes
-      - terabytes
-      - petabytes
-      - kibibytes
-      - mebibytes
-      - gibibytes
-      - tebibytes
-      - pebibytes
-      type: string
-    BinGroup:
-      properties:
-        values:
-          items:
-            $ref: '#/components/schemas/GroupValueRule'
-          type: array
-          description: Rules that match values into this group
-        name:
-          type: string
-          description: Display name for this group (e.g. "North America")
-      required:
-      - values
-      - name
-      type: object
-    PivotConfig:
-      properties:
-        hiddenDimensionFieldIds:
-          items:
-            type: string
-          type: array
-          description: 'Dimensions (row-index or pivot-column-header) hidden from the rendered
-
-            pivot and from exports. The dimension still participates in the
-
-            underlying query and can drive sort order; it just doesn''t render and
-
-            is filtered out of CSV/XLSX. Mirrors `hiddenMetricFieldIds` for the
-
-            dimension side.'
-        rowTotals:
-          type: boolean
-        columnTotals:
-          type: boolean
-        visibleMetricFieldIds:
-          items:
-            type: string
-          type: array
-        hiddenMetricFieldIds:
-          items:
-            type: string
-          type: array
-        columnOrder:
-          items:
-            type: string
-          type: array
-        metricsAsRows:
-          type: boolean
-        pivotDimensions:
-          items:
-            type: string
-          type: array
-      required:
-      - metricsAsRows
-      - pivotDimensions
-      type: object
-    FieldId:
-      type: string
-    TableCalculationTemplateType.PERCENT_CHANGE_FROM_PREVIOUS:
-      enum:
-      - percent_change_from_previous
+      - row_number
+      - percent_rank
+      - cume_dist
+      - rank
+      - sum
+      - avg
+      - count
+      - min
+      - max
       type: string
     SortField:
       properties:
@@ -1465,156 +2379,14 @@ components:
       - descending
       - fieldId
       type: object
-    SlackChannel:
-      properties:
-        name:
-          type: string
-        id:
-          type: string
-      required:
-      - name
-      - id
-      type: object
-    TableCalculationTemplateType.WINDOW_FUNCTION:
+    DimensionType:
       enum:
-      - window_function
+      - string
+      - number
+      - timestamp
+      - date
+      - boolean
       type: string
-    BinRange:
-      properties:
-        to:
-          type: number
-          format: double
-          description: End value for this bin range (undefined for the last range)
-        from:
-          type: number
-          format: double
-          description: Start value for this bin range (undefined for the first range)
-      type: object
-    MetricFilterRule:
-      description: Filter rule for metrics, targeting fields by reference
-      properties:
-        values:
-          items:
-            $ref: '#/components/schemas/AnyType'
-          type: array
-          description: Values to filter by
-        operator:
-          $ref: '#/components/schemas/FilterOperator'
-          description: Filter operator
-        id:
-          type: string
-          description: Unique identifier for the filter
-        target:
-          properties:
-            fieldRef:
-              type: string
-              description: Field reference to filter on (e.g., 'table_name.field_name')
-          required:
-          - fieldRef
-          type: object
-          description: Target field for the filter
-        settings:
-          $ref: '#/components/schemas/AnyType'
-          description: Additional settings for date/time filters
-        disabled:
-          type: boolean
-          description: Whether this filter is disabled
-        required:
-          type: boolean
-          description: Whether this filter is required
-        caseSensitive:
-          type: boolean
-          description: 'Overrides the field/explore case-sensitivity for this rule only.
-
-            Used by internal features like autocomplete search that must always
-
-            match case-insensitively regardless of the field''s configured setting.'
-      required:
-      - operator
-      - id
-      - target
-      type: object
-      additionalProperties: true
-    CustomDimensionType.SQL:
-      enum:
-      - sql
-      type: string
-    FormulaTableCalculation:
-      allOf:
-      - $ref: '#/components/schemas/TableCalculationBase'
-      - properties:
-          formula:
-            type: string
-            description: Spreadsheet-like formula compiled to SQL at query time
-        required:
-        - formula
-        type: object
-    FrameType:
-      enum:
-      - rows
-      - range
-      type: string
-    Pick_CompiledDimension.label-or-name-or-table_:
-      properties:
-        name:
-          type: string
-        label:
-          type: string
-        table:
-          type: string
-      required:
-      - name
-      - label
-      - table
-      type: object
-      description: From T, pick a set of properties whose keys are in the union K
-    CustomLabel:
-      properties: {}
-      additionalProperties:
-        type: string
-      type: object
-    SlackAppCustomSettings:
-      properties:
-        unfurlsEnabled:
-          type: boolean
-        aiMultiAgentProjectUuids:
-          items:
-            type: string
-          type:
-          - array
-          - 'null'
-        aiMultiAgentChannelId:
-          type: string
-        aiRequireOAuth:
-          type: boolean
-        aiThreadAccessConsent:
-          type: boolean
-        slackChannelProjectMappings:
-          items:
-            $ref: '#/components/schemas/SlackChannelProjectMapping'
-          type: array
-        appProfilePhotoUrl:
-          type:
-          - string
-          - 'null'
-        notificationChannel:
-          type:
-          - string
-          - 'null'
-      required:
-      - appProfilePhotoUrl
-      - notificationChannel
-      type: object
-    TemplateTableCalculation:
-      allOf:
-      - $ref: '#/components/schemas/TableCalculationBase'
-      - properties:
-          template:
-            $ref: '#/components/schemas/TableCalculationTemplate'
-            description: Template-based calculation (alternative to sql)
-        required:
-        - template
-        type: object
   securitySchemes:
     session_cookie:
       type: apiKey

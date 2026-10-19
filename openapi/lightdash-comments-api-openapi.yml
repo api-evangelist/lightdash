@@ -1,7 +1,7 @@
 openapi: 3.2.0
 info:
   title: Lightdash Comments API
-  version: 0.3156.1
+  version: 2.616.2
   description: 'Open API documentation for all public Lightdash API endpoints. # Authentication Before you get started, you might need to create a Personal Access Token to authenticate via the API. You can create a token by following this guide: https://docs.lightdash.com/references/personal_tokens'
   license:
     name: MIT
@@ -170,27 +170,6 @@ paths:
           type: string
 components:
   schemas:
-    ApiCreateComment:
-      properties:
-        results:
-          type: string
-        status:
-          type: string
-          enum:
-          - ok
-      required:
-      - results
-      - status
-      type: object
-    ApiResolveComment:
-      properties:
-        status:
-          type: string
-          enum:
-          - ok
-      required:
-      - status
-      type: object
     Pick_Comment.text-or-replyTo-or-mentions-or-textHtml_:
       properties:
         text:
@@ -219,6 +198,8 @@ components:
         These are only used on legacy `any` types, don''t use it for new types.
 
         This is added on a separate file to avoid circular dependencies.'
+    SolidColor:
+      type: string
     Comment:
       properties:
         mentions:
@@ -237,9 +218,21 @@ components:
           type: string
         user:
           properties:
+            avatarGradient:
+              allOf:
+              - $ref: '#/components/schemas/UserAvatarColorValue'
+            avatarUrl:
+              type:
+              - string
+              - 'null'
+            userUuid:
+              type: string
             name:
               type: string
           required:
+          - avatarGradient
+          - avatarUrl
+          - userUuid
           - name
           type: object
         createdAt:
@@ -261,6 +254,19 @@ components:
       - text
       - commentId
       type: object
+    MeshColor:
+      type: string
+    HexColor:
+      type: string
+    ApiResolveComment:
+      properties:
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - status
+      type: object
     ApiGetComments:
       properties:
         results:
@@ -278,6 +284,33 @@ components:
       - results
       - status
       type: object
+    UserAvatarColorValue:
+      anyOf:
+      - $ref: '#/components/schemas/UserAvatarGradientId'
+      - $ref: '#/components/schemas/HexColor'
+      - $ref: '#/components/schemas/MeshColor'
+      - $ref: '#/components/schemas/SolidColor'
+    ApiCreateComment:
+      properties:
+        results:
+          type: string
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
+    UserAvatarGradientId:
+      type: string
+      enum:
+      - lilac
+      - blush
+      - amethyst
+      - sunrise
+      - slate
+      - pearl
     ApiErrorPayload:
       properties:
         error:

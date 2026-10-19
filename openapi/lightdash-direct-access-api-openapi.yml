@@ -1,0 +1,501 @@
+openapi: 3.2.0
+info:
+  title: Lightdash Direct Access API
+  version: 2.616.2
+  description: 'Open API documentation for all public Lightdash API endpoints. # Authentication Before you get started, you might need to create a Personal Access Token to authenticate via the API. You can create a token by following this guide: https://docs.lightdash.com/references/personal_tokens'
+  license:
+    name: MIT
+  contact:
+    name: Lightdash Support
+    email: support@lightdash.com
+    url: https://docs.lightdash.com/help-and-contact/contact/contact_info/
+servers:
+- url: /
+tags:
+- name: Direct Access
+paths:
+  /api/v2/projects/{projectUuid}/direct-access/{resourceType}/{resourceUuid}/groups:
+    get:
+      operationId: ListDirectAccessGroups
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiDirectAccessGroupsResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: 'List project groups eligible for sharing this resource. Requires the
+
+        same permission as managing its direct access assignments.'
+      summary: List groups eligible for direct access
+      tags:
+      - Direct Access
+      security: []
+      parameters:
+      - in: path
+        name: projectUuid
+        required: true
+        schema:
+          $ref: '#/components/schemas/UUID'
+      - in: path
+        name: resourceType
+        required: true
+        schema:
+          $ref: '#/components/schemas/DirectAccessResourceType'
+      - in: path
+        name: resourceUuid
+        required: true
+        schema:
+          $ref: '#/components/schemas/UUID'
+      x-operation-id-source: normalized
+      x-operation-id-original: List direct access groups
+  /api/v2/projects/{projectUuid}/direct-access/{resourceType}/{resourceUuid}/users:
+    get:
+      operationId: ListDirectAccessUsers
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiDirectAccessUsersResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: 'List users eligible for sharing this resource: active users with
+
+        current access to the project. Requires the same permission as managing
+
+        its direct access assignments.'
+      summary: List users eligible for direct access
+      tags:
+      - Direct Access
+      security: []
+      parameters:
+      - in: path
+        name: projectUuid
+        required: true
+        schema:
+          $ref: '#/components/schemas/UUID'
+      - in: path
+        name: resourceType
+        required: true
+        schema:
+          $ref: '#/components/schemas/DirectAccessResourceType'
+      - in: path
+        name: resourceUuid
+        required: true
+        schema:
+          $ref: '#/components/schemas/UUID'
+      x-operation-id-source: normalized
+      x-operation-id-original: List direct access users
+  /api/v2/projects/{projectUuid}/direct-access/{resourceType}/{resourceUuid}/assignments:
+    get:
+      operationId: ListDirectAccessAssignments
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiDirectAccessAssignmentsResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: 'List the direct access assignments stored for one resource. Returns
+
+        direct assignments and direct roles only; inherited or effective roles
+
+        are never reconstructed here.'
+      summary: List direct access
+      tags:
+      - Direct Access
+      security: []
+      parameters:
+      - in: path
+        name: projectUuid
+        required: true
+        schema:
+          $ref: '#/components/schemas/UUID'
+      - in: path
+        name: resourceType
+        required: true
+        schema:
+          $ref: '#/components/schemas/DirectAccessResourceType'
+      - in: path
+        name: resourceUuid
+        required: true
+        schema:
+          $ref: '#/components/schemas/UUID'
+      x-operation-id-source: normalized
+      x-operation-id-original: List direct access assignments
+    delete:
+      operationId: ResetDirectAccess
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiSuccessEmpty'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: Remove every direct access assignment from one resource.
+      summary: Reset direct access
+      tags:
+      - Direct Access
+      security: []
+      parameters:
+      - in: path
+        name: projectUuid
+        required: true
+        schema:
+          $ref: '#/components/schemas/UUID'
+      - in: path
+        name: resourceType
+        required: true
+        schema:
+          $ref: '#/components/schemas/DirectAccessResourceType'
+      - in: path
+        name: resourceUuid
+        required: true
+        schema:
+          $ref: '#/components/schemas/UUID'
+      x-operation-id-source: normalized
+      x-operation-id-original: Reset direct access
+  /api/v2/projects/{projectUuid}/direct-access/{resourceType}/{resourceUuid}/assignments/{principalType}/{principalUuid}:
+    put:
+      operationId: ReplaceDirectAccessRole
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiSuccessEmpty'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: Create or replace one principal's direct role on a resource.
+      summary: Replace direct access role
+      tags:
+      - Direct Access
+      security: []
+      parameters:
+      - in: path
+        name: projectUuid
+        required: true
+        schema:
+          $ref: '#/components/schemas/UUID'
+      - in: path
+        name: resourceType
+        required: true
+        schema:
+          $ref: '#/components/schemas/DirectAccessResourceType'
+      - in: path
+        name: resourceUuid
+        required: true
+        schema:
+          $ref: '#/components/schemas/UUID'
+      - in: path
+        name: principalType
+        required: true
+        schema:
+          $ref: '#/components/schemas/DirectAccessPrincipalType'
+      - in: path
+        name: principalUuid
+        required: true
+        schema:
+          $ref: '#/components/schemas/UUID'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpsertDirectAccessAssignmentRequest'
+      x-operation-id-source: normalized
+      x-operation-id-original: Replace direct access role
+    delete:
+      operationId: RevokeDirectAccess
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiSuccessEmpty'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: 'Revoke one principal''s direct access. Revoking an assignment that does
+
+        not exist succeeds as a no-op.'
+      summary: Revoke direct access
+      tags:
+      - Direct Access
+      security: []
+      parameters:
+      - in: path
+        name: projectUuid
+        required: true
+        schema:
+          $ref: '#/components/schemas/UUID'
+      - in: path
+        name: resourceType
+        required: true
+        schema:
+          $ref: '#/components/schemas/DirectAccessResourceType'
+      - in: path
+        name: resourceUuid
+        required: true
+        schema:
+          $ref: '#/components/schemas/UUID'
+      - in: path
+        name: principalType
+        required: true
+        schema:
+          $ref: '#/components/schemas/DirectAccessPrincipalType'
+      - in: path
+        name: principalUuid
+        required: true
+        schema:
+          $ref: '#/components/schemas/UUID'
+      x-operation-id-source: normalized
+      x-operation-id-original: Revoke direct access
+components:
+  schemas:
+    DirectAccessGroupPrincipal:
+      properties:
+        name:
+          type: string
+        groupUuid:
+          $ref: '#/components/schemas/UUID'
+        type:
+          $ref: '#/components/schemas/DirectAccessPrincipalType.GROUP'
+      required:
+      - name
+      - groupUuid
+      - type
+      type: object
+    DirectAccessPrincipal:
+      anyOf:
+      - $ref: '#/components/schemas/DirectAccessUserPrincipal'
+      - $ref: '#/components/schemas/DirectAccessGroupPrincipal'
+    DirectAccessPrincipalType.USER:
+      enum:
+      - user
+      type: string
+    AnyType:
+      description: 'This AnyType is an alias for any
+
+        The goal is to make it easier to identify any type in the codebase
+
+        without having to eslint-disable all the time
+
+        These are only used on legacy `any` types, don''t use it for new types.
+
+        This is added on a separate file to avoid circular dependencies.'
+    DirectAccessAssignment:
+      properties:
+        updatedAt:
+          type: string
+          format: date-time
+        createdAt:
+          type: string
+          format: date-time
+        grantedByUserUuid:
+          allOf:
+          - $ref: '#/components/schemas/UUID'
+        role:
+          $ref: '#/components/schemas/SpaceMemberRole'
+        principal:
+          $ref: '#/components/schemas/DirectAccessPrincipal'
+      required:
+      - updatedAt
+      - createdAt
+      - grantedByUserUuid
+      - role
+      - principal
+      type: object
+      description: 'One persisted direct assignment. Reflects stored policy only — inherited
+
+        space/project/organization roles are never reconstructed into this shape.'
+    ApiDirectAccessUsersResponse:
+      properties:
+        results:
+          items:
+            $ref: '#/components/schemas/DirectAccessUserPrincipal'
+          type: array
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
+    UUID:
+      type: string
+      format: uuid
+      description: 'Stringified UUIDv4.
+
+        See [RFC 4112](https://tools.ietf.org/html/rfc4122)'
+      pattern: '[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-4[0-9A-Fa-f]{3}-[89ABab][0-9A-Fa-f]{3}-[0-9A-Fa-f]{12}'
+    DirectAccessPrincipalType.GROUP:
+      enum:
+      - group
+      type: string
+    ApiDirectAccessAssignmentsResponse:
+      properties:
+        results:
+          items:
+            $ref: '#/components/schemas/DirectAccessAssignment'
+          type: array
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
+    ApiSuccessEmpty:
+      properties:
+        results: {}
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - status
+      type: object
+    DirectAccessUserPrincipal:
+      properties:
+        email:
+          type:
+          - string
+          - 'null'
+        lastName:
+          type: string
+        firstName:
+          type: string
+        userUuid:
+          $ref: '#/components/schemas/UUID'
+        type:
+          $ref: '#/components/schemas/DirectAccessPrincipalType.USER'
+      required:
+      - email
+      - lastName
+      - firstName
+      - userUuid
+      - type
+      type: object
+    DirectAccessPrincipalType:
+      enum:
+      - user
+      - group
+      type: string
+    ApiErrorPayload:
+      properties:
+        error:
+          properties:
+            data:
+              $ref: '#/components/schemas/AnyType'
+              description: Optional data containing details of the error
+            message:
+              type: string
+              description: A friendly message summarising the error
+            name:
+              type: string
+              description: Unique name for the type of error
+            statusCode:
+              type: number
+              format: integer
+              description: HTTP status code
+          required:
+          - name
+          - statusCode
+          type: object
+        status:
+          type: string
+          enum:
+          - error
+      required:
+      - error
+      - status
+      type: object
+      description: 'The Error object is returned from the api any time there is an error.
+
+        The message contains'
+    UpsertDirectAccessAssignmentRequest:
+      properties:
+        role:
+          $ref: '#/components/schemas/SpaceMemberRole'
+      required:
+      - role
+      type: object
+    DirectAccessResourceType:
+      description: 'Closed registry of resource types that support direct access grants.
+
+        Growing this union means adding a resource registry entry, an
+
+        `AccessTarget` mapping, and grant tables — never a new handler hierarchy.'
+      enum:
+      - document
+      - dashboard
+      - chart
+      - sqlChart
+      - app
+      type: string
+    SpaceMemberRole:
+      enum:
+      - viewer
+      - editor
+      - admin
+      type: string
+    ApiDirectAccessGroupsResponse:
+      properties:
+        results:
+          items:
+            $ref: '#/components/schemas/DirectAccessGroupPrincipal'
+          type: array
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
+  securitySchemes:
+    session_cookie:
+      type: apiKey
+      in: cookie
+      name: connect.sid
+    api_key:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: Value should be 'ApiKey <your key>'

@@ -1,7 +1,7 @@
 openapi: 3.2.0
 info:
   title: Lightdash Bulk action API
-  version: 0.3156.1
+  version: 2.616.2
   description: 'Open API documentation for all public Lightdash API endpoints. # Authentication Before you get started, you might need to create a Personal Access Token to authenticate via the API. You can create a token by following this guide: https://docs.lightdash.com/references/personal_tokens'
   license:
     name: MIT
@@ -49,22 +49,74 @@ paths:
               $ref: '#/components/schemas/ApiContentBulkActionBody_ContentActionMove_'
       x-operation-id-source: normalized
       x-operation-id-original: Bulk move content
+  /api/v2/content/bulk-action/{projectUuid}/delete:
+    post:
+      operationId: BulkDeleteContent
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiContentBulkDeleteResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: 'Delete multiple items (Charts, Dashboards, Spaces). Items the caller
+
+        cannot delete are skipped and reported in the response.'
+      summary: Bulk delete content
+      tags:
+      - Bulk action
+      security: []
+      parameters:
+      - in: path
+        name: projectUuid
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApiContentBulkActionBody_ContentActionDelete_'
+      x-operation-id-source: normalized
+      x-operation-id-original: Bulk delete content
 components:
   schemas:
-    ContentType.DASHBOARD:
+    ChartSourceType:
       enum:
-      - dashboard
+      - dbt_explore
+      - sql
       type: string
-    ApiSuccessEmpty:
+    ContentActionMove:
       properties:
-        results: {}
-        status:
+        targetSpaceUuid:
+          type:
+          - string
+          - 'null'
+        type:
           type: string
           enum:
-          - ok
+          - move
       required:
-      - status
+      - targetSpaceUuid
+      - type
       type: object
+    AnyType:
+      description: 'This AnyType is an alias for any
+
+        The goal is to make it easier to identify any type in the codebase
+
+        without having to eslint-disable all the time
+
+        These are only used on legacy `any` types, don''t use it for new types.
+
+        This is added on a separate file to avoid circular dependencies.'
     ItemPayload:
       anyOf:
       - properties:
@@ -106,16 +158,15 @@ components:
         - contentType
         - uuid
         type: object
-    AnyType:
-      description: 'This AnyType is an alias for any
-
-        The goal is to make it easier to identify any type in the codebase
-
-        without having to eslint-disable all the time
-
-        These are only used on legacy `any` types, don''t use it for new types.
-
-        This is added on a separate file to avoid circular dependencies.'
+      - properties:
+          contentType:
+            $ref: '#/components/schemas/ContentType.DOCUMENT'
+          uuid:
+            type: string
+        required:
+        - contentType
+        - uuid
+        type: object
     ApiContentBulkActionBody_ContentActionMove_:
       properties:
         action:
@@ -128,37 +179,74 @@ components:
       - action
       - content
       type: object
+    ContentBulkDeleteSkippedItem:
+      properties:
+        reason:
+          type: string
+        contentType:
+          $ref: '#/components/schemas/ContentType'
+        uuid:
+          type: string
+      required:
+      - reason
+      - contentType
+      - uuid
+      type: object
+    ContentType.DASHBOARD:
+      enum:
+      - dashboard
+      type: string
+    ApiContentBulkActionBody_ContentActionDelete_:
+      properties:
+        action:
+          $ref: '#/components/schemas/ContentActionDelete'
+        content:
+          items:
+            $ref: '#/components/schemas/ItemPayload'
+          type: array
+      required:
+      - action
+      - content
+      type: object
+    ContentType.CHART:
+      enum:
+      - chart
+      type: string
+    ContentActionDelete:
+      properties:
+        type:
+          type: string
+          enum:
+          - delete
+      required:
+      - type
+      type: object
+    ApiSuccessEmpty:
+      properties:
+        results: {}
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - status
+      type: object
     ContentType.DATA_APP:
       enum:
       - data_app
       type: string
-    ChartSourceType:
+    ContentType:
       enum:
-      - dbt_explore
-      - sql
+      - chart
+      - dashboard
+      - space
+      - data_app
+      - document
       type: string
     ContentType.SPACE:
       enum:
       - space
       type: string
-    ContentType.CHART:
-      enum:
-      - chart
-      type: string
-    ContentActionMove:
-      properties:
-        targetSpaceUuid:
-          type:
-          - string
-          - 'null'
-        type:
-          type: string
-          enum:
-          - move
-      required:
-      - targetSpaceUuid
-      - type
-      type: object
     ApiErrorPayload:
       properties:
         error:
@@ -191,6 +279,35 @@ components:
       description: 'The Error object is returned from the api any time there is an error.
 
         The message contains'
+    ApiContentBulkDeleteResponse:
+      properties:
+        results:
+          $ref: '#/components/schemas/ContentBulkDeleteResults'
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
+    ContentType.DOCUMENT:
+      enum:
+      - document
+      type: string
+    ContentBulkDeleteResults:
+      properties:
+        skipped:
+          items:
+            $ref: '#/components/schemas/ContentBulkDeleteSkippedItem'
+          type: array
+        deletedCount:
+          type: number
+          format: double
+      required:
+      - skipped
+      - deletedCount
+      type: object
   securitySchemes:
     session_cookie:
       type: apiKey

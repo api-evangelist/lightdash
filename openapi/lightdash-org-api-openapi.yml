@@ -1,7 +1,7 @@
 openapi: 3.2.0
 info:
   title: Lightdash Org API
-  version: 0.3156.1
+  version: 2.616.2
   description: 'Open API documentation for all public Lightdash API endpoints. # Authentication Before you get started, you might need to create a Personal Access Token to authenticate via the API. You can create a token by following this guide: https://docs.lightdash.com/references/personal_tokens'
   license:
     name: MIT
@@ -237,10 +237,652 @@ paths:
           type: string
       tags:
       - Org
+  /api/v1/org/ai-credits/usage:
+    get:
+      operationId: getOrganizationAiCreditUsage
+      responses:
+        '200':
+          description: Retrieved AI credit usage
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiAiCreditUsageResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: 'The organization''s AI usage for the current period, in tokens and credits,
+
+        with its allowance when one is agreed. Organization admins only.'
+      summary: Get AI credit usage
+      security: []
+      parameters: []
+      tags:
+      - Org
+  /api/v1/org/ai-credits/usage/daily:
+    get:
+      operationId: getOrganizationAiCreditDailyUsage
+      responses:
+        '200':
+          description: Retrieved daily AI credit usage
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiAiCreditDailyUsageResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: 'Billable AI credits per day of the current period, split by feature,
+
+        channel, user, project or agent. Organization admins only.'
+      summary: Get daily AI credit usage
+      security: []
+      parameters:
+      - description: what to split each day's credits by
+        in: query
+        name: breakdown
+        required: true
+        schema:
+          $ref: '#/components/schemas/AiCreditUsageBreakdown'
+      tags:
+      - Org
 components:
   schemas:
+    AiRouterRouteResponseResult:
+      properties:
+        nextAction:
+          $ref: '#/components/schemas/AiRouterRouteNextAction'
+        decision:
+          $ref: '#/components/schemas/AiRouterRouteDecision'
+      required:
+      - nextAction
+      - decision
+      type: object
+    ApiAiRouterInstructionResponse:
+      $ref: '#/components/schemas/ApiSuccess_AiRouterInstruction-or-null_'
+    AnyType:
+      description: 'This AnyType is an alias for any
+
+        The goal is to make it easier to identify any type in the codebase
+
+        without having to eslint-disable all the time
+
+        These are only used on legacy `any` types, don''t use it for new types.
+
+        This is added on a separate file to avoid circular dependencies.'
+    AiCreditDailyUsage:
+      properties:
+        days:
+          items:
+            $ref: '#/components/schemas/AiCreditDailyUsageDay'
+          type: array
+        series:
+          items:
+            $ref: '#/components/schemas/AiCreditDailyUsageSeries'
+          type: array
+        breakdown:
+          $ref: '#/components/schemas/AiCreditUsageBreakdown'
+        period:
+          $ref: '#/components/schemas/AiCreditPeriod'
+      required:
+      - days
+      - series
+      - breakdown
+      - period
+      type: object
+    UpsertAiRouterRequest:
+      properties:
+        projectUuids:
+          items:
+            type: string
+          type: array
+        enabled:
+          type: boolean
+      type: object
+    ApiAiRouterDecisionListResponse:
+      $ref: '#/components/schemas/ApiSuccess_AiRouterDecision-Array_'
+    AiCreditPeriod:
+      properties:
+        periodEnd:
+          type: string
+          format: date-time
+        periodStart:
+          type: string
+          format: date-time
+      required:
+      - periodEnd
+      - periodStart
+      type: object
+    ApiAiRouterDecisionCommitResponse:
+      $ref: '#/components/schemas/ApiSuccessEmpty'
+    ApiSuccess_AiCreditDailyUsage_:
+      properties:
+        results:
+          $ref: '#/components/schemas/AiCreditDailyUsage'
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
+    ApiSuccessEmpty:
+      properties:
+        results: {}
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - status
+      type: object
+    AiRouter:
+      properties:
+        updatedAt:
+          type: string
+          format: date-time
+        createdAt:
+          type: string
+          format: date-time
+        projectUuids:
+          items:
+            type: string
+          type: array
+        enabled:
+          type: boolean
+        organizationUuid:
+          type: string
+        routerUuid:
+          type: string
+      required:
+      - updatedAt
+      - createdAt
+      - projectUuids
+      - enabled
+      - organizationUuid
+      - routerUuid
+      type: object
+    ApiSuccess_AiRouter_:
+      properties:
+        results:
+          $ref: '#/components/schemas/AiRouter'
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
+    AiRouterInstruction:
+      properties:
+        createdAt:
+          type: string
+          format: date-time
+        taggedAgentUuids:
+          items:
+            type: string
+          type: array
+        instruction:
+          type: string
+        projectUuid:
+          type: string
+        routerUuid:
+          type: string
+        instructionVersionUuid:
+          type: string
+      required:
+      - createdAt
+      - taggedAgentUuids
+      - instruction
+      - projectUuid
+      - routerUuid
+      - instructionVersionUuid
+      type: object
+      description: 'Per-project routing instructions written by an admin. Versioned append-only
+
+        (like agent instructions): the latest version for a (router, project) pair is
+
+        the active one. `instruction` is free text where tagged agents are embedded as
+
+        `@[Agent Name](agent-uuid)` tokens; `taggedAgentUuids` is the extracted list,
+
+        kept alongside the text so references can be validated and orphans detected.'
+    AiRouterDecisionCommitRequest:
+      properties:
+        threadUuid:
+          type: string
+        chosenAgentUuid:
+          type: string
+      required:
+      - threadUuid
+      - chosenAgentUuid
+      type: object
+    Omit_AiCreditContract.organizationUuid_:
+      $ref: '#/components/schemas/Pick_AiCreditContract.Exclude_keyofAiCreditContract.organizationUuid__'
+      description: Construct a type with the properties of T except for those in type K.
+    ApiSuccess_AiRouterRouteResponseResult_:
+      properties:
+        results:
+          $ref: '#/components/schemas/AiRouterRouteResponseResult'
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
+    AiRouterRouteRequest:
+      properties:
+        projectUuid:
+          type: string
+        prompt:
+          type: string
+      required:
+      - projectUuid
+      - prompt
+      type: object
+    AiCreditUsageBreakdownRow:
+      allOf:
+      - $ref: '#/components/schemas/AiCreditUsageTotals'
+      - properties:
+          key:
+            type: string
+        required:
+        - key
+        type: object
+    AiRouterSelectionMode:
+      type: string
+      enum:
+      - auto_routed
+      - manual_pick
     ApiAiRouterRouteResponse:
       $ref: '#/components/schemas/ApiSuccess_AiRouterRouteResponseResult_'
+    AiRouterRouteDecision:
+      properties:
+        candidates:
+          items:
+            $ref: '#/components/schemas/AiRouterDecisionCandidate'
+          type: array
+        reasoning:
+          type: string
+        confidence:
+          $ref: '#/components/schemas/AiRouterDecisionConfidence'
+        suggestedAgentUuid:
+          type: string
+        decisionUuid:
+          type: string
+      required:
+      - candidates
+      - reasoning
+      - confidence
+      - suggestedAgentUuid
+      - decisionUuid
+      type: object
+    ApiSuccess_AiRouterInstruction-or-null_:
+      properties:
+        results:
+          allOf:
+          - $ref: '#/components/schemas/AiRouterInstruction'
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
+    AiCreditUsageTotals:
+      properties:
+        calls:
+          type: number
+          format: double
+        tokens:
+          type: number
+          format: double
+        credits:
+          type: number
+          format: double
+      required:
+      - calls
+      - tokens
+      - credits
+      type: object
+    AiCreditDailyUsageDay:
+      properties:
+        credits:
+          items:
+            type: number
+            format: double
+          type: array
+        date:
+          type: string
+      required:
+      - credits
+      - date
+      type: object
+    ApiSuccess_AiRouterDecision-Array_:
+      properties:
+        results:
+          items:
+            $ref: '#/components/schemas/AiRouterDecision'
+          type: array
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
+    AiCreditDailyUsageSeries:
+      anyOf:
+      - properties:
+          credits:
+            type: number
+            format: double
+          name:
+            type:
+            - string
+            - 'null'
+          key:
+            type: string
+          type:
+            type: string
+            enum:
+            - value
+        required:
+        - credits
+        - name
+        - key
+        - type
+        type: object
+      - properties:
+          credits:
+            type: number
+            format: double
+          type:
+            type: string
+            enum:
+            - other
+        required:
+        - credits
+        - type
+        type: object
+      - properties:
+          credits:
+            type: number
+            format: double
+          type:
+            type: string
+            enum:
+            - deleted
+        required:
+        - credits
+        - type
+        type: object
+      - properties:
+          credits:
+            type: number
+            format: double
+          type:
+            type: string
+            enum:
+            - embeddedViewers
+        required:
+        - credits
+        - type
+        type: object
+      - properties:
+          credits:
+            type: number
+            format: double
+          type:
+            type: string
+            enum:
+            - unattributed
+        required:
+        - credits
+        - type
+        type: object
+    ApiSuccess_AiCreditUsageSummary_:
+      properties:
+        results:
+          $ref: '#/components/schemas/AiCreditUsageSummary'
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
+    AiCreditHoldReason:
+      type: string
+      enum:
+      - allowance_exhausted
+      - admin_cap_reached
+      - manual_pause
+      - trial_ended
+    ApiAiRouterResponse:
+      $ref: '#/components/schemas/ApiSuccess_AiRouter_'
+    AiCreditHold:
+      properties:
+        releasedAt:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        expiresAt:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        placedAt:
+          type: string
+          format: date-time
+        placedBy:
+          type: string
+        notes:
+          type:
+          - string
+          - 'null'
+        reason:
+          $ref: '#/components/schemas/AiCreditHoldReason'
+        contractUuid:
+          type:
+          - string
+          - 'null'
+        userUuid:
+          type:
+          - string
+          - 'null'
+        organizationUuid:
+          type: string
+        uuid:
+          type: string
+      required:
+      - releasedAt
+      - expiresAt
+      - placedAt
+      - placedBy
+      - notes
+      - reason
+      - contractUuid
+      - userUuid
+      - organizationUuid
+      - uuid
+      type: object
+    AiRouterDecisionCandidate:
+      properties:
+        description:
+          type:
+          - string
+          - 'null'
+        name:
+          type: string
+        agentUuid:
+          type: string
+      required:
+      - description
+      - name
+      - agentUuid
+      type: object
+    AiCreditUsageSummary:
+      properties:
+        activeHolds:
+          items:
+            $ref: '#/components/schemas/AiCreditHold'
+          type: array
+        byKeyOrigin:
+          items:
+            $ref: '#/components/schemas/AiCreditUsageBreakdownRow'
+          type: array
+        byChannel:
+          items:
+            $ref: '#/components/schemas/AiCreditUsageBreakdownRow'
+          type: array
+        byTier:
+          items:
+            $ref: '#/components/schemas/AiCreditUsageBreakdownRow'
+          type: array
+        byFeature:
+          items:
+            $ref: '#/components/schemas/AiCreditUsageBreakdownRow'
+          type: array
+        unpricedTokens:
+          type: number
+          format: double
+        excluded:
+          $ref: '#/components/schemas/AiCreditUsageTotals'
+        selfManaged:
+          $ref: '#/components/schemas/AiCreditUsageTotals'
+        billable:
+          $ref: '#/components/schemas/AiCreditUsageTotals'
+        canShowCredits:
+          type: boolean
+        contract:
+          allOf:
+          - $ref: '#/components/schemas/Omit_AiCreditContract.organizationUuid_'
+        period:
+          $ref: '#/components/schemas/AiCreditPeriod'
+      required:
+      - activeHolds
+      - byKeyOrigin
+      - byChannel
+      - byTier
+      - byFeature
+      - unpricedTokens
+      - excluded
+      - selfManaged
+      - billable
+      - canShowCredits
+      - contract
+      - period
+      type: object
+    ApiErrorPayload:
+      properties:
+        error:
+          properties:
+            data:
+              $ref: '#/components/schemas/AnyType'
+              description: Optional data containing details of the error
+            message:
+              type: string
+              description: A friendly message summarising the error
+            name:
+              type: string
+              description: Unique name for the type of error
+            statusCode:
+              type: number
+              format: integer
+              description: HTTP status code
+          required:
+          - name
+          - statusCode
+          type: object
+        status:
+          type: string
+          enum:
+          - error
+      required:
+      - error
+      - status
+      type: object
+      description: 'The Error object is returned from the api any time there is an error.
+
+        The message contains'
+    ApiAiCreditUsageResponse:
+      $ref: '#/components/schemas/ApiSuccess_AiCreditUsageSummary_'
+    AiRouterDecisionConfidence:
+      type: string
+      enum:
+      - high
+      - medium
+      - low
+    AiCreditUsageBreakdown:
+      type: string
+      enum:
+      - user
+      - agent
+      - project
+      - feature
+      - channel
+    Pick_AiCreditContract.Exclude_keyofAiCreditContract.organizationUuid__:
+      properties:
+        uuid:
+          type: string
+        startsAt:
+          type: string
+          format: date-time
+        endsAt:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        resetIntervalMonths:
+          type: number
+          format: double
+        allowanceCredits:
+          type:
+          - number
+          - 'null'
+          format: double
+        allowanceMode:
+          type: string
+          enum:
+          - warn
+          - enforce
+      required:
+      - uuid
+      - startsAt
+      - endsAt
+      - resetIntervalMonths
+      - allowanceCredits
+      - allowanceMode
+      type: object
+      description: From T, pick a set of properties whose keys are in the union K
+    UpsertAiRouterInstructionRequest:
+      properties:
+        taggedAgentUuids:
+          items:
+            type: string
+          type: array
+        instruction:
+          type: string
+      required:
+      - taggedAgentUuids
+      - instruction
+      type: object
+    ApiAiCreditDailyUsageResponse:
+      $ref: '#/components/schemas/ApiSuccess_AiCreditDailyUsage_'
     AiRouterDecision:
       properties:
         committedAt:
@@ -295,280 +937,11 @@ components:
       - routerUuid
       - decisionUuid
       type: object
-    ApiSuccess_AiRouterDecision-Array_:
-      properties:
-        results:
-          items:
-            $ref: '#/components/schemas/AiRouterDecision'
-          type: array
-        status:
-          type: string
-          enum:
-          - ok
-      required:
-      - results
-      - status
-      type: object
-    ApiSuccess_AiRouterInstruction-or-null_:
-      properties:
-        results:
-          allOf:
-          - $ref: '#/components/schemas/AiRouterInstruction'
-        status:
-          type: string
-          enum:
-          - ok
-      required:
-      - results
-      - status
-      type: object
-    ApiAiRouterResponse:
-      $ref: '#/components/schemas/ApiSuccess_AiRouter_'
-    AnyType:
-      description: 'This AnyType is an alias for any
-
-        The goal is to make it easier to identify any type in the codebase
-
-        without having to eslint-disable all the time
-
-        These are only used on legacy `any` types, don''t use it for new types.
-
-        This is added on a separate file to avoid circular dependencies.'
-    AiRouterRouteRequest:
-      properties:
-        projectUuid:
-          type: string
-        prompt:
-          type: string
-      required:
-      - projectUuid
-      - prompt
-      type: object
-    ApiAiRouterDecisionCommitResponse:
-      $ref: '#/components/schemas/ApiSuccessEmpty'
-    UpsertAiRouterRequest:
-      properties:
-        projectUuids:
-          items:
-            type: string
-          type: array
-        enabled:
-          type: boolean
-      type: object
-    AiRouterInstruction:
-      properties:
-        createdAt:
-          type: string
-          format: date-time
-        taggedAgentUuids:
-          items:
-            type: string
-          type: array
-        instruction:
-          type: string
-        projectUuid:
-          type: string
-        routerUuid:
-          type: string
-        instructionVersionUuid:
-          type: string
-      required:
-      - createdAt
-      - taggedAgentUuids
-      - instruction
-      - projectUuid
-      - routerUuid
-      - instructionVersionUuid
-      type: object
-      description: 'Per-project routing instructions written by an admin. Versioned append-only
-
-        (like agent instructions): the latest version for a (router, project) pair is
-
-        the active one. `instruction` is free text where tagged agents are embedded as
-
-        `@[Agent Name](agent-uuid)` tokens; `taggedAgentUuids` is the extracted list,
-
-        kept alongside the text so references can be validated and orphans detected.'
     AiRouterRouteNextAction:
       type: string
       enum:
       - create_thread
       - show_picker
-    AiRouterRouteResponseResult:
-      properties:
-        nextAction:
-          $ref: '#/components/schemas/AiRouterRouteNextAction'
-        decision:
-          $ref: '#/components/schemas/AiRouterRouteDecision'
-      required:
-      - nextAction
-      - decision
-      type: object
-    AiRouterDecisionConfidence:
-      type: string
-      enum:
-      - high
-      - medium
-      - low
-    UpsertAiRouterInstructionRequest:
-      properties:
-        taggedAgentUuids:
-          items:
-            type: string
-          type: array
-        instruction:
-          type: string
-      required:
-      - taggedAgentUuids
-      - instruction
-      type: object
-    AiRouterDecisionCommitRequest:
-      properties:
-        threadUuid:
-          type: string
-        chosenAgentUuid:
-          type: string
-      required:
-      - threadUuid
-      - chosenAgentUuid
-      type: object
-    ApiAiRouterInstructionResponse:
-      $ref: '#/components/schemas/ApiSuccess_AiRouterInstruction-or-null_'
-    ApiSuccess_AiRouter_:
-      properties:
-        results:
-          $ref: '#/components/schemas/AiRouter'
-        status:
-          type: string
-          enum:
-          - ok
-      required:
-      - results
-      - status
-      type: object
-    AiRouterRouteDecision:
-      properties:
-        candidates:
-          items:
-            $ref: '#/components/schemas/AiRouterDecisionCandidate'
-          type: array
-        reasoning:
-          type: string
-        confidence:
-          $ref: '#/components/schemas/AiRouterDecisionConfidence'
-        suggestedAgentUuid:
-          type: string
-        decisionUuid:
-          type: string
-      required:
-      - candidates
-      - reasoning
-      - confidence
-      - suggestedAgentUuid
-      - decisionUuid
-      type: object
-    ApiSuccessEmpty:
-      properties:
-        results: {}
-        status:
-          type: string
-          enum:
-          - ok
-      required:
-      - status
-      type: object
-    AiRouter:
-      properties:
-        updatedAt:
-          type: string
-          format: date-time
-        createdAt:
-          type: string
-          format: date-time
-        projectUuids:
-          items:
-            type: string
-          type: array
-        enabled:
-          type: boolean
-        organizationUuid:
-          type: string
-        routerUuid:
-          type: string
-      required:
-      - updatedAt
-      - createdAt
-      - projectUuids
-      - enabled
-      - organizationUuid
-      - routerUuid
-      type: object
-    ApiErrorPayload:
-      properties:
-        error:
-          properties:
-            data:
-              $ref: '#/components/schemas/AnyType'
-              description: Optional data containing details of the error
-            message:
-              type: string
-              description: A friendly message summarising the error
-            name:
-              type: string
-              description: Unique name for the type of error
-            statusCode:
-              type: number
-              format: integer
-              description: HTTP status code
-          required:
-          - name
-          - statusCode
-          type: object
-        status:
-          type: string
-          enum:
-          - error
-      required:
-      - error
-      - status
-      type: object
-      description: 'The Error object is returned from the api any time there is an error.
-
-        The message contains'
-    AiRouterDecisionCandidate:
-      properties:
-        description:
-          type:
-          - string
-          - 'null'
-        name:
-          type: string
-        agentUuid:
-          type: string
-      required:
-      - description
-      - name
-      - agentUuid
-      type: object
-    ApiSuccess_AiRouterRouteResponseResult_:
-      properties:
-        results:
-          $ref: '#/components/schemas/AiRouterRouteResponseResult'
-        status:
-          type: string
-          enum:
-          - ok
-      required:
-      - results
-      - status
-      type: object
-    ApiAiRouterDecisionListResponse:
-      $ref: '#/components/schemas/ApiSuccess_AiRouterDecision-Array_'
-    AiRouterSelectionMode:
-      type: string
-      enum:
-      - auto_routed
-      - manual_pick
   securitySchemes:
     session_cookie:
       type: apiKey

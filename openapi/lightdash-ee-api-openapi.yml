@@ -1,0 +1,4060 @@
+openapi: 3.2.0
+info:
+  title: Lightdash Ee API
+  version: 2.616.2
+  description: 'Open API documentation for all public Lightdash API endpoints. # Authentication Before you get started, you might need to create a Personal Access Token to authenticate via the API. You can create a token by following this guide: https://docs.lightdash.com/references/personal_tokens'
+  license:
+    name: MIT
+  contact:
+    name: Lightdash Support
+    email: support@lightdash.com
+    url: https://docs.lightdash.com/help-and-contact/contact/contact_info/
+servers:
+- url: /
+tags:
+- name: Ee
+paths:
+  /api/v1/ee/projects/{projectUuid}/agent-onboarding:
+    post:
+      operationId: createAgentOnboardingRun
+      responses:
+        '202':
+          description: Accepted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiAgentOnboardingRunResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: 'Start a server-side agent onboarding run for a prepared project.
+
+        Returns the existing run when one is already active for the project.'
+      summary: Start agent onboarding run
+      security: []
+      parameters:
+      - in: path
+        name: projectUuid
+        required: true
+        schema:
+          $ref: '#/components/schemas/UUID'
+      tags:
+      - Ee
+    get:
+      operationId: getActiveAgentOnboardingRun
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiAgentOnboardingActiveRunResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: 'Get the agent onboarding run that is currently queued or running for a
+
+        project, if any.'
+      summary: Get active agent onboarding run
+      security: []
+      parameters:
+      - in: path
+        name: projectUuid
+        required: true
+        schema:
+          $ref: '#/components/schemas/UUID'
+      tags:
+      - Ee
+  /api/v1/ee/projects/{projectUuid}/agent-onboarding/{agentOnboardingRunUuid}:
+    get:
+      operationId: getAgentOnboardingRun
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiAgentOnboardingRunResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: Get the durable state and progress events of an agent onboarding run.
+      summary: Get agent onboarding run
+      security: []
+      parameters:
+      - in: path
+        name: projectUuid
+        required: true
+        schema:
+          $ref: '#/components/schemas/UUID'
+      - in: path
+        name: agentOnboardingRunUuid
+        required: true
+        schema:
+          $ref: '#/components/schemas/UUID'
+      tags:
+      - Ee
+  /api/v1/ee/projects/{projectUuid}/agent-onboarding/{agentOnboardingRunUuid}/file:
+    get:
+      operationId: getAgentOnboardingFile
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiAgentOnboardingFileResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: Read the latest persisted contents of a generated onboarding file.
+      summary: Get onboarding run file
+      security: []
+      parameters:
+      - in: path
+        name: projectUuid
+        required: true
+        schema:
+          $ref: '#/components/schemas/UUID'
+      - in: path
+        name: agentOnboardingRunUuid
+        required: true
+        schema:
+          $ref: '#/components/schemas/UUID'
+      - in: query
+        name: path
+        required: true
+        schema:
+          type: string
+      tags:
+      - Ee
+  /api/v1/ee/projects/{projectUuid}/agent-onboarding/{agentOnboardingRunUuid}/cancel:
+    post:
+      operationId: cancelAgentOnboardingRun
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiAgentOnboardingRunResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: Request cancellation of an agent onboarding run.
+      summary: Cancel agent onboarding run
+      security: []
+      parameters:
+      - in: path
+        name: projectUuid
+        required: true
+        schema:
+          $ref: '#/components/schemas/UUID'
+      - in: path
+        name: agentOnboardingRunUuid
+        required: true
+        schema:
+          $ref: '#/components/schemas/UUID'
+      tags:
+      - Ee
+  /api/v1/ee/projects/{projectUuid}/ai-deep-research:
+    post:
+      operationId: createAiDeepResearchRun
+      responses:
+        '202':
+          description: Accepted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiAiDeepResearchRunResponse'
+        '409':
+          description: Deep Research run already active
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: Start a durable Deep Research investigation.
+      summary: Start Deep Research run
+      security: []
+      parameters:
+      - in: path
+        name: projectUuid
+        required: true
+        schema:
+          $ref: '#/components/schemas/UUID'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AiDeepResearchRequestBody'
+      tags:
+      - Ee
+    get:
+      operationId: listAiDeepResearchRuns
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiAiDeepResearchRunListResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: List the caller's Deep Research runs attached to an agent thread.
+      summary: List Deep Research runs
+      security: []
+      parameters:
+      - in: path
+        name: projectUuid
+        required: true
+        schema:
+          $ref: '#/components/schemas/UUID'
+      - in: query
+        name: threadUuid
+        required: true
+        schema:
+          $ref: '#/components/schemas/UUID'
+      tags:
+      - Ee
+  /api/v1/ee/projects/{projectUuid}/ai-deep-research/{aiDeepResearchRunUuid}:
+    get:
+      operationId: getAiDeepResearchRun
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiAiDeepResearchRunResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: Get the durable state and result of a Deep Research run.
+      summary: Get Deep Research run
+      security: []
+      parameters:
+      - in: path
+        name: projectUuid
+        required: true
+        schema:
+          $ref: '#/components/schemas/UUID'
+      - in: path
+        name: aiDeepResearchRunUuid
+        required: true
+        schema:
+          $ref: '#/components/schemas/UUID'
+      tags:
+      - Ee
+  /api/v1/ee/projects/{projectUuid}/ai-deep-research/{aiDeepResearchRunUuid}/charts/{chartKey}/refresh:
+    post:
+      operationId: refreshAiDeepResearchChart
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiAiAgentThreadMessageVizQueryResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: 'Re-execute the metric query behind a warehouse-backed report chart to
+
+        load its live results.'
+      summary: Refresh Deep Research chart
+      security: []
+      parameters:
+      - in: path
+        name: projectUuid
+        required: true
+        schema:
+          $ref: '#/components/schemas/UUID'
+      - in: path
+        name: aiDeepResearchRunUuid
+        required: true
+        schema:
+          $ref: '#/components/schemas/UUID'
+      - in: path
+        name: chartKey
+        required: true
+        schema:
+          type: string
+      tags:
+      - Ee
+  /api/v1/ee/projects/{projectUuid}/ai-deep-research/{aiDeepResearchRunUuid}/queries/{queryUuid}/results:
+    get:
+      operationId: getDeepResearchChartQueryResults
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiGetAsyncQueryResultsResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      security: []
+      parameters:
+      - in: path
+        name: projectUuid
+        required: true
+        schema:
+          $ref: '#/components/schemas/UUID'
+      - in: path
+        name: aiDeepResearchRunUuid
+        required: true
+        schema:
+          $ref: '#/components/schemas/UUID'
+      - in: path
+        name: queryUuid
+        required: true
+        schema:
+          $ref: '#/components/schemas/UUID'
+      - in: query
+        name: page
+        required: false
+        schema:
+          format: double
+          type: number
+      - in: query
+        name: pageSize
+        required: false
+        schema:
+          format: double
+          type: number
+      tags:
+      - Ee
+      summary: Get deep research chart query results
+      x-summary-source: derived
+  /api/v1/ee/projects/{projectUuid}/ai-deep-research/{aiDeepResearchRunUuid}/charts/{queryUuid}:
+    get:
+      operationId: getAiDeepResearchChart
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiAiDeepResearchChartResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: Load the retained query metadata behind a report chart.
+      summary: Get Deep Research chart
+      security: []
+      parameters:
+      - in: path
+        name: projectUuid
+        required: true
+        schema:
+          $ref: '#/components/schemas/UUID'
+      - in: path
+        name: aiDeepResearchRunUuid
+        required: true
+        schema:
+          $ref: '#/components/schemas/UUID'
+      - in: path
+        name: queryUuid
+        required: true
+        schema:
+          $ref: '#/components/schemas/UUID'
+      tags:
+      - Ee
+  /api/v1/ee/projects/{projectUuid}/ai-deep-research/{aiDeepResearchRunUuid}/events:
+    get:
+      operationId: listAiDeepResearchEvents
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiAiDeepResearchEventsResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: 'List persisted progress for a Deep Research run in chronological order.
+
+        Pass the returned cursor unchanged to receive only newer events. The
+
+        cursor remains usable when no new events are available.'
+      summary: List Deep Research events
+      security: []
+      parameters:
+      - in: path
+        name: projectUuid
+        required: true
+        schema:
+          $ref: '#/components/schemas/UUID'
+      - in: path
+        name: aiDeepResearchRunUuid
+        required: true
+        schema:
+          $ref: '#/components/schemas/UUID'
+      - in: query
+        name: cursor
+        required: false
+        schema:
+          type: string
+      - in: query
+        name: limit
+        required: false
+        schema:
+          format: double
+          type: number
+      tags:
+      - Ee
+  /api/v1/ee/projects/{projectUuid}/ai-deep-research/{aiDeepResearchRunUuid}/cancel:
+    post:
+      operationId: cancelAiDeepResearchRun
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiAiDeepResearchRunResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: Cancel a queued run immediately or request cancellation for a running run.
+      summary: Cancel Deep Research run
+      security: []
+      parameters:
+      - in: path
+        name: projectUuid
+        required: true
+        schema:
+          $ref: '#/components/schemas/UUID'
+      - in: path
+        name: aiDeepResearchRunUuid
+        required: true
+        schema:
+          $ref: '#/components/schemas/UUID'
+      tags:
+      - Ee
+components:
+  schemas:
+    Record_string.never_:
+      properties: {}
+      type: object
+      description: Construct a type with a set of properties K of type T
+    AgentOnboardingFile:
+      properties:
+        updatedAt:
+          type: string
+        sizeBytes:
+          type: number
+          format: double
+        path:
+          type: string
+      required:
+      - updatedAt
+      - sizeBytes
+      - path
+      type: object
+    TableCalculationTemplateType.PERCENT_OF_COLUMN_TOTAL:
+      enum:
+      - percent_of_column_total
+      type: string
+    BinType.FIXED_WIDTH:
+      enum:
+      - fixed_width
+      type: string
+    AnyType:
+      description: 'This AnyType is an alias for any
+
+        The goal is to make it easier to identify any type in the codebase
+
+        without having to eslint-disable all the time
+
+        These are only used on legacy `any` types, don''t use it for new types.
+
+        This is added on a separate file to avoid circular dependencies.'
+    PreAggregateMissReason.EXPLORE_RESOLUTION_ERROR:
+      enum:
+      - explore_resolution_error
+      type: string
+    AiDeepResearchRun:
+      properties:
+        completedAt:
+          type:
+          - string
+          - 'null'
+        startedAt:
+          type:
+          - string
+          - 'null'
+        updatedAt:
+          type: string
+        createdAt:
+          type: string
+        cancellationRequestedAt:
+          type:
+          - string
+          - 'null'
+        errorMessage:
+          type:
+          - string
+          - 'null'
+        metrics:
+          $ref: '#/components/schemas/AiDeepResearchRunMetrics'
+        executionContextSnapshot:
+          allOf:
+          - $ref: '#/components/schemas/AiDeepResearchExecutionContextSnapshot'
+        budget:
+          $ref: '#/components/schemas/AiDeepResearchBudget'
+        document:
+          allOf:
+          - $ref: '#/components/schemas/AiDeepResearchRunDocument'
+          description: Null until the report is published as a Document.
+        isReportExpired:
+          type: boolean
+        reportExpiredAt:
+          type:
+          - string
+          - 'null'
+        reportExpiresAt:
+          type:
+          - string
+          - 'null'
+        resultMarkdown:
+          type:
+          - string
+          - 'null'
+          description: The report narrative with compact <chart> references.
+        terminalReason:
+          allOf:
+          - $ref: '#/components/schemas/AiDeepResearchTerminalReason'
+        status:
+          $ref: '#/components/schemas/AiDeepResearchRunStatus'
+        prompt:
+          type: string
+        entryPoint:
+          $ref: '#/components/schemas/AiDeepResearchEntryPoint'
+        resumedFromRunUuid:
+          type:
+          - string
+          - 'null'
+        promptUuid:
+          type: string
+        aiThreadUuid:
+          type: string
+        agentUuid:
+          type: string
+        projectUuid:
+          type: string
+        aiDeepResearchRunUuid:
+          type: string
+      required:
+      - completedAt
+      - startedAt
+      - updatedAt
+      - createdAt
+      - cancellationRequestedAt
+      - errorMessage
+      - metrics
+      - executionContextSnapshot
+      - budget
+      - document
+      - isReportExpired
+      - reportExpiredAt
+      - reportExpiresAt
+      - resultMarkdown
+      - terminalReason
+      - status
+      - prompt
+      - entryPoint
+      - resumedFromRunUuid
+      - promptUuid
+      - aiThreadUuid
+      - agentUuid
+      - projectUuid
+      - aiDeepResearchRunUuid
+      type: object
+    ApiGetAsyncQueryResults:
+      anyOf:
+      - $ref: '#/components/schemas/ReadyQueryResultsPage'
+      - properties:
+          queryUuid:
+            type: string
+          status:
+            anyOf:
+            - $ref: '#/components/schemas/QueryHistoryStatus.PENDING'
+            - $ref: '#/components/schemas/QueryHistoryStatus.QUEUED'
+            - $ref: '#/components/schemas/QueryHistoryStatus.EXECUTING'
+            - $ref: '#/components/schemas/QueryHistoryStatus.CANCELLED'
+        required:
+        - queryUuid
+        - status
+        type: object
+      - properties:
+          erroredAt:
+            type:
+            - string
+            - 'null'
+            format: date-time
+          error:
+            type:
+            - string
+            - 'null'
+          queryUuid:
+            type: string
+          status:
+            anyOf:
+            - $ref: '#/components/schemas/QueryHistoryStatus.ERROR'
+            - $ref: '#/components/schemas/QueryHistoryStatus.EXPIRED'
+        required:
+        - error
+        - queryUuid
+        - status
+        type: object
+    FrameBoundary:
+      properties:
+        offset:
+          type: number
+          format: double
+          description: Offset for PRECEDING/FOLLOWING
+        type:
+          $ref: '#/components/schemas/FrameBoundaryType'
+          description: Boundary type
+      required:
+      - type
+      type: object
+    AndFilterGroup:
+      properties:
+        and:
+          items:
+            $ref: '#/components/schemas/FilterGroupItem'
+          type: array
+          description: Array of filters or nested groups combined with AND logic
+        id:
+          type: string
+          description: Unique identifier for the filter group
+      required:
+      - and
+      - id
+      type: object
+    SqlTableCalculation:
+      allOf:
+      - $ref: '#/components/schemas/TableCalculationBase'
+      - properties:
+          sql:
+            type: string
+            description: SQL expression for the calculation (can reference fields with ${table.field})
+        required:
+        - sql
+        type: object
+    BinRange:
+      properties:
+        to:
+          type: number
+          format: double
+          description: End value for this bin range (undefined for the last range)
+        from:
+          type: number
+          format: double
+          description: Start value for this bin range (undefined for the first range)
+      type: object
+    ItemsMap:
+      $ref: '#/components/schemas/Record_string.Field-or-TableCalculation-or-CustomDimension-or-Metric_'
+    QueryHistoryStatus.ERROR:
+      enum:
+      - error
+      type: string
+    AiDeepResearchEntryPoint:
+      type: string
+      enum:
+      - homepage
+      - ask_ai
+    ApiAiDeepResearchEventsResponse:
+      $ref: '#/components/schemas/ApiSuccess_AiDeepResearchEventsPage_'
+    TemplateTableCalculation:
+      allOf:
+      - $ref: '#/components/schemas/TableCalculationBase'
+      - properties:
+          template:
+            $ref: '#/components/schemas/TableCalculationTemplate'
+            description: Template-based calculation (alternative to sql)
+        required:
+        - template
+        type: object
+    MetricOverrides:
+      properties: {}
+      additionalProperties:
+        $ref: '#/components/schemas/Pick_Metric.formatOptions_'
+      type: object
+    PreAggregateMissReason.NO_PRE_AGGREGATES_DEFINED:
+      enum:
+      - no_pre_aggregates_defined
+      type: string
+    PreAggregateMissReason.DEDUPLICATED_METRIC_REQUIRES_EXACT_MATCH:
+      enum:
+      - deduplicated_metric_requires_exact_match
+      type: string
+    PivotSortAnchor:
+      properties:
+        value:
+          anyOf:
+          - type: string
+          - type: number
+            format: double
+          - type: boolean
+        reference:
+          type: string
+      required:
+      - value
+      - reference
+      type: object
+      description: 'Coordinates of a single pivot column, used to anchor a row sort to that
+
+        specific column when results are pivoted.'
+    PreAggregateMissReason.USER_BYPASS:
+      enum:
+      - user_bypass
+      type: string
+    FrameClause:
+      properties:
+        end:
+          $ref: '#/components/schemas/FrameBoundary'
+          description: End boundary of the frame
+        start:
+          $ref: '#/components/schemas/FrameBoundary'
+          description: Start boundary of the frame
+        frameType:
+          $ref: '#/components/schemas/FrameType'
+          description: Type of frame (ROWS or RANGE)
+      required:
+      - end
+      - frameType
+      type: object
+    ApiAiAgentThreadMessageVizQuery:
+      properties:
+        metadata:
+          $ref: '#/components/schemas/AiVizMetadata'
+        mergeQuery:
+          allOf:
+          - $ref: '#/components/schemas/MetricSourcedMergeQuery'
+          description: The executed merge, so clients need not re-derive it from tool args.
+        query:
+          $ref: '#/components/schemas/ApiExecuteAsyncMetricQueryResults'
+        type:
+          $ref: '#/components/schemas/AiResultType'
+        source:
+          type: string
+          enum:
+          - semantic
+      required:
+      - metadata
+      - mergeQuery
+      - query
+      - type
+      - source
+      type: object
+    AgentOnboardingRun:
+      properties:
+        completedAt:
+          type:
+          - string
+          - 'null'
+        startedAt:
+          type:
+          - string
+          - 'null'
+        updatedAt:
+          type: string
+        createdAt:
+          type: string
+        errorMessage:
+          type:
+          - string
+          - 'null'
+        files:
+          items:
+            $ref: '#/components/schemas/AgentOnboardingFile'
+          type: array
+        usage:
+          allOf:
+          - $ref: '#/components/schemas/AgentOnboardingUsage'
+        handoff:
+          allOf:
+          - $ref: '#/components/schemas/AgentOnboardingHandoff'
+        events:
+          items:
+            $ref: '#/components/schemas/AgentOnboardingRunEvent'
+          type: array
+        stage:
+          allOf:
+          - $ref: '#/components/schemas/AgentOnboardingStage'
+        status:
+          $ref: '#/components/schemas/AgentOnboardingRunStatus'
+        projectUuid:
+          type: string
+        agentOnboardingRunUuid:
+          type: string
+      required:
+      - completedAt
+      - startedAt
+      - updatedAt
+      - createdAt
+      - errorMessage
+      - files
+      - usage
+      - handoff
+      - events
+      - stage
+      - status
+      - projectUuid
+      - agentOnboardingRunUuid
+      type: object
+    PreAggregateMissReason.FILTER_DIMENSION_NOT_IN_PRE_AGGREGATE:
+      enum:
+      - filter_dimension_not_in_pre_aggregate
+      type: string
+    QueryHistoryStatus.EXECUTING:
+      enum:
+      - executing
+      type: string
+    ApiGetAsyncQueryResultsResponse:
+      properties:
+        results:
+          $ref: '#/components/schemas/ApiGetAsyncQueryResults'
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
+    AiDeepResearchRunDocument:
+      properties:
+        slug:
+          type: string
+        name:
+          type: string
+        documentUuid:
+          type: string
+      required:
+      - slug
+      - name
+      - documentUuid
+      type: object
+      description: The Document a run published its report to.
+    TableCalculationBase:
+      properties:
+        totalMode:
+          $ref: '#/components/schemas/TableCalculationTotalMode'
+          description: How column totals are computed for this calculation
+        type:
+          $ref: '#/components/schemas/TableCalculationType'
+          description: Data type of the calculation result
+        format:
+          $ref: '#/components/schemas/CustomFormat'
+          description: Formatting options for the calculation
+        displayName:
+          type: string
+          description: Display name shown in the UI
+        name:
+          type: string
+          description: Internal name of the table calculation
+        index:
+          type: number
+          format: double
+          description: Display order index
+      required:
+      - displayName
+      - name
+      type: object
+    FieldUrl:
+      properties:
+        label:
+          type: string
+        url:
+          type: string
+      required:
+      - label
+      - url
+      type: object
+    FrameType:
+      enum:
+      - rows
+      - range
+      type: string
+    ResultColumns:
+      $ref: '#/components/schemas/Record_string.ResultColumn_'
+    FieldType:
+      enum:
+      - metric
+      - dimension
+      type: string
+    OrFilterGroup:
+      properties:
+        or:
+          items:
+            $ref: '#/components/schemas/FilterGroupItem'
+          type: array
+          description: Array of filters or nested groups combined with OR logic
+        id:
+          type: string
+          description: Unique identifier for the filter group
+      required:
+      - or
+      - id
+      type: object
+    ApiExecuteAsyncMetricQueryResults:
+      allOf:
+      - $ref: '#/components/schemas/ApiExecuteAsyncQueryResultsCommon'
+      - properties:
+          warnings:
+            items:
+              $ref: '#/components/schemas/QueryWarning'
+            type: array
+          fields:
+            $ref: '#/components/schemas/ItemsMap'
+          metricQuery:
+            $ref: '#/components/schemas/MetricQuery'
+        required:
+        - warnings
+        - fields
+        - metricQuery
+        type: object
+    ApiAiDeepResearchChartResponse:
+      $ref: '#/components/schemas/ApiSuccess_AiDeepResearchChartData_'
+    MergeJoinKeyPart:
+      properties:
+        fieldIdBySourceId:
+          $ref: '#/components/schemas/Record_string.FieldId_'
+          description: The field each source joins on. Every source must have an entry.
+        name:
+          type: string
+          description: Column name this key part takes in the merged result.
+      required:
+      - fieldIdBySourceId
+      - name
+      type: object
+      description: 'One column of the join key. Sources name the same real-world key differently
+
+        (`orders.order_date` vs `users.created_date`), so the mapping is explicit per
+
+        source rather than positional.'
+    Filters:
+      properties:
+        tableCalculations:
+          $ref: '#/components/schemas/FilterGroup'
+          description: Table calculation filter group
+        metrics:
+          $ref: '#/components/schemas/FilterGroup'
+          description: Metric filter group
+        dimensions:
+          $ref: '#/components/schemas/FilterGroup'
+          description: Dimension filter group
+      type: object
+    TableCalculation:
+      anyOf:
+      - $ref: '#/components/schemas/SqlTableCalculation'
+      - $ref: '#/components/schemas/TemplateTableCalculation'
+      - $ref: '#/components/schemas/FormulaTableCalculation'
+    DefaultTimeDimension:
+      properties:
+        interval:
+          $ref: '#/components/schemas/TimeFrames'
+        field:
+          type: string
+      required:
+      - interval
+      - field
+      type: object
+    ApiSuccess_AiDeepResearchRun-Array_:
+      properties:
+        results:
+          items:
+            $ref: '#/components/schemas/AiDeepResearchRun'
+          type: array
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
+    QueryResultsPreAggregate:
+      properties:
+        fallbackReason:
+          allOf:
+          - $ref: '#/components/schemas/PreAggregateFallbackReason'
+        execution:
+          $ref: '#/components/schemas/PreAggregateExecutionEngine'
+      required:
+      - fallbackReason
+      - execution
+      type: object
+    FrameBoundaryType:
+      enum:
+      - unbounded_preceding
+      - preceding
+      - current_row
+      - following
+      - unbounded_following
+      type: string
+    NumberSeparator:
+      enum:
+      - default
+      - commaPeriod
+      - spacePeriod
+      - periodComma
+      - noSeparatorPeriod
+      - apostrophePeriod
+      type: string
+    Pick_CompiledDimension.label-or-name-or-table_:
+      properties:
+        name:
+          type: string
+        label:
+          type: string
+        table:
+          type: string
+      required:
+      - name
+      - label
+      - table
+      type: object
+      description: From T, pick a set of properties whose keys are in the union K
+    Pick_Metric.formatOptions_:
+      properties:
+        formatOptions:
+          $ref: '#/components/schemas/CustomFormat'
+      type: object
+      description: From T, pick a set of properties whose keys are in the union K
+    ApiSuccess_AiDeepResearchChartData_:
+      properties:
+        results:
+          $ref: '#/components/schemas/AiDeepResearchChartData'
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
+    FixedNumberBinDimension:
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the custom dimension
+        name:
+          type: string
+          description: Display name for the custom dimension
+        table:
+          type: string
+          description: Table this custom dimension belongs to
+        type:
+          $ref: '#/components/schemas/CustomDimensionType.BIN'
+          description: Type of custom dimension (bin or sql)
+        dimensionId:
+          $ref: '#/components/schemas/FieldId'
+          description: Field ID of the parent dimension to bin
+        binType:
+          $ref: '#/components/schemas/BinType.FIXED_NUMBER'
+        binNumber:
+          type: number
+          format: double
+      required:
+      - id
+      - name
+      - table
+      - type
+      - dimensionId
+      - binType
+      - binNumber
+      type: object
+      additionalProperties: true
+    QueryResultsMetadata:
+      properties:
+        preAggregate:
+          allOf:
+          - $ref: '#/components/schemas/QueryResultsPreAggregate'
+        performance:
+          $ref: '#/components/schemas/QueryResultsPerformance'
+      required:
+      - preAggregate
+      - performance
+      type: object
+    TableCalculationTemplateType.RUNNING_TOTAL:
+      enum:
+      - running_total
+      type: string
+    TableCalculationTotalMode:
+      enum:
+      - formula
+      - sum_of_rows
+      - none
+      type: string
+    PivotValuesColumn:
+      properties:
+        columnIndex:
+          type: number
+          format: double
+        pivotValues:
+          items:
+            properties:
+              formatted:
+                type: string
+              value: {}
+              referenceField:
+                type: string
+            required:
+            - value
+            - referenceField
+            type: object
+          type: array
+        aggregation:
+          $ref: '#/components/schemas/VizAggregationOptions'
+        pivotColumnName:
+          type: string
+        referenceField:
+          type: string
+      required:
+      - pivotValues
+      - aggregation
+      - pivotColumnName
+      - referenceField
+      type: object
+    CustomRangeBinDimension:
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the custom dimension
+        name:
+          type: string
+          description: Display name for the custom dimension
+        table:
+          type: string
+          description: Table this custom dimension belongs to
+        type:
+          $ref: '#/components/schemas/CustomDimensionType.BIN'
+          description: Type of custom dimension (bin or sql)
+        dimensionId:
+          $ref: '#/components/schemas/FieldId'
+          description: Field ID of the parent dimension to bin
+        binType:
+          $ref: '#/components/schemas/BinType.CUSTOM_RANGE'
+        customRange:
+          items:
+            $ref: '#/components/schemas/BinRange'
+          type: array
+      required:
+      - id
+      - name
+      - table
+      - type
+      - dimensionId
+      - binType
+      - customRange
+      type: object
+      additionalProperties: true
+    AiDeepResearchActivity:
+      type: string
+      enum:
+      - lightdash_metadata
+      - warehouse_query
+      - web_search
+      - web_fetch
+      - reporting
+    ApiAgentOnboardingFileResponse:
+      $ref: '#/components/schemas/ApiSuccess_AgentOnboardingFileContent_'
+    TableCalculationTemplateType.RANK_IN_COLUMN:
+      enum:
+      - rank_in_column
+      type: string
+    Pick_Dimension.formatOptions_:
+      properties:
+        formatOptions:
+          $ref: '#/components/schemas/CustomFormat'
+      type: object
+      description: From T, pick a set of properties whose keys are in the union K
+    AiResultType:
+      enum:
+      - time_series_chart
+      - vertical_bar_chart
+      - table
+      - query_result
+      - dashboard
+      - dashboard_v2
+      - improve_context
+      - propose_change
+      type: string
+    AiDeepResearchRequestBody:
+      properties:
+        resumeFromRunUuid:
+          type: string
+          description: Resume unfinished work from a terminal run with preserved evidence.
+        entryPoint:
+          $ref: '#/components/schemas/AiDeepResearchEntryPoint'
+          description: Product surface that accepted the run.
+        promptUuid:
+          type: string
+          description: Thread message that captured this prompt.
+        threadUuid:
+          type: string
+          description: Agent thread to attach the run to. Must be owned by the caller.
+        agentUuid:
+          type: string
+          description: Agent whose complete runtime configuration will execute this run.
+        prompt:
+          type: string
+      required:
+      - entryPoint
+      - promptUuid
+      - threadUuid
+      - agentUuid
+      - prompt
+      type: object
+    FilterGroup:
+      anyOf:
+      - $ref: '#/components/schemas/OrFilterGroup'
+      - $ref: '#/components/schemas/AndFilterGroup'
+    QueryWarning:
+      properties:
+        tables:
+          items:
+            type: string
+          type: array
+        fields:
+          items:
+            type: string
+          type: array
+        message:
+          type: string
+      required:
+      - message
+      type: object
+    AiDeepResearchEvent:
+      anyOf:
+      - properties:
+          createdAt:
+            type: string
+          payload:
+            properties:
+              status:
+                $ref: '#/components/schemas/AiDeepResearchRunStatus'
+            required:
+            - status
+            type: object
+          eventType:
+            type: string
+            enum:
+            - status_changed
+          aiDeepResearchRunUuid:
+            type: string
+          aiDeepResearchEventUuid:
+            type: string
+        required:
+        - createdAt
+        - payload
+        - eventType
+        - aiDeepResearchRunUuid
+        - aiDeepResearchEventUuid
+        type: object
+      - properties:
+          createdAt:
+            type: string
+          payload:
+            $ref: '#/components/schemas/Record_string.never_'
+          eventType:
+            type: string
+            enum:
+            - cancellation_requested
+          aiDeepResearchRunUuid:
+            type: string
+          aiDeepResearchEventUuid:
+            type: string
+        required:
+        - createdAt
+        - payload
+        - eventType
+        - aiDeepResearchRunUuid
+        - aiDeepResearchEventUuid
+        type: object
+      - properties:
+          createdAt:
+            type: string
+          payload:
+            properties:
+              progress:
+                $ref: '#/components/schemas/AiDeepResearchProgress'
+            required:
+            - progress
+            type: object
+          eventType:
+            type: string
+            enum:
+            - progress
+          aiDeepResearchRunUuid:
+            type: string
+          aiDeepResearchEventUuid:
+            type: string
+        required:
+        - createdAt
+        - payload
+        - eventType
+        - aiDeepResearchRunUuid
+        - aiDeepResearchEventUuid
+        type: object
+      - properties:
+          createdAt:
+            type: string
+          payload:
+            properties:
+              dropped:
+                items:
+                  properties:
+                    reason:
+                      type: string
+                      enum:
+                      - malformed
+                      - unknown_chart
+                      - duplicate
+                      - unverifiable
+                    key:
+                      type: string
+                  required:
+                  - reason
+                  - key
+                  type: object
+                type: array
+              repaired:
+                items:
+                  type: string
+                type: array
+            required:
+            - dropped
+            - repaired
+            type: object
+          eventType:
+            type: string
+            enum:
+            - report_adjusted
+          aiDeepResearchRunUuid:
+            type: string
+          aiDeepResearchEventUuid:
+            type: string
+        required:
+        - createdAt
+        - payload
+        - eventType
+        - aiDeepResearchRunUuid
+        - aiDeepResearchEventUuid
+        type: object
+    ApiSuccess_AgentOnboardingRun-or-null_:
+      properties:
+        results:
+          allOf:
+          - $ref: '#/components/schemas/AgentOnboardingRun'
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
+    MetricType:
+      enum:
+      - percentile
+      - average
+      - count
+      - count_distinct
+      - sum
+      - sum_distinct
+      - average_distinct
+      - min
+      - max
+      - percent_of_previous
+      - percent_of_total
+      - running_total
+      - number
+      - median
+      - string
+      - date
+      - timestamp
+      - boolean
+      type: string
+    PivotIndexColum:
+      properties:
+        type:
+          $ref: '#/components/schemas/VizIndexType'
+        reference:
+          type: string
+      required:
+      - type
+      - reference
+      type: object
+    AiVizMetadata:
+      properties:
+        description:
+          type:
+          - string
+          - 'null'
+        title:
+          type:
+          - string
+          - 'null'
+      required:
+      - description
+      - title
+      type: object
+    TableCalculationTemplateType.DIFFERENCE_FROM_PREVIOUS:
+      enum:
+      - difference_from_previous
+      type: string
+    FieldId:
+      type: string
+    CustomDimension:
+      anyOf:
+      - $ref: '#/components/schemas/CustomBinDimension'
+      - $ref: '#/components/schemas/CustomSqlDimension'
+    PreAggregateMissReason.TIME_FRAME_NOT_DERIVABLE:
+      enum:
+      - time_frame_not_derivable
+      type: string
+    Compact:
+      enum:
+      - auto
+      - thousands
+      - millions
+      - billions
+      - trillions
+      - kilobytes
+      - megabytes
+      - gigabytes
+      - terabytes
+      - petabytes
+      - kibibytes
+      - mebibytes
+      - gibibytes
+      - tebibytes
+      - pebibytes
+      type: string
+    CacheMetadata:
+      properties:
+        preAggregate:
+          properties:
+            reason:
+              $ref: '#/components/schemas/PreAggregateMatchMiss'
+            name:
+              type: string
+            hit:
+              type: boolean
+          required:
+          - hit
+          type: object
+        queryReuseHit:
+          type: boolean
+          description: Result came from an explicitly reused prior query, not cache lookup.
+        cacheHit:
+          type: boolean
+        cacheKey:
+          type: string
+        cacheExpiresAt:
+          type: string
+          format: date-time
+        cacheUpdatedTime:
+          type: string
+          format: date-time
+      required:
+      - cacheHit
+      type: object
+    Field:
+      properties:
+        fieldType:
+          $ref: '#/components/schemas/FieldType'
+        type:
+          type: string
+        name:
+          type: string
+        label:
+          type: string
+        table:
+          type: string
+        tableLabel:
+          type: string
+        sql:
+          type: string
+        description:
+          type: string
+        source:
+          $ref: '#/components/schemas/Source'
+        hidden:
+          type: boolean
+        compact:
+          $ref: '#/components/schemas/CompactOrAlias'
+        round:
+          type: number
+          format: double
+        format:
+          anyOf:
+          - $ref: '#/components/schemas/Format'
+          - type: string
+        separator:
+          $ref: '#/components/schemas/NumberSeparator'
+          description: 'Number separator style for grouping/decimal characters. Composes with
+
+            `format` (including ECMA-376 expressions) and `formatOptions` — it only
+
+            controls the separator characters, not the format shape.'
+        groupLabel:
+          type: string
+          deprecated: true
+        groups:
+          items:
+            type: string
+          type: array
+        urls:
+          items:
+            $ref: '#/components/schemas/FieldUrl'
+          type: array
+        index:
+          type: number
+          format: double
+        tags:
+          items:
+            type: string
+          type: array
+        parameterReferences:
+          items:
+            type: string
+          type: array
+      required:
+      - fieldType
+      - type
+      - name
+      - label
+      - table
+      - tableLabel
+      - sql
+      - hidden
+      type: object
+      additionalProperties: true
+    ResultRow:
+      $ref: '#/components/schemas/Record_string._value-ResultValue__'
+    AgentOnboardingHandoff:
+      properties:
+        dashboardUrl:
+          type:
+          - string
+          - 'null'
+        summary:
+          type:
+          - string
+          - 'null'
+      required:
+      - dashboardUrl
+      - summary
+      type: object
+    Metric:
+      properties:
+        fieldType:
+          $ref: '#/components/schemas/FieldType.METRIC'
+        type:
+          $ref: '#/components/schemas/MetricType'
+        name:
+          type: string
+        label:
+          type: string
+        table:
+          type: string
+        tableLabel:
+          type: string
+        sql:
+          type: string
+        description:
+          type: string
+        source:
+          $ref: '#/components/schemas/Source'
+        hidden:
+          type: boolean
+        compact:
+          $ref: '#/components/schemas/CompactOrAlias'
+        round:
+          type: number
+          format: double
+        format:
+          anyOf:
+          - $ref: '#/components/schemas/Format'
+          - type: string
+        separator:
+          $ref: '#/components/schemas/NumberSeparator'
+          description: 'Number separator style for grouping/decimal characters. Composes with
+
+            `format` (including ECMA-376 expressions) and `formatOptions` — it only
+
+            controls the separator characters, not the format shape.'
+        groupLabel:
+          type: string
+          deprecated: true
+        groups:
+          items:
+            type: string
+          type: array
+        urls:
+          items:
+            $ref: '#/components/schemas/FieldUrl'
+          type: array
+        index:
+          type: number
+          format: double
+        tags:
+          items:
+            type: string
+          type: array
+        parameterReferences:
+          items:
+            type: string
+          type: array
+        showUnderlyingValues:
+          items:
+            type: string
+          type: array
+        filters:
+          items:
+            $ref: '#/components/schemas/MetricFilterRule'
+          type: array
+        percentile:
+          type: number
+          format: double
+        distinctKeys:
+          items:
+            type: string
+          type: array
+        formatOptions:
+          $ref: '#/components/schemas/CustomFormat'
+        dimensionReference:
+          type: string
+        baseDimensionType:
+          $ref: '#/components/schemas/DimensionType'
+        baseDimensionTimeInterval:
+          $ref: '#/components/schemas/TimeFrames'
+        requiredAttributes:
+          $ref: '#/components/schemas/Record_string.string-or-string-Array_'
+        anyAttributes:
+          $ref: '#/components/schemas/Record_string.string-or-string-Array_'
+        defaultTimeDimension:
+          $ref: '#/components/schemas/DefaultTimeDimension'
+        spotlight:
+          properties:
+            owner:
+              type: string
+            defaultFilter:
+              $ref: '#/components/schemas/MetricFilterRule'
+            defaultSegment:
+              type: string
+            segmentBy:
+              items:
+                type: string
+              type: array
+            filterBy:
+              items:
+                type: string
+              type: array
+            categories:
+              items:
+                type: string
+              type: array
+            visibility:
+              type: string
+              enum:
+              - show
+              - hide
+          required:
+          - visibility
+          type: object
+        drivers:
+          items:
+            type: string
+          type: array
+        aiHint:
+          anyOf:
+          - type: string
+          - items:
+              type: string
+            type: array
+        richText:
+          type: string
+      required:
+      - fieldType
+      - type
+      - name
+      - label
+      - table
+      - tableLabel
+      - sql
+      - hidden
+      type: object
+      additionalProperties: true
+    PreAggregateMissReason.CUSTOM_SQL_METRIC:
+      enum:
+      - custom_sql_metric
+      type: string
+    AgentOnboardingRunStatus:
+      type: string
+      enum:
+      - queued
+      - running
+      - failed
+      - cancelled
+      - completed
+    ApiSuccess_AgentOnboardingRun_:
+      properties:
+        results:
+          $ref: '#/components/schemas/AgentOnboardingRun'
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
+    AiDeepResearchChartConfig:
+      properties:
+        secondaryYAxisLabel:
+          type:
+          - string
+          - 'null'
+        secondaryYAxisMetric:
+          type:
+          - string
+          - 'null'
+        yAxisLabel:
+          type: string
+        xAxisLabel:
+          type: string
+        funnelDataInput:
+          type:
+          - string
+          - 'null'
+          enum:
+          - row
+          - column
+          - null
+        lineType:
+          type:
+          - string
+          - 'null'
+          enum:
+          - line
+          - area
+          - null
+        stackBars:
+          type:
+          - boolean
+          - 'null'
+        xAxisType:
+          type:
+          - string
+          - 'null'
+          enum:
+          - category
+          - time
+          - null
+        groupBy:
+          items:
+            type: string
+          type:
+          - array
+          - 'null'
+        yAxisMetrics:
+          items:
+            type: string
+          type:
+          - array
+          - 'null'
+        xAxisDimension:
+          type:
+          - string
+          - 'null'
+        defaultVizType:
+          type: string
+          enum:
+          - table
+          - bar
+          - horizontal
+          - line
+          - scatter
+          - pie
+          - funnel
+      required:
+      - secondaryYAxisLabel
+      - secondaryYAxisMetric
+      - yAxisLabel
+      - xAxisLabel
+      - funnelDataInput
+      - lineType
+      - stackBars
+      - xAxisType
+      - groupBy
+      - yAxisMetrics
+      - xAxisDimension
+      - defaultVizType
+      type: object
+    MetricQuery:
+      properties:
+        metadata:
+          properties:
+            hasADateDimension:
+              $ref: '#/components/schemas/Pick_CompiledDimension.label-or-name-or-table_'
+          required:
+          - hasADateDimension
+          type: object
+        pivotDimensions:
+          items:
+            $ref: '#/components/schemas/FieldId'
+          type: array
+          description: 'Dimension field IDs used as pivot columns (from chart''s pivotConfig.columns).
+
+            Used by row_total() to determine non-pivot dimensions for GROUP BY.'
+        timezone:
+          type: string
+          description: Timezone for date/time values (e.g., 'America/Los_Angeles', 'UTC')
+        dimensionOverrides:
+          $ref: '#/components/schemas/DimensionOverrides'
+          description: Override formatting options for existing dimensions
+        metricOverrides:
+          $ref: '#/components/schemas/MetricOverrides'
+          description: Override formatting options for existing metrics
+        customDimensions:
+          items:
+            $ref: '#/components/schemas/CustomDimension'
+          type: array
+          description: Custom dimensions defined inline
+        additionalMetrics:
+          items:
+            $ref: '#/components/schemas/AdditionalMetric'
+          type: array
+          description: Custom metrics defined inline (ad-hoc metrics not in the dbt model)
+        tableCalculations:
+          items:
+            $ref: '#/components/schemas/TableCalculation'
+          type: array
+          description: Custom calculations to perform on query results
+        limit:
+          type: number
+          format: double
+          description: Maximum number of rows to return
+        sorts:
+          items:
+            $ref: '#/components/schemas/SortField'
+          type: array
+          description: Sort configuration for query results
+        filters:
+          $ref: '#/components/schemas/Filters'
+          description: Filter rules to apply to the query
+        metrics:
+          items:
+            $ref: '#/components/schemas/FieldId'
+          type: array
+          description: List of metric field IDs to include
+        dimensions:
+          items:
+            $ref: '#/components/schemas/FieldId'
+          type: array
+          description: List of dimension field IDs to include
+        exploreName:
+          type: string
+          description: The name of the explore to query
+      required:
+      - tableCalculations
+      - limit
+      - sorts
+      - filters
+      - metrics
+      - dimensions
+      - exploreName
+      type: object
+    PreAggregateMissReason.PRE_AGGREGATE_FILTER_NOT_SATISFIED:
+      enum:
+      - pre_aggregate_filter_not_satisfied
+      type: string
+    ResultsPaginationMetadata_ResultRow_:
+      allOf:
+      - allOf:
+        - $ref: '#/components/schemas/KnexPaginateArgs'
+        - properties:
+            totalResults:
+              type: number
+              format: double
+            totalPageCount:
+              type: number
+              format: double
+          required:
+          - totalResults
+          - totalPageCount
+          type: object
+      - properties:
+          previousPage:
+            type: number
+            format: double
+          nextPage:
+            type: number
+            format: double
+        type: object
+    FilterRule:
+      properties:
+        includeNull:
+          type: boolean
+          description: 'For the `equals` operator on string fields, also match rows where the
+
+            field is null (compiles to `field IN (...) OR field IS NULL`). Lets users
+
+            combine null with selected values in a single "is" rule.'
+        values:
+          items:
+            $ref: '#/components/schemas/AnyType'
+          type: array
+          description: Values to filter by
+        operator:
+          $ref: '#/components/schemas/FilterOperator'
+          description: Filter operator
+        id:
+          type: string
+          description: Unique identifier for the filter
+        target:
+          $ref: '#/components/schemas/FieldTarget'
+          description: Target field for the filter
+        settings:
+          $ref: '#/components/schemas/AnyType'
+          description: Additional settings for date/time filters
+        disabled:
+          type: boolean
+          description: Whether this filter is disabled
+        required:
+          type: boolean
+          description: Whether this filter is required
+        caseSensitive:
+          type: boolean
+          description: 'Overrides the field/explore case-sensitivity for this rule only.
+
+            Used by internal features like autocomplete search that must always
+
+            match case-insensitively regardless of the field''s configured setting.'
+      required:
+      - operator
+      - id
+      - target
+      type: object
+      additionalProperties: true
+    BinType.CUSTOM_RANGE:
+      enum:
+      - custom_range
+      type: string
+    AiDeepResearchPhase:
+      type: string
+      enum:
+      - planning
+      - investigating
+      - validating
+      - synthesizing
+    PreAggregateMissReason.NON_ADDITIVE_METRIC:
+      enum:
+      - non_additive_metric
+      type: string
+    AiDeepResearchBudget:
+      allOf:
+      - $ref: '#/components/schemas/AiDeepResearchLimits'
+      - properties:
+          maxResultRows:
+            type: number
+            format: double
+        required:
+        - maxResultRows
+        type: object
+    ApiAgentOnboardingActiveRunResponse:
+      $ref: '#/components/schemas/ApiSuccess_AgentOnboardingRun-or-null_'
+    SortBy:
+      items:
+        $ref: '#/components/schemas/VizSortBy'
+      type: array
+    PreAggregateMissReason.GRANULARITY_TOO_FINE:
+      enum:
+      - granularity_too_fine
+      type: string
+    Record_string._value-ResultValue__:
+      properties: {}
+      additionalProperties:
+        properties:
+          value:
+            $ref: '#/components/schemas/ResultValue'
+        required:
+        - value
+        type: object
+      type: object
+      description: Construct a type with a set of properties K of type T
+    GroupValueMatchType:
+      enum:
+      - exact
+      - startsWith
+      - endsWith
+      - includes
+      type: string
+    DimensionOverrides:
+      properties: {}
+      additionalProperties:
+        $ref: '#/components/schemas/Pick_Dimension.formatOptions_'
+      type: object
+    QueryHistoryStatus.CANCELLED:
+      enum:
+      - cancelled
+      type: string
+    KnexPaginateArgs:
+      properties:
+        page:
+          type: number
+          format: double
+        pageSize:
+          type: number
+          format: double
+      required:
+      - page
+      - pageSize
+      type: object
+    ApiSuccess_AgentOnboardingFileContent_:
+      properties:
+        results:
+          $ref: '#/components/schemas/AgentOnboardingFileContent'
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
+    GroupValueRule:
+      properties:
+        value:
+          type: string
+        matchType:
+          $ref: '#/components/schemas/GroupValueMatchType'
+      required:
+      - value
+      - matchType
+      type: object
+    BinType.FIXED_NUMBER:
+      enum:
+      - fixed_number
+      type: string
+    QueryHistoryStatus.PENDING:
+      enum:
+      - pending
+      type: string
+    ReadyQueryResultsPage:
+      allOf:
+      - $ref: '#/components/schemas/ResultsPaginationMetadata_ResultRow_'
+      - properties:
+          pivotDetails:
+            properties:
+              passthroughDimensions:
+                items:
+                  $ref: '#/components/schemas/GroupByColumn'
+                type: array
+              originalColumns:
+                $ref: '#/components/schemas/ResultColumns'
+              sortBy:
+                $ref: '#/components/schemas/SortBy'
+              groupByColumns:
+                items:
+                  $ref: '#/components/schemas/GroupByColumn'
+                type: array
+              valuesColumns:
+                items:
+                  $ref: '#/components/schemas/PivotValuesColumn'
+                type: array
+              indexColumn:
+                anyOf:
+                - $ref: '#/components/schemas/PivotIndexColum'
+                - items:
+                    $ref: '#/components/schemas/PivotIndexColum'
+                  type: array
+              totalColumnCount:
+                type:
+                - number
+                - 'null'
+                format: double
+            required:
+            - originalColumns
+            - valuesColumns
+            - totalColumnCount
+            type:
+            - object
+            - 'null'
+          status:
+            $ref: '#/components/schemas/QueryHistoryStatus.READY'
+          metadata:
+            $ref: '#/components/schemas/QueryResultsMetadata'
+          resolvedTimezone:
+            type:
+            - string
+            - 'null'
+            description: 'Resolved display timezone the query was built with (what execute
+
+              responses return as `resolvedTimezone`); null for SQL queries and when
+
+              timezone support is off. Temporal column formats cannot be rendered
+
+              from the page without it.'
+          rows:
+            items:
+              $ref: '#/components/schemas/ResultRow'
+            type: array
+          columns:
+            $ref: '#/components/schemas/ResultColumns'
+          queryUuid:
+            type: string
+        required:
+        - pivotDetails
+        - status
+        - metadata
+        - rows
+        - columns
+        - queryUuid
+        type: object
+    ApiSuccess_AiDeepResearchRun_:
+      properties:
+        results:
+          $ref: '#/components/schemas/AiDeepResearchRun'
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
+    MergeTableCalculation:
+      properties:
+        format:
+          $ref: '#/components/schemas/CustomFormat'
+          description: How the calculation's values are displayed.
+        formula:
+          type: string
+          description: Spreadsheet-like formula over merged field ids.
+        sql:
+          type: string
+          description: 'Legacy SQL expression. Kept required for API/storage compatibility;
+
+            formula calculations store an empty string here and compile `formula`
+
+            on the compose engine instead.'
+        displayName:
+          type: string
+        name:
+          type: string
+      required:
+      - sql
+      - displayName
+      - name
+      type: object
+      description: 'A calculation over the *merged* result, where a row-wise calculation across
+
+        source queries can correctly live. Formula references use merged field ids;
+
+        legacy SQL references use `${sourceId.fieldId}`.'
+    FilterOperator:
+      enum:
+      - isNull
+      - notNull
+      - equals
+      - notEquals
+      - startsWith
+      - endsWith
+      - include
+      - doesNotInclude
+      - lessThan
+      - lessThanOrEqual
+      - greaterThan
+      - greaterThanOrEqual
+      - inThePast
+      - notInThePast
+      - inTheNext
+      - inTheCurrent
+      - notInTheCurrent
+      - inBetween
+      - notInBetween
+      - inPeriodToDate
+      type: string
+    PreAggregateMatchMiss:
+      anyOf:
+      - properties:
+          reason:
+            $ref: '#/components/schemas/PreAggregateMissReason.NO_PRE_AGGREGATES_DEFINED'
+        required:
+        - reason
+        type: object
+      - properties:
+          fieldId:
+            $ref: '#/components/schemas/FieldId'
+          reason:
+            $ref: '#/components/schemas/PreAggregateMissReason.DIMENSION_NOT_IN_PRE_AGGREGATE'
+        required:
+        - fieldId
+        - reason
+        type: object
+      - properties:
+          fieldId:
+            $ref: '#/components/schemas/FieldId'
+          reason:
+            $ref: '#/components/schemas/PreAggregateMissReason.METRIC_NOT_IN_PRE_AGGREGATE'
+        required:
+        - fieldId
+        - reason
+        type: object
+      - properties:
+          fieldId:
+            $ref: '#/components/schemas/FieldId'
+          reason:
+            $ref: '#/components/schemas/PreAggregateMissReason.NON_ADDITIVE_METRIC'
+        required:
+        - fieldId
+        - reason
+        type: object
+      - properties:
+          fieldId:
+            $ref: '#/components/schemas/FieldId'
+          reason:
+            $ref: '#/components/schemas/PreAggregateMissReason.NON_ADDITIVE_METRIC_REQUIRES_EXACT_MATCH'
+        required:
+        - fieldId
+        - reason
+        type: object
+      - properties:
+          fieldId:
+            $ref: '#/components/schemas/FieldId'
+          reason:
+            $ref: '#/components/schemas/PreAggregateMissReason.DEDUPLICATED_METRIC_REQUIRES_EXACT_MATCH'
+        required:
+        - fieldId
+        - reason
+        type: object
+      - properties:
+          fieldId:
+            $ref: '#/components/schemas/FieldId'
+          reason:
+            $ref: '#/components/schemas/PreAggregateMissReason.CUSTOM_SQL_METRIC'
+        required:
+        - fieldId
+        - reason
+        type: object
+      - properties:
+          fieldId:
+            $ref: '#/components/schemas/FieldId'
+          reason:
+            $ref: '#/components/schemas/PreAggregateMissReason.FILTER_DIMENSION_NOT_IN_PRE_AGGREGATE'
+        required:
+        - fieldId
+        - reason
+        type: object
+      - properties:
+          fieldId:
+            $ref: '#/components/schemas/FieldId'
+          reason:
+            $ref: '#/components/schemas/PreAggregateMissReason.SQL_FILTER_FIELD_NOT_IN_PRE_AGGREGATE'
+        required:
+        - fieldId
+        - reason
+        type: object
+      - properties:
+          fieldId:
+            $ref: '#/components/schemas/FieldId'
+          reason:
+            $ref: '#/components/schemas/PreAggregateMissReason.PRE_AGGREGATE_FILTER_NOT_SATISFIED'
+        required:
+        - fieldId
+        - reason
+        type: object
+      - properties:
+          preAggregateTimeDimension:
+            type: string
+          preAggregateGranularity:
+            $ref: '#/components/schemas/TimeFrames'
+          queryGranularity:
+            $ref: '#/components/schemas/TimeFrames'
+          fieldId:
+            $ref: '#/components/schemas/FieldId'
+          reason:
+            $ref: '#/components/schemas/PreAggregateMissReason.GRANULARITY_TOO_FINE'
+        required:
+        - preAggregateTimeDimension
+        - preAggregateGranularity
+        - queryGranularity
+        - fieldId
+        - reason
+        type: object
+      - properties:
+          preAggregateTimeDimension:
+            type: string
+          preAggregateGranularity:
+            $ref: '#/components/schemas/TimeFrames'
+          queryGranularity:
+            $ref: '#/components/schemas/TimeFrames'
+          fieldId:
+            $ref: '#/components/schemas/FieldId'
+          reason:
+            $ref: '#/components/schemas/PreAggregateMissReason.TIME_FRAME_NOT_DERIVABLE'
+        required:
+        - preAggregateTimeDimension
+        - preAggregateGranularity
+        - queryGranularity
+        - fieldId
+        - reason
+        type: object
+      - properties:
+          reason:
+            $ref: '#/components/schemas/PreAggregateMissReason.CUSTOM_DIMENSION_PRESENT'
+        required:
+        - reason
+        type: object
+      - properties:
+          fieldId:
+            $ref: '#/components/schemas/FieldId'
+          reason:
+            $ref: '#/components/schemas/PreAggregateMissReason.CUSTOM_METRIC_PRESENT'
+        required:
+        - fieldId
+        - reason
+        type: object
+      - properties:
+          fieldId:
+            $ref: '#/components/schemas/FieldId'
+          reason:
+            $ref: '#/components/schemas/PreAggregateMissReason.TABLE_CALCULATION_PRESENT'
+        required:
+        - fieldId
+        - reason
+        type: object
+      - properties:
+          preAggregateName:
+            type: string
+          reason:
+            $ref: '#/components/schemas/PreAggregateMissReason.USER_BYPASS'
+        required:
+        - preAggregateName
+        - reason
+        type: object
+      - properties:
+          reason:
+            $ref: '#/components/schemas/PreAggregateMissReason.EXPLORE_RESOLUTION_ERROR'
+        required:
+        - reason
+        type: object
+      - properties:
+          reason:
+            $ref: '#/components/schemas/PreAggregateMissReason.NO_ACTIVE_MATERIALIZATION'
+        required:
+        - reason
+        type: object
+    PreAggregateExecutionEngine:
+      type: string
+      enum:
+      - duckdb
+      - project_warehouse
+    MetricFilterRule:
+      description: Filter rule for metrics, targeting fields by reference
+      properties:
+        includeNull:
+          type: boolean
+          description: 'For the `equals` operator on string fields, also match rows where the
+
+            field is null (compiles to `field IN (...) OR field IS NULL`). Lets users
+
+            combine null with selected values in a single "is" rule.'
+        values:
+          items:
+            $ref: '#/components/schemas/AnyType'
+          type: array
+          description: Values to filter by
+        operator:
+          $ref: '#/components/schemas/FilterOperator'
+          description: Filter operator
+        id:
+          type: string
+          description: Unique identifier for the filter
+        target:
+          properties:
+            fieldRef:
+              type: string
+              description: Field reference to filter on (e.g., 'table_name.field_name')
+          required:
+          - fieldRef
+          type: object
+          description: Target field for the filter
+        settings:
+          $ref: '#/components/schemas/AnyType'
+          description: Additional settings for date/time filters
+        disabled:
+          type: boolean
+          description: Whether this filter is disabled
+        required:
+          type: boolean
+          description: Whether this filter is required
+        caseSensitive:
+          type: boolean
+          description: 'Overrides the field/explore case-sensitivity for this rule only.
+
+            Used by internal features like autocomplete search that must always
+
+            match case-insensitively regardless of the field''s configured setting.'
+      required:
+      - operator
+      - id
+      - target
+      type: object
+      additionalProperties: true
+    AgentOnboardingRunEvent:
+      properties:
+        createdAt:
+          type: string
+        stage:
+          allOf:
+          - $ref: '#/components/schemas/AgentOnboardingStage'
+        message:
+          type: string
+        eventType:
+          type: string
+          enum:
+          - stage
+          - step
+          - log
+      required:
+      - createdAt
+      - stage
+      - message
+      - eventType
+      type: object
+    QueryHistoryStatus.QUEUED:
+      enum:
+      - queued
+      type: string
+    Record_string.FieldId_:
+      properties: {}
+      additionalProperties:
+        type: string
+      type: object
+      description: Construct a type with a set of properties K of type T
+    PreAggregateMissReason.METRIC_NOT_IN_PRE_AGGREGATE:
+      enum:
+      - metric_not_in_pre_aggregate
+      type: string
+    Format:
+      enum:
+      - km
+      - mi
+      - si
+      - usd
+      - gbp
+      - eur
+      - jpy
+      - dkk
+      - id
+      - percent
+      type: string
+    ResultColumn:
+      properties:
+        provenance:
+          $ref: '#/components/schemas/ResultColumnProvenance'
+          description: 'Absent ⇒ no semantic field behind this column (computed DuckDB column,
+
+            raw SQL column, table calc, join key). Absence gates interaction
+
+            capabilities (drill, underlying data, URLs) off — by design.'
+        shiftsTimezone:
+          type: boolean
+          description: 'Resolved output of getFormatterTimezone: whether values shift into the
+
+            display timezone. Saves consumers from needing skipTimezoneConversion /
+
+            baseDimensionType.'
+        timeInterval:
+          $ref: '#/components/schemas/TimeFrames'
+          description: 'Temporal grain. Required for QUARTER (no ECMA-376 token) and for
+
+            export paths (GSheets) that branch on grain.'
+        formatOptions:
+          $ref: '#/components/schemas/CustomFormat'
+          description: 'Escape hatch for the non-expressible formats: Compact.AUTO and
+
+            negative round (magnitude rounding). Mirrors getFieldFormatOverrideProps.'
+        separator:
+          $ref: '#/components/schemas/NumberSeparator'
+          description: 'The expression cannot encode locale — carried beside it, mirroring
+
+            Field.separator / getFieldFormatOverrideProps.'
+        format:
+          type: string
+          description: 'Lightdash format expression: ECMA-376 with in-repo extensions (IEC
+
+            bytes, tz-shift for date expressions). MUST be rendered with
+
+            formatValueWithExpression, never raw numfmt.'
+        label:
+          type: string
+          description: Display label. Absent ⇒ consumers fall back to the reference.
+        numericKind:
+          $ref: '#/components/schemas/ResultNumericKind'
+          description: NUMBER columns only, when the driver reports it. Absent ⇒ unknown, read as DOUBLE.
+        type:
+          $ref: '#/components/schemas/DimensionType'
+        reference:
+          type: string
+      required:
+      - type
+      - reference
+      type: object
+    PreAggregateMissReason.CUSTOM_DIMENSION_PRESENT:
+      enum:
+      - custom_dimension_present
+      type: string
+    CompactOrAlias:
+      anyOf:
+      - $ref: '#/components/schemas/Compact'
+      - type: string
+        enum:
+        - K
+        - thousand
+        - M
+        - million
+        - B
+        - billion
+        - T
+        - trillion
+        - KB
+        - kilobyte
+        - MB
+        - megabyte
+        - GB
+        - gigabyte
+        - TB
+        - terabyte
+        - PB
+        - petabyte
+        - KiB
+        - kibibyte
+        - MiB
+        - mebibyte
+        - GiB
+        - gibibyte
+        - TiB
+        - tebibyte
+        - PiB
+        - pebibyte
+    TimeFrames:
+      enum:
+      - RAW
+      - YEAR
+      - QUARTER
+      - MONTH
+      - WEEK
+      - DAY
+      - HOUR
+      - MINUTE
+      - SECOND
+      - MILLISECOND
+      - DAY_OF_WEEK_INDEX
+      - DAY_OF_MONTH_NUM
+      - DAY_OF_YEAR_NUM
+      - WEEK_NUM
+      - MONTH_NUM
+      - QUARTER_NUM
+      - YEAR_NUM
+      - DAY_OF_WEEK_NAME
+      - MONTH_NAME
+      - QUARTER_NAME
+      - HOUR_OF_DAY_NUM
+      - MINUTE_OF_HOUR_NUM
+      type: string
+    AiDeepResearchExecutionContextSnapshot:
+      properties:
+        effectivePermissions:
+          properties:
+            autoApproveSql:
+              type: boolean
+            canUseSelfImprovementTools:
+              type: boolean
+            canUseContentTools:
+              type: boolean
+            canUseDataTools:
+              type: boolean
+            canRunSql:
+              type: boolean
+            canManageAgent:
+              type: boolean
+          required:
+          - autoApproveSql
+          - canUseSelfImprovementTools
+          - canUseContentTools
+          - canUseDataTools
+          - canRunSql
+          - canManageAgent
+          type: object
+        repository:
+          properties:
+            availableSkillNames:
+              items:
+                type: string
+              type: array
+            repoFsSupportsCodeSearch:
+              type:
+              - boolean
+              - 'null'
+            repoFsRoot:
+              type:
+              - string
+              - 'null'
+            repoDiscoveryEnabled:
+              type:
+              - boolean
+              - 'null'
+            previewDeploySetupEnabled:
+              type:
+              - boolean
+              - 'null'
+            codingAgentEnabled:
+              type:
+              - boolean
+              - 'null'
+            aiWritebackEnabled:
+              type:
+              - boolean
+              - 'null'
+            projectContextEnabled:
+              type:
+              - boolean
+              - 'null'
+          required:
+          - availableSkillNames
+          - repoFsSupportsCodeSearch
+          - repoFsRoot
+          - repoDiscoveryEnabled
+          - previewDeploySetupEnabled
+          - codingAgentEnabled
+          - aiWritebackEnabled
+          - projectContextEnabled
+          type: object
+        knowledgeDocuments:
+          items:
+            properties:
+              alwaysIncludeInContext:
+                type: boolean
+              updatedAt:
+                type: string
+              name:
+                type: string
+              uuid:
+                type: string
+            required:
+            - alwaysIncludeInContext
+            - updatedAt
+            - name
+            - uuid
+            type: object
+          type: array
+        tools:
+          properties:
+            attachedMcpServers:
+              items:
+                properties:
+                  enabledToolNames:
+                    items:
+                      type: string
+                    type: array
+                  name:
+                    type: string
+                  uuid:
+                    type: string
+                required:
+                - enabledToolNames
+                - name
+                - uuid
+                type: object
+              type: array
+            availableToolNames:
+              items:
+                type: string
+              type: array
+          required:
+          - attachedMcpServers
+          - availableToolNames
+          type: object
+        model:
+          properties:
+            keyManagement:
+              type:
+              - string
+              - 'null'
+              enum:
+              - lightdash-managed
+              - self-managed
+              - null
+            reasoningEnabled:
+              type:
+              - boolean
+              - 'null'
+            modelName:
+              type:
+              - string
+              - 'null'
+            provider:
+              type:
+              - string
+              - 'null'
+          required:
+          - keyManagement
+          - reasoningEnabled
+          - modelName
+          - provider
+          type: object
+        agent:
+          properties:
+            enableUserContext:
+              type: boolean
+            enableContentTools:
+              type: boolean
+            enableSelfImprovement:
+              type: boolean
+            enableDataAccess:
+              type: boolean
+            spaceAccess:
+              items:
+                type: string
+              type: array
+            tags:
+              items:
+                type: string
+              type:
+              - array
+              - 'null'
+            hasInstruction:
+              type: boolean
+            updatedAt:
+              type: string
+            version:
+              type: number
+              format: double
+            name:
+              type: string
+            uuid:
+              type: string
+          required:
+          - enableUserContext
+          - enableContentTools
+          - enableSelfImprovement
+          - enableDataAccess
+          - spaceAccess
+          - tags
+          - hasInstruction
+          - updatedAt
+          - version
+          - name
+          - uuid
+          type: object
+        capturedAt:
+          type: string
+        resolutionStage:
+          type: string
+          enum:
+          - preflight
+          - execution
+        schemaVersion:
+          type: number
+          enum:
+          - 1
+      required:
+      - effectivePermissions
+      - repository
+      - knowledgeDocuments
+      - tools
+      - model
+      - agent
+      - capturedAt
+      - resolutionStage
+      - schemaVersion
+      type: object
+    QueryHistoryStatus.READY:
+      enum:
+      - ready
+      type: string
+    SortByDirection:
+      enum:
+      - ASC
+      - DESC
+      type: string
+    CustomSqlDimension:
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the custom dimension
+        name:
+          type: string
+          description: Display name for the custom dimension
+        table:
+          type: string
+          description: Table this custom dimension belongs to
+        type:
+          $ref: '#/components/schemas/CustomDimensionType.SQL'
+          description: Type of custom dimension (bin or sql)
+        sql:
+          type: string
+          description: SQL expression for the custom dimension
+        dimensionType:
+          $ref: '#/components/schemas/DimensionType'
+          description: Data type of the dimension result
+      required:
+      - id
+      - name
+      - table
+      - type
+      - sql
+      - dimensionType
+      type: object
+      additionalProperties: true
+    FixedWidthBinDimension:
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the custom dimension
+        name:
+          type: string
+          description: Display name for the custom dimension
+        table:
+          type: string
+          description: Table this custom dimension belongs to
+        type:
+          $ref: '#/components/schemas/CustomDimensionType.BIN'
+          description: Type of custom dimension (bin or sql)
+        dimensionId:
+          $ref: '#/components/schemas/FieldId'
+          description: Field ID of the parent dimension to bin
+        binType:
+          $ref: '#/components/schemas/BinType.FIXED_WIDTH'
+        binWidth:
+          type: number
+          format: double
+      required:
+      - id
+      - name
+      - table
+      - type
+      - dimensionId
+      - binType
+      - binWidth
+      type: object
+      additionalProperties: true
+    ApiExecuteAsyncQueryResultsCommon:
+      properties:
+        resolvedTimezone:
+          type:
+          - string
+          - 'null'
+        usedParametersValues:
+          $ref: '#/components/schemas/ParametersValuesMap'
+        parameterReferences:
+          items:
+            type: string
+          type: array
+        cacheMetadata:
+          $ref: '#/components/schemas/CacheMetadata'
+        queryUuid:
+          type: string
+      required:
+      - resolvedTimezone
+      - usedParametersValues
+      - parameterReferences
+      - cacheMetadata
+      - queryUuid
+      type: object
+    Record_string.ParameterValue_:
+      properties: {}
+      additionalProperties:
+        $ref: '#/components/schemas/ParameterValue'
+      type: object
+      description: Construct a type with a set of properties K of type T
+    PreAggregateMissReason.DIMENSION_NOT_IN_PRE_AGGREGATE:
+      enum:
+      - dimension_not_in_pre_aggregate
+      type: string
+    TableCalculationTemplateType.PERCENT_OF_PREVIOUS_VALUE:
+      enum:
+      - percent_of_previous_value
+      type: string
+    TableCalculationType:
+      enum:
+      - number
+      - string
+      - date
+      - timestamp
+      - boolean
+      type: string
+    CustomDimensionType.BIN:
+      enum:
+      - bin
+      type: string
+    AdditionalMetric:
+      properties:
+        label:
+          type: string
+          description: Display label for the metric
+        type:
+          $ref: '#/components/schemas/MetricType'
+          description: Aggregation type
+        description:
+          type: string
+          description: Description of what the metric measures
+        sql:
+          type: string
+          description: SQL expression (e.g., ${TABLE}.column_name)
+        hidden:
+          type: boolean
+          description: Whether the metric is hidden from users
+        round:
+          type: number
+          format: double
+          description: Number of decimal places
+        compact:
+          $ref: '#/components/schemas/CompactOrAlias'
+          description: Compact format for large numbers
+        format:
+          anyOf:
+          - $ref: '#/components/schemas/Format'
+          - type: string
+          description: Format string (legacy format specification)
+        separator:
+          $ref: '#/components/schemas/NumberSeparator'
+          description: Number separator style for grouping/decimal characters
+        table:
+          type: string
+          description: Table name the metric belongs to
+        name:
+          type: string
+          description: Internal name of the metric
+        index:
+          type: number
+          format: double
+          description: Display order index
+        filters:
+          items:
+            $ref: '#/components/schemas/MetricFilterRule'
+          type: array
+          description: Filters to apply to this metric
+        baseDimensionName:
+          type: string
+          description: Name of the base dimension/column this metric aggregates
+        baseMetricName:
+          type: string
+          description: Name of the explore metric this metric was cloned from
+        uuid:
+          type:
+          - string
+          - 'null'
+          description: Unique identifier for the metric
+        percentile:
+          type: number
+          format: double
+          description: Percentile value for percentile metrics
+        distinctKeys:
+          items:
+            type: string
+          type: array
+        formatOptions:
+          $ref: '#/components/schemas/CustomFormat'
+          description: Formatting configuration
+        generationType:
+          type: string
+          enum:
+          - periodOverPeriod
+          description: 'Optional marker for metrics generated by the system.
+
+            Currently used for Period-over-Period (PoP) previous-period metrics.'
+        baseMetricId:
+          $ref: '#/components/schemas/FieldId'
+          description: For PoP-generated metrics, the base metric id that this metric is derived from.
+        timeDimensionId:
+          $ref: '#/components/schemas/FieldId'
+          description: For PoP-generated metrics, the time dimension id used for the comparison.
+        granularity:
+          $ref: '#/components/schemas/TimeFrames'
+          description: For PoP-generated metrics, the granularity used for the comparison.
+        periodOffset:
+          type: number
+          format: double
+          description: For PoP-generated metrics, the number of periods to offset by (>= 1).
+      required:
+      - type
+      - sql
+      - table
+      - name
+      type: object
+      additionalProperties: true
+    FormulaTableCalculation:
+      allOf:
+      - $ref: '#/components/schemas/TableCalculationBase'
+      - properties:
+          formula:
+            type: string
+            description: Spreadsheet-like formula compiled to SQL at query time
+        required:
+        - formula
+        type: object
+    SourcePosition:
+      properties:
+        character:
+          type: number
+          format: double
+        line:
+          type: number
+          format: double
+      required:
+      - character
+      - line
+      type: object
+    PreAggregateMissReason.SQL_FILTER_FIELD_NOT_IN_PRE_AGGREGATE:
+      enum:
+      - sql_filter_field_not_in_pre_aggregate
+      type: string
+    ApiSuccess_AiDeepResearchEventsPage_:
+      properties:
+        results:
+          $ref: '#/components/schemas/AiDeepResearchEventsPage'
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
+    AiDeepResearchEventsPage:
+      properties:
+        nextCursor:
+          type:
+          - string
+          - 'null'
+        events:
+          items:
+            $ref: '#/components/schemas/AiDeepResearchEvent'
+          type: array
+      required:
+      - nextCursor
+      - events
+      type: object
+    BinType.CUSTOM_GROUP:
+      enum:
+      - custom_group
+      type: string
+    Record_string.Field-or-TableCalculation-or-CustomDimension-or-Metric_:
+      properties: {}
+      additionalProperties:
+        anyOf:
+        - $ref: '#/components/schemas/TableCalculation'
+        - $ref: '#/components/schemas/CustomDimension'
+        - $ref: '#/components/schemas/Metric'
+        - $ref: '#/components/schemas/Field'
+      type: object
+      description: Construct a type with a set of properties K of type T
+    VizIndexType:
+      enum:
+      - time
+      - category
+      type: string
+    PreAggregateFallbackReason:
+      type: string
+      enum:
+      - duckdb_execution_error
+      - external_execution_error
+    CustomGroupBinDimension:
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the custom dimension
+        name:
+          type: string
+          description: Display name for the custom dimension
+        table:
+          type: string
+          description: Table this custom dimension belongs to
+        type:
+          $ref: '#/components/schemas/CustomDimensionType.BIN'
+          description: Type of custom dimension (bin or sql)
+        dimensionId:
+          $ref: '#/components/schemas/FieldId'
+          description: Field ID of the parent dimension to bin
+        binType:
+          $ref: '#/components/schemas/BinType.CUSTOM_GROUP'
+        customGroups:
+          items:
+            $ref: '#/components/schemas/BinGroup'
+          type: array
+      required:
+      - id
+      - name
+      - table
+      - type
+      - dimensionId
+      - binType
+      - customGroups
+      type: object
+      additionalProperties: true
+    AiDeepResearchRunMetrics:
+      properties:
+        chartCount:
+          type:
+          - number
+          - 'null'
+          format: double
+        findingsCount:
+          type:
+          - number
+          - 'null'
+          format: double
+        warehouseQueryCount:
+          type:
+          - number
+          - 'null'
+          format: double
+        toolErrorCount:
+          type:
+          - number
+          - 'null'
+          format: double
+        toolCallCount:
+          type:
+          - number
+          - 'null'
+          format: double
+        tokenUsageComplete:
+          type:
+          - boolean
+          - 'null'
+        totalTokens:
+          type:
+          - number
+          - 'null'
+          format: double
+        reasoningTokens:
+          type:
+          - number
+          - 'null'
+          format: double
+        cacheWriteTokens:
+          type:
+          - number
+          - 'null'
+          format: double
+        cacheReadTokens:
+          type:
+          - number
+          - 'null'
+          format: double
+        outputTokens:
+          type:
+          - number
+          - 'null'
+          format: double
+        inputTokens:
+          type:
+          - number
+          - 'null'
+          format: double
+        durationMs:
+          type:
+          - number
+          - 'null'
+          format: double
+      required:
+      - chartCount
+      - findingsCount
+      - warehouseQueryCount
+      - toolErrorCount
+      - toolCallCount
+      - tokenUsageComplete
+      - totalTokens
+      - reasoningTokens
+      - cacheWriteTokens
+      - cacheReadTokens
+      - outputTokens
+      - inputTokens
+      - durationMs
+      type: object
+    VizSortBy:
+      properties:
+        pivotValues:
+          items:
+            $ref: '#/components/schemas/PivotSortAnchor'
+          type: array
+          description: Pins the row-sort anchor to a specific pivot column.
+        nullsFirst:
+          type: boolean
+        direction:
+          $ref: '#/components/schemas/SortByDirection'
+        reference:
+          type: string
+      required:
+      - direction
+      - reference
+      type: object
+    TableCalculationTemplate:
+      anyOf:
+      - properties:
+          partitionBy:
+            items:
+              type: string
+            type: array
+          orderBy:
+            items:
+              properties:
+                order:
+                  type:
+                  - string
+                  - 'null'
+                  enum:
+                  - asc
+                  - desc
+                  - null
+                fieldId:
+                  type: string
+              required:
+              - order
+              - fieldId
+              type: object
+            type: array
+            description: Fields to order by for window functions
+          fieldId:
+            type: string
+            description: Field ID to apply the template to
+          type:
+            $ref: '#/components/schemas/TableCalculationTemplateType.DIFFERENCE_FROM_PREVIOUS'
+            description: Type of template calculation
+        required:
+        - orderBy
+        - fieldId
+        - type
+        type: object
+      - properties:
+          partitionBy:
+            items:
+              type: string
+            type: array
+          orderBy:
+            items:
+              properties:
+                order:
+                  type:
+                  - string
+                  - 'null'
+                  enum:
+                  - asc
+                  - desc
+                  - null
+                fieldId:
+                  type: string
+              required:
+              - order
+              - fieldId
+              type: object
+            type: array
+            description: Fields to order by for window functions
+          fieldId:
+            type: string
+            description: Field ID to apply the template to
+          type:
+            $ref: '#/components/schemas/TableCalculationTemplateType.PERCENT_CHANGE_FROM_PREVIOUS'
+            description: Type of template calculation
+        required:
+        - orderBy
+        - fieldId
+        - type
+        type: object
+      - properties:
+          partitionBy:
+            items:
+              type: string
+            type: array
+          orderBy:
+            items:
+              properties:
+                order:
+                  type:
+                  - string
+                  - 'null'
+                  enum:
+                  - asc
+                  - desc
+                  - null
+                fieldId:
+                  type: string
+              required:
+              - order
+              - fieldId
+              type: object
+            type: array
+            description: Fields to order by for window functions
+          fieldId:
+            type: string
+            description: Field ID to apply the template to
+          type:
+            $ref: '#/components/schemas/TableCalculationTemplateType.PERCENT_OF_PREVIOUS_VALUE'
+            description: Type of template calculation
+        required:
+        - orderBy
+        - fieldId
+        - type
+        type: object
+      - properties:
+          partitionBy:
+            items:
+              type: string
+            type: array
+            description: Fields to partition by
+          fieldId:
+            type: string
+            description: Field ID to apply the template to
+          type:
+            $ref: '#/components/schemas/TableCalculationTemplateType.PERCENT_OF_COLUMN_TOTAL'
+            description: Type of template calculation
+        required:
+        - fieldId
+        - type
+        type: object
+      - properties:
+          fieldId:
+            type: string
+            description: Field ID to apply the template to
+          type:
+            $ref: '#/components/schemas/TableCalculationTemplateType.RANK_IN_COLUMN'
+            description: Type of template calculation
+        required:
+        - fieldId
+        - type
+        type: object
+      - properties:
+          orderBy:
+            items:
+              properties:
+                order:
+                  type:
+                  - string
+                  - 'null'
+                  enum:
+                  - asc
+                  - desc
+                  - null
+                fieldId:
+                  type: string
+              required:
+              - order
+              - fieldId
+              type: object
+            type: array
+            description: Fields to order by for the running total
+          fieldId:
+            type: string
+            description: Field ID to apply the template to
+          type:
+            $ref: '#/components/schemas/TableCalculationTemplateType.RUNNING_TOTAL'
+            description: Type of template calculation
+        required:
+        - fieldId
+        - type
+        type: object
+      - properties:
+          frame:
+            $ref: '#/components/schemas/FrameClause'
+            description: Frame clause for window functions
+          partitionBy:
+            items:
+              type: string
+            type: array
+            description: Fields to partition by for window functions
+          orderBy:
+            items:
+              properties:
+                order:
+                  type:
+                  - string
+                  - 'null'
+                  enum:
+                  - asc
+                  - desc
+                  - null
+                fieldId:
+                  type: string
+              required:
+              - order
+              - fieldId
+              type: object
+            type: array
+            description: Fields to order by for window functions
+          fieldId:
+            type:
+            - string
+            - 'null'
+            description: Field ID to apply the template to
+          windowFunction:
+            $ref: '#/components/schemas/WindowFunctionType'
+            description: Window function type
+          type:
+            $ref: '#/components/schemas/TableCalculationTemplateType.WINDOW_FUNCTION'
+            description: Type of template calculation
+        required:
+        - partitionBy
+        - orderBy
+        - fieldId
+        - windowFunction
+        - type
+        type: object
+    AiDeepResearchLimits:
+      properties:
+        deadlineMs:
+          type: number
+          format: double
+          description: Wall-clock ceiling for the research loop.
+        maxWarehouseQueries:
+          type: number
+          format: double
+        maxToolCalls:
+          type: number
+          format: double
+        maxSteps:
+          type: number
+          format: double
+          description: Model steps the coordinator may take before it must finish.
+        maxTokens:
+          type: number
+          format: double
+      required:
+      - deadlineMs
+      - maxWarehouseQueries
+      - maxToolCalls
+      - maxSteps
+      - maxTokens
+      type: object
+    PreAggregateMissReason.NON_ADDITIVE_METRIC_REQUIRES_EXACT_MATCH:
+      enum:
+      - non_additive_metric_requires_exact_match
+      type: string
+    FilterGroupItem:
+      anyOf:
+      - $ref: '#/components/schemas/FilterGroup'
+      - $ref: '#/components/schemas/FilterRule'
+    AgentOnboardingUsage:
+      properties:
+        numTurns:
+          type:
+          - number
+          - 'null'
+          format: double
+        outputTokens:
+          type:
+          - number
+          - 'null'
+          format: double
+        inputTokens:
+          type:
+          - number
+          - 'null'
+          format: double
+        costUsd:
+          type:
+          - number
+          - 'null'
+          format: double
+      required:
+      - numTurns
+      - outputTokens
+      - inputTokens
+      - costUsd
+      type: object
+    ResultNumericKind:
+      anyOf:
+      - properties:
+          kind:
+            type: string
+            enum:
+            - integer
+        required:
+        - kind
+        type: object
+      - properties:
+          scale:
+            type: number
+            format: double
+          kind:
+            type: string
+            enum:
+            - decimal
+        required:
+        - scale
+        - kind
+        type: object
+      - properties:
+          kind:
+            type: string
+            enum:
+            - float
+        required:
+        - kind
+        type: object
+      description: How a NUMBER column is represented at the source, so a typed read binds it without loss.
+    GroupByColumn:
+      properties:
+        reference:
+          type: string
+      required:
+      - reference
+      type: object
+    BinGroup:
+      properties:
+        values:
+          items:
+            $ref: '#/components/schemas/GroupValueRule'
+          type: array
+          description: Rules that match values into this group
+        name:
+          type: string
+          description: Display name for this group (e.g. "North America")
+      required:
+      - values
+      - name
+      type: object
+    MergeQueryMetricSource:
+      properties:
+        repeatValues:
+          type: boolean
+          description: 'Opt in to an intentional one-to-many join: this source''s value columns
+
+            repeat on every row the other sources produce for the same key, so the
+
+            others may carry dimensions that are not join keys. Off by default,
+
+            because a repeated metric is counted more than once by any sum over
+
+            the merged rows.'
+        metricQuery:
+          $ref: '#/components/schemas/MetricQuery'
+        id:
+          type: string
+          description: Stable id. Names the CTE, and the table its merged fields belong to.
+      required:
+      - metricQuery
+      - id
+      type: object
+      description: 'One side of a merge: a metric query compiled and run as part of the merge.
+
+        A plain object, not an intersection: TSOA emits an intersection as `allOf`,
+
+        which reads as a changed response contract to the API compatibility check.'
+    ResultValue:
+      properties:
+        formatted:
+          type: string
+        raw: {}
+      required:
+      - formatted
+      - raw
+      type: object
+    AiDeepResearchChartData:
+      properties:
+        fields:
+          $ref: '#/components/schemas/ItemsMap'
+          description: Selected + filter fields; drives labels and value formatting.
+        metricQuery:
+          $ref: '#/components/schemas/MetricQuery'
+        queryUuid:
+          type: string
+          description: The verified execution this chart is evidence of.
+        chartConfig:
+          $ref: '#/components/schemas/AiDeepResearchChartConfig'
+        title:
+          type: string
+        source:
+          type: string
+          enum:
+          - warehouse
+      required:
+      - fields
+      - metricQuery
+      - queryUuid
+      - chartConfig
+      - title
+      - source
+      type: object
+      description: 'Everything the UI needs to render one report chart. Derived on demand from
+
+        the execution the chart references; the markdown only carries compact
+
+        <chart> references.'
+    AiDeepResearchTerminalReason:
+      type: string
+      enum:
+      - user_cancellation
+      - permission_revoked
+      - tool_limit
+      - query_limit
+      - token_limit
+      - time_limit
+      - no_relevant_data
+      - provider_error
+      - internal_error
+    CustomDimensionType.SQL:
+      enum:
+      - sql
+      type: string
+    PreAggregateMissReason.NO_ACTIVE_MATERIALIZATION:
+      enum:
+      - no_active_materialization
+      type: string
+    MergeJoinType:
+      description: How unmatched keys survive the merge. Mirrors the SQL join it compiles to.
+      enum:
+      - full
+      - left
+      - inner
+      type: string
+    TableCalculationTemplateType.WINDOW_FUNCTION:
+      enum:
+      - window_function
+      type: string
+    CustomFormat:
+      properties:
+        type:
+          $ref: '#/components/schemas/CustomFormatType'
+          description: Format type
+        round:
+          type: number
+          format: double
+          description: Number of decimal places
+        separator:
+          $ref: '#/components/schemas/NumberSeparator'
+          description: Number separator style
+        currency:
+          type: string
+          description: Currency code (e.g., USD, GBP, EUR)
+        compact:
+          $ref: '#/components/schemas/CompactOrAlias'
+          description: Compact format for large numbers (K, M, B, T) or byte units
+        prefix:
+          type: string
+          description: Prefix to prepend to formatted values
+        suffix:
+          type: string
+          description: Suffix to append to formatted values
+        timeInterval:
+          $ref: '#/components/schemas/TimeFrames'
+          description: Time interval for date formatting
+        custom:
+          type: string
+          description: Custom format string
+      required:
+      - type
+      type: object
+      additionalProperties: true
+    ApiAgentOnboardingRunResponse:
+      $ref: '#/components/schemas/ApiSuccess_AgentOnboardingRun_'
+    PreAggregateMissReason.CUSTOM_METRIC_PRESENT:
+      enum:
+      - custom_metric_present
+      type: string
+    ParameterValue:
+      anyOf:
+      - type: string
+      - type: number
+        format: double
+      - items:
+          type: string
+        type: array
+      - items:
+          type: number
+          format: double
+        type: array
+    CustomFormatType:
+      enum:
+      - default
+      - percent
+      - currency
+      - number
+      - id
+      - date
+      - timestamp
+      - bytes_si
+      - bytes_iec
+      - custom
+      type: string
+    ApiAiDeepResearchRunResponse:
+      $ref: '#/components/schemas/ApiSuccess_AiDeepResearchRun_'
+    TableCalculationTemplateType.PERCENT_CHANGE_FROM_PREVIOUS:
+      enum:
+      - percent_change_from_previous
+      type: string
+    UUID:
+      type: string
+      format: uuid
+      description: 'Stringified UUIDv4.
+
+        See [RFC 4112](https://tools.ietf.org/html/rfc4122)'
+      pattern: '[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-4[0-9A-Fa-f]{3}-[89ABab][0-9A-Fa-f]{3}-[0-9A-Fa-f]{12}'
+    ApiErrorPayload:
+      properties:
+        error:
+          properties:
+            data:
+              $ref: '#/components/schemas/AnyType'
+              description: Optional data containing details of the error
+            message:
+              type: string
+              description: A friendly message summarising the error
+            name:
+              type: string
+              description: Unique name for the type of error
+            statusCode:
+              type: number
+              format: integer
+              description: HTTP status code
+          required:
+          - name
+          - statusCode
+          type: object
+        status:
+          type: string
+          enum:
+          - error
+      required:
+      - error
+      - status
+      type: object
+      description: 'The Error object is returned from the api any time there is an error.
+
+        The message contains'
+    AiDeepResearchProgress:
+      properties:
+        total:
+          type:
+          - number
+          - 'null'
+          format: double
+        current:
+          type:
+          - number
+          - 'null'
+          format: double
+        activity:
+          allOf:
+          - $ref: '#/components/schemas/AiDeepResearchActivity'
+        phase:
+          $ref: '#/components/schemas/AiDeepResearchPhase'
+      required:
+      - total
+      - current
+      - activity
+      - phase
+      type: object
+    CustomBinDimension:
+      anyOf:
+      - $ref: '#/components/schemas/FixedNumberBinDimension'
+      - $ref: '#/components/schemas/FixedWidthBinDimension'
+      - $ref: '#/components/schemas/CustomRangeBinDimension'
+      - $ref: '#/components/schemas/CustomGroupBinDimension'
+    Record_string.ResultColumn_:
+      properties: {}
+      additionalProperties:
+        $ref: '#/components/schemas/ResultColumn'
+      type: object
+      description: Construct a type with a set of properties K of type T
+    PreAggregateMissReason.TABLE_CALCULATION_PRESENT:
+      enum:
+      - table_calculation_present
+      type: string
+    AgentOnboardingFileContent:
+      allOf:
+      - $ref: '#/components/schemas/AgentOnboardingFile'
+      - properties:
+          encoding:
+            type: string
+            enum:
+            - utf8
+            - base64
+          content:
+            type: string
+        required:
+        - encoding
+        - content
+        type: object
+    ApiAiDeepResearchRunListResponse:
+      $ref: '#/components/schemas/ApiSuccess_AiDeepResearchRun-Array_'
+    Record_string.string-or-string-Array_:
+      properties: {}
+      additionalProperties:
+        anyOf:
+        - type: string
+        - items:
+            type: string
+          type: array
+      type: object
+      description: Construct a type with a set of properties K of type T
+    MetricSourcedMergeQuery:
+      properties:
+        limit:
+          type: number
+          format: double
+        sorts:
+          items:
+            $ref: '#/components/schemas/SortField'
+          type: array
+        tableCalculations:
+          items:
+            $ref: '#/components/schemas/MergeTableCalculation'
+          type: array
+        joinType:
+          $ref: '#/components/schemas/MergeJoinType'
+        joinKey:
+          items:
+            $ref: '#/components/schemas/MergeJoinKeyPart'
+          type: array
+        sources:
+          items:
+            $ref: '#/components/schemas/MergeQueryMetricSource'
+          type: array
+      required:
+      - limit
+      - tableCalculations
+      - joinType
+      - joinKey
+      - sources
+      type: object
+      description: 'A merge whose sources are all metric queries — what AI-built artifacts
+
+        hold and their endpoints return. Response contracts use this so
+
+        `metricQuery` stays required on every returned source, while the
+
+        run/compile requests accept the wider MergeQuerySource union
+
+        (expand-only: requests widen, responses do not).'
+    FieldType.METRIC:
+      enum:
+      - metric
+      type: string
+    Source:
+      properties:
+        content:
+          type: string
+        highlight:
+          properties:
+            end:
+              $ref: '#/components/schemas/SourcePosition'
+            start:
+              $ref: '#/components/schemas/SourcePosition'
+          required:
+          - end
+          - start
+          type: object
+        range:
+          properties:
+            end:
+              $ref: '#/components/schemas/SourcePosition'
+            start:
+              $ref: '#/components/schemas/SourcePosition'
+          required:
+          - end
+          - start
+          type: object
+        path:
+          type: string
+      required:
+      - content
+      - range
+      - path
+      type: object
+    QueryResultsPerformance:
+      properties:
+        queueTimeMs:
+          type:
+          - number
+          - 'null'
+          format: double
+        resultsPageExecutionMs:
+          type: number
+          format: double
+        initialQueryExecutionMs:
+          type:
+          - number
+          - 'null'
+          format: double
+      required:
+      - queueTimeMs
+      - resultsPageExecutionMs
+      - initialQueryExecutionMs
+      type: object
+    ParametersValuesMap:
+      $ref: '#/components/schemas/Record_string.ParameterValue_'
+    QueryHistoryStatus.EXPIRED:
+      enum:
+      - expired
+      type: string
+    WindowFunctionType:
+      enum:
+      - row_number
+      - percent_rank
+      - cume_dist
+      - rank
+      - sum
+      - avg
+      - count
+      - min
+      - max
+      type: string
+    AiDeepResearchRunStatus:
+      type: string
+      enum:
+      - queued
+      - running
+      - failed
+      - cancelled
+      - completed
+      - partially_completed
+    AgentOnboardingStage:
+      type: string
+      enum:
+      - preparing_project
+      - exploring_warehouse
+      - deploying_semantic_layer
+      - building_dashboard
+      - verifying
+      - handoff
+    FieldTarget:
+      properties:
+        fieldId:
+          type: string
+          description: Field ID to filter on
+      required:
+      - fieldId
+      type: object
+    ResultColumnProvenance:
+      properties:
+        sourceQueryUuid:
+          type: string
+          description: 'Which query in a multi-source pipeline the field belongs to. Omitted
+
+            for single-query results. Two composer nodes can both expose the same
+
+            field name, so a bare fieldId is ambiguous across sources.'
+        fieldId:
+          type: string
+          description: Key into the query's fields map (query_history.fields).
+      required:
+      - fieldId
+      type: object
+    VizAggregationOptions:
+      enum:
+      - sum
+      - count
+      - avg
+      - min
+      - max
+      - any
+      type: string
+    SortField:
+      properties:
+        pivotValues:
+          items:
+            $ref: '#/components/schemas/PivotSortAnchor'
+          type: array
+          description: Pins the row-sort anchor to a specific pivot column. Ignored for non-pivoted results.
+        nullsFirst:
+          type: boolean
+          description: Sort null values first
+        descending:
+          type: boolean
+          description: Sort in descending order
+        fieldId:
+          type: string
+          description: Field ID to sort by
+      required:
+      - descending
+      - fieldId
+      type: object
+    DimensionType:
+      enum:
+      - string
+      - number
+      - timestamp
+      - date
+      - boolean
+      type: string
+    ApiAiAgentThreadMessageVizQueryResponse:
+      properties:
+        results:
+          $ref: '#/components/schemas/ApiAiAgentThreadMessageVizQuery'
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
+  securitySchemes:
+    session_cookie:
+      type: apiKey
+      in: cookie
+      name: connect.sid
+    api_key:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: Value should be 'ApiKey <your key>'

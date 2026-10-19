@@ -1,0 +1,306 @@
+openapi: 3.2.0
+info:
+  title: Lightdash Delete content API
+  version: 2.616.2
+  description: 'Open API documentation for all public Lightdash API endpoints. # Authentication Before you get started, you might need to create a Personal Access Token to authenticate via the API. You can create a token by following this guide: https://docs.lightdash.com/references/personal_tokens'
+  license:
+    name: MIT
+  contact:
+    name: Lightdash Support
+    email: support@lightdash.com
+    url: https://docs.lightdash.com/help-and-contact/contact/contact_info/
+servers:
+- url: /
+tags:
+- name: Delete content
+paths:
+  /api/v2/content/{projectUuid}/delete:
+    post:
+      operationId: DeleteContent
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiSuccessEmpty'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: 'Delete a single item (Chart, Dashboard, Space). Soft-deletes when the
+
+        instance has soft delete enabled, otherwise deletes permanently.'
+      summary: Delete content
+      tags:
+      - Delete content
+      security: []
+      parameters:
+      - in: path
+        name: projectUuid
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApiContentActionBody_ContentActionDelete_'
+      x-operation-id-source: normalized
+      x-operation-id-original: Delete content
+  /api/v2/content/bulk-action/{projectUuid}/delete:
+    post:
+      operationId: BulkDeleteContent
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiContentBulkDeleteResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: 'Delete multiple items (Charts, Dashboards, Spaces). Items the caller
+
+        cannot delete are skipped and reported in the response.'
+      summary: Bulk delete content
+      tags:
+      - Delete content
+      security: []
+      parameters:
+      - in: path
+        name: projectUuid
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApiContentBulkActionBody_ContentActionDelete_'
+      x-operation-id-source: normalized
+      x-operation-id-original: Bulk delete content
+components:
+  schemas:
+    ChartSourceType:
+      enum:
+      - dbt_explore
+      - sql
+      type: string
+    AnyType:
+      description: 'This AnyType is an alias for any
+
+        The goal is to make it easier to identify any type in the codebase
+
+        without having to eslint-disable all the time
+
+        These are only used on legacy `any` types, don''t use it for new types.
+
+        This is added on a separate file to avoid circular dependencies.'
+    ItemPayload:
+      anyOf:
+      - properties:
+          source:
+            $ref: '#/components/schemas/ChartSourceType'
+          contentType:
+            $ref: '#/components/schemas/ContentType.CHART'
+          uuid:
+            type: string
+        required:
+        - source
+        - contentType
+        - uuid
+        type: object
+      - properties:
+          contentType:
+            $ref: '#/components/schemas/ContentType.DASHBOARD'
+          uuid:
+            type: string
+        required:
+        - contentType
+        - uuid
+        type: object
+      - properties:
+          contentType:
+            $ref: '#/components/schemas/ContentType.SPACE'
+          uuid:
+            type: string
+        required:
+        - contentType
+        - uuid
+        type: object
+      - properties:
+          contentType:
+            $ref: '#/components/schemas/ContentType.DATA_APP'
+          uuid:
+            type: string
+        required:
+        - contentType
+        - uuid
+        type: object
+      - properties:
+          contentType:
+            $ref: '#/components/schemas/ContentType.DOCUMENT'
+          uuid:
+            type: string
+        required:
+        - contentType
+        - uuid
+        type: object
+    ContentBulkDeleteSkippedItem:
+      properties:
+        reason:
+          type: string
+        contentType:
+          $ref: '#/components/schemas/ContentType'
+        uuid:
+          type: string
+      required:
+      - reason
+      - contentType
+      - uuid
+      type: object
+    ContentType.DASHBOARD:
+      enum:
+      - dashboard
+      type: string
+    ContentType.CHART:
+      enum:
+      - chart
+      type: string
+    ApiContentBulkActionBody_ContentActionDelete_:
+      properties:
+        action:
+          $ref: '#/components/schemas/ContentActionDelete'
+        content:
+          items:
+            $ref: '#/components/schemas/ItemPayload'
+          type: array
+      required:
+      - action
+      - content
+      type: object
+    ContentActionDelete:
+      properties:
+        type:
+          type: string
+          enum:
+          - delete
+      required:
+      - type
+      type: object
+    ApiContentActionBody_ContentActionDelete_:
+      properties:
+        action:
+          $ref: '#/components/schemas/ContentActionDelete'
+        item:
+          $ref: '#/components/schemas/ItemPayload'
+      required:
+      - action
+      - item
+      type: object
+    ApiSuccessEmpty:
+      properties:
+        results: {}
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - status
+      type: object
+    ContentType.DATA_APP:
+      enum:
+      - data_app
+      type: string
+    ContentType:
+      enum:
+      - chart
+      - dashboard
+      - space
+      - data_app
+      - document
+      type: string
+    ContentType.SPACE:
+      enum:
+      - space
+      type: string
+    ApiErrorPayload:
+      properties:
+        error:
+          properties:
+            data:
+              $ref: '#/components/schemas/AnyType'
+              description: Optional data containing details of the error
+            message:
+              type: string
+              description: A friendly message summarising the error
+            name:
+              type: string
+              description: Unique name for the type of error
+            statusCode:
+              type: number
+              format: integer
+              description: HTTP status code
+          required:
+          - name
+          - statusCode
+          type: object
+        status:
+          type: string
+          enum:
+          - error
+      required:
+      - error
+      - status
+      type: object
+      description: 'The Error object is returned from the api any time there is an error.
+
+        The message contains'
+    ApiContentBulkDeleteResponse:
+      properties:
+        results:
+          $ref: '#/components/schemas/ContentBulkDeleteResults'
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
+    ContentType.DOCUMENT:
+      enum:
+      - document
+      type: string
+    ContentBulkDeleteResults:
+      properties:
+        skipped:
+          items:
+            $ref: '#/components/schemas/ContentBulkDeleteSkippedItem'
+          type: array
+        deletedCount:
+          type: number
+          format: double
+      required:
+      - skipped
+      - deletedCount
+      type: object
+  securitySchemes:
+    session_cookie:
+      type: apiKey
+      in: cookie
+      name: connect.sid
+    api_key:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: Value should be 'ApiKey <your key>'

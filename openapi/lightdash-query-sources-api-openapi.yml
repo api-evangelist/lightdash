@@ -1,0 +1,2056 @@
+openapi: 3.2.0
+info:
+  title: Lightdash Query Sources API
+  version: 2.616.2
+  description: 'Open API documentation for all public Lightdash API endpoints. # Authentication Before you get started, you might need to create a Personal Access Token to authenticate via the API. You can create a token by following this guide: https://docs.lightdash.com/references/personal_tokens'
+  license:
+    name: MIT
+  contact:
+    name: Lightdash Support
+    email: support@lightdash.com
+    url: https://docs.lightdash.com/help-and-contact/contact/contact_info/
+servers:
+- url: /
+tags:
+- name: Query Sources
+paths:
+  /api/v2/projects/{projectUuid}/query-sources:
+    get:
+      operationId: listQuerySources
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiSuccess_ApiListQuerySourcesResults_'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: 'Lists the query sources registered for this deployment. Every source
+
+        supports the same operations: scan its schema, and submit queries that
+
+        return a queryUuid whose results are fetched with the standard async
+
+        query results endpoint. Requires the multi-source-query feature flag.'
+      summary: List query sources
+      tags:
+      - Query Sources
+      security: []
+      parameters:
+      - in: path
+        name: projectUuid
+        required: true
+        schema:
+          type: string
+  /api/v2/projects/{projectUuid}/query-sources/{sourceType}/schema:
+    get:
+      operationId: scanQuerySourceSchema
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiSuccess_ApiScanQuerySourceSchemaResults_'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: 'Scans the schema of one query source into the standard shape: tables
+
+        with columns of {reference, type}. For the semantic layer, tables are
+
+        explores and columns are field ids; for warehouse SQL, tables come from
+
+        the warehouse catalog resolved for your credentials, like the SQL
+
+        runner; the duckdb source has no schema of its own — its tables are the
+
+        references given to each query.'
+      summary: Scan query source schema
+      tags:
+      - Query Sources
+      security: []
+      parameters:
+      - in: path
+        name: projectUuid
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: sourceType
+        required: true
+        schema:
+          $ref: '#/components/schemas/QuerySourceType'
+  /api/v2/projects/{projectUuid}/query-sources/queries:
+    post:
+      operationId: executeSourceQueries
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiSuccess_ApiExecuteSourceQueriesResults_'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: 'Submits one or more source queries through the common interface. Every
+
+        query body is tagged by sourceType and every query returns a queryUuid,
+
+        polled with the standard async query results endpoint (or Get source
+
+        query status for many at once).
+
+
+        Queries reference each other''s results by nodeId: a duckdb query''s
+
+        references expose other queries'' results as tables, named by node id
+
+        (array shorthand) or by alias (map form, which also accepts queryUuids
+
+        of results from previous submissions). A referenced result keeps the
+
+        column names of the query that produced it — field ids for
+
+        semanticLayer queries, SELECT output names for sql queries.
+
+
+        All queries are submitted immediately; a query referencing
+
+        still-running results waits inside its own execution and fails if a
+
+        referenced query fails, so no orchestration happens outside the
+
+        queries themselves. Submit queries one at a time (interactive use) or
+
+        as a whole pipeline in one call — the two are equivalent, so a
+
+        serialized multi-query analysis is just the bodies of the queries that
+
+        were run interactively, with queryUuid references swapped for node
+
+        ids. Note that results expire: re-run upstream queries whose results
+
+        have expired instead of referencing their old queryUuids.'
+      summary: Execute source queries
+      tags:
+      - Query Sources
+      security: []
+      parameters:
+      - in: path
+        name: projectUuid
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ExecuteSourceQueriesRequestParams'
+  /api/v2/projects/{projectUuid}/query-sources/queries/status:
+    get:
+      operationId: getSourceQueryStatus
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiSuccess_ApiGetSourceQueryStatusResults_'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: 'Gets the status of many submitted queries at once — the standard async
+
+        query status lifecycle (pending, running, ready, error, ...) plus the
+
+        error message for failed queries. Poll this after Execute source
+
+        queries; fetch each ready query''s rows with the standard async query
+
+        results endpoint. Statuses are visible to the query creator only.'
+      summary: Get source query status
+      tags:
+      - Query Sources
+      security: []
+      parameters:
+      - in: path
+        name: projectUuid
+        required: true
+        schema:
+          type: string
+      - in: query
+        name: queryUuids
+        required: true
+        schema:
+          type: array
+          items:
+            $ref: '#/components/schemas/UUID'
+components:
+  schemas:
+    QuerySourceSchema:
+      properties:
+        tables:
+          items:
+            $ref: '#/components/schemas/QuerySourceSchemaTable'
+          type: array
+        sourceType:
+          $ref: '#/components/schemas/QuerySourceType'
+      required:
+      - tables
+      - sourceType
+      type: object
+      description: The standard shape every source's schema scan returns.
+    TableCalculationTemplateType.PERCENT_OF_COLUMN_TOTAL:
+      enum:
+      - percent_of_column_total
+      type: string
+    BinType.FIXED_WIDTH:
+      enum:
+      - fixed_width
+      type: string
+    AnyType:
+      description: 'This AnyType is an alias for any
+
+        The goal is to make it easier to identify any type in the codebase
+
+        without having to eslint-disable all the time
+
+        These are only used on legacy `any` types, don''t use it for new types.
+
+        This is added on a separate file to avoid circular dependencies.'
+    FrameBoundary:
+      properties:
+        offset:
+          type: number
+          format: double
+          description: Offset for PRECEDING/FOLLOWING
+        type:
+          $ref: '#/components/schemas/FrameBoundaryType'
+          description: Boundary type
+      required:
+      - type
+      type: object
+    SqlTableCalculation:
+      allOf:
+      - $ref: '#/components/schemas/TableCalculationBase'
+      - properties:
+          sql:
+            type: string
+            description: SQL expression for the calculation (can reference fields with ${table.field})
+        required:
+        - sql
+        type: object
+    BinRange:
+      properties:
+        to:
+          type: number
+          format: double
+          description: End value for this bin range (undefined for the last range)
+        from:
+          type: number
+          format: double
+          description: Start value for this bin range (undefined for the first range)
+      type: object
+    TemplateTableCalculation:
+      allOf:
+      - $ref: '#/components/schemas/TableCalculationBase'
+      - properties:
+          template:
+            $ref: '#/components/schemas/TableCalculationTemplate'
+            description: Template-based calculation (alternative to sql)
+        required:
+        - template
+        type: object
+    MetricOverrides:
+      properties: {}
+      additionalProperties:
+        $ref: '#/components/schemas/Pick_Metric.formatOptions_'
+      type: object
+    PivotSortAnchor:
+      properties:
+        value:
+          anyOf:
+          - type: string
+          - type: number
+            format: double
+          - type: boolean
+        reference:
+          type: string
+      required:
+      - value
+      - reference
+      type: object
+      description: 'Coordinates of a single pivot column, used to anchor a row sort to that
+
+        specific column when results are pivoted.'
+    SourceQuery:
+      anyOf:
+      - $ref: '#/components/schemas/SemanticLayerSourceQuery'
+      - $ref: '#/components/schemas/SqlSourceQuery'
+      - $ref: '#/components/schemas/DuckdbSourceQuery'
+      - $ref: '#/components/schemas/ExternalSourceQuery'
+      - $ref: '#/components/schemas/PythonSourceQuery'
+      description: 'The tagged union every submit endpoint takes: one shape per source,
+
+        discriminated by sourceType. New sources add a member here — this union is
+
+        the extension point, not new WarehouseTypes values.'
+    FrameClause:
+      properties:
+        end:
+          $ref: '#/components/schemas/FrameBoundary'
+          description: End boundary of the frame
+        start:
+          $ref: '#/components/schemas/FrameBoundary'
+          description: Start boundary of the frame
+        frameType:
+          $ref: '#/components/schemas/FrameType'
+          description: Type of frame (ROWS or RANGE)
+      required:
+      - end
+      - frameType
+      type: object
+    ApiSuccess_ApiListQuerySourcesResults_:
+      properties:
+        results:
+          $ref: '#/components/schemas/ApiListQuerySourcesResults'
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
+    TableCalculationBase:
+      properties:
+        totalMode:
+          $ref: '#/components/schemas/TableCalculationTotalMode'
+          description: How column totals are computed for this calculation
+        type:
+          $ref: '#/components/schemas/TableCalculationType'
+          description: Data type of the calculation result
+        format:
+          $ref: '#/components/schemas/CustomFormat'
+          description: Formatting options for the calculation
+        displayName:
+          type: string
+          description: Display name shown in the UI
+        name:
+          type: string
+          description: Internal name of the table calculation
+        index:
+          type: number
+          format: double
+          description: Display order index
+      required:
+      - displayName
+      - name
+      type: object
+    FrameType:
+      enum:
+      - rows
+      - range
+      type: string
+    QuerySourceSchemaTable:
+      properties:
+        columns:
+          items:
+            $ref: '#/components/schemas/QuerySourceSchemaColumn'
+          type: array
+        description:
+          type:
+          - string
+          - 'null'
+        label:
+          type:
+          - string
+          - 'null'
+        reference:
+          type: string
+      required:
+      - columns
+      - description
+      - label
+      - reference
+      type: object
+      description: 'A queryable table in a source schema: an explore for the semantic layer, a
+
+        warehouse table for SQL, a referenced result for DuckDB.'
+    QuerySourceType.EXTERNAL:
+      enum:
+      - external
+      type: string
+    Record_QuerySourceTableName.QueryResultReference_:
+      properties: {}
+      additionalProperties:
+        type: string
+      type: object
+      description: Construct a type with a set of properties K of type T
+    ValuesColumn:
+      properties:
+        aggregation:
+          $ref: '#/components/schemas/VizAggregationOptions'
+        reference:
+          type: string
+      required:
+      - aggregation
+      - reference
+      type: object
+    TableCalculation:
+      anyOf:
+      - $ref: '#/components/schemas/SqlTableCalculation'
+      - $ref: '#/components/schemas/TemplateTableCalculation'
+      - $ref: '#/components/schemas/FormulaTableCalculation'
+    SqlSourceQuery:
+      properties:
+        pivotConfiguration:
+          $ref: '#/components/schemas/PivotConfiguration'
+          description: 'Pivots this node''s result the way a pivoted chart does. Honoured by
+
+            semanticLayer, sql and duckdb nodes; external nodes refuse it.'
+        limit:
+          type: number
+          format: double
+        sql:
+          type: string
+        description:
+          type: string
+          description: One-line note on what this query does, shown under the title.
+        title:
+          type: string
+          description: 'Plain-language label shown to users instead of the node id. Optional: the public query-sources API accepts and ignores it.'
+        nodeId:
+          $ref: '#/components/schemas/QueryNodeId'
+          description: Names this query so other queries in the same submission can reference its results.
+        sourceType:
+          $ref: '#/components/schemas/QuerySourceType.SQL'
+      required:
+      - sql
+      - sourceType
+      type: object
+      description: A raw warehouse SQL query as a source query.
+    FrameBoundaryType:
+      enum:
+      - unbounded_preceding
+      - preceding
+      - current_row
+      - following
+      - unbounded_following
+      type: string
+    NumberSeparator:
+      enum:
+      - default
+      - commaPeriod
+      - spacePeriod
+      - periodComma
+      - noSeparatorPeriod
+      - apostrophePeriod
+      type: string
+    Pick_Metric.formatOptions_:
+      properties:
+        formatOptions:
+          $ref: '#/components/schemas/CustomFormat'
+      type: object
+      description: From T, pick a set of properties whose keys are in the union K
+    FixedNumberBinDimension:
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the custom dimension
+        name:
+          type: string
+          description: Display name for the custom dimension
+        table:
+          type: string
+          description: Table this custom dimension belongs to
+        type:
+          $ref: '#/components/schemas/CustomDimensionType.BIN'
+          description: Type of custom dimension (bin or sql)
+        dimensionId:
+          $ref: '#/components/schemas/FieldId'
+          description: Field ID of the parent dimension to bin
+        binType:
+          $ref: '#/components/schemas/BinType.FIXED_NUMBER'
+        binNumber:
+          type: number
+          format: double
+      required:
+      - id
+      - name
+      - table
+      - type
+      - dimensionId
+      - binType
+      - binNumber
+      type: object
+      additionalProperties: true
+    ApiSuccess_ApiGetSourceQueryStatusResults_:
+      properties:
+        results:
+          $ref: '#/components/schemas/ApiGetSourceQueryStatusResults'
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
+    TableCalculationTemplateType.RUNNING_TOTAL:
+      enum:
+      - running_total
+      type: string
+    TableCalculationTotalMode:
+      enum:
+      - formula
+      - sum_of_rows
+      - none
+      type: string
+    CustomRangeBinDimension:
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the custom dimension
+        name:
+          type: string
+          description: Display name for the custom dimension
+        table:
+          type: string
+          description: Table this custom dimension belongs to
+        type:
+          $ref: '#/components/schemas/CustomDimensionType.BIN'
+          description: Type of custom dimension (bin or sql)
+        dimensionId:
+          $ref: '#/components/schemas/FieldId'
+          description: Field ID of the parent dimension to bin
+        binType:
+          $ref: '#/components/schemas/BinType.CUSTOM_RANGE'
+        customRange:
+          items:
+            $ref: '#/components/schemas/BinRange'
+          type: array
+      required:
+      - id
+      - name
+      - table
+      - type
+      - dimensionId
+      - binType
+      - customRange
+      type: object
+      additionalProperties: true
+    SourceQueryStatus:
+      properties:
+        error:
+          type:
+          - string
+          - 'null'
+        status:
+          $ref: '#/components/schemas/QueryHistoryStatus'
+        queryUuid:
+          $ref: '#/components/schemas/UUID'
+      required:
+      - error
+      - status
+      - queryUuid
+      type: object
+      description: Status of one submitted query, from the standard async query lifecycle.
+    TableCalculationTemplateType.RANK_IN_COLUMN:
+      enum:
+      - rank_in_column
+      type: string
+    Pick_Dimension.formatOptions_:
+      properties:
+        formatOptions:
+          $ref: '#/components/schemas/CustomFormat'
+      type: object
+      description: From T, pick a set of properties whose keys are in the union K
+    DuckdbSourceQuery:
+      properties:
+        pivotConfiguration:
+          $ref: '#/components/schemas/PivotConfiguration'
+          description: 'Pivots this node''s result over the columns its SQL returns; checked at
+
+            submission. Results carry pivotDetails. Omit for an unpivoted result.'
+        references:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/QueryNodeId'
+            type: array
+          - $ref: '#/components/schemas/Record_QuerySourceTableName.QueryResultReference_'
+          description: 'Which query results the SQL reads, in one of two forms. Shorthand
+
+            array: node ids of queries in the same submission, each exposed as a
+
+            table named by its node id — ["orders", "revenue"] lets the SQL run
+
+            SELECT * FROM orders JOIN revenue. Map form for aliasing or existing
+
+            results: {tableName: nodeIdOrQueryUuid}, e.g. {"o": "orders", "prev":
+
+            "<queryUuid>"}. Required at execution: the query runs on a session
+
+            that can reach only these results, so one that references nothing is
+
+            refused.'
+        limit:
+          type: number
+          format: double
+        sql:
+          type: string
+        description:
+          type: string
+          description: One-line note on what this query does, shown under the title.
+        title:
+          type: string
+          description: 'Plain-language label shown to users instead of the node id. Optional: the public query-sources API accepts and ignores it.'
+        nodeId:
+          $ref: '#/components/schemas/QueryNodeId'
+          description: Names this query so other queries in the same submission can reference its results.
+        sourceType:
+          $ref: '#/components/schemas/QuerySourceType.DUCKDB'
+      required:
+      - sql
+      - sourceType
+      type: object
+      description: 'A DuckDB compose query as a source query. References expose other queries''
+
+        results as named tables the SQL can select from; a referenced result''s
+
+        column names are those of the upstream query''s result (field ids for
+
+        semanticLayer queries, SELECT output names for sql queries).
+
+
+        References that name queries still running are waited on: this query
+
+        executes once every referenced result is ready, and fails if any
+
+        referenced query fails.'
+    PivotIndexColum:
+      properties:
+        type:
+          $ref: '#/components/schemas/VizIndexType'
+        reference:
+          type: string
+      required:
+      - type
+      - reference
+      type: object
+    MetricType:
+      enum:
+      - percentile
+      - average
+      - count
+      - count_distinct
+      - sum
+      - sum_distinct
+      - average_distinct
+      - min
+      - max
+      - percent_of_previous
+      - percent_of_total
+      - running_total
+      - number
+      - median
+      - string
+      - date
+      - timestamp
+      - boolean
+      type: string
+    TableCalculationTemplateType.DIFFERENCE_FROM_PREVIOUS:
+      enum:
+      - difference_from_previous
+      type: string
+    FieldId:
+      type: string
+    CustomDimension:
+      anyOf:
+      - $ref: '#/components/schemas/CustomBinDimension'
+      - $ref: '#/components/schemas/CustomSqlDimension'
+    Compact:
+      enum:
+      - auto
+      - thousands
+      - millions
+      - billions
+      - trillions
+      - kilobytes
+      - megabytes
+      - gigabytes
+      - terabytes
+      - petabytes
+      - kibibytes
+      - mebibytes
+      - gibibytes
+      - tebibytes
+      - pebibytes
+      type: string
+    QuerySourceType.SQL:
+      enum:
+      - sql
+      type: string
+    ExecuteSourceQueriesRequestParams:
+      properties:
+        invalidateCache:
+          type: boolean
+          description: Bypass cached results for every query in the submission.
+        parameters:
+          $ref: '#/components/schemas/ParametersValuesMap'
+          description: 'Parameter values shared by every query in the submission, layered over
+
+            project and explore defaults. A query referencing a parameter with no
+
+            value refuses rather than running with a placeholder.'
+        context:
+          $ref: '#/components/schemas/QueryExecutionContext'
+        queries:
+          items:
+            $ref: '#/components/schemas/SourceQuery'
+          type: array
+          description: 'One or more source queries, submitted together. Order does not matter:
+
+            queries are submitted in dependency order (a duckdb query after the
+
+            queries its references name) and every query starts executing
+
+            immediately — dependency waiting happens inside the referencing query.'
+      required:
+      - queries
+      type: object
+    BinType.CUSTOM_RANGE:
+      enum:
+      - custom_range
+      type: string
+    SortBy:
+      items:
+        $ref: '#/components/schemas/VizSortBy'
+      type: array
+    ApiListQuerySourcesResults:
+      properties:
+        sources:
+          items:
+            $ref: '#/components/schemas/QuerySourceDefinition'
+          type: array
+      required:
+      - sources
+      type: object
+    GroupValueMatchType:
+      enum:
+      - exact
+      - startsWith
+      - endsWith
+      - includes
+      type: string
+    DimensionOverrides:
+      properties: {}
+      additionalProperties:
+        $ref: '#/components/schemas/Pick_Dimension.formatOptions_'
+      type: object
+    GroupValueRule:
+      properties:
+        value:
+          type: string
+        matchType:
+          $ref: '#/components/schemas/GroupValueMatchType'
+      required:
+      - value
+      - matchType
+      type: object
+    BinType.FIXED_NUMBER:
+      enum:
+      - fixed_number
+      type: string
+    SourceQuerySubmission:
+      properties:
+        queryUuid:
+          $ref: '#/components/schemas/UUID'
+        sourceType:
+          $ref: '#/components/schemas/QuerySourceType'
+        nodeId:
+          $ref: '#/components/schemas/QueryNodeId'
+      required:
+      - queryUuid
+      - sourceType
+      - nodeId
+      type: object
+      description: 'One submitted query: its (possibly generated) node id and the queryUuid to poll.'
+    FilterOperator:
+      enum:
+      - isNull
+      - notNull
+      - equals
+      - notEquals
+      - startsWith
+      - endsWith
+      - include
+      - doesNotInclude
+      - lessThan
+      - lessThanOrEqual
+      - greaterThan
+      - greaterThanOrEqual
+      - inThePast
+      - notInThePast
+      - inTheNext
+      - inTheCurrent
+      - notInTheCurrent
+      - inBetween
+      - notInBetween
+      - inPeriodToDate
+      type: string
+    MetricFilterRule:
+      description: Filter rule for metrics, targeting fields by reference
+      properties:
+        includeNull:
+          type: boolean
+          description: 'For the `equals` operator on string fields, also match rows where the
+
+            field is null (compiles to `field IN (...) OR field IS NULL`). Lets users
+
+            combine null with selected values in a single "is" rule.'
+        values:
+          items:
+            $ref: '#/components/schemas/AnyType'
+          type: array
+          description: Values to filter by
+        operator:
+          $ref: '#/components/schemas/FilterOperator'
+          description: Filter operator
+        id:
+          type: string
+          description: Unique identifier for the filter
+        target:
+          properties:
+            fieldRef:
+              type: string
+              description: Field reference to filter on (e.g., 'table_name.field_name')
+          required:
+          - fieldRef
+          type: object
+          description: Target field for the filter
+        settings:
+          $ref: '#/components/schemas/AnyType'
+          description: Additional settings for date/time filters
+        disabled:
+          type: boolean
+          description: Whether this filter is disabled
+        required:
+          type: boolean
+          description: Whether this filter is required
+        caseSensitive:
+          type: boolean
+          description: 'Overrides the field/explore case-sensitivity for this rule only.
+
+            Used by internal features like autocomplete search that must always
+
+            match case-insensitively regardless of the field''s configured setting.'
+      required:
+      - operator
+      - id
+      - target
+      type: object
+      additionalProperties: true
+    Record_QuerySourceTableName.ExternalSourceTableReference_:
+      properties: {}
+      additionalProperties:
+        type: string
+      type: object
+      description: Construct a type with a set of properties K of type T
+    Format:
+      enum:
+      - km
+      - mi
+      - si
+      - usd
+      - gbp
+      - eur
+      - jpy
+      - dkk
+      - id
+      - percent
+      type: string
+    ApiSuccess_ApiScanQuerySourceSchemaResults_:
+      properties:
+        results:
+          $ref: '#/components/schemas/ApiScanQuerySourceSchemaResults'
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
+    QuerySourceType:
+      description: 'Discriminator for every query source a project can execute queries against.
+
+        A query source is anything that can scan a schema and run a query returning
+
+        the standard table format (ResultColumns + rows behind a queryUuid): the
+
+        project warehouse, the semantic layer, the DuckDB compose engine, and —
+
+        later — CSV uploads, HTTP APIs, Google Sheets, etc.
+
+
+        Deliberately NOT WarehouseTypes: sources are not warehouses, they plug in
+
+        above the warehouse client layer.'
+      enum:
+      - semanticLayer
+      - sql
+      - duckdb
+      - external
+      - python
+      type: string
+    CompactOrAlias:
+      anyOf:
+      - $ref: '#/components/schemas/Compact'
+      - type: string
+        enum:
+        - K
+        - thousand
+        - M
+        - million
+        - B
+        - billion
+        - T
+        - trillion
+        - KB
+        - kilobyte
+        - MB
+        - megabyte
+        - GB
+        - gigabyte
+        - TB
+        - terabyte
+        - PB
+        - petabyte
+        - KiB
+        - kibibyte
+        - MiB
+        - mebibyte
+        - GiB
+        - gibibyte
+        - TiB
+        - tebibyte
+        - PiB
+        - pebibyte
+    TimeFrames:
+      enum:
+      - RAW
+      - YEAR
+      - QUARTER
+      - MONTH
+      - WEEK
+      - DAY
+      - HOUR
+      - MINUTE
+      - SECOND
+      - MILLISECOND
+      - DAY_OF_WEEK_INDEX
+      - DAY_OF_MONTH_NUM
+      - DAY_OF_YEAR_NUM
+      - WEEK_NUM
+      - MONTH_NUM
+      - QUARTER_NUM
+      - YEAR_NUM
+      - DAY_OF_WEEK_NAME
+      - MONTH_NAME
+      - QUARTER_NAME
+      - HOUR_OF_DAY_NUM
+      - MINUTE_OF_HOUR_NUM
+      type: string
+    SortByDirection:
+      enum:
+      - ASC
+      - DESC
+      type: string
+    CustomSqlDimension:
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the custom dimension
+        name:
+          type: string
+          description: Display name for the custom dimension
+        table:
+          type: string
+          description: Table this custom dimension belongs to
+        type:
+          $ref: '#/components/schemas/CustomDimensionType.SQL'
+          description: Type of custom dimension (bin or sql)
+        sql:
+          type: string
+          description: SQL expression for the custom dimension
+        dimensionType:
+          $ref: '#/components/schemas/DimensionType'
+          description: Data type of the dimension result
+      required:
+      - id
+      - name
+      - table
+      - type
+      - sql
+      - dimensionType
+      type: object
+      additionalProperties: true
+    FixedWidthBinDimension:
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the custom dimension
+        name:
+          type: string
+          description: Display name for the custom dimension
+        table:
+          type: string
+          description: Table this custom dimension belongs to
+        type:
+          $ref: '#/components/schemas/CustomDimensionType.BIN'
+          description: Type of custom dimension (bin or sql)
+        dimensionId:
+          $ref: '#/components/schemas/FieldId'
+          description: Field ID of the parent dimension to bin
+        binType:
+          $ref: '#/components/schemas/BinType.FIXED_WIDTH'
+        binWidth:
+          type: number
+          format: double
+      required:
+      - id
+      - name
+      - table
+      - type
+      - dimensionId
+      - binType
+      - binWidth
+      type: object
+      additionalProperties: true
+    Record_string.ParameterValue_:
+      properties: {}
+      additionalProperties:
+        $ref: '#/components/schemas/ParameterValue'
+      type: object
+      description: Construct a type with a set of properties K of type T
+    QueryHistoryStatus:
+      enum:
+      - pending
+      - queued
+      - executing
+      - expired
+      - ready
+      - error
+      - cancelled
+      type: string
+    TableCalculationTemplateType.PERCENT_OF_PREVIOUS_VALUE:
+      enum:
+      - percent_of_previous_value
+      type: string
+    TableCalculationType:
+      enum:
+      - number
+      - string
+      - date
+      - timestamp
+      - boolean
+      type: string
+    CustomDimensionType.BIN:
+      enum:
+      - bin
+      type: string
+    PivotConfiguration:
+      properties:
+        pivotColumnsOrder:
+          items:
+            $ref: '#/components/schemas/GroupByColumn'
+          type: array
+          description: 'Declared order of the pivot-column dimensions (visible `groupByColumns`
+
+            plus hidden `sortOnlyDimensions`) as they appear in the chart''s
+
+            `pivotConfig.columns`. `column_ranking` orders columns by this sequence so
+
+            a hidden sort-only dim sorts at its DECLARED position — hiding a dim then
+
+            leaves column order identical to when it was visible, instead of hoisting
+
+            the hidden dim to the front of the ORDER BY. Passthrough (hidden, non-sort)
+
+            dims are excluded since they don''t drive sort. When omitted, ordering falls
+
+            back to hoisting sort-only sort targets to the front (legacy behavior).'
+        passthroughDimensions:
+          items:
+            $ref: '#/components/schemas/GroupByColumn'
+          type: array
+          description: 'Hidden pivot-column dimensions that are NOT sort targets but still need
+
+            their values carried through the SQL pipeline so that other fields''
+
+            `richText` / `image:` templates can reference them via
+
+            `row.<table>.<field>.raw`. They participate in `group_by_query` SELECT
+
+            and GROUP BY (same as sortOnlyDimensions) but do NOT affect
+
+            `column_ranking` ORDER BY (they don''t drive sort). Without this bucket
+
+            the dim would be dropped entirely from the query and `row.*.raw`
+
+            references would silently resolve to undefined.'
+        sortOnlyDimensions:
+          items:
+            $ref: '#/components/schemas/GroupByColumn'
+          type: array
+          description: 'Dimensions referenced by ORDER BY but NOT spread into pivot columns.
+
+            Used when a user hides a dim that''s part of `pivotConfig.columns` and has
+
+            a sort entry on it: the dim still ranks column order via the GROUP BY /
+
+            ORDER BY pipeline, but it doesn''t become a pivot column header level.
+
+            Mirrors `sortOnlyColumns` (which serves the same purpose for metrics).'
+        sortOnlyColumns:
+          items:
+            $ref: '#/components/schemas/ValuesColumn'
+          type: array
+          description: 'Metrics/table calculations needed for sort anchor CTEs but not for display.
+
+            These are merged into valuesColumns for SQL generation in PivotQueryBuilder,
+
+            but excluded from pivotDetails so they don''t appear as chart series.'
+        metricsAsRows:
+          type: boolean
+          description: 'When true, metrics are displayed as rows instead of columns.
+
+            This affects column limit calculation - when metrics are rows,
+
+            we don''t need to divide the column limit by the number of metrics.
+
+            Defaults to false for backward compatibility (SQL runner behavior).'
+        sortBy:
+          $ref: '#/components/schemas/SortBy'
+        groupByColumns:
+          items:
+            $ref: '#/components/schemas/GroupByColumn'
+          type: array
+        valuesColumns:
+          items:
+            $ref: '#/components/schemas/ValuesColumn'
+          type: array
+        indexColumn:
+          anyOf:
+          - $ref: '#/components/schemas/PivotIndexColum'
+          - items:
+              $ref: '#/components/schemas/PivotIndexColum'
+            type: array
+      required:
+      - valuesColumns
+      type: object
+    AdditionalMetric:
+      properties:
+        label:
+          type: string
+          description: Display label for the metric
+        type:
+          $ref: '#/components/schemas/MetricType'
+          description: Aggregation type
+        description:
+          type: string
+          description: Description of what the metric measures
+        sql:
+          type: string
+          description: SQL expression (e.g., ${TABLE}.column_name)
+        hidden:
+          type: boolean
+          description: Whether the metric is hidden from users
+        round:
+          type: number
+          format: double
+          description: Number of decimal places
+        compact:
+          $ref: '#/components/schemas/CompactOrAlias'
+          description: Compact format for large numbers
+        format:
+          anyOf:
+          - $ref: '#/components/schemas/Format'
+          - type: string
+          description: Format string (legacy format specification)
+        separator:
+          $ref: '#/components/schemas/NumberSeparator'
+          description: Number separator style for grouping/decimal characters
+        table:
+          type: string
+          description: Table name the metric belongs to
+        name:
+          type: string
+          description: Internal name of the metric
+        index:
+          type: number
+          format: double
+          description: Display order index
+        filters:
+          items:
+            $ref: '#/components/schemas/MetricFilterRule'
+          type: array
+          description: Filters to apply to this metric
+        baseDimensionName:
+          type: string
+          description: Name of the base dimension/column this metric aggregates
+        baseMetricName:
+          type: string
+          description: Name of the explore metric this metric was cloned from
+        uuid:
+          type:
+          - string
+          - 'null'
+          description: Unique identifier for the metric
+        percentile:
+          type: number
+          format: double
+          description: Percentile value for percentile metrics
+        distinctKeys:
+          items:
+            type: string
+          type: array
+        formatOptions:
+          $ref: '#/components/schemas/CustomFormat'
+          description: Formatting configuration
+        generationType:
+          type: string
+          enum:
+          - periodOverPeriod
+          description: 'Optional marker for metrics generated by the system.
+
+            Currently used for Period-over-Period (PoP) previous-period metrics.'
+        baseMetricId:
+          $ref: '#/components/schemas/FieldId'
+          description: For PoP-generated metrics, the base metric id that this metric is derived from.
+        timeDimensionId:
+          $ref: '#/components/schemas/FieldId'
+          description: For PoP-generated metrics, the time dimension id used for the comparison.
+        granularity:
+          $ref: '#/components/schemas/TimeFrames'
+          description: For PoP-generated metrics, the granularity used for the comparison.
+        periodOffset:
+          type: number
+          format: double
+          description: For PoP-generated metrics, the number of periods to offset by (>= 1).
+      required:
+      - type
+      - sql
+      - table
+      - name
+      type: object
+      additionalProperties: true
+    FormulaTableCalculation:
+      allOf:
+      - $ref: '#/components/schemas/TableCalculationBase'
+      - properties:
+          formula:
+            type: string
+            description: Spreadsheet-like formula compiled to SQL at query time
+        required:
+        - formula
+        type: object
+    VizIndexType:
+      enum:
+      - time
+      - category
+      type: string
+    BinType.CUSTOM_GROUP:
+      enum:
+      - custom_group
+      type: string
+    CustomGroupBinDimension:
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the custom dimension
+        name:
+          type: string
+          description: Display name for the custom dimension
+        table:
+          type: string
+          description: Table this custom dimension belongs to
+        type:
+          $ref: '#/components/schemas/CustomDimensionType.BIN'
+          description: Type of custom dimension (bin or sql)
+        dimensionId:
+          $ref: '#/components/schemas/FieldId'
+          description: Field ID of the parent dimension to bin
+        binType:
+          $ref: '#/components/schemas/BinType.CUSTOM_GROUP'
+        customGroups:
+          items:
+            $ref: '#/components/schemas/BinGroup'
+          type: array
+      required:
+      - id
+      - name
+      - table
+      - type
+      - dimensionId
+      - binType
+      - customGroups
+      type: object
+      additionalProperties: true
+    PythonSourceQuery:
+      properties:
+        pivotConfiguration:
+          $ref: '#/components/schemas/PivotConfiguration'
+          description: Python queries refuse a pivot; pivot in a referencing duckdb query.
+        references:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/QueryNodeId'
+            type: array
+          - $ref: '#/components/schemas/Record_QuerySourceTableName.QueryResultReference_'
+          description: 'Which query results the code reads, in the same two forms as duckdb
+
+            references. Shorthand array: node ids of queries in the same
+
+            submission, each exposed as inputs[nodeId]. Map form for aliasing or
+
+            existing results: {inputName: nodeIdOrQueryUuid}. At least one is
+
+            required.'
+        limit:
+          type: number
+          format: double
+          description: Maximum rows kept from the returned DataFrame.
+        code:
+          type: string
+        description:
+          type: string
+          description: One-line note on what this query does, shown under the title.
+        title:
+          type: string
+          description: 'Plain-language label shown to users instead of the node id. Optional: the public query-sources API accepts and ignores it.'
+        nodeId:
+          $ref: '#/components/schemas/QueryNodeId'
+          description: Names this query so other queries in the same submission can reference its results.
+        sourceType:
+          $ref: '#/components/schemas/QuerySourceType.PYTHON'
+      required:
+      - references
+      - code
+      - sourceType
+      type: object
+      description: 'A python query as a source query: code defining
+
+        `run(inputs: dict[str, pandas.DataFrame], params: dict) -> pandas.DataFrame`.
+
+        References expose other queries'' results as DataFrames in `inputs`, keyed
+
+        like DuckDB references expose tables. Referenced queries still running are
+
+        waited on; the query fails if any referenced query fails.'
+    ApiScanQuerySourceSchemaResults:
+      $ref: '#/components/schemas/QuerySourceSchema'
+    VizSortBy:
+      properties:
+        pivotValues:
+          items:
+            $ref: '#/components/schemas/PivotSortAnchor'
+          type: array
+          description: Pins the row-sort anchor to a specific pivot column.
+        nullsFirst:
+          type: boolean
+        direction:
+          $ref: '#/components/schemas/SortByDirection'
+        reference:
+          type: string
+      required:
+      - direction
+      - reference
+      type: object
+    TableCalculationTemplate:
+      anyOf:
+      - properties:
+          partitionBy:
+            items:
+              type: string
+            type: array
+          orderBy:
+            items:
+              properties:
+                order:
+                  type:
+                  - string
+                  - 'null'
+                  enum:
+                  - asc
+                  - desc
+                  - null
+                fieldId:
+                  type: string
+              required:
+              - order
+              - fieldId
+              type: object
+            type: array
+            description: Fields to order by for window functions
+          fieldId:
+            type: string
+            description: Field ID to apply the template to
+          type:
+            $ref: '#/components/schemas/TableCalculationTemplateType.DIFFERENCE_FROM_PREVIOUS'
+            description: Type of template calculation
+        required:
+        - orderBy
+        - fieldId
+        - type
+        type: object
+      - properties:
+          partitionBy:
+            items:
+              type: string
+            type: array
+          orderBy:
+            items:
+              properties:
+                order:
+                  type:
+                  - string
+                  - 'null'
+                  enum:
+                  - asc
+                  - desc
+                  - null
+                fieldId:
+                  type: string
+              required:
+              - order
+              - fieldId
+              type: object
+            type: array
+            description: Fields to order by for window functions
+          fieldId:
+            type: string
+            description: Field ID to apply the template to
+          type:
+            $ref: '#/components/schemas/TableCalculationTemplateType.PERCENT_CHANGE_FROM_PREVIOUS'
+            description: Type of template calculation
+        required:
+        - orderBy
+        - fieldId
+        - type
+        type: object
+      - properties:
+          partitionBy:
+            items:
+              type: string
+            type: array
+          orderBy:
+            items:
+              properties:
+                order:
+                  type:
+                  - string
+                  - 'null'
+                  enum:
+                  - asc
+                  - desc
+                  - null
+                fieldId:
+                  type: string
+              required:
+              - order
+              - fieldId
+              type: object
+            type: array
+            description: Fields to order by for window functions
+          fieldId:
+            type: string
+            description: Field ID to apply the template to
+          type:
+            $ref: '#/components/schemas/TableCalculationTemplateType.PERCENT_OF_PREVIOUS_VALUE'
+            description: Type of template calculation
+        required:
+        - orderBy
+        - fieldId
+        - type
+        type: object
+      - properties:
+          partitionBy:
+            items:
+              type: string
+            type: array
+            description: Fields to partition by
+          fieldId:
+            type: string
+            description: Field ID to apply the template to
+          type:
+            $ref: '#/components/schemas/TableCalculationTemplateType.PERCENT_OF_COLUMN_TOTAL'
+            description: Type of template calculation
+        required:
+        - fieldId
+        - type
+        type: object
+      - properties:
+          fieldId:
+            type: string
+            description: Field ID to apply the template to
+          type:
+            $ref: '#/components/schemas/TableCalculationTemplateType.RANK_IN_COLUMN'
+            description: Type of template calculation
+        required:
+        - fieldId
+        - type
+        type: object
+      - properties:
+          orderBy:
+            items:
+              properties:
+                order:
+                  type:
+                  - string
+                  - 'null'
+                  enum:
+                  - asc
+                  - desc
+                  - null
+                fieldId:
+                  type: string
+              required:
+              - order
+              - fieldId
+              type: object
+            type: array
+            description: Fields to order by for the running total
+          fieldId:
+            type: string
+            description: Field ID to apply the template to
+          type:
+            $ref: '#/components/schemas/TableCalculationTemplateType.RUNNING_TOTAL'
+            description: Type of template calculation
+        required:
+        - fieldId
+        - type
+        type: object
+      - properties:
+          frame:
+            $ref: '#/components/schemas/FrameClause'
+            description: Frame clause for window functions
+          partitionBy:
+            items:
+              type: string
+            type: array
+            description: Fields to partition by for window functions
+          orderBy:
+            items:
+              properties:
+                order:
+                  type:
+                  - string
+                  - 'null'
+                  enum:
+                  - asc
+                  - desc
+                  - null
+                fieldId:
+                  type: string
+              required:
+              - order
+              - fieldId
+              type: object
+            type: array
+            description: Fields to order by for window functions
+          fieldId:
+            type:
+            - string
+            - 'null'
+            description: Field ID to apply the template to
+          windowFunction:
+            $ref: '#/components/schemas/WindowFunctionType'
+            description: Window function type
+          type:
+            $ref: '#/components/schemas/TableCalculationTemplateType.WINDOW_FUNCTION'
+            description: Type of template calculation
+        required:
+        - partitionBy
+        - orderBy
+        - fieldId
+        - windowFunction
+        - type
+        type: object
+    QuerySourceType.DUCKDB:
+      enum:
+      - duckdb
+      type: string
+    GroupByColumn:
+      properties:
+        reference:
+          type: string
+      required:
+      - reference
+      type: object
+    BinGroup:
+      properties:
+        values:
+          items:
+            $ref: '#/components/schemas/GroupValueRule'
+          type: array
+          description: Rules that match values into this group
+        name:
+          type: string
+          description: Display name for this group (e.g. "North America")
+      required:
+      - values
+      - name
+      type: object
+    ExternalSourceTableReference:
+      type: string
+      description: External table SQL name or UUID.
+      pattern: ^[a-zA-Z0-9_][a-zA-Z0-9_-]{0,63}$
+    ExternalSourceQuery:
+      properties:
+        pivotConfiguration:
+          $ref: '#/components/schemas/PivotConfiguration'
+          description: 'Pivots this node''s result the way a pivoted chart does. Honoured by
+
+            semanticLayer, sql and duckdb nodes; external nodes refuse it.'
+        tables:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/ExternalSourceTableReference'
+            type: array
+          - $ref: '#/components/schemas/Record_QuerySourceTableName.ExternalSourceTableReference_'
+        limit:
+          type: number
+          format: double
+        sql:
+          type: string
+        description:
+          type: string
+          description: One-line note on what this query does, shown under the title.
+        title:
+          type: string
+          description: 'Plain-language label shown to users instead of the node id. Optional: the public query-sources API accepts and ignores it.'
+        nodeId:
+          $ref: '#/components/schemas/QueryNodeId'
+          description: Names this query so other queries in the same submission can reference its results.
+        sourceType:
+          $ref: '#/components/schemas/QuerySourceType.EXTERNAL'
+      required:
+      - tables
+      - sql
+      - sourceType
+      type: object
+      description: DuckDB SQL over named durable external tables.
+    QueryNodeId:
+      type: string
+      description: 'A name identifying one query within a multi-query submission. Other queries
+
+        reference this query''s results by this name, and by default the results are
+
+        exposed to referencing DuckDB SQL as a table of the same name — so node ids
+
+        share the table-name grammar.'
+      pattern: ^[a-zA-Z_][a-zA-Z0-9_]{0,62}$
+    ApiExecuteSourceQueriesResults:
+      properties:
+        queries:
+          items:
+            $ref: '#/components/schemas/SourceQuerySubmission'
+          type: array
+      required:
+      - queries
+      type: object
+    CustomDimensionType.SQL:
+      enum:
+      - sql
+      type: string
+    SemanticLayerSourceQuery:
+      properties:
+        pivotConfiguration:
+          $ref: '#/components/schemas/PivotConfiguration'
+          description: 'Pivots this node''s result the way a pivoted chart does. Honoured by
+
+            semanticLayer, sql and duckdb nodes; external nodes refuse it.'
+        timezone:
+          type: string
+          description: IANA timezone for time dimension bucketing, e.g. "America/New_York".
+        dimensionOverrides:
+          $ref: '#/components/schemas/DimensionOverrides'
+          description: Formatting overrides for dimensions in this query, keyed by field id.
+        metricOverrides:
+          $ref: '#/components/schemas/MetricOverrides'
+          description: Formatting overrides for metrics in this query, keyed by field id.
+        customDimensions:
+          items:
+            $ref: '#/components/schemas/CustomDimension'
+          type: array
+          description: Ad-hoc dimensions not defined in the explore.
+        additionalMetrics:
+          items:
+            $ref: '#/components/schemas/AdditionalMetric'
+          type: array
+          description: Ad-hoc metrics not defined in the explore.
+        tableCalculations:
+          items:
+            $ref: '#/components/schemas/TableCalculation'
+          type: array
+          description: Table calculations appended to the results. Defaults to none.
+        limit:
+          type: number
+          format: double
+          description: Max rows to return. Defaults to the standard query row limit.
+        sorts:
+          items:
+            $ref: '#/components/schemas/SortField'
+          type: array
+          description: 'Sorts to apply, e.g. [{"fieldId": "orders_order_date", "descending": true}]. Defaults to none.'
+        filters:
+          properties:
+            tableCalculations:
+              $ref: '#/components/schemas/AnyType'
+            metrics:
+              $ref: '#/components/schemas/AnyType'
+            dimensions:
+              $ref: '#/components/schemas/AnyType'
+          type: object
+          description: 'Filters to apply, in the metric query filters shape: an optional filter
+
+            group per field kind, e.g. {"dimensions": {"id": "...", "and": [{"id":
+
+            "...", "target": {"fieldId": "orders_status"}, "operator": "equals",
+
+            "values": ["completed"]}]}}. Defaults to no filters.'
+        metrics:
+          items:
+            $ref: '#/components/schemas/FieldId'
+          type: array
+          description: Metric field ids to compute, from the explore's schema.
+        dimensions:
+          items:
+            $ref: '#/components/schemas/FieldId'
+          type: array
+          description: Dimension field ids to group by, from the explore's schema.
+        exploreName:
+          type: string
+        description:
+          type: string
+          description: One-line note on what this query does, shown under the title.
+        title:
+          type: string
+          description: 'Plain-language label shown to users instead of the node id. Optional: the public query-sources API accepts and ignores it.'
+        nodeId:
+          $ref: '#/components/schemas/QueryNodeId'
+          description: Names this query so other queries in the same submission can reference its results.
+        sourceType:
+          $ref: '#/components/schemas/QuerySourceType.SEMANTIC_LAYER'
+      required:
+      - metrics
+      - dimensions
+      - exploreName
+      - sourceType
+      type: object
+      description: 'A semantic layer (metric) query as a source query. Only exploreName,
+
+        dimensions and metrics are required; everything else defaults to empty
+
+        (no filters, no sorts, no table calculations) and a default row limit.
+
+
+        Result columns are named by field id — exactly the dimensions and metrics
+
+        requested (e.g. requesting metric "payments_total_revenue" yields a column
+
+        "payments_total_revenue"), so referencing DuckDB SQL selects those names.'
+    ApiSuccess_ApiExecuteSourceQueriesResults_:
+      properties:
+        results:
+          $ref: '#/components/schemas/ApiExecuteSourceQueriesResults'
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
+    TableCalculationTemplateType.WINDOW_FUNCTION:
+      enum:
+      - window_function
+      type: string
+    CustomFormat:
+      properties:
+        type:
+          $ref: '#/components/schemas/CustomFormatType'
+          description: Format type
+        round:
+          type: number
+          format: double
+          description: Number of decimal places
+        separator:
+          $ref: '#/components/schemas/NumberSeparator'
+          description: Number separator style
+        currency:
+          type: string
+          description: Currency code (e.g., USD, GBP, EUR)
+        compact:
+          $ref: '#/components/schemas/CompactOrAlias'
+          description: Compact format for large numbers (K, M, B, T) or byte units
+        prefix:
+          type: string
+          description: Prefix to prepend to formatted values
+        suffix:
+          type: string
+          description: Suffix to append to formatted values
+        timeInterval:
+          $ref: '#/components/schemas/TimeFrames'
+          description: Time interval for date formatting
+        custom:
+          type: string
+          description: Custom format string
+      required:
+      - type
+      type: object
+      additionalProperties: true
+    ParameterValue:
+      anyOf:
+      - type: string
+      - type: number
+        format: double
+      - items:
+          type: string
+        type: array
+      - items:
+          type: number
+          format: double
+        type: array
+    CustomFormatType:
+      enum:
+      - default
+      - percent
+      - currency
+      - number
+      - id
+      - date
+      - timestamp
+      - bytes_si
+      - bytes_iec
+      - custom
+      type: string
+    TableCalculationTemplateType.PERCENT_CHANGE_FROM_PREVIOUS:
+      enum:
+      - percent_change_from_previous
+      type: string
+    UUID:
+      type: string
+      format: uuid
+      description: 'Stringified UUIDv4.
+
+        See [RFC 4112](https://tools.ietf.org/html/rfc4122)'
+      pattern: '[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-4[0-9A-Fa-f]{3}-[89ABab][0-9A-Fa-f]{3}-[0-9A-Fa-f]{12}'
+    QuerySourceType.SEMANTIC_LAYER:
+      enum:
+      - semanticLayer
+      type: string
+    ApiGetSourceQueryStatusResults:
+      properties:
+        statuses:
+          items:
+            $ref: '#/components/schemas/SourceQueryStatus'
+          type: array
+      required:
+      - statuses
+      type: object
+    ApiErrorPayload:
+      properties:
+        error:
+          properties:
+            data:
+              $ref: '#/components/schemas/AnyType'
+              description: Optional data containing details of the error
+            message:
+              type: string
+              description: A friendly message summarising the error
+            name:
+              type: string
+              description: Unique name for the type of error
+            statusCode:
+              type: number
+              format: integer
+              description: HTTP status code
+          required:
+          - name
+          - statusCode
+          type: object
+        status:
+          type: string
+          enum:
+          - error
+      required:
+      - error
+      - status
+      type: object
+      description: 'The Error object is returned from the api any time there is an error.
+
+        The message contains'
+    CustomBinDimension:
+      anyOf:
+      - $ref: '#/components/schemas/FixedNumberBinDimension'
+      - $ref: '#/components/schemas/FixedWidthBinDimension'
+      - $ref: '#/components/schemas/CustomRangeBinDimension'
+      - $ref: '#/components/schemas/CustomGroupBinDimension'
+    QuerySourceSchemaColumn:
+      properties:
+        description:
+          type:
+          - string
+          - 'null'
+        label:
+          type:
+          - string
+          - 'null'
+        type:
+          $ref: '#/components/schemas/DimensionType'
+        reference:
+          type: string
+      required:
+      - description
+      - label
+      - type
+      - reference
+      type: object
+      description: A column in a source schema, aligned with ResultColumns' {reference, type}.
+    ParametersValuesMap:
+      $ref: '#/components/schemas/Record_string.ParameterValue_'
+    QuerySourceType.PYTHON:
+      enum:
+      - python
+      type: string
+    WindowFunctionType:
+      enum:
+      - row_number
+      - percent_rank
+      - cume_dist
+      - rank
+      - sum
+      - avg
+      - count
+      - min
+      - max
+      type: string
+    QueryExecutionContext:
+      enum:
+      - dashboardView
+      - autorefreshedDashboard
+      - exploreView
+      - filterAutocomplete
+      - chartView
+      - chartHistory
+      - sqlChartView
+      - sqlRunner
+      - viewUnderlyingData
+      - alert
+      - scheduledDelivery
+      - csvDownload
+      - gsheets
+      - gsheetsAddon
+      - scheduledGsheetsChart
+      - scheduledGsheetsDashboard
+      - scheduledGsheetsSqlChart
+      - scheduledChart
+      - scheduledDashboard
+      - calculateTotal
+      - calculateSubtotal
+      - embed
+      - ai
+      - mcp.run_metric_query
+      - mcp.run_sql
+      - mcp.search_field_values
+      - api
+      - cli
+      - metricsExplorer
+      - preAggregateMaterialization
+      - composeSqlRunner
+      - pythonRunner
+      - multiSourceQuery
+      - dataAppSample
+      - desktop
+      type: string
+    VizAggregationOptions:
+      enum:
+      - sum
+      - count
+      - avg
+      - min
+      - max
+      - any
+      type: string
+    DimensionType:
+      enum:
+      - string
+      - number
+      - timestamp
+      - date
+      - boolean
+      type: string
+    SortField:
+      properties:
+        pivotValues:
+          items:
+            $ref: '#/components/schemas/PivotSortAnchor'
+          type: array
+          description: Pins the row-sort anchor to a specific pivot column. Ignored for non-pivoted results.
+        nullsFirst:
+          type: boolean
+          description: Sort null values first
+        descending:
+          type: boolean
+          description: Sort in descending order
+        fieldId:
+          type: string
+          description: Field ID to sort by
+      required:
+      - descending
+      - fieldId
+      type: object
+    QuerySourceDefinition:
+      properties:
+        description:
+          type: string
+        label:
+          type: string
+        sourceType:
+          $ref: '#/components/schemas/QuerySourceType'
+      required:
+      - description
+      - label
+      - sourceType
+      type: object
+      description: Metadata describing a registered source, for source discovery.
+  securitySchemes:
+    session_cookie:
+      type: apiKey
+      in: cookie
+      name: connect.sid
+    api_key:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: Value should be 'ApiKey <your key>'

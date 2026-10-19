@@ -1,7 +1,7 @@
 openapi: 3.2.0
 info:
   title: Lightdash AI Agents API
-  version: 0.3156.1
+  version: 2.616.2
   description: 'Open API documentation for all public Lightdash API endpoints. # Authentication Before you get started, you might need to create a Personal Access Token to authenticate via the API. You can create a token by following this guide: https://docs.lightdash.com/references/personal_tokens'
   license:
     name: MIT
@@ -14,6 +14,345 @@ servers:
 tags:
 - name: AI Agents
 paths:
+  /api/v1/aiAgents/skills:
+    get:
+      operationId: listAiAgentSkills
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiAiAgentSkillSummaryListResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: 'List the organization''s custom skills. With a project, returns the
+
+        organization-wide skills plus the ones scoped to that project. Deleted
+
+        skills are included on request so one of their versions can be restored.'
+      summary: List AI agent skills
+      security: []
+      parameters:
+      - in: query
+        name: projectUuid
+        required: false
+        schema:
+          type: string
+      - in: query
+        name: includeDeleted
+        required: false
+        schema:
+          type: boolean
+      tags:
+      - AI Agents
+    post:
+      operationId: createAiAgentSkill
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiAiAgentSkillResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: Create a custom skill from its files and publish version 1.
+      summary: Create an AI agent skill
+      security: []
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApiCreateAiAgentSkill'
+      tags:
+      - AI Agents
+  /api/v1/aiAgents/skills/code:
+    get:
+      operationId: getAiAgentSkillsAsCode
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiSkillsAsCodeListResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: 'Download skills as code: each skill''s `SKILL.md` and resources, keyed
+
+        by path. Names filter the set; missing names are reported.'
+      summary: Download AI agent skills as code
+      security: []
+      parameters:
+      - in: query
+        name: names
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+      tags:
+      - AI Agents
+    post:
+      operationId: upsertAiAgentSkillsAsCode
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiSkillsAsCodeUpsertResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: 'Upload skills as code. Creates new skills, publishes a version for
+
+        changed ones, reports unchanged ones, and soft-deletes only the names
+
+        listed in `deleteNames`.'
+      summary: Upload AI agent skills as code
+      security: []
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApiSkillsAsCodeUpsertRequest'
+      tags:
+      - AI Agents
+  /api/v1/aiAgents/skills/validate:
+    post:
+      operationId: validateAiAgentSkill
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiAiAgentSkillValidationResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: 'Validate a skill folder without saving it. Returns the same errors and
+
+        warnings the editor and the CLI show.'
+      summary: Validate an AI agent skill
+      security: []
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApiValidateAiAgentSkill'
+      tags:
+      - AI Agents
+  /api/v1/aiAgents/skills/{skillUuid}:
+    get:
+      operationId: getAiAgentSkill
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiAiAgentSkillResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: 'The skill with its current content and parsed frontmatter. Deleted
+
+        skills are returned too, so their history stays reachable.'
+      summary: Get an AI agent skill
+      security: []
+      parameters:
+      - in: path
+        name: skillUuid
+        required: true
+        schema:
+          $ref: '#/components/schemas/UUID'
+      tags:
+      - AI Agents
+    patch:
+      operationId: updateAiAgentSkill
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiAiAgentSkillResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: Save the skill's files. Publishes a new version when the content changed.
+      summary: Update an AI agent skill
+      security: []
+      parameters:
+      - in: path
+        name: skillUuid
+        required: true
+        schema:
+          $ref: '#/components/schemas/UUID'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApiUpdateAiAgentSkill'
+      tags:
+      - AI Agents
+    delete:
+      operationId: deleteAiAgentSkill
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiAiAgentSkillDeleteResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: 'Soft-delete the skill and unbind it from every agent. Returns the
+
+        agents that lost it.'
+      summary: Delete an AI agent skill
+      security: []
+      parameters:
+      - in: path
+        name: skillUuid
+        required: true
+        schema:
+          $ref: '#/components/schemas/UUID'
+      tags:
+      - AI Agents
+  /api/v1/aiAgents/skills/{skillUuid}/versions:
+    get:
+      operationId: listAiAgentSkillVersions
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiAiAgentSkillVersionListResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: Every version of the skill, newest first, without content.
+      summary: List an AI agent skill's versions
+      security: []
+      parameters:
+      - in: path
+        name: skillUuid
+        required: true
+        schema:
+          $ref: '#/components/schemas/UUID'
+      tags:
+      - AI Agents
+  /api/v1/aiAgents/skills/{skillUuid}/versions/{versionNumber}:
+    get:
+      operationId: getAiAgentSkillVersion
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiAiAgentSkillVersionResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: One version of the skill with its full content.
+      summary: Get one version of an AI agent skill
+      security: []
+      parameters:
+      - in: path
+        name: skillUuid
+        required: true
+        schema:
+          $ref: '#/components/schemas/UUID'
+      - in: path
+        name: versionNumber
+        required: true
+        schema:
+          format: double
+          type: number
+      tags:
+      - AI Agents
+  /api/v1/aiAgents/skills/{skillUuid}/versions/{versionNumber}/restore:
+    post:
+      operationId: restoreAiAgentSkillVersion
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiAiAgentSkillResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: 'Publish a new version whose content equals the chosen one. Also
+
+        restores a soft-deleted skill.'
+      summary: Restore a version of an AI agent skill
+      security: []
+      parameters:
+      - in: path
+        name: skillUuid
+        required: true
+        schema:
+          $ref: '#/components/schemas/UUID'
+      - in: path
+        name: versionNumber
+        required: true
+        schema:
+          format: double
+          type: number
+      tags:
+      - AI Agents
   /api/v1/aiAgents/documents:
     get:
       operationId: listAiAgentDocuments
@@ -30,6 +369,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiErrorPayload'
+      description: List every knowledge document in the organization.
+      summary: List AI agent documents
       security: []
       parameters:
       - in: query
@@ -39,8 +380,6 @@ paths:
           type: string
       tags:
       - AI Agents
-      summary: List ai agent documents
-      x-summary-source: derived
     post:
       operationId: createAiAgentDocument
       responses:
@@ -56,6 +395,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiErrorPayload'
+      description: 'Create a knowledge document. The projectUuid and agentAccess body fields
+
+        are deprecated: scope the document by creating it on the agent route
+
+        instead. Without them the document is available to every agent.'
+      summary: Create AI agent document
       security: []
       parameters: []
       requestBody:
@@ -66,8 +411,6 @@ paths:
               $ref: '#/components/schemas/ApiCreateAiAgentDocument'
       tags:
       - AI Agents
-      summary: Create ai agent document
-      x-summary-source: derived
   /api/v1/aiAgents/documents/{documentUuid}:
     delete:
       operationId: deleteAiAgentDocument
@@ -84,6 +427,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiErrorPayload'
+      description: Delete a knowledge document anywhere in the organization.
+      summary: Delete AI agent document
       security: []
       parameters:
       - in: path
@@ -93,7 +438,27 @@ paths:
           type: string
       tags:
       - AI Agents
-      summary: Delete ai agent document
+  /api/v1/aiAgents/settings:
+    get:
+      operationId: getAiOrganizationRuntimeSettings
+      responses:
+        '200':
+          description: Retrieved AI organization runtime settings
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiAiOrganizationRuntimeSettingsResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      security: []
+      parameters: []
+      tags:
+      - AI Agents
+      summary: Get ai organization runtime settings
       x-summary-source: derived
   /api/v1/aiAgents/admin/threads:
     get:
@@ -152,10 +517,7 @@ paths:
         name: createdFrom
         required: false
         schema:
-          type: string
-          enum:
-          - slack
-          - web_app
+          $ref: '#/components/schemas/AiThreadCreatedFrom'
       - in: query
         name: humanScore
         required: false
@@ -192,6 +554,353 @@ paths:
           - desc
       tags:
       - AI Agents
+  /api/v1/aiAgents/admin/threads/{threadUuid}/dump:
+    get:
+      operationId: getAdminThreadDump
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiAiAgentThreadDumpResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: 'Download a sanitized debug dump of an AI agent thread for troubleshooting.
+
+        Requires AI_COPILOT_THREAD_DUMP_ENABLED on the instance.'
+      summary: Get AI agent thread dump
+      security: []
+      parameters:
+      - in: path
+        name: threadUuid
+        required: true
+        schema:
+          $ref: '#/components/schemas/UUID'
+      tags:
+      - AI Agents
+  /api/v1/aiAgents/admin/threads/{threadUuid}:
+    delete:
+      operationId: deleteAdminAiAgentThread
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiSuccessEmpty'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: Permanently delete an AI agent thread and everything derived from it.
+      summary: Delete AI agent thread
+      security: []
+      parameters:
+      - in: path
+        name: threadUuid
+        required: true
+        schema:
+          $ref: '#/components/schemas/UUID'
+      tags:
+      - AI Agents
+  /api/v1/aiAgents/admin/evals:
+    get:
+      operationId: getAllEvals
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiAiAgentAdminEvalsResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: Get all AI agent evaluations for admin
+      summary: List AI agent evaluations
+      security: []
+      parameters:
+      - in: query
+        name: page
+        required: false
+        schema:
+          format: double
+          type: number
+      - in: query
+        name: pageSize
+        required: false
+        schema:
+          format: double
+          type: number
+      - in: query
+        name: projectUuids
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+      - in: query
+        name: agentUuids
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+      - in: query
+        name: search
+        required: false
+        schema:
+          type: string
+      - in: query
+        name: sortField
+        required: false
+        schema:
+          $ref: '#/components/schemas/AiAgentAdminSortField'
+      - in: query
+        name: sortDirection
+        required: false
+        schema:
+          type: string
+          enum:
+          - asc
+          - desc
+      tags:
+      - AI Agents
+  /api/v1/aiAgents/admin/evals/{evalUuid}/prompts:
+    get:
+      operationId: getAdminEvalPrompts
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiAiAgentAdminEvalPromptsResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: Get the prompts of an AI agent evaluation for admin
+      summary: List AI agent evaluation prompts
+      security: []
+      parameters:
+      - in: path
+        name: evalUuid
+        required: true
+        schema:
+          $ref: '#/components/schemas/UUID'
+      tags:
+      - AI Agents
+  /api/v1/aiAgents/admin/mcp-activity:
+    get:
+      operationId: getMcpActivity
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiMcpActivityResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: Get MCP tool call activity for admin
+      summary: List MCP activity
+      security: []
+      parameters:
+      - in: query
+        name: page
+        required: false
+        schema:
+          format: double
+          type: number
+      - in: query
+        name: pageSize
+        required: false
+        schema:
+          format: double
+          type: number
+      - in: query
+        name: projectUuids
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+      - in: query
+        name: userUuids
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+      - in: query
+        name: agentUuids
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+      - in: query
+        name: toolNames
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+      - in: query
+        name: clientNames
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+      - in: query
+        name: status
+        required: false
+        schema:
+          $ref: '#/components/schemas/McpActivityStatus'
+      - in: query
+        name: dateFrom
+        required: false
+        schema:
+          type: string
+      - in: query
+        name: dateTo
+        required: false
+        schema:
+          type: string
+      - in: query
+        name: sortField
+        required: false
+        schema:
+          $ref: '#/components/schemas/McpActivitySortField'
+      - in: query
+        name: sortDirection
+        required: false
+        schema:
+          type: string
+          enum:
+          - asc
+          - desc
+      tags:
+      - AI Agents
+  /api/v1/aiAgents/admin/mcp-activity/stats:
+    get:
+      operationId: getMcpActivityStats
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiMcpActivityStatsResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: Get aggregated MCP tool call stats for admin
+      summary: Get MCP activity stats
+      security: []
+      parameters:
+      - in: query
+        name: projectUuids
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+      - in: query
+        name: userUuids
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+      - in: query
+        name: agentUuids
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+      - in: query
+        name: toolNames
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+      - in: query
+        name: clientNames
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+      - in: query
+        name: dateFrom
+        required: false
+        schema:
+          type: string
+      - in: query
+        name: dateTo
+        required: false
+        schema:
+          type: string
+      tags:
+      - AI Agents
+  /api/v1/aiAgents/admin/projects/{projectUuid}/prompt-activity:
+    get:
+      operationId: getProjectPromptActivity
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiAiAgentAdminPromptActivityResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: Get prompt activity for one project
+      summary: Get project AI agent prompt activity
+      security: []
+      parameters:
+      - in: path
+        name: projectUuid
+        required: true
+        schema:
+          type: string
+      - in: query
+        name: days
+        required: false
+        schema:
+          default: 30
+          format: double
+          type: number
+      tags:
+      - AI Agents
   /api/v1/aiAgents/admin/agents:
     get:
       operationId: getAllAgents
@@ -212,6 +921,86 @@ paths:
       summary: List AI agents
       security: []
       parameters: []
+      tags:
+      - AI Agents
+  /api/v1/aiAgents/admin/memories:
+    get:
+      operationId: getAllAiAgentMemories
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiAiAgentAdminMemoriesResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: Get all AI agent memories for admin
+      summary: List AI agent memories
+      security: []
+      parameters:
+      - in: query
+        name: page
+        required: false
+        schema:
+          format: double
+          type: number
+      - in: query
+        name: pageSize
+        required: false
+        schema:
+          format: double
+          type: number
+      - in: query
+        name: projectUuids
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+      - in: query
+        name: userUuids
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+      - in: query
+        name: statuses
+        required: false
+        schema:
+          type: array
+          items:
+            $ref: '#/components/schemas/AiAgentMemoryStatus'
+      - in: query
+        name: scopes
+        required: false
+        schema:
+          type: array
+          items:
+            $ref: '#/components/schemas/AiAgentMemoryScope'
+      - in: query
+        name: search
+        required: false
+        schema:
+          type: string
+      - in: query
+        name: sortField
+        required: false
+        schema:
+          $ref: '#/components/schemas/AiAgentAdminMemorySortField'
+      - in: query
+        name: sortDirection
+        required: false
+        schema:
+          type: string
+          enum:
+          - asc
+          - desc
       tags:
       - AI Agents
   /api/v1/aiAgents/admin/review-items:
@@ -241,6 +1030,33 @@ paths:
           type: array
           items:
             $ref: '#/components/schemas/AiAgentReviewItemStatus'
+      tags:
+      - AI Agents
+    post:
+      operationId: createAiAgentReviewItem
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiAiAgentReviewItemResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: Create a manual AI agent issue
+      summary: Create AI agent review item
+      security: []
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateAiAgentReviewItem'
       tags:
       - AI Agents
   /api/v1/aiAgents/admin/review-items/{fingerprint}:
@@ -383,6 +1199,135 @@ paths:
           type: string
       tags:
       - AI Agents
+  /api/v1/aiAgents/admin/review-items/reorder:
+    patch:
+      operationId: reorderAiAgentReviewItems
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiSuccessEmpty'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: 'Persist the board''s manual card order for one lane. Declared before the
+
+        `{fingerprint}` route so "reorder" isn''t matched as a fingerprint.'
+      summary: Reorder AI agent review items on the board
+      security: []
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReorderAiAgentReviewItems'
+      tags:
+      - AI Agents
+  /api/v1/aiAgents/admin/review-items/{fingerprint}/assignee:
+    patch:
+      operationId: updateAiAgentReviewItemAssignee
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiAiAgentReviewItemResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: Set the assignee on an AI agent review item
+      summary: Update AI agent review item assignee
+      security: []
+      parameters:
+      - in: path
+        name: fingerprint
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateAiAgentReviewItemAssignee'
+      tags:
+      - AI Agents
+  /api/v1/aiAgents/admin/review-items/{fingerprint}/priority:
+    patch:
+      operationId: updateAiAgentReviewItemPriority
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiAiAgentReviewItemResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: Set the priority on an AI agent review item
+      summary: Update AI agent review item priority
+      security: []
+      parameters:
+      - in: path
+        name: fingerprint
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateAiAgentReviewItemPriority'
+      tags:
+      - AI Agents
+  /api/v1/aiAgents/admin/review-items/{fingerprint}/comments:
+    post:
+      operationId: addAiAgentReviewItemComment
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiAiAgentReviewItemActivityResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: Add a comment to an AI agent review item
+      summary: Add AI agent review item comment
+      security: []
+      parameters:
+      - in: path
+        name: fingerprint
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateAiAgentReviewItemComment'
+      tags:
+      - AI Agents
   /api/v1/aiAgents/admin/review-items/{fingerprint}/writeback:
     post:
       operationId: createAiAgentReviewItemWriteback
@@ -403,6 +1348,35 @@ paths:
 
         project-context root cause)'
       summary: Create AI agent review item writeback PR
+      security: []
+      parameters:
+      - in: path
+        name: fingerprint
+        required: true
+        schema:
+          type: string
+      tags:
+      - AI Agents
+  /api/v1/aiAgents/admin/review-items/{fingerprint}/retest:
+    post:
+      operationId: retestAiAgentReviewRemediation
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiAiAgentReviewItemActivityResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: 'Re-verify a remediation after its PR changed: recompiles the existing
+
+        preview and re-runs the Test-fix verification thread.'
+      summary: Retest an AI agent review remediation
       security: []
       parameters:
       - in: path
@@ -463,6 +1437,313 @@ paths:
       - AI Agents
       summary: Get ai agent review signals
       x-summary-source: derived
+  /api/v1/aiAgents/admin/review-notification-settings:
+    get:
+      operationId: getAiReviewNotificationSettings
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiAiReviewNotificationSettingsResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      summary: Get AI review notification settings
+      security: []
+      parameters: []
+      tags:
+      - AI Agents
+    put:
+      operationId: updateAiReviewNotificationSettings
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiAiReviewNotificationSettingsResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      summary: Update AI review notification settings
+      security: []
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateAiReviewNotificationSettings'
+      tags:
+      - AI Agents
+  /api/v1/aiAgents/admin/review-linear-routing:
+    get:
+      operationId: getAiReviewLinearRouting
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiAiReviewLinearRoutingResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: Get Linear routing for AI review issues
+      summary: Get AI review Linear routing
+      security: []
+      parameters: []
+      tags:
+      - AI Agents
+    put:
+      operationId: updateAiReviewLinearRouting
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiAiReviewLinearRoutingResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: Update Linear routing for AI review issues
+      summary: Update AI review Linear routing
+      security: []
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateAiReviewLinearRouting'
+      tags:
+      - AI Agents
+  /api/v1/aiAgents/admin/review-linear-issues/backfill:
+    post:
+      operationId: backfillAiReviewLinearIssues
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiAiReviewLinearBackfillResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: Create Linear issues for existing open AI review findings
+      summary: Backfill AI review Linear issues
+      security: []
+      parameters: []
+      tags:
+      - AI Agents
+  /api/v1/aiAgents/admin/review-linear-destination/{projectUuid}:
+    get:
+      operationId: getAiReviewLinearDestination
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiAiReviewLinearDestinationResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: Get a project's Linear destination for AI reviews
+      summary: Get AI review Linear destination
+      security: []
+      parameters:
+      - in: path
+        name: projectUuid
+        required: true
+        schema:
+          $ref: '#/components/schemas/UUID'
+      tags:
+      - AI Agents
+    put:
+      operationId: updateAiReviewLinearDestination
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiAiReviewLinearDestinationResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: Update a project's Linear destination for AI reviews
+      summary: Update AI review Linear destination
+      security: []
+      parameters:
+      - in: path
+        name: projectUuid
+        required: true
+        schema:
+          $ref: '#/components/schemas/UUID'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateAiReviewLinearDestination'
+      tags:
+      - AI Agents
+  /api/v1/aiAgents/admin/review-jira-routing:
+    get:
+      operationId: getAiReviewJiraRouting
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiAiReviewJiraRoutingResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: Get Jira routing for AI review issues
+      summary: Get AI review Jira routing
+      security: []
+      parameters: []
+      tags:
+      - AI Agents
+    put:
+      operationId: updateAiReviewJiraRouting
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiAiReviewJiraRoutingResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: Update Jira routing for AI review issues
+      summary: Update AI review Jira routing
+      security: []
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateAiReviewJiraRouting'
+      tags:
+      - AI Agents
+  /api/v1/aiAgents/admin/review-jira-issues/backfill:
+    post:
+      operationId: backfillAiReviewJiraIssues
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiAiReviewJiraBackfillResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: Create Jira issues for existing open AI review findings
+      summary: Backfill AI review Jira issues
+      security: []
+      parameters: []
+      tags:
+      - AI Agents
+  /api/v1/aiAgents/admin/review-jira-destination/{projectUuid}:
+    get:
+      operationId: getAiReviewJiraDestination
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiAiReviewJiraDestinationResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: Get a project's Jira destination for AI reviews
+      summary: Get AI review Jira destination
+      security: []
+      parameters:
+      - in: path
+        name: projectUuid
+        required: true
+        schema:
+          $ref: '#/components/schemas/UUID'
+      tags:
+      - AI Agents
+    put:
+      operationId: updateAiReviewJiraDestination
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiAiReviewJiraDestinationResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: Update a project's Jira destination for AI reviews
+      summary: Update AI review Jira destination
+      security: []
+      parameters:
+      - in: path
+        name: projectUuid
+        required: true
+        schema:
+          $ref: '#/components/schemas/UUID'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateAiReviewJiraDestination'
+      tags:
+      - AI Agents
   /api/v1/aiAgents/admin/settings:
     get:
       operationId: getAiOrganizationSettings
@@ -512,91 +1793,142 @@ paths:
               $ref: '#/components/schemas/UpdateAiOrganizationSettings'
       tags:
       - AI Agents
+  /api/v1/aiAgents/admin/settings/thread-retention-preview:
+    get:
+      operationId: getAiThreadRetentionPreview
+      responses:
+        '200':
+          description: Retrieved thread retention preview
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiAiThreadRetentionPreviewResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: 'Preview what an org-level thread retention window would delete on the
+
+        next cleanup run'
+      summary: Preview thread retention impact
+      security: []
+      parameters:
+      - in: query
+        name: retentionHours
+        required: true
+        schema:
+          format: double
+          type: number
+      tags:
+      - AI Agents
 components:
   schemas:
-    ApiAiAgentAdminConversationsResponse:
-      $ref: '#/components/schemas/ApiSuccess_KnexPaginatedData_AiAgentAdminConversationsSummary__'
-    AiAgentReviewItemSummary:
+    AiAgentSkillIssue:
+      properties:
+        path:
+          type: string
+          description: File or folder path inside the skill folder the issue refers to.
+        message:
+          type: string
+        code:
+          $ref: '#/components/schemas/AiAgentSkillIssueCode'
+      required:
+      - path
+      - message
+      - code
+      type: object
+    Record_string.never_:
+      properties: {}
+      type: object
+      description: Construct a type with a set of properties K of type T
+    AiAgentSkillVersion:
       allOf:
-      - $ref: '#/components/schemas/AiAgentReviewItem'
+      - $ref: '#/components/schemas/AiAgentSkillVersionSummary'
       - properties:
-          latestFinding:
-            properties:
-              createdAt:
-                type: string
-                format: date-time
-              projectContextEntry:
-                allOf:
-                - $ref: '#/components/schemas/AiAgentJudgeProjectContextEntry'
-              recommendation:
-                allOf:
-                - $ref: '#/components/schemas/AiAgentRecommendation'
-              evidenceExcerpts:
-                items:
-                  $ref: '#/components/schemas/AiAgentEvidenceExcerpt'
-                type: array
-              targetRefs:
-                items:
-                  $ref: '#/components/schemas/AiAgentTargetRef'
-                type: array
-              fixTargets:
-                items:
-                  $ref: '#/components/schemas/AiAgentFixTarget'
-                type: array
-              subcategories:
-                items:
-                  type: string
-                type: array
-              agentUuid:
-                type: string
-              projectUuid:
-                type: string
-              threadUuid:
-                type: string
-              promptUuid:
-                type: string
-              uuid:
-                type: string
-            required:
-            - createdAt
-            - projectContextEntry
-            - recommendation
-            - evidenceExcerpts
-            - targetRefs
-            - fixTargets
-            - subcategories
-            - agentUuid
-            - projectUuid
-            - threadUuid
-            - promptUuid
-            - uuid
-            type:
-            - object
-            - 'null'
-          remediation:
-            allOf:
-            - $ref: '#/components/schemas/AiAgentReviewRemediation'
-          writebackEligibility:
-            $ref: '#/components/schemas/AiAgentReviewItemWritebackEligibility'
-          writebackEligible:
-            type: boolean
-            description: 'Legacy boolean kept for current clients. New clients should use
-
-              writebackEligibility for the blocking reason and provider.'
+          content:
+            $ref: '#/components/schemas/AiAgentSkillContent'
+          skillUuid:
+            type: string
         required:
-        - latestFinding
-        - remediation
-        - writebackEligibility
-        - writebackEligible
+        - content
+        - skillUuid
         type: object
-    ApiAiAgentReviewItemActivityResponse:
-      $ref: '#/components/schemas/ApiSuccess_AiAgentReviewItemActivity_'
-    AiAgentReviewClassifierConfidence:
+    ApiAiAgentThreadDumpResponse:
+      $ref: '#/components/schemas/ApiSuccess_AiAgentThreadDump_'
+    ApiSkillsAsCodeListResponse:
+      properties:
+        results:
+          properties:
+            missingNames:
+              items:
+                type: string
+              type: array
+            skills:
+              items:
+                $ref: '#/components/schemas/SkillAsCode'
+              type: array
+          required:
+          - missingNames
+          - skills
+          type: object
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
+    AiAgentAdminSortField:
       type: string
       enum:
-      - low
-      - medium
-      - high
+      - createdAt
+      - title
+    AnyType:
+      description: 'This AnyType is an alias for any
+
+        The goal is to make it easier to identify any type in the codebase
+
+        without having to eslint-disable all the time
+
+        These are only used on legacy `any` types, don''t use it for new types.
+
+        This is added on a separate file to avoid circular dependencies.'
+    ApiAiReviewLinearRoutingResponse:
+      $ref: '#/components/schemas/ApiSuccess_AiReviewLinearRouting_'
+    McpActivitySummary:
+      properties:
+        toolCalls:
+          items:
+            $ref: '#/components/schemas/McpActivityItem'
+          type: array
+      required:
+      - toolCalls
+      type: object
+    McpActivityDirection:
+      type: string
+      enum:
+      - inbound
+      - outbound
+      description: '`inbound`: an external MCP client (Claude, Cursor, ...) called a tool on
+
+        Lightdash''s MCP server. `outbound`: a Lightdash agent called a tool on a
+
+        connected external MCP server during a conversation.'
+    ApiSuccess_AiReviewJiraDestination_:
+      properties:
+        results:
+          $ref: '#/components/schemas/AiReviewJiraDestination'
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
     AiAgentConfigurationSetting:
       type: string
       enum:
@@ -609,23 +1941,264 @@ components:
       - explore_tags
       - space_access
       - user_or_group_access
+      - skills
       - unknown
-    AnyType:
-      description: 'This AnyType is an alias for any
+    AiAgentThreadDumpTurn:
+      properties:
+        artifacts:
+          items:
+            $ref: '#/components/schemas/AiAgentThreadDumpArtifact'
+          type: array
+        toolCalls:
+          items:
+            $ref: '#/components/schemas/AiAgentThreadDumpToolCall'
+          type: array
+        tokenUsage:
+          allOf:
+          - $ref: '#/components/schemas/AiPromptTokenUsage'
+        modelConfig:
+          properties:
+            modelProvider:
+              type: string
+            modelName:
+              type: string
+          required:
+          - modelProvider
+          - modelName
+          type:
+          - object
+          - 'null'
+        steers:
+          items:
+            type: string
+          type: array
+        feedback:
+          properties:
+            comment:
+              type:
+              - string
+              - 'null'
+            score:
+              type: number
+              format: double
+          required:
+          - comment
+          - score
+          type:
+          - object
+          - 'null'
+        interrupted:
+          type: boolean
+        error:
+          type:
+          - string
+          - 'null'
+        assistant:
+          type:
+          - string
+          - 'null'
+        user:
+          type: string
+        hidden:
+          type: boolean
+        respondedAt:
+          type:
+          - string
+          - 'null'
+        createdAt:
+          type: string
+        promptUuid:
+          type: string
+      required:
+      - artifacts
+      - toolCalls
+      - tokenUsage
+      - modelConfig
+      - steers
+      - feedback
+      - interrupted
+      - error
+      - assistant
+      - user
+      - hidden
+      - respondedAt
+      - createdAt
+      - promptUuid
+      type: object
+    Record_ByoAiApiKeyProvider.string-or-null_:
+      properties:
+        anthropic:
+          type:
+          - string
+          - 'null'
+        google:
+          type:
+          - string
+          - 'null'
+        openai:
+          type:
+          - string
+          - 'null'
+      required:
+      - anthropic
+      - google
+      - openai
+      type: object
+      description: Construct a type with a set of properties K of type T
+    ApiUpdateAiOrganizationSettingsResponse:
+      $ref: '#/components/schemas/ApiSuccess_AiOrganizationSettings_'
+    AiProviderApiKeyHints:
+      $ref: '#/components/schemas/Record_ByoAiProvider.string-or-null_'
+    ApiSuccessEmpty:
+      properties:
+        results: {}
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - status
+      type: object
+    AiAgentThreadDump:
+      properties:
+        turns:
+          items:
+            $ref: '#/components/schemas/AiAgentThreadDumpTurn'
+          type: array
+        agent:
+          allOf:
+          - $ref: '#/components/schemas/AiAgentThreadDumpAgent'
+        title:
+          type:
+          - string
+          - 'null'
+        createdFrom:
+          $ref: '#/components/schemas/AiThreadCreatedFrom'
+        userUuid:
+          type:
+          - string
+          - 'null'
+        agentUuid:
+          type:
+          - string
+          - 'null'
+        threadUuid:
+          type: string
+        projectUuid:
+          type: string
+        organizationUuid:
+          type: string
+        defaultProvider:
+          type: string
+        lightdashVersion:
+          type: string
+        generatedAt:
+          type: string
+        schemaVersion:
+          type: number
+          enum:
+          - 1
+      required:
+      - turns
+      - agent
+      - title
+      - createdFrom
+      - userUuid
+      - agentUuid
+      - threadUuid
+      - projectUuid
+      - organizationUuid
+      - defaultProvider
+      - lightdashVersion
+      - generatedAt
+      - schemaVersion
+      type: object
+    ApiAiAgentReviewItemsResponse:
+      $ref: '#/components/schemas/ApiSuccess_AiAgentReviewItemSummary-Array_'
+    ApiCreateAiAgentDocument:
+      properties:
+        agentAccess:
+          items:
+            type: string
+          type: array
+          deprecated: true
+        projectUuid:
+          type:
+          - string
+          - 'null'
+          deprecated: true
+        content:
+          type: string
+        mimeType:
+          type: string
+        originalFilename:
+          type: string
+        name:
+          type: string
+      required:
+      - content
+      - mimeType
+      - originalFilename
+      - name
+      type: object
+      description: 'Body of POST /api/v1/aiAgents/documents. Both scope fields are deprecated:
 
-        The goal is to make it easier to identify any type in the codebase
+        scope now comes from the agent-scoped route path. Once they are removed this
 
-        without having to eslint-disable all the time
+        endpoint only creates organization level documents.'
+    KnexPaginatedData_AiAgentAdminConversationsSummary_:
+      properties:
+        pagination:
+          allOf:
+          - $ref: '#/components/schemas/KnexPaginateArgs'
+          - properties:
+              totalResults:
+                type: number
+                format: double
+              totalPageCount:
+                type: number
+                format: double
+            required:
+            - totalResults
+            - totalPageCount
+            type: object
+        data:
+          $ref: '#/components/schemas/AiAgentAdminConversationsSummary'
+      required:
+      - data
+      type: object
+    DataAppModelVisibility:
+      $ref: '#/components/schemas/Partial_Record_DataAppClaudeModel.boolean__'
+      description: 'Org-admin control over which Data App Claude models users can pick.
 
-        These are only used on legacy `any` types, don''t use it for new types.
+        A model is hidden only when explicitly set to `false`; an absent key (or a
 
-        This is added on a separate file to avoid circular dependencies.'
-    ApiSuccess_AiOrganizationSettings-and-ComputedAiOrganizationSettings_:
+        null/undefined visibility map) defaults to visible.'
+    KnexPaginatedData_McpActivitySummary_:
+      properties:
+        pagination:
+          allOf:
+          - $ref: '#/components/schemas/KnexPaginateArgs'
+          - properties:
+              totalResults:
+                type: number
+                format: double
+              totalPageCount:
+                type: number
+                format: double
+            required:
+            - totalResults
+            - totalPageCount
+            type: object
+        data:
+          $ref: '#/components/schemas/McpActivitySummary'
+      required:
+      - data
+      type: object
+    ApiSuccess_KnexPaginatedData_McpActivitySummary__:
       properties:
         results:
-          allOf:
-          - $ref: '#/components/schemas/AiOrganizationSettings'
-          - $ref: '#/components/schemas/ComputedAiOrganizationSettings'
+          $ref: '#/components/schemas/KnexPaginatedData_McpActivitySummary_'
         status:
           type: string
           enum:
@@ -634,44 +2207,888 @@ components:
       - results
       - status
       type: object
-    ApiAiAgentReviewItemWritebackPreviewResponse:
-      $ref: '#/components/schemas/ApiSuccess_AiAgentReviewItemWritebackPreview_'
-    AiAgentJudgeProjectContextEntry:
+    AiAgentSkill:
+      allOf:
+      - $ref: '#/components/schemas/AiAgentSkillSummary'
+      - properties:
+          parsed:
+            $ref: '#/components/schemas/AiAgentSkillParsed'
+          content:
+            $ref: '#/components/schemas/AiAgentSkillContent'
+        required:
+        - parsed
+        - content
+        type: object
+    ApiAiAgentSkillValidationResponse:
       properties:
-        objects:
-          items:
-            type: string
-          type: array
-        terms:
-          items:
-            type: string
-          type: array
-        content:
-          type: string
-        kind:
+        results:
+          $ref: '#/components/schemas/AiAgentSkillValidationResult'
+        status:
           type: string
           enum:
-          - definition
-          - context
-        id:
+          - ok
+      required:
+      - results
+      - status
+      type: object
+    ApiAiReviewLinearDestinationResponse:
+      $ref: '#/components/schemas/ApiSuccess_AiReviewLinearDestination_'
+    AiAgentReviewItemPrDiff:
+      properties:
+        truncated:
+          type: boolean
+        totalDeletions:
+          type: number
+          format: double
+        totalAdditions:
+          type: number
+          format: double
+        files:
+          items:
+            $ref: '#/components/schemas/AiAgentReviewItemPrDiffFile'
+          type: array
+        prUrl:
+          type: string
+      required:
+      - truncated
+      - totalDeletions
+      - totalAdditions
+      - files
+      - prUrl
+      type: object
+    AiAgentSkillFiles:
+      properties: {}
+      additionalProperties:
+        type: string
+      type: object
+    AiAgentAdminEvalsSummary:
+      properties:
+        evals:
+          items:
+            $ref: '#/components/schemas/AiAgentAdminEvalSummary'
+          type: array
+      required:
+      - evals
+      type: object
+    ApiSuccess_AiAgentReviewItemPrDiff_:
+      properties:
+        results:
+          $ref: '#/components/schemas/AiAgentReviewItemPrDiff'
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
+    ? Pick_AiAgentSummary.uuid-or-name-or-instruction-or-tags-or-integrations-or-modelConfig-or-enableDataAccess-or-enableSelfImprovement-or-enableContentTools-or-enableUserContext-or-enableSqlMode-or-enableSqlAutoApproval-or-adminOnly-or-version_
+    : properties:
+        name:
+          type: string
+        version:
+          type: number
+          format: double
+        uuid:
+          type: string
+        tags:
+          items:
+            type: string
+          type:
+          - array
+          - 'null'
+        integrations:
+          items:
+            properties:
+              channelId:
+                type: string
+              type:
+                type: string
+                enum:
+                - slack
+            required:
+            - channelId
+            - type
+            type: object
+          type: array
+        instruction:
           type:
           - string
           - 'null'
-        op:
+        enableDataAccess:
+          type: boolean
+        enableSelfImprovement:
+          type: boolean
+        enableContentTools:
+          type: boolean
+        enableUserContext:
+          type: boolean
+        enableSqlMode:
+          type: boolean
+        enableSqlAutoApproval:
+          type: boolean
+        adminOnly:
+          type: boolean
+        modelConfig:
+          allOf:
+          - $ref: '#/components/schemas/AiAgentModelConfig'
+      required:
+      - name
+      - version
+      - uuid
+      - tags
+      - integrations
+      - instruction
+      - enableDataAccess
+      - enableSelfImprovement
+      - enableContentTools
+      - enableUserContext
+      - enableSqlMode
+      - enableSqlAutoApproval
+      - adminOnly
+      - modelConfig
+      type: object
+      description: From T, pick a set of properties whose keys are in the union K
+    Omit_AiReviewJiraRouting.organizationUuid_:
+      $ref: '#/components/schemas/Pick_AiReviewJiraRouting.Exclude_keyofAiReviewJiraRouting.organizationUuid__'
+      description: Construct a type with the properties of T except for those in type K.
+    ApiAiAgentSkillVersionResponse:
+      properties:
+        results:
+          $ref: '#/components/schemas/AiAgentSkillVersion'
+        status:
           type: string
           enum:
-          - create
-          - update
+          - ok
       required:
-      - objects
-      - terms
-      - content
-      - kind
-      - id
-      - op
+      - results
+      - status
+      type: object
+    ApiSkillsAsCodeUpsertResponse:
+      properties:
+        results:
+          $ref: '#/components/schemas/SkillAsCodeUpsertChanges'
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
+    AiAgentSummary:
+      $ref: '#/components/schemas/Pick_AiAgent.uuid-or-name-or-description-or-integrations-or-tags-or-projectUuid-or-organizationUuid-or-createdAt-or-updatedAt-or-instruction-or-imageUrl-or-imageUrlSource-or-groupAccess-or-userAccess-or-userAccessDetails-or-spaceAccess-or-enableDataAccess-or-enableSelfImprovement-or-enableContentTools-or-enableUserContext-or-enableSqlMode-or-enableSqlAutoApproval-or-adminOnly-or-modelConfig-or-providerCredentialUuid-or-version-or-threadRetentionHours_'
+    ReorderAiAgentReviewItems:
+      properties:
+        orderedFingerprints:
+          items:
+            type: string
+          type: array
+      required:
+      - orderedFingerprints
+      type: object
+    ApiSuccess_AiAgentReviewSignalSummary-Array_:
+      properties:
+        results:
+          items:
+            $ref: '#/components/schemas/AiAgentReviewSignalSummary'
+          type: array
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
+    McpActivityStats:
+      properties:
+        recentErrors:
+          items:
+            $ref: '#/components/schemas/McpActivityItem'
+          type: array
+        agents:
+          items:
+            $ref: '#/components/schemas/McpActivityAgentCount'
+          type: array
+        topTools:
+          items:
+            $ref: '#/components/schemas/McpActivityToolCount'
+          type: array
+        errorCalls:
+          type: number
+          format: double
+        totalCalls:
+          type: number
+          format: double
+      required:
+      - recentErrors
+      - agents
+      - topTools
+      - errorCalls
+      - totalCalls
+      type: object
+    AiAgentDocument:
+      properties:
+        updatedAt:
+          type: string
+          format: date-time
+        createdAt:
+          type: string
+          format: date-time
+        updatedByUserUuid:
+          type:
+          - string
+          - 'null'
+        createdByUserUuid:
+          type:
+          - string
+          - 'null'
+        agentAccess:
+          items:
+            type: string
+          type: array
+        storageKey:
+          type: string
+        summary:
+          $ref: '#/components/schemas/AiAgentDocumentStructuredSummary'
+        alwaysIncludeInContext:
+          type: boolean
+        contentSizeBytes:
+          type: number
+          format: double
+        mimeType:
+          type: string
+        originalFilename:
+          type: string
+        name:
+          type: string
+        projectUuid:
+          type:
+          - string
+          - 'null'
+        organizationUuid:
+          type: string
+        uuid:
+          type: string
+      required:
+      - updatedAt
+      - createdAt
+      - updatedByUserUuid
+      - createdByUserUuid
+      - agentAccess
+      - storageKey
+      - summary
+      - alwaysIncludeInContext
+      - contentSizeBytes
+      - mimeType
+      - originalFilename
+      - name
+      - projectUuid
+      - organizationUuid
+      - uuid
+      type: object
+    AiAgentSkillVersionSummary:
+      properties:
+        createdByUserUuid:
+          type:
+          - string
+          - 'null'
+        createdAt:
+          type: string
+          format: date-time
+        restoredFromVersion:
+          type:
+          - number
+          - 'null'
+          format: double
+        source:
+          $ref: '#/components/schemas/AiAgentSkillVersionSource'
+        contentHash:
+          type: string
+        versionNumber:
+          type: number
+          format: double
+        uuid:
+          type: string
+      required:
+      - createdByUserUuid
+      - createdAt
+      - restoredFromVersion
+      - source
+      - contentHash
+      - versionNumber
+      - uuid
+      type: object
+    ApiAiAgentSkillResponse:
+      properties:
+        results:
+          $ref: '#/components/schemas/AiAgentSkill'
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
+    AiThreadCreatedFrom:
+      type: string
+      enum:
+      - data_app
+      - slack
+      - web_app
+      - api
+      - evals
+      - scheduler
+    Pick_AiAgentEvaluationRunSummary.runUuid-or-status-or-createdAt-or-completedAt_:
+      properties:
+        createdAt:
+          type: string
+          format: date-time
+        status:
+          type: string
+          enum:
+          - pending
+          - running
+          - failed
+          - completed
+        runUuid:
+          type: string
+        completedAt:
+          type:
+          - string
+          - 'null'
+          format: date-time
+      required:
+      - createdAt
+      - status
+      - runUuid
+      - completedAt
+      type: object
+      description: From T, pick a set of properties whose keys are in the union K
+    AiAgentReviewItemWritebackStatus:
+      type: string
+      enum:
+      - queued
+      - running
+      - completed
+      - failed
+    AiAgentReviewItemPrDiffFile:
+      properties:
+        after:
+          type: string
+        before:
+          type: string
+        deletions:
+          type: number
+          format: double
+        additions:
+          type: number
+          format: double
+        status:
+          type: string
+        path:
+          type: string
+      required:
+      - after
+      - before
+      - deletions
+      - additions
+      - status
+      - path
+      type: object
+    ApiAiReviewJiraBackfillResponse:
+      $ref: '#/components/schemas/ApiSuccess_AiReviewJiraBackfillResult_'
+    Record_ByoAiProvider.string-or-null_:
+      properties:
+        bedrock:
+          type:
+          - string
+          - 'null'
+        anthropic:
+          type:
+          - string
+          - 'null'
+        google:
+          type:
+          - string
+          - 'null'
+        openai:
+          type:
+          - string
+          - 'null'
+      required:
+      - bedrock
+      - anthropic
+      - google
+      - openai
+      type: object
+      description: Construct a type with a set of properties K of type T
+    UpdateAiReviewJiraRouting:
+      $ref: '#/components/schemas/Omit_AiReviewJiraRouting.organizationUuid_'
+    PullRequestProvider:
+      enum:
+      - github
+      - gitlab
+      - bitbucket
+      type: string
+    Record_string.unknown_:
+      properties: {}
+      additionalProperties: {}
+      type: object
+      description: Construct a type with a set of properties K of type T
+    ApiMcpActivityStatsResponse:
+      $ref: '#/components/schemas/ApiSuccess_McpActivityStats_'
+    ApiSuccess_AiAgentReviewItemActivity_:
+      properties:
+        results:
+          $ref: '#/components/schemas/AiAgentReviewItemActivity'
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
+    SkillAsCodeUpsertChanges:
+      properties:
+        warnings:
+          items:
+            type: string
+          type: array
+        failed:
+          items:
+            properties:
+              message:
+                type: string
+              name:
+                type: string
+            required:
+            - message
+            - name
+            type: object
+          type: array
+        deleted:
+          items:
+            type: string
+          type: array
+        unchanged:
+          items:
+            type: string
+          type: array
+        updated:
+          items:
+            type: string
+          type: array
+        created:
+          items:
+            type: string
+          type: array
+      required:
+      - warnings
+      - failed
+      - deleted
+      - unchanged
+      - updated
+      - created
+      type: object
+    AiAgentJudgeSkillProposal:
+      properties:
+        argumentHint:
+          type:
+          - string
+          - 'null'
+        arguments:
+          items:
+            type: string
+          type: array
+        instructions:
+          type: string
+        description:
+          type: string
+        name:
+          type: string
+      required:
+      - argumentHint
+      - arguments
+      - instructions
+      - description
+      - name
+      type: object
+    KnexPaginatedData_AiAgentAdminEvalsSummary_:
+      properties:
+        pagination:
+          allOf:
+          - $ref: '#/components/schemas/KnexPaginateArgs'
+          - properties:
+              totalResults:
+                type: number
+                format: double
+              totalPageCount:
+                type: number
+                format: double
+            required:
+            - totalResults
+            - totalPageCount
+            type: object
+        data:
+          $ref: '#/components/schemas/AiAgentAdminEvalsSummary'
+      required:
+      - data
+      type: object
+    AiProjectContextTypedObjectRef:
+      anyOf:
+      - properties:
+          name:
+            type: string
+          type:
+            type: string
+            enum:
+            - explore
+        required:
+        - name
+        - type
+        type: object
+      - properties:
+          fieldId:
+            type: string
+          explore:
+            type: string
+          type:
+            type: string
+            enum:
+            - field
+        required:
+        - fieldId
+        - explore
+        - type
+        type: object
+    ThreadSummary:
+      $ref: '#/components/schemas/Pick_AiAgentThreadSummary_AiAgentUser-and-_slackUserId-string-or-null--email-string-or-null__.user-or-createdAt-or-createdFrom-or-title-or-uuid_'
+    UpdateAiAgentReviewItemPriority:
+      properties:
+        priority:
+          $ref: '#/components/schemas/AiAgentReviewItemPriority'
+      required:
+      - priority
+      type: object
+    AiAgentSkillIssueCode:
+      type: string
+      enum:
+      - skill_file_missing
+      - frontmatter_invalid
+      - name_missing
+      - name_invalid
+      - name_reserved
+      - name_mismatch
+      - description_missing
+      - description_too_long
+      - compatibility_too_long
+      - field_invalid
+      - field_ignored
+      - field_rejected
+      - body_shell_injection
+      - body_file_reference
+      - body_env_variable
+      - body_too_large
+      - body_too_long
+      - resource_path_invalid
+      - resource_too_large
+      - too_many_resources
+      - skill_too_large
+      - unknown_file
+    AiAgentMemoryStatus:
+      type: string
+      enum:
+      - active
+      - superseded
+      - retired
+      - promoted
+    AiAgentThreadDumpAgent:
+      $ref: '#/components/schemas/Pick_AiAgentSummary.uuid-or-name-or-instruction-or-tags-or-integrations-or-modelConfig-or-enableDataAccess-or-enableSelfImprovement-or-enableContentTools-or-enableUserContext-or-enableSqlMode-or-enableSqlAutoApproval-or-adminOnly-or-version_'
+    McpActivityToolCount:
+      properties:
+        count:
+          type: number
+          format: double
+        toolName:
+          type: string
+      required:
+      - count
+      - toolName
+      type: object
+    ApiSuccess_McpActivityStats_:
+      properties:
+        results:
+          $ref: '#/components/schemas/McpActivityStats'
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
+    AiAgentReviewItemDismissedReason:
+      type: string
+      enum:
+      - not_actionable
+      - expected_behavior
+      - duplicate
+      - low_confidence
+      - other
+    AiAgentReviewItemWritebackPreview:
+      anyOf:
+      - properties:
+          upgradesFileToV2:
+            type: boolean
+          entryId:
+            type: string
+          op:
+            type: string
+            enum:
+            - create
+            - update
+          after:
+            type: string
+          before:
+            type: string
+          fileName:
+            type: string
+          available:
+            type: boolean
+            enum:
+            - true
+        required:
+        - upgradesFileToV2
+        - entryId
+        - op
+        - after
+        - before
+        - fileName
+        - available
+        type: object
+      - properties:
+          available:
+            type: boolean
+            enum:
+            - false
+        required:
+        - available
+        type: object
+      description: 'Preview of the file change a writeback PR would make, computed deterministically
+
+        (no PR opened). Only available for the project_context strategy — semantic_layer
+
+        runs in a sandbox, so there is no static diff to show before the PR is created.'
+    AiAgentReviewItemEventDetail:
+      anyOf:
+      - properties:
+          payload:
+            properties:
+              rootCause:
+                allOf:
+                - $ref: '#/components/schemas/AiAgentRootCause'
+            required:
+            - rootCause
+            type: object
+          eventType:
+            type: string
+            enum:
+            - created
+        required:
+        - payload
+        - eventType
+        type: object
+      - properties:
+          payload:
+            properties:
+              dismissedReason:
+                allOf:
+                - $ref: '#/components/schemas/AiAgentReviewItemDismissedReason'
+              to:
+                $ref: '#/components/schemas/AiAgentReviewItemStatus'
+              from:
+                allOf:
+                - $ref: '#/components/schemas/AiAgentReviewItemStatus'
+            required:
+            - dismissedReason
+            - to
+            - from
+            type: object
+          eventType:
+            type: string
+            enum:
+            - status_changed
+        required:
+        - payload
+        - eventType
+        type: object
+      - properties:
+          payload:
+            properties:
+              toUserUuid:
+                type:
+                - string
+                - 'null'
+              fromUserUuid:
+                type:
+                - string
+                - 'null'
+            required:
+            - toUserUuid
+            - fromUserUuid
+            type: object
+          eventType:
+            type: string
+            enum:
+            - assignee_changed
+        required:
+        - payload
+        - eventType
+        type: object
+      - properties:
+          payload:
+            properties:
+              promptUuid:
+                type: string
+              threadUuid:
+                type: string
+            required:
+            - promptUuid
+            - threadUuid
+            type: object
+          eventType:
+            type: string
+            enum:
+            - recurred
+        required:
+        - payload
+        - eventType
+        type: object
+      - properties:
+          payload:
+            properties:
+              to:
+                $ref: '#/components/schemas/AiAgentReviewItemPriority'
+              from:
+                $ref: '#/components/schemas/AiAgentReviewItemPriority'
+            required:
+            - to
+            - from
+            type: object
+          eventType:
+            type: string
+            enum:
+            - priority_changed
+        required:
+        - payload
+        - eventType
+        type: object
+      - properties:
+          payload:
+            properties:
+              body:
+                type: string
+            required:
+            - body
+            type: object
+          eventType:
+            type: string
+            enum:
+            - comment_added
+        required:
+        - payload
+        - eventType
+        type: object
+    AiReviewNotificationSettings:
+      properties:
+        jiraIssueTypeId:
+          type:
+          - string
+          - 'null'
+        jiraProjectId:
+          type:
+          - string
+          - 'null'
+        jiraEnabled:
+          type: boolean
+        linearProjectId:
+          type:
+          - string
+          - 'null'
+        linearTeamId:
+          type:
+          - string
+          - 'null'
+        linearEnabled:
+          type: boolean
+        slackChannelId:
+          type:
+          - string
+          - 'null'
+        enabled:
+          type: boolean
+        organizationUuid:
+          type: string
+      required:
+      - jiraIssueTypeId
+      - jiraProjectId
+      - jiraEnabled
+      - linearProjectId
+      - linearTeamId
+      - linearEnabled
+      - slackChannelId
+      - enabled
+      - organizationUuid
       type: object
     AiOrganizationSettings:
       properties:
+        threadRetentionHours:
+          type:
+          - number
+          - 'null'
+          format: double
+        providerBaseUrls:
+          $ref: '#/components/schemas/AiProviderBaseUrls'
+        bedrockConfig:
+          allOf:
+          - $ref: '#/components/schemas/OrgBedrockConfig'
+        providerApiKeyHints:
+          $ref: '#/components/schemas/AiProviderApiKeyHints'
+        providerApiKeysSet:
+          $ref: '#/components/schemas/AiProviderApiKeysSet'
+        dataAppModelVisibility:
+          allOf:
+          - $ref: '#/components/schemas/DataAppModelVisibility'
+        modelVisibility:
+          allOf:
+          - $ref: '#/components/schemas/AiOrgModelVisibility'
+        defaultAiAgentModelConfig:
+          allOf:
+          - $ref: '#/components/schemas/AiAgentModelConfig'
+        requireExplicitSlackChannelLinking:
+          type: boolean
+        dataAppAnalysisLimits:
+          $ref: '#/components/schemas/DataAppAnalysisLimits'
+        dataAppAutoAnalysisEnabled:
+          type: boolean
+        dataAppContinueInAskAiEnabled:
+          type: boolean
+        dataAppRuntimeAiEnabled:
+          type: boolean
+        mcpAgentsEnabled:
+          type: boolean
+        mcpContentWritesEnabled:
+          type: boolean
+        deepResearchRawSqlEnabled:
+          type: boolean
+        deepResearchLimits:
+          $ref: '#/components/schemas/AiDeepResearchLimits'
+        aiAgentMemoryEnabled:
+          type: boolean
         aiAgentReviewsEnabled:
           type: boolean
         aiAgentsVisible:
@@ -679,14 +3096,634 @@ components:
         organizationUuid:
           type: string
       required:
+      - providerBaseUrls
+      - bedrockConfig
+      - providerApiKeyHints
+      - providerApiKeysSet
+      - defaultAiAgentModelConfig
+      - mcpAgentsEnabled
+      - mcpContentWritesEnabled
+      - deepResearchRawSqlEnabled
+      - deepResearchLimits
+      - aiAgentMemoryEnabled
       - aiAgentReviewsEnabled
       - aiAgentsVisible
       - organizationUuid
       type: object
-    ApiSuccess_AiAgentReviewItemSummary_:
+    UpdateAiReviewJiraDestination:
+      $ref: '#/components/schemas/Pick_AiReviewJiraDestination.enabled-or-jiraProjectId-or-jiraIssueTypeId_'
+    AiAgentReviewItemWritebackEligibility:
+      anyOf:
+      - properties:
+          reason:
+            type:
+            - number
+            - 'null'
+            enum:
+            - null
+          strategy:
+            $ref: '#/components/schemas/AiAgentReviewItemWritebackStrategy'
+          provider:
+            $ref: '#/components/schemas/PullRequestProvider'
+          eligible:
+            type: boolean
+            enum:
+            - true
+        required:
+        - reason
+        - strategy
+        - provider
+        - eligible
+        type: object
+      - properties:
+          reason:
+            $ref: '#/components/schemas/AiAgentReviewItemWritebackBlockedReason'
+          strategy:
+            allOf:
+            - $ref: '#/components/schemas/AiAgentReviewItemWritebackStrategy'
+          provider:
+            allOf:
+            - $ref: '#/components/schemas/PullRequestProvider'
+          eligible:
+            type: boolean
+            enum:
+            - false
+        required:
+        - reason
+        - strategy
+        - provider
+        - eligible
+        type: object
+    UpdateAiOrganizationSettings:
+      properties:
+        threadRetentionHours:
+          type:
+          - number
+          - 'null'
+          format: double
+        providerApiKeys:
+          $ref: '#/components/schemas/UpdateAiProviderApiKeys'
+        dataAppModelVisibility:
+          allOf:
+          - $ref: '#/components/schemas/DataAppModelVisibility'
+        modelVisibility:
+          allOf:
+          - $ref: '#/components/schemas/AiOrgModelVisibility'
+        defaultAiAgentModelConfig:
+          allOf:
+          - $ref: '#/components/schemas/AiAgentModelConfig'
+        requireExplicitSlackChannelLinking:
+          type: boolean
+        dataAppAnalysisLimits:
+          $ref: '#/components/schemas/DataAppAnalysisLimits'
+        dataAppAutoAnalysisEnabled:
+          type: boolean
+        dataAppContinueInAskAiEnabled:
+          type: boolean
+        dataAppRuntimeAiEnabled:
+          type: boolean
+        mcpAgentsEnabled:
+          type: boolean
+        mcpContentWritesEnabled:
+          type: boolean
+        deepResearchRawSqlEnabled:
+          type: boolean
+        deepResearchLimits:
+          $ref: '#/components/schemas/AiDeepResearchLimits'
+        aiAgentReviewsEnabled:
+          type: boolean
+        aiAgentsVisible:
+          type: boolean
+      type: object
+    ApiSuccess_AiAgentThreadDump_:
       properties:
         results:
-          $ref: '#/components/schemas/AiAgentReviewItemSummary'
+          $ref: '#/components/schemas/AiAgentThreadDump'
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
+    ApiSuccess_KnexPaginatedData_AiAgentAdminConversationsSummary__:
+      properties:
+        results:
+          $ref: '#/components/schemas/KnexPaginatedData_AiAgentAdminConversationsSummary_'
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
+    AiAgentUser:
+      properties:
+        name:
+          type: string
+        uuid:
+          type: string
+      required:
+      - name
+      - uuid
+      type: object
+    AiAgentReviewClassifierConfidence:
+      type: string
+      enum:
+      - low
+      - medium
+      - high
+    Omit_AiAgentDocument.storageKey_:
+      $ref: '#/components/schemas/Pick_AiAgentDocument.Exclude_keyofAiAgentDocument.storageKey__'
+      description: Construct a type with the properties of T except for those in type K.
+    AiAgentReviewItemStatus:
+      type: string
+      enum:
+      - triage
+      - open
+      - in_progress
+      - resolved
+      - dismissed
+      - duplicate
+    AiAgentSkillVersionSource:
+      type: string
+      enum:
+      - ui
+      - as_code
+      - restore
+      - system
+    AiAgentTargetRef:
+      anyOf:
+      - $ref: '#/components/schemas/AiAgentSemanticTargetRef'
+      - properties:
+          agentUuid:
+            type: string
+          type:
+            type: string
+            enum:
+            - agent
+        required:
+        - agentUuid
+        - type
+        type: object
+      - properties:
+          setting:
+            $ref: '#/components/schemas/AiAgentConfigurationSetting'
+          type:
+            type: string
+            enum:
+            - agent_config
+        required:
+        - setting
+        - type
+        type: object
+      - properties:
+          capabilityKey:
+            type: string
+          type:
+            type: string
+            enum:
+            - product_capability
+        required:
+        - capabilityKey
+        - type
+        type: object
+      - properties:
+          key:
+            type: string
+          type:
+            type: string
+            enum:
+            - runtime
+        required:
+        - key
+        - type
+        type: object
+      - properties:
+          tileUuid:
+            type:
+            - string
+            - 'null'
+          dashboardUuid:
+            type:
+            - string
+            - 'null'
+          chartUuid:
+            type:
+            - string
+            - 'null'
+          type:
+            type: string
+            enum:
+            - content
+        required:
+        - tileUuid
+        - dashboardUuid
+        - chartUuid
+        - type
+        type: object
+    ApiAiAgentAdminMemoriesResponse:
+      $ref: '#/components/schemas/ApiSuccess_KnexPaginatedData_AiAgentAdminMemoriesSummary__'
+    AiAgentSkillParsedResource:
+      properties:
+        body:
+          type: string
+        description:
+          type: string
+        name:
+          type: string
+        fileName:
+          type: string
+      required:
+      - body
+      - description
+      - name
+      - fileName
+      type: object
+    ApiValidateAiAgentSkill:
+      properties:
+        files:
+          $ref: '#/components/schemas/AiAgentSkillFiles'
+      required:
+      - files
+      type: object
+    AiOrgProviderModelVisibility:
+      properties:
+        allowedModels:
+          items:
+            type: string
+          type: array
+        enabled:
+          type: boolean
+      required:
+      - enabled
+      type: object
+    CreateAiAgentReviewItemComment:
+      properties:
+        body:
+          type: string
+      required:
+      - body
+      type: object
+    ApiAiThreadRetentionPreviewResponse:
+      $ref: '#/components/schemas/ApiSuccess_AiThreadRetentionPreview_'
+    AiAgentRecommendation:
+      properties:
+        targetRefs:
+          items:
+            $ref: '#/components/schemas/AiAgentTargetRef'
+          type: array
+        rationale:
+          type: string
+        title:
+          type: string
+        actionType:
+          $ref: '#/components/schemas/AiAgentRecommendationAction'
+      required:
+      - targetRefs
+      - rationale
+      - title
+      - actionType
+      type: object
+    SkillAsCode:
+      properties:
+        files:
+          $ref: '#/components/schemas/AiAgentSkillFiles'
+        name:
+          type: string
+      required:
+      - files
+      - name
+      type: object
+      description: 'A skill folder as code: `SKILL.md` and `resources/*.md`, keyed by path.'
+    AiAgentReviewRemediationEvent:
+      allOf:
+      - properties:
+          createdByUserUuid:
+            type:
+            - string
+            - 'null'
+          occurredAt:
+            type: string
+            format: date-time
+          remediationUuid:
+            type:
+            - string
+            - 'null'
+          uuid:
+            type: string
+        required:
+        - createdByUserUuid
+        - occurredAt
+        - remediationUuid
+        - uuid
+        type: object
+      - $ref: '#/components/schemas/AiAgentReviewRemediationEventDetail'
+    AiAgentAdminMemoryItem:
+      properties:
+        generatedAt:
+          type: string
+        lastPulledAt:
+          type:
+          - string
+          - 'null'
+        pulledCount:
+          type: number
+          format: double
+        lastCitedAt:
+          type:
+          - string
+          - 'null'
+        citedCount:
+          type: number
+          format: double
+        sourceThreadUuid:
+          type:
+          - string
+          - 'null'
+        user:
+          properties:
+            email:
+              type:
+              - string
+              - 'null'
+            name:
+              type: string
+            uuid:
+              type: string
+          required:
+          - email
+          - name
+          - uuid
+          type:
+          - object
+          - 'null'
+        agent:
+          properties:
+            imageUrl:
+              type:
+              - string
+              - 'null'
+            name:
+              type: string
+            uuid:
+              type: string
+          required:
+          - imageUrl
+          - name
+          - uuid
+          type:
+          - object
+          - 'null'
+        project:
+          properties:
+            name:
+              type: string
+            uuid:
+              type: string
+          required:
+          - name
+          - uuid
+          type: object
+        scope:
+          $ref: '#/components/schemas/AiAgentMemoryScope'
+        status:
+          $ref: '#/components/schemas/AiAgentMemoryStatus'
+        summary:
+          type: string
+        title:
+          type: string
+        slug:
+          type: string
+        uuid:
+          type: string
+      required:
+      - generatedAt
+      - lastPulledAt
+      - pulledCount
+      - lastCitedAt
+      - citedCount
+      - sourceThreadUuid
+      - user
+      - agent
+      - project
+      - scope
+      - status
+      - summary
+      - title
+      - slug
+      - uuid
+      type: object
+    ApiAiReviewNotificationSettingsResponse:
+      $ref: '#/components/schemas/ApiSuccess_AiReviewNotificationSettings_'
+    AiAgentReviewItemSource:
+      type: string
+      enum:
+      - ai_finding
+      - manual
+      - memory
+    ApiSuccess__prompts-AiAgentAdminEvalPrompt-Array__:
+      properties:
+        results:
+          properties:
+            prompts:
+              items:
+                $ref: '#/components/schemas/AiAgentAdminEvalPrompt'
+              type: array
+          required:
+          - prompts
+          type: object
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
+    AiReviewLinearBackfillResult:
+      properties:
+        queuedCount:
+          type: number
+          format: double
+      required:
+      - queuedCount
+      type: object
+    McpActivityAgentCount:
+      properties:
+        count:
+          type: number
+          format: double
+        agent:
+          properties:
+            name:
+              type: string
+            uuid:
+              type: string
+          required:
+          - name
+          - uuid
+          type:
+          - object
+          - 'null'
+      required:
+      - count
+      - agent
+      type: object
+    McpActivitySessionGroup:
+      properties:
+        errorCount:
+          type: number
+          format: double
+        callCount:
+          type: number
+          format: double
+        key:
+          type: string
+      required:
+      - errorCount
+      - callCount
+      - key
+      type: object
+      description: 'Server-computed display group for session-grouped activity: a session
+
+        split into segments on 1h inactivity gaps (sessionless calls chunk the
+
+        same way under a shared no-session block). Counts cover the whole
+
+        segment, not just the loaded page. Null when the query isn''t
+
+        session-grouped (e.g. sorted by duration).'
+    AiAgentRecommendationAction:
+      type: string
+      enum:
+      - update_semantic_yaml
+      - update_agent_instructions
+      - add_knowledge_document
+      - enable_data_access
+      - enable_sql_mode
+      - enable_self_improvement
+      - configure_mcp_server
+      - adjust_explore_tags
+      - update_access
+      - route_to_product_work
+      - request_more_evidence
+      - create_skill
+      - no_action
+    AiAgentSkillMetadata:
+      properties: {}
+      additionalProperties:
+        type: string
+      type: object
+    ApiAiOrganizationSettingsResponse:
+      $ref: '#/components/schemas/ApiSuccess_AiOrganizationSettings-and-ComputedAiOrganizationSettings_'
+    AiAgentReviewRemediation:
+      properties:
+        updatedAt:
+          type: string
+          format: date-time
+        createdAt:
+          type: string
+          format: date-time
+        resolvedAt:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        resolvedByUserUuid:
+          type:
+          - string
+          - 'null'
+        createdByUserUuid:
+          type:
+          - string
+          - 'null'
+        retryPrompt:
+          type:
+          - string
+          - 'null'
+        errorMessage:
+          type:
+          - string
+          - 'null'
+        status:
+          $ref: '#/components/schemas/AiAgentReviewRemediationStatus'
+        previewThreadUuid:
+          type:
+          - string
+          - 'null'
+        previewAgentUuid:
+          type:
+          - string
+          - 'null'
+        previewProjectUuid:
+          type:
+          - string
+          - 'null'
+        linkedPrUrl:
+          type:
+          - string
+          - 'null'
+        pullRequestUuid:
+          type:
+          - string
+          - 'null'
+        workThreadUuid:
+          type:
+          - string
+          - 'null'
+        sourceAgentUuid:
+          type: string
+        sourceProjectUuid:
+          type: string
+        sourceThreadUuid:
+          type:
+          - string
+          - 'null'
+        sourcePromptUuid:
+          type:
+          - string
+          - 'null'
+        sourceFindingUuid:
+          type:
+          - string
+          - 'null'
+        organizationUuid:
+          type: string
+        fingerprint:
+          type: string
+        uuid:
+          type: string
+      required:
+      - updatedAt
+      - createdAt
+      - resolvedAt
+      - resolvedByUserUuid
+      - createdByUserUuid
+      - retryPrompt
+      - errorMessage
+      - status
+      - previewThreadUuid
+      - previewAgentUuid
+      - previewProjectUuid
+      - linkedPrUrl
+      - pullRequestUuid
+      - workThreadUuid
+      - sourceAgentUuid
+      - sourceProjectUuid
+      - sourceThreadUuid
+      - sourcePromptUuid
+      - sourceFindingUuid
+      - organizationUuid
+      - fingerprint
+      - uuid
+      type: object
+    ApiSuccess_AiOrganizationSettings_:
+      properties:
+        results:
+          $ref: '#/components/schemas/AiOrganizationSettings'
         status:
           type: string
           enum:
@@ -754,258 +3791,162 @@ components:
         - requestedByUserUuid
         - type
         type: object
-    ApiSuccess_AiAgentReviewItemPrDiff_:
-      properties:
-        results:
-          $ref: '#/components/schemas/AiAgentReviewItemPrDiff'
-        status:
-          type: string
-          enum:
-          - ok
-      required:
-      - results
-      - status
-      type: object
-    AiAgentReviewItemStatus:
+    AiAgentSkillAvailability:
       type: string
       enum:
-      - open
-      - in_progress
-      - resolved
-      - dismissed
-      - duplicate
-    ApiUpdateAiOrganizationSettingsResponse:
-      $ref: '#/components/schemas/ApiSuccess_AiOrganizationSettings_'
-    AiAgentReviewItemWritebackBlockedReason:
-      type: string
-      enum:
-      - reviews_disabled
-      - unsupported_root_cause
-      - missing_project
-      - missing_project_context_entry
-      - project_context_disabled
-      - unsupported_source_control
-      - git_app_not_installed
-      - missing_writeback_config
-      - pull_request_open
-      - source_thread_writeback_exists
-      - terminal_state
-      - writeback_in_progress
-    KnexPaginateArgs:
+      - agent
+      - mcp
+    ComputedAiOrganizationSettings:
       properties:
-        page:
-          type: number
-          format: double
-        pageSize:
-          type: number
-          format: double
-      required:
-      - page
-      - pageSize
-      type: object
-    AiAgentReviewItemPrDiff:
-      properties:
-        truncated:
+        aiAgentReviewsPausedByByok:
           type: boolean
-        totalDeletions:
-          type: number
-          format: double
-        totalAdditions:
-          type: number
-          format: double
-        files:
+        configurableModelOptions:
           items:
-            $ref: '#/components/schemas/AiAgentReviewItemPrDiffFile'
+            $ref: '#/components/schemas/AiModelOption'
+          type:
+          - array
+          - 'null'
+        defaultAiAgentModelOptions:
+          items:
+            $ref: '#/components/schemas/AiModelOption'
           type: array
-        prUrl:
-          type: string
+        isTrial:
+          type: boolean
+        isCopilotEnabled:
+          type: boolean
+        bedrockModelOptions:
+          items:
+            $ref: '#/components/schemas/AiModelOption'
+          type: array
       required:
-      - truncated
-      - totalDeletions
-      - totalAdditions
-      - files
-      - prUrl
+      - defaultAiAgentModelOptions
+      - isTrial
+      - isCopilotEnabled
+      - bedrockModelOptions
       type: object
-    ApiAiAgentDocumentResponse:
-      properties:
-        results:
-          $ref: '#/components/schemas/AiAgentDocument'
-        status:
-          type: string
-          enum:
-          - ok
-      required:
-      - results
-      - status
-      type: object
-    ApiAiOrganizationSettingsResponse:
-      $ref: '#/components/schemas/ApiSuccess_AiOrganizationSettings-and-ComputedAiOrganizationSettings_'
-    Omit_AiAgentDocument.storageKey_:
-      $ref: '#/components/schemas/Pick_AiAgentDocument.Exclude_keyofAiAgentDocument.storageKey__'
-      description: Construct a type with the properties of T except for those in type K.
-    ApiSuccess_AiAgentReviewItemWritebackPreview_:
-      properties:
-        results:
-          $ref: '#/components/schemas/AiAgentReviewItemWritebackPreview'
-        status:
-          type: string
-          enum:
-          - ok
-      required:
-      - results
-      - status
-      type: object
-    AiAgentReviewItemOwnerType:
-      type: string
-      enum:
-      - semantic_layer_owner
-      - agent_admin
-      - product
-      - support
-      - unknown
-    Record_string.never_:
-      properties: {}
-      type: object
-      description: Construct a type with a set of properties K of type T
     AiAgentReviewItemWritebackStrategy:
       type: string
       enum:
       - semantic_layer
       - project_context
-    UpdateAiAgentReviewItemStatus:
+    ApiAiOrganizationRuntimeSettingsResponse:
+      $ref: '#/components/schemas/ApiSuccess_AiOrganizationRuntimeSettings_'
+    AiAgentSkillSummary:
       properties:
-        dismissedReason:
-          allOf:
-          - $ref: '#/components/schemas/AiAgentReviewItemDismissedReason'
-        status:
-          $ref: '#/components/schemas/AiAgentReviewItemStatus'
-      required:
-      - dismissedReason
-      - status
-      type: object
-    ApiSuccess_KnexPaginatedData_AiAgentAdminConversationsSummary__:
-      properties:
-        results:
-          $ref: '#/components/schemas/KnexPaginatedData_AiAgentAdminConversationsSummary_'
-        status:
+        deletedAt:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        updatedAt:
           type: string
-          enum:
-          - ok
-      required:
-      - results
-      - status
-      type: object
-    ? Pick_AiAgent.uuid-or-name-or-description-or-integrations-or-tags-or-projectUuid-or-organizationUuid-or-createdAt-or-updatedAt-or-instruction-or-imageUrl-or-groupAccess-or-userAccess-or-spaceAccess-or-enableDataAccess-or-enableSelfImprovement-or-enableContentTools-or-version_
-    : properties:
+          format: date-time
+        createdAt:
+          type: string
+          format: date-time
+        updatedByUserUuid:
+          type:
+          - string
+          - 'null'
+        createdByUserUuid:
+          type:
+          - string
+          - 'null'
+        agentUuids:
+          items:
+            type: string
+          type: array
+          description: Agents this skill is bound to.
+        currentVersion:
+          $ref: '#/components/schemas/AiAgentSkillVersionSummary'
+        availability:
+          items:
+            $ref: '#/components/schemas/AiAgentSkillAvailability'
+          type: array
+        userInvocable:
+          type: boolean
+        disableModelInvocation:
+          type: boolean
+        argumentHint:
+          type:
+          - string
+          - 'null'
+          description: Frontmatter fields the chat and MCP surfaces need without the body.
         description:
+          type: string
+        title:
           type:
           - string
           - 'null'
         name:
           type: string
         projectUuid:
-          type: string
-        createdAt:
-          type: string
-          format: date-time
+          type:
+          - string
+          - 'null'
         organizationUuid:
           type: string
         uuid:
           type: string
-        userAccess:
-          items:
-            type: string
-          type: array
-        updatedAt:
-          type: string
-          format: date-time
-        integrations:
-          items:
-            properties:
-              channelId:
-                type: string
-              type:
-                type: string
-                enum:
-                - slack
-            required:
-            - channelId
-            - type
-            type: object
-          type: array
-        tags:
-          items:
-            type: string
-          type:
-          - array
-          - 'null'
-        instruction:
-          type:
-          - string
-          - 'null'
-        imageUrl:
-          type:
-          - string
-          - 'null'
-        groupAccess:
-          items:
-            type: string
-          type: array
-        spaceAccess:
-          items:
-            type: string
-          type: array
-        enableDataAccess:
-          type: boolean
-        enableSelfImprovement:
-          type: boolean
-        enableContentTools:
-          type: boolean
-        version:
-          type: number
-          format: double
       required:
+      - deletedAt
+      - updatedAt
+      - createdAt
+      - updatedByUserUuid
+      - createdByUserUuid
+      - agentUuids
+      - currentVersion
+      - availability
+      - userInvocable
+      - disableModelInvocation
+      - argumentHint
       - description
+      - title
       - name
       - projectUuid
-      - createdAt
       - organizationUuid
       - uuid
-      - userAccess
-      - updatedAt
-      - integrations
-      - tags
-      - instruction
-      - imageUrl
-      - groupAccess
-      - spaceAccess
-      - enableDataAccess
-      - enableSelfImprovement
-      - enableContentTools
-      - version
+      type: object
+    Pick_AiReviewJiraRouting.Exclude_keyofAiReviewJiraRouting.organizationUuid__:
+      properties:
+        enabled:
+          type: boolean
+        applyToAllProjects:
+          type: boolean
+        projectUuids:
+          items:
+            type: string
+          type: array
+        jiraProjectId:
+          type:
+          - string
+          - 'null'
+        jiraIssueTypeId:
+          type:
+          - string
+          - 'null'
+      required:
+      - enabled
+      - applyToAllProjects
+      - projectUuids
+      - jiraProjectId
+      - jiraIssueTypeId
       type: object
       description: From T, pick a set of properties whose keys are in the union K
-    AiAgentReviewRemediationEvent:
-      allOf:
-      - properties:
-          createdByUserUuid:
-            type:
-            - string
-            - 'null'
-          occurredAt:
-            type: string
-            format: date-time
-          remediationUuid:
-            type: string
-          uuid:
-            type: string
-        required:
-        - createdByUserUuid
-        - occurredAt
-        - remediationUuid
-        - uuid
-        type: object
-      - $ref: '#/components/schemas/AiAgentReviewRemediationEventDetail'
+    ApiAiAgentDocumentSummaryListResponse:
+      properties:
+        results:
+          items:
+            $ref: '#/components/schemas/AiAgentDocumentSummary'
+          type: array
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
     AiAgentReviewSignalSummary:
       properties:
         finding:
@@ -1104,32 +4045,34 @@ components:
       - runUuid
       - uuid
       type: object
-    KnexPaginatedData_AiAgentAdminConversationsSummary_:
+    AiThreadRetentionPreview:
       properties:
-        pagination:
-          allOf:
-          - $ref: '#/components/schemas/KnexPaginateArgs'
-          - properties:
-              totalResults:
-                type: number
-                format: double
-              totalPageCount:
-                type: number
-                format: double
-            required:
-            - totalResults
-            - totalPageCount
-            type: object
-        data:
-          $ref: '#/components/schemas/AiAgentAdminConversationsSummary'
+        agentCount:
+          type: number
+          format: double
+        threadCount:
+          type: number
+          format: double
       required:
-      - data
+      - agentCount
+      - threadCount
       type: object
-    PullRequestProvider:
-      enum:
-      - github
-      - gitlab
+      description: 'What an org-level retention window of `retentionHours` would delete on the
+
+        next cleanup run. Backs the confirmation dialog shown before lowering the
+
+        org ceiling.'
+    AiAgentRootCause:
       type: string
+      enum:
+      - semantic_layer
+      - project_context
+      - agent_configuration
+      - product_capability
+      - runtime_reliability
+      - feedback_quality
+      - not_a_failure
+      - ambiguous
     AiAgentDocumentRelevance:
       type: string
       enum:
@@ -1137,51 +4080,112 @@ components:
       - medium
       - low
       - none
-    AiAgentAdminConversationsSummary:
+    AiProviderApiKeysSet:
+      $ref: '#/components/schemas/Record_ByoAiProvider.boolean_'
+    ApiCreateAiAgentSkill:
       properties:
-        threads:
+        agentUuids:
           items:
-            $ref: '#/components/schemas/AiAgentAdminThreadSummary'
+            type: string
           type: array
-      required:
-      - threads
-      type: object
-    ? Pick_AiAgentThreadSummary_AiAgentUser-and-_slackUserId-string-or-null--email-string-or-null__.user-or-createdAt-or-createdFrom-or-title-or-uuid_
-    : properties:
-        createdAt:
-          type: string
-        user:
-          allOf:
-          - $ref: '#/components/schemas/AiAgentUser'
-          - properties:
-              email:
-                type:
-                - string
-                - 'null'
-              slackUserId:
-                type:
-                - string
-                - 'null'
-            required:
-            - email
-            - slackUserId
-            type: object
-        uuid:
-          type: string
-        title:
+          description: Agents to bind on creation.
+        projectUuid:
           type:
           - string
           - 'null'
-        createdFrom:
+        files:
+          $ref: '#/components/schemas/AiAgentSkillFiles'
+      required:
+      - projectUuid
+      - files
+      type: object
+    OrgBedrockConfig:
+      properties:
+        allowedModels:
+          items:
+            type: string
+          type: array
+        region:
           type: string
       required:
-      - createdAt
-      - user
-      - uuid
-      - title
-      - createdFrom
+      - allowedModels
+      - region
       type: object
-      description: From T, pick a set of properties whose keys are in the union K
+    KnexPaginateArgs:
+      properties:
+        page:
+          type: number
+          format: double
+        pageSize:
+          type: number
+          format: double
+      required:
+      - page
+      - pageSize
+      type: object
+    ApiSuccess_AiReviewNotificationSettings_:
+      properties:
+        results:
+          $ref: '#/components/schemas/AiReviewNotificationSettings'
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
+    CreateAiAgentReviewItem:
+      properties:
+        targetRefs:
+          items:
+            $ref: '#/components/schemas/AiAgentTargetRef'
+          type: array
+        priority:
+          $ref: '#/components/schemas/AiAgentReviewItemPriority'
+        primaryRootCause:
+          allOf:
+          - $ref: '#/components/schemas/AiAgentRootCause'
+        assignedToUserUuid:
+          type:
+          - string
+          - 'null'
+        agentUuid:
+          type:
+          - string
+          - 'null'
+        projectUuid:
+          type: string
+        description:
+          type:
+          - string
+          - 'null'
+        title:
+          type: string
+      required:
+      - targetRefs
+      - priority
+      - primaryRootCause
+      - assignedToUserUuid
+      - agentUuid
+      - projectUuid
+      - description
+      - title
+      type: object
+    ApiAiAgentReviewItemPrDiffResponse:
+      $ref: '#/components/schemas/ApiSuccess_AiAgentReviewItemPrDiff_'
+    ApiSuccess_AiReviewLinearBackfillResult_:
+      properties:
+        results:
+          $ref: '#/components/schemas/AiReviewLinearBackfillResult'
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
     AiAgentReviewItem:
       properties:
         updatedAt:
@@ -1190,6 +4194,15 @@ components:
         createdAt:
           type: string
           format: date-time
+        createdByUserUuid:
+          type:
+          - string
+          - 'null'
+        boardPosition:
+          type:
+          - number
+          - 'null'
+          format: double
         prWritebackMessage:
           type:
           - string
@@ -1201,6 +4214,10 @@ components:
           allOf:
           - $ref: '#/components/schemas/AiAgentReviewItemPrState'
         linkedPrUrl:
+          type:
+          - string
+          - 'null'
+        linkedJiraIssueUrl:
           type:
           - string
           - 'null'
@@ -1235,6 +4252,12 @@ components:
           - $ref: '#/components/schemas/AiAgentReviewItemDismissedReason'
         status:
           $ref: '#/components/schemas/AiAgentReviewItemStatus'
+        targetRefs:
+          items:
+            $ref: '#/components/schemas/AiAgentTargetRef'
+          type: array
+        priority:
+          $ref: '#/components/schemas/AiAgentReviewItemPriority'
         primaryRootCause:
           $ref: '#/components/schemas/AiAgentRootCause'
         description:
@@ -1251,6 +4274,8 @@ components:
           - 'null'
         organizationUuid:
           type: string
+        source:
+          $ref: '#/components/schemas/AiAgentReviewItemSource'
         fingerprint:
           type: string
         uuid:
@@ -1258,6 +4283,8 @@ components:
       required:
       - updatedAt
       - createdAt
+      - createdByUserUuid
+      - boardPosition
       - prWritebackMessage
       - prWritebackStatus
       - prState
@@ -1272,69 +4299,45 @@ components:
       - ownerType
       - dismissedReason
       - status
+      - targetRefs
+      - priority
       - primaryRootCause
       - description
       - title
       - agentUuid
       - projectUuid
       - organizationUuid
+      - source
       - fingerprint
       - uuid
       type: object
-    ApiErrorPayload:
+    AiPromptTokenUsage:
       properties:
-        error:
-          properties:
-            data:
-              $ref: '#/components/schemas/AnyType'
-              description: Optional data containing details of the error
-            message:
-              type: string
-              description: A friendly message summarising the error
-            name:
-              type: string
-              description: Unique name for the type of error
-            statusCode:
-              type: number
-              format: integer
-              description: HTTP status code
-          required:
-          - name
-          - statusCode
-          type: object
-        status:
-          type: string
-          enum:
-          - error
+        decisionOutputTokens:
+          type: number
+          format: double
+          description: TypeSafe/JEV output tokens, tracked separately from the main agent model.
+        decisionInputTokens:
+          type: number
+          format: double
+          description: TypeSafe/JEV input tokens, tracked separately from the main agent model.
+        finalStepTotalTokens:
+          type: number
+          format: double
+          description: Final step's total — the proxy for resident context size, drives compaction.
+        totalTokens:
+          type: number
+          format: double
+          description: 'Billing figure: tokens summed across every step of the run.'
       required:
-      - error
-      - status
+      - totalTokens
       type: object
-      description: 'The Error object is returned from the api any time there is an error.
-
-        The message contains'
-    ApiSuccess_AiOrganizationSettings_:
-      properties:
-        results:
-          $ref: '#/components/schemas/AiOrganizationSettings'
-        status:
-          type: string
-          enum:
-          - ok
-      required:
-      - results
-      - status
-      type: object
-    Record_string.unknown_:
-      properties: {}
-      additionalProperties: {}
-      type: object
-      description: Construct a type with a set of properties K of type T
-    ApiSuccess_AiAgentReviewItemSummary-Array_:
+      description: Persisted shape. `finalStepTotalTokens` is absent on rows written before it existed.
+    ApiAiAgentSkillVersionListResponse:
       properties:
         results:
           items:
-            $ref: '#/components/schemas/AiAgentReviewItemSummary'
+            $ref: '#/components/schemas/AiAgentSkillVersionSummary'
           type: array
         status:
           type: string
@@ -1344,155 +4347,754 @@ components:
       - results
       - status
       type: object
-    AiAgentUser:
+    ApiSuccess_AiReviewJiraBackfillResult_:
       properties:
-        name:
+        results:
+          $ref: '#/components/schemas/AiReviewJiraBackfillResult'
+        status:
           type: string
-        uuid:
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
+    AiAgentJudgeProjectContextEntry:
+      properties:
+        objects:
+          items:
+            $ref: '#/components/schemas/AiProjectContextObjectRef'
+          type: array
+        terms:
+          items:
+            type: string
+          type: array
+        content:
+          type: string
+        kind:
+          type: string
+          enum:
+          - definition
+          - context
+        id:
+          type:
+          - string
+          - 'null'
+        op:
+          type: string
+          enum:
+          - create
+          - update
+      required:
+      - objects
+      - terms
+      - content
+      - kind
+      - id
+      - op
+      type: object
+    ApiSuccess_AiAgentReviewItemWritebackPreview_:
+      properties:
+        results:
+          $ref: '#/components/schemas/AiAgentReviewItemWritebackPreview'
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
+    ApiAiAgentAdminPromptActivityResponse:
+      $ref: '#/components/schemas/ApiSuccess_AiAgentAdminPromptActivityPoint-Array_'
+    UpdateAiProviderApiKeys:
+      properties:
+        providerBaseUrls:
+          $ref: '#/components/schemas/UpdateAiProviderBaseUrls'
+        bedrock:
+          allOf:
+          - $ref: '#/components/schemas/UpdateOrgBedrockConfig'
+        openai:
+          type:
+          - string
+          - 'null'
+        google:
+          type:
+          - string
+          - 'null'
+        anthropic:
+          type:
+          - string
+          - 'null'
+      type: object
+    AiAgentImplicitSignalSource:
+      type: string
+      enum:
+      - next_user_correction
+      - next_user_dispute
+      - next_user_retry
+      - output_shape_correction
+      - tool_error
+      - assistant_no_answer
+      - product_capability_request
+      - human_intervention
+      - standing_instruction
+    ApiSuccess_AiOrganizationSettings-and-ComputedAiOrganizationSettings_:
+      properties:
+        results:
+          allOf:
+          - $ref: '#/components/schemas/AiOrganizationSettings'
+          - $ref: '#/components/schemas/ComputedAiOrganizationSettings'
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
+    AiReviewLinearRouting:
+      properties:
+        linearProjectId:
+          type:
+          - string
+          - 'null'
+        linearTeamId:
+          type:
+          - string
+          - 'null'
+        enabled:
+          type: boolean
+        projectUuids:
+          items:
+            type: string
+          type: array
+        applyToAllProjects:
+          type: boolean
+        organizationUuid:
           type: string
       required:
-      - name
-      - uuid
+      - linearProjectId
+      - linearTeamId
+      - enabled
+      - projectUuids
+      - applyToAllProjects
+      - organizationUuid
       type: object
-    AiAgentReviewRemediation:
+    AiAgentReviewItemPrState:
+      type: string
+      enum:
+      - open
+      - merged
+      - closed
+    ApiSuccess_AiAgentAdminPromptActivityPoint-Array_:
       properties:
+        results:
+          items:
+            $ref: '#/components/schemas/AiAgentAdminPromptActivityPoint'
+          type: array
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
+    ServedSkillMetadata:
+      properties:
+        contentHash:
+          type:
+          - string
+          - 'null'
+        versionNumber:
+          type:
+          - number
+          - 'null'
+          format: double
+        uuid:
+          type:
+          - string
+          - 'null'
+        builtIn:
+          type: boolean
+        name:
+          type: string
+      required:
+      - contentHash
+      - versionNumber
+      - uuid
+      - builtIn
+      - name
+      type: object
+      description: Which skill and version the model was served; a thread reviewer reads this.
+    UpdateAiAgentReviewItemAssignee:
+      properties:
+        assignedToUserUuid:
+          type:
+          - string
+          - 'null'
+      required:
+      - assignedToUserUuid
+      type: object
+    AiAgentReviewItemPriority:
+      type: string
+      enum:
+      - urgent
+      - high
+      - medium
+      - low
+      - none
+    ApiAiAgentAdminConversationsResponse:
+      $ref: '#/components/schemas/ApiSuccess_KnexPaginatedData_AiAgentAdminConversationsSummary__'
+    DataAppClaudeModel:
+      type: string
+      enum:
+      - opus
+      - sonnet
+      - haiku
+    AiReviewLinearDestination:
+      properties:
+        linearProjectId:
+          type:
+          - string
+          - 'null'
+        linearTeamId:
+          type:
+          - string
+          - 'null'
+        enabled:
+          type: boolean
+        projectUuid:
+          type: string
+        organizationUuid:
+          type: string
+      required:
+      - linearProjectId
+      - linearTeamId
+      - enabled
+      - projectUuid
+      - organizationUuid
+      type: object
+    ApiAiAgentReviewItemResponse:
+      $ref: '#/components/schemas/ApiSuccess_AiAgentReviewItemSummary_'
+    Partial_Record_DataAppClaudeModel.boolean__:
+      properties:
+        opus:
+          type: boolean
+        sonnet:
+          type: boolean
+        haiku:
+          type: boolean
+      type: object
+      description: Make all properties in T optional
+    ApiAiAgentSkillSummaryListResponse:
+      properties:
+        results:
+          items:
+            $ref: '#/components/schemas/AiAgentSkillSummary'
+          type: array
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
+    AiProjectContextObjectRef:
+      anyOf:
+      - type: string
+      - $ref: '#/components/schemas/AiProjectContextTypedObjectRef'
+    AiAgentReviewItemActivity:
+      properties:
+        verdictStale:
+          type: boolean
+          description: 'True when the PR changed after the latest verdict — derived from event
+
+            ordering (latest pr_opened/pr_updated/writeback_completed occurred after
+
+            the latest verification_completed). Drives the "Retest" prompt.'
+        liveMessage:
+          type:
+          - string
+          - 'null'
+          description: Streaming progress text for the live row (writeback step messages).
+        liveState:
+          allOf:
+          - $ref: '#/components/schemas/AiAgentReviewRemediationLiveState'
+        events:
+          items:
+            $ref: '#/components/schemas/AiAgentReviewActivityEvent'
+          type: array
+      required:
+      - verdictStale
+      - liveMessage
+      - liveState
+      - events
+      type: object
+    UpdateAiReviewLinearRouting:
+      properties:
+        linearProjectId:
+          type:
+          - string
+          - 'null'
+        linearTeamId:
+          type:
+          - string
+          - 'null'
+        enabled:
+          type: boolean
+        projectUuids:
+          items:
+            type: string
+          type: array
+        applyToAllProjects:
+          type: boolean
+      required:
+      - linearProjectId
+      - linearTeamId
+      - enabled
+      - projectUuids
+      - applyToAllProjects
+      type: object
+    AiAgentTurnSignal:
+      type: string
+      enum:
+      - normal_refinement
+      - implicit_correction
+      - explicit_dispute
+      - retry_after_failure
+      - output_shape_correction
+      - new_question
+      - acceptance_or_continuation
+      - product_capability_request
+      - human_intervention
+      - standing_instruction
+      - ambiguous
+    UpdateAiAgentReviewItemStatus:
+      properties:
+        boardPosition:
+          type:
+          - number
+          - 'null'
+          format: double
+        dismissedReason:
+          allOf:
+          - $ref: '#/components/schemas/AiAgentReviewItemDismissedReason'
+        status:
+          $ref: '#/components/schemas/AiAgentReviewItemStatus'
+      required:
+      - dismissedReason
+      - status
+      type: object
+    ApiAiReviewJiraDestinationResponse:
+      $ref: '#/components/schemas/ApiSuccess_AiReviewJiraDestination_'
+    AiAgentSkillContent:
+      properties:
+        files:
+          $ref: '#/components/schemas/AiAgentSkillFiles'
+        schemaVersion:
+          type: number
+          enum:
+          - 1
+      required:
+      - files
+      - schemaVersion
+      type: object
+    AiAgentAdminEvalSummary:
+      properties:
+        latestRun:
+          allOf:
+          - $ref: '#/components/schemas/Pick_AiAgentEvaluationRunSummary.runUuid-or-status-or-createdAt-or-completedAt_'
+        promptCount:
+          type: number
+          format: double
+        project:
+          properties:
+            name:
+              type: string
+            uuid:
+              type: string
+          required:
+          - name
+          - uuid
+          type: object
+        agent:
+          $ref: '#/components/schemas/Pick_AiAgentSummary.uuid-or-name-or-imageUrl_'
         updatedAt:
           type: string
           format: date-time
         createdAt:
           type: string
           format: date-time
-        resolvedAt:
+        description:
           type:
           - string
           - 'null'
-          format: date-time
-        resolvedByUserUuid:
-          type:
-          - string
-          - 'null'
-        createdByUserUuid:
-          type:
-          - string
-          - 'null'
-        retryPrompt:
-          type:
-          - string
-          - 'null'
-        errorMessage:
-          type:
-          - string
-          - 'null'
-        status:
-          $ref: '#/components/schemas/AiAgentReviewRemediationStatus'
-        previewThreadUuid:
-          type:
-          - string
-          - 'null'
-        previewAgentUuid:
-          type:
-          - string
-          - 'null'
-        previewProjectUuid:
-          type:
-          - string
-          - 'null'
-        linkedPrUrl:
-          type:
-          - string
-          - 'null'
-        pullRequestUuid:
-          type:
-          - string
-          - 'null'
-        sourceAgentUuid:
+        title:
           type: string
-        sourceProjectUuid:
-          type: string
-        sourceThreadUuid:
-          type: string
-        sourcePromptUuid:
-          type: string
-        sourceFindingUuid:
-          type: string
-        organizationUuid:
-          type: string
-        fingerprint:
-          type: string
-        uuid:
+        evalUuid:
           type: string
       required:
+      - latestRun
+      - promptCount
+      - project
+      - agent
       - updatedAt
       - createdAt
-      - resolvedAt
-      - resolvedByUserUuid
-      - createdByUserUuid
-      - retryPrompt
-      - errorMessage
-      - status
-      - previewThreadUuid
-      - previewAgentUuid
-      - previewProjectUuid
-      - linkedPrUrl
-      - pullRequestUuid
-      - sourceAgentUuid
-      - sourceProjectUuid
-      - sourceThreadUuid
-      - sourcePromptUuid
-      - sourceFindingUuid
-      - organizationUuid
-      - fingerprint
-      - uuid
+      - description
+      - title
+      - evalUuid
       type: object
-    UpdateAiOrganizationSettings:
-      $ref: '#/components/schemas/Partial_Omit_AiOrganizationSettings.organizationUuid__'
-    AiAgentTargetRef:
+    UpdateOrgBedrockConfig:
+      properties:
+        apiKey:
+          type: string
+        allowedModels:
+          items:
+            type: string
+          type: array
+        region:
+          type: string
+      required:
+      - allowedModels
+      - region
+      type: object
+    ApiAiReviewJiraRoutingResponse:
+      $ref: '#/components/schemas/ApiSuccess_AiReviewJiraRouting_'
+    ? Pick_AiAgentThreadSummary_AiAgentUser-and-_slackUserId-string-or-null--email-string-or-null__.user-or-createdAt-or-createdFrom-or-title-or-uuid_
+    : properties:
+        title:
+          type:
+          - string
+          - 'null'
+        uuid:
+          type: string
+        createdAt:
+          type: string
+        user:
+          allOf:
+          - $ref: '#/components/schemas/AiAgentUser'
+          - properties:
+              email:
+                type:
+                - string
+                - 'null'
+              slackUserId:
+                type:
+                - string
+                - 'null'
+            required:
+            - email
+            - slackUserId
+            type: object
+        createdFrom:
+          type: string
+          enum:
+          - data_app
+          - slack
+          - web_app
+          - api
+          - evals
+          - scheduler
+      required:
+      - title
+      - uuid
+      - createdAt
+      - user
+      - createdFrom
+      type: object
+      description: From T, pick a set of properties whose keys are in the union K
+    AiOrgModelVisibility:
+      $ref: '#/components/schemas/Partial_Record_ByoAiProvider.AiOrgProviderModelVisibility__'
+    McpActivitySortField:
+      type: string
+      enum:
+      - createdAt
+      - durationMs
+    AiAgentEvidenceExcerpt:
+      properties:
+        redacted:
+          type: boolean
+        text:
+          type: string
+        source:
+          type: string
+          enum:
+          - user_prompt
+          - assistant_answer
+          - next_user_prompt
+          - conversation_context
+          - tool_call
+          - tool_result
+          - agent_config
+      required:
+      - redacted
+      - text
+      - source
+      type: object
+    AiAgentAdminEvalPrompt:
+      properties:
+        createdAt:
+          type: string
+          format: date-time
+        threadUuid:
+          type:
+          - string
+          - 'null'
+        expectedResponse:
+          type:
+          - string
+          - 'null'
+        prompt:
+          type:
+          - string
+          - 'null'
+        evalPromptUuid:
+          type: string
+      required:
+      - createdAt
+      - threadUuid
+      - expectedResponse
+      - prompt
+      - evalPromptUuid
+      type: object
+    AiAgentReviewActivityEvent:
       anyOf:
-      - $ref: '#/components/schemas/AiAgentSemanticTargetRef'
+      - allOf:
+        - properties:
+            kind:
+              type: string
+              enum:
+              - remediation
+          required:
+          - kind
+          type: object
+        - $ref: '#/components/schemas/AiAgentReviewRemediationEvent'
+      - allOf:
+        - properties:
+            kind:
+              type: string
+              enum:
+              - issue
+          required:
+          - kind
+          type: object
+        - $ref: '#/components/schemas/AiAgentReviewItemEvent'
+      description: One row of the merged issue activity feed.
+    Partial_Record_ByoAiProvider.AiOrgProviderModelVisibility__:
+      properties:
+        bedrock:
+          $ref: '#/components/schemas/AiOrgProviderModelVisibility'
+        anthropic:
+          $ref: '#/components/schemas/AiOrgProviderModelVisibility'
+        google:
+          $ref: '#/components/schemas/AiOrgProviderModelVisibility'
+        openai:
+          $ref: '#/components/schemas/AiOrgProviderModelVisibility'
+      type: object
+      description: Make all properties in T optional
+    AiAgentAdminConversationsSummary:
+      properties:
+        threads:
+          items:
+            $ref: '#/components/schemas/AiAgentAdminThreadSummary'
+          type: array
+      required:
+      - threads
+      type: object
+    AiAgentReviewClassifierEventType:
+      type: string
+      enum:
+      - response_saved
+      - feedback_changed
+    AiAgentReviewItemSummary:
+      allOf:
+      - $ref: '#/components/schemas/AiAgentReviewItem'
       - properties:
-          agentUuid:
-            type: string
-          type:
-            type: string
-            enum:
-            - agent
+          latestFinding:
+            properties:
+              createdAt:
+                type: string
+                format: date-time
+              skillProposal:
+                allOf:
+                - $ref: '#/components/schemas/AiAgentJudgeSkillProposal'
+              projectContextEntry:
+                allOf:
+                - $ref: '#/components/schemas/AiAgentJudgeProjectContextEntry'
+              recommendation:
+                allOf:
+                - $ref: '#/components/schemas/AiAgentRecommendation'
+              evidenceExcerpts:
+                items:
+                  $ref: '#/components/schemas/AiAgentEvidenceExcerpt'
+                type: array
+              targetRefs:
+                items:
+                  $ref: '#/components/schemas/AiAgentTargetRef'
+                type: array
+              fixTargets:
+                items:
+                  $ref: '#/components/schemas/AiAgentFixTarget'
+                type: array
+              subcategories:
+                items:
+                  type: string
+                type: array
+              agentUuid:
+                type: string
+              projectUuid:
+                type: string
+              threadUuid:
+                type: string
+              promptUuid:
+                type: string
+              uuid:
+                type: string
+            required:
+            - createdAt
+            - skillProposal
+            - projectContextEntry
+            - recommendation
+            - evidenceExcerpts
+            - targetRefs
+            - fixTargets
+            - subcategories
+            - agentUuid
+            - projectUuid
+            - threadUuid
+            - promptUuid
+            - uuid
+            type:
+            - object
+            - 'null'
+          remediation:
+            allOf:
+            - $ref: '#/components/schemas/AiAgentReviewRemediation'
+          writebackEligibility:
+            $ref: '#/components/schemas/AiAgentReviewItemWritebackEligibility'
+          writebackEligible:
+            type: boolean
+            description: 'Legacy boolean kept for current clients. New clients should use
+
+              writebackEligibility for the blocking reason and provider.'
+          nominator:
+            properties:
+              email:
+                type:
+                - string
+                - 'null'
+              name:
+                type:
+                - string
+                - 'null'
+            required:
+            - email
+            - name
+            type:
+            - object
+            - 'null'
+          nominationReason:
+            type:
+            - string
+            - 'null'
+          sourceMemory:
+            properties:
+              slug:
+                type: string
+              uuid:
+                type: string
+            required:
+            - slug
+            - uuid
+            type:
+            - object
+            - 'null'
+          projectContextEntry:
+            allOf:
+            - $ref: '#/components/schemas/AiAgentJudgeProjectContextEntry'
         required:
-        - agentUuid
-        - type
+        - latestFinding
+        - remediation
+        - writebackEligibility
+        - writebackEligible
+        - nominator
+        - nominationReason
+        - sourceMemory
+        - projectContextEntry
         type: object
-      - properties:
-          setting:
-            $ref: '#/components/schemas/AiAgentConfigurationSetting'
-          type:
-            type: string
-            enum:
-            - agent_config
-        required:
-        - setting
-        - type
-        type: object
-      - properties:
-          capabilityKey:
-            type: string
-          type:
-            type: string
-            enum:
-            - product_capability
-        required:
-        - capabilityKey
-        - type
-        type: object
-      - properties:
-          key:
-            type: string
-          type:
-            type: string
-            enum:
-            - runtime
-        required:
-        - key
-        - type
-        type: object
+    AiDeepResearchLimits:
+      properties:
+        deadlineMs:
+          type: number
+          format: double
+          description: Wall-clock ceiling for the research loop.
+        maxWarehouseQueries:
+          type: number
+          format: double
+        maxToolCalls:
+          type: number
+          format: double
+        maxSteps:
+          type: number
+          format: double
+          description: Model steps the coordinator may take before it must finish.
+        maxTokens:
+          type: number
+          format: double
+      required:
+      - deadlineMs
+      - maxWarehouseQueries
+      - maxToolCalls
+      - maxSteps
+      - maxTokens
+      type: object
+    ApiSuccess_AiReviewLinearRouting_:
+      properties:
+        results:
+          $ref: '#/components/schemas/AiReviewLinearRouting'
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
+    AiAgentAdminMemoriesSummary:
+      properties:
+        memories:
+          items:
+            $ref: '#/components/schemas/AiAgentAdminMemoryItem'
+          type: array
+      required:
+      - memories
+      type: object
+    ApiMcpActivityResponse:
+      $ref: '#/components/schemas/ApiSuccess_KnexPaginatedData_McpActivitySummary__'
+    ApiAiAgentAdminEvalPromptsResponse:
+      $ref: '#/components/schemas/ApiSuccess__prompts-AiAgentAdminEvalPrompt-Array__'
+    AiAgentAdminPromptActivityPoint:
+      properties:
+        promptCount:
+          type: number
+          format: double
+        date:
+          type: string
+      required:
+      - promptCount
+      - date
+      type: object
+    AiReviewJiraBackfillResult:
+      properties:
+        queuedCount:
+          type: number
+          format: double
+      required:
+      - queuedCount
+      type: object
     ApiAiAgentSummaryResponse:
       properties:
         results:
@@ -1507,125 +5109,200 @@ components:
       - results
       - status
       type: object
-    ThreadSummary:
-      $ref: '#/components/schemas/Pick_AiAgentThreadSummary_AiAgentUser-and-_slackUserId-string-or-null--email-string-or-null__.user-or-createdAt-or-createdFrom-or-title-or-uuid_'
-    AiAgentRecommendationAction:
-      type: string
-      enum:
-      - update_semantic_yaml
-      - update_agent_instructions
-      - add_knowledge_document
-      - enable_data_access
-      - enable_sql_mode
-      - enable_self_improvement
-      - configure_mcp_server
-      - adjust_explore_tags
-      - update_access
-      - route_to_product_work
-      - request_more_evidence
-      - no_action
-    AiAgentReviewItemWritebackStatus:
-      type: string
-      enum:
-      - queued
-      - running
-      - completed
-      - failed
-    AiAgentTurnSignal:
-      type: string
-      enum:
-      - normal_refinement
-      - implicit_correction
-      - explicit_dispute
-      - retry_after_failure
-      - output_shape_correction
-      - new_question
-      - acceptance_or_continuation
-      - product_capability_request
-      - human_intervention
-      - ambiguous
-    Pick_AiAgentDocument.Exclude_keyofAiAgentDocument.storageKey__:
+    ApiSuccess_AiThreadRetentionPreview_:
       properties:
-        name:
+        results:
+          $ref: '#/components/schemas/AiThreadRetentionPreview'
+        status:
           type: string
-        projectUuid:
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
+    UpdateAiReviewLinearDestination:
+      $ref: '#/components/schemas/Pick_AiReviewLinearDestination.enabled-or-linearTeamId-or-linearProjectId_'
+    McpActivityItem:
+      properties:
+        mcpServer:
+          properties:
+            name:
+              type: string
+            uuid:
+              type: string
+          required:
+          - name
+          - uuid
+          type:
+          - object
+          - 'null'
+        direction:
+          $ref: '#/components/schemas/McpActivityDirection'
+        sessionGroup:
+          allOf:
+          - $ref: '#/components/schemas/McpActivitySessionGroup'
+        sessionId:
           type:
           - string
           - 'null'
-        createdAt:
+        protocolVersion:
+          type:
+          - string
+          - 'null'
+        authType:
           type: string
-          format: date-time
-        organizationUuid:
+        userAgent:
+          type:
+          - string
+          - 'null'
+        clientVersion:
+          type:
+          - string
+          - 'null'
+        clientName:
+          type:
+          - string
+          - 'null'
+        durationMs:
+          type: number
+          format: double
+        errorMessage:
+          type:
+          - string
+          - 'null'
+        status:
+          $ref: '#/components/schemas/McpActivityStatus'
+        toolArgs:
+          $ref: '#/components/schemas/Record_string.unknown_'
+        toolName:
+          type: string
+        agent:
+          properties:
+            name:
+              type: string
+            uuid:
+              type: string
+          required:
+          - name
+          - uuid
+          type:
+          - object
+          - 'null'
+        project:
+          properties:
+            name:
+              type: string
+            uuid:
+              type: string
+          required:
+          - name
+          - uuid
+          type:
+          - object
+          - 'null'
+        user:
+          properties:
+            email:
+              type:
+              - string
+              - 'null'
+            name:
+              type: string
+            uuid:
+              type: string
+          required:
+          - email
+          - name
+          - uuid
+          type: object
+        createdAt:
           type: string
         uuid:
           type: string
-        originalFilename:
-          type: string
-        mimeType:
-          type: string
-        contentSizeBytes:
-          type: number
-          format: double
-        summary:
-          $ref: '#/components/schemas/AiAgentDocumentStructuredSummary'
-        agentAccess:
-          items:
-            type: string
-          type: array
-        createdByUserUuid:
-          type:
-          - string
-          - 'null'
-        updatedByUserUuid:
-          type:
-          - string
-          - 'null'
-        updatedAt:
-          type: string
-          format: date-time
       required:
-      - name
-      - projectUuid
+      - mcpServer
+      - direction
+      - sessionGroup
+      - sessionId
+      - protocolVersion
+      - authType
+      - userAgent
+      - clientVersion
+      - clientName
+      - durationMs
+      - errorMessage
+      - status
+      - toolArgs
+      - toolName
+      - agent
+      - project
+      - user
       - createdAt
-      - organizationUuid
       - uuid
-      - originalFilename
-      - mimeType
-      - contentSizeBytes
-      - summary
-      - agentAccess
-      - createdByUserUuid
-      - updatedByUserUuid
-      - updatedAt
       type: object
-      description: From T, pick a set of properties whose keys are in the union K
-    AiAgentSummary:
-      $ref: '#/components/schemas/Pick_AiAgent.uuid-or-name-or-description-or-integrations-or-tags-or-projectUuid-or-organizationUuid-or-createdAt-or-updatedAt-or-instruction-or-imageUrl-or-groupAccess-or-userAccess-or-spaceAccess-or-enableDataAccess-or-enableSelfImprovement-or-enableContentTools-or-version_'
-    AiAgentRootCause:
+    AiAgentMemoryScope:
       type: string
       enum:
-      - semantic_layer
-      - project_context
-      - agent_configuration
-      - product_capability
-      - runtime_reliability
-      - feedback_quality
-      - not_a_failure
-      - ambiguous
-    AiAgentReviewItemPrState:
-      type: string
-      enum:
-      - open
-      - merged
-      - closed
-    Partial_Omit_AiOrganizationSettings.organizationUuid__:
+      - user
+      - project
+      description: 'Never affects which memories are recalled: selection, pull, ranking and
+
+        access all filter on ownership alone. The label IS rendered into the injected
+
+        fence, so it shapes how the agent treats an entry it already has.
+
+        `project` means "nominate for review", never "safe to broadcast".'
+    KnexPaginatedData_AiAgentAdminMemoriesSummary_:
       properties:
-        aiAgentsVisible:
-          type: boolean
-        aiAgentReviewsEnabled:
-          type: boolean
+        pagination:
+          allOf:
+          - $ref: '#/components/schemas/KnexPaginateArgs'
+          - properties:
+              totalResults:
+                type: number
+                format: double
+              totalPageCount:
+                type: number
+                format: double
+            required:
+            - totalResults
+            - totalPageCount
+            type: object
+        data:
+          $ref: '#/components/schemas/AiAgentAdminMemoriesSummary'
+      required:
+      - data
       type: object
-      description: Make all properties in T optional
+    ApiAiAgentDocumentResponse:
+      properties:
+        results:
+          $ref: '#/components/schemas/AiAgentDocument'
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
+    Record_ByoAiProvider.boolean_:
+      properties:
+        bedrock:
+          type: boolean
+        anthropic:
+          type: boolean
+        google:
+          type: boolean
+        openai:
+          type: boolean
+      required:
+      - bedrock
+      - anthropic
+      - google
+      - openai
+      type: object
+      description: Construct a type with a set of properties K of type T
     AiAgentSemanticTargetRef:
       anyOf:
       - properties:
@@ -1754,68 +5431,164 @@ components:
         - modelName
         - type
         type: object
-    AiAgentDocument:
+    AiAgentDocumentSummary:
+      $ref: '#/components/schemas/Omit_AiAgentDocument.storageKey_'
+    ApiAiAgentReviewSignalsResponse:
+      $ref: '#/components/schemas/ApiSuccess_AiAgentReviewSignalSummary-Array_'
+    AiAgentDocumentStructuredSummary:
       properties:
-        updatedAt:
-          type: string
-          format: date-time
-        createdAt:
-          type: string
-          format: date-time
-        updatedByUserUuid:
+        warning:
           type:
           - string
           - 'null'
-        createdByUserUuid:
-          type:
-          - string
-          - 'null'
-        agentAccess:
+        relevance:
+          $ref: '#/components/schemas/AiAgentDocumentRelevance'
+        useWhen:
+          type: string
+        relatedExploreNames:
           items:
             type: string
           type: array
-        storageKey:
+        definedTerms:
+          items:
+            type: string
+          type: array
+        description:
           type: string
-        summary:
-          $ref: '#/components/schemas/AiAgentDocumentStructuredSummary'
-        contentSizeBytes:
-          type: number
-          format: double
-        mimeType:
-          type: string
-        originalFilename:
-          type: string
-        name:
-          type: string
-        projectUuid:
+      required:
+      - warning
+      - relevance
+      - useWhen
+      - relatedExploreNames
+      - definedTerms
+      - description
+      type: object
+    UpdateAiReviewNotificationSettings:
+      properties:
+        jiraIssueTypeId:
           type:
           - string
           - 'null'
-        organizationUuid:
-          type: string
-        uuid:
-          type: string
+        jiraProjectId:
+          type:
+          - string
+          - 'null'
+        jiraEnabled:
+          type: boolean
+        linearProjectId:
+          type:
+          - string
+          - 'null'
+        linearTeamId:
+          type:
+          - string
+          - 'null'
+        linearEnabled:
+          type: boolean
+        slackChannelId:
+          type:
+          - string
+          - 'null'
+        enabled:
+          type: boolean
       required:
-      - updatedAt
-      - createdAt
-      - updatedByUserUuid
-      - createdByUserUuid
-      - agentAccess
-      - storageKey
-      - summary
-      - contentSizeBytes
-      - mimeType
-      - originalFilename
-      - name
-      - projectUuid
-      - organizationUuid
-      - uuid
+      - slackChannelId
+      - enabled
       type: object
-    AiAgentReviewClassifierEventType:
+    AiOrganizationRuntimeSettings:
+      properties:
+        threadRetentionHours:
+          type:
+          - number
+          - 'null'
+          format: double
+        dataAppAutoAnalysisEnabled:
+          type: boolean
+        dataAppContinueInAskAiEnabled:
+          type: boolean
+        dataAppRuntimeAiEnabled:
+          type: boolean
+        visibleDataAppModels:
+          items:
+            $ref: '#/components/schemas/DataAppClaudeModel'
+          type: array
+        dataAppCodingAgent:
+          $ref: '#/components/schemas/DataAppCodingAgent'
+        defaultAiAgentModelOptions:
+          items:
+            $ref: '#/components/schemas/AiModelOption'
+          type: array
+        defaultAiAgentModelConfig:
+          allOf:
+          - $ref: '#/components/schemas/AiAgentModelConfig'
+        aiAgentReviewsAvailable:
+          type: boolean
+        aiAgentReviewsEnabled:
+          type: boolean
+        aiAgentMemoryEnabled:
+          type: boolean
+        aiAgentsVisible:
+          type: boolean
+        isTrial:
+          type: boolean
+        isCopilotEnabled:
+          type: boolean
+      required:
+      - visibleDataAppModels
+      - dataAppCodingAgent
+      - defaultAiAgentModelOptions
+      - defaultAiAgentModelConfig
+      - aiAgentReviewsAvailable
+      - aiAgentReviewsEnabled
+      - aiAgentMemoryEnabled
+      - aiAgentsVisible
+      - isTrial
+      - isCopilotEnabled
+      type: object
+    DataAppAnalysisLimits:
+      properties:
+        dailyPromptCap:
+          type:
+          - number
+          - 'null'
+          format: double
+        dailyInvestigateCap:
+          type:
+          - number
+          - 'null'
+          format: double
+        dailyDetectCap:
+          type:
+          - number
+          - 'null'
+          format: double
+        investigateMaxWarehouseQueries:
+          type: number
+          format: double
+        investigateMaxSteps:
+          type: number
+          format: double
+      required:
+      - dailyPromptCap
+      - dailyInvestigateCap
+      - dailyDetectCap
+      - investigateMaxWarehouseQueries
+      - investigateMaxSteps
+      type: object
+      description: 'Org-configurable ceilings for AI analysis in data apps. Per-run limits
+
+        bound one investigation; daily caps bound model runs per organization per
+
+        UTC day (null = no cap). On a Lightdash-managed key the daily caps cannot
+
+        exceed the defaults.'
+    AiProviderBaseUrls:
+      $ref: '#/components/schemas/Record_ByoAiApiKeyProvider.string-or-null_'
+    AiAgentAdminMemorySortField:
       type: string
       enum:
-      - response_saved
-      - feedback_changed
+      - generatedAt
+      - citedCount
     AiAgentReviewRemediationStatus:
       type: string
       enum:
@@ -1825,171 +5598,258 @@ components:
       - preview_ready
       - resolved
       - failed
-    ComputedAiOrganizationSettings:
-      properties:
-        isTrial:
-          type: boolean
-        isCopilotEnabled:
-          type: boolean
-      required:
-      - isTrial
-      - isCopilotEnabled
-      type: object
-    AiAgentImplicitSignalSource:
-      type: string
-      enum:
-      - next_user_correction
-      - next_user_dispute
-      - next_user_retry
-      - output_shape_correction
-      - tool_error
-      - assistant_no_answer
-      - product_capability_request
-      - human_intervention
-    ApiAiAgentReviewSignalsResponse:
-      $ref: '#/components/schemas/ApiSuccess_AiAgentReviewSignalSummary-Array_'
-    ApiSuccess_AiAgentReviewItemActivity_:
-      properties:
-        results:
-          $ref: '#/components/schemas/AiAgentReviewItemActivity'
-        status:
-          type: string
-          enum:
-          - ok
-      required:
-      - results
-      - status
-      type: object
-    ApiSuccess_AiAgentReviewSignalSummary-Array_:
-      properties:
-        results:
-          items:
-            $ref: '#/components/schemas/AiAgentReviewSignalSummary'
-          type: array
-        status:
-          type: string
-          enum:
-          - ok
-      required:
-      - results
-      - status
-      type: object
-    ApiAiAgentDocumentSummaryListResponse:
-      properties:
-        results:
-          items:
-            $ref: '#/components/schemas/AiAgentDocumentSummary'
-          type: array
-        status:
-          type: string
-          enum:
-          - ok
-      required:
-      - results
-      - status
-      type: object
-    AiAgentReviewItemWritebackEligibility:
+    AiAgentSkillValidationResult:
       anyOf:
       - properties:
-          reason:
+          warnings:
+            items:
+              $ref: '#/components/schemas/AiAgentSkillIssue'
+            type: array
+          errors:
+            items:
+              $ref: '#/components/schemas/AiAgentSkillIssue'
+            type: array
+            description: Always empty when valid; typed as an array for the OpenAPI schema.
+          parsed:
+            $ref: '#/components/schemas/AiAgentSkillParsed'
+          valid:
+            type: boolean
+            enum:
+            - true
+        required:
+        - warnings
+        - errors
+        - parsed
+        - valid
+        type: object
+      - properties:
+          warnings:
+            items:
+              $ref: '#/components/schemas/AiAgentSkillIssue'
+            type: array
+          errors:
+            items:
+              $ref: '#/components/schemas/AiAgentSkillIssue'
+            type: array
+          parsed:
             type:
             - number
             - 'null'
             enum:
             - null
-          strategy:
-            $ref: '#/components/schemas/AiAgentReviewItemWritebackStrategy'
-          provider:
-            $ref: '#/components/schemas/PullRequestProvider'
-          eligible:
-            type: boolean
-            enum:
-            - true
-        required:
-        - reason
-        - strategy
-        - provider
-        - eligible
-        type: object
-      - properties:
-          reason:
-            $ref: '#/components/schemas/AiAgentReviewItemWritebackBlockedReason'
-          strategy:
-            allOf:
-            - $ref: '#/components/schemas/AiAgentReviewItemWritebackStrategy'
-          provider:
-            allOf:
-            - $ref: '#/components/schemas/PullRequestProvider'
-          eligible:
+          valid:
             type: boolean
             enum:
             - false
         required:
-        - reason
-        - strategy
-        - provider
-        - eligible
+        - warnings
+        - errors
+        - parsed
+        - valid
         type: object
-    ApiCreateAiAgentDocument:
+    DataAppCodingAgent:
+      type: string
+      enum:
+      - claude
+      - codex
+    AiAgentReviewItemWritebackBlockedReason:
+      type: string
+      enum:
+      - reviews_disabled
+      - unsupported_root_cause
+      - missing_project
+      - missing_agent
+      - missing_project_context_entry
+      - project_context_disabled
+      - insufficient_source_code_access
+      - unsupported_source_control
+      - git_app_not_installed
+      - bitbucket_token_missing
+      - missing_writeback_config
+      - pull_request_open
+      - source_thread_writeback_exists
+      - terminal_state
+      - writeback_in_progress
+    ApiSkillsAsCodeUpsertRequest:
       properties:
-        agentAccess:
+        deleteNames:
           items:
             type: string
           type: array
-        projectUuid:
+          description: Names to unbind everywhere and soft-delete. Absence never deletes.
+        skills:
+          items:
+            $ref: '#/components/schemas/SkillAsCode'
+          type: array
+      required:
+      - skills
+      type: object
+    AiAgentModelConfig:
+      properties:
+        reasoning:
+          type: boolean
+        modelProvider:
+          type: string
+        modelName:
+          type: string
+      required:
+      - modelProvider
+      - modelName
+      type: object
+    AiReviewJiraDestination:
+      properties:
+        jiraIssueTypeId:
           type:
           - string
           - 'null'
-        content:
+        jiraProjectId:
+          type:
+          - string
+          - 'null'
+        enabled:
+          type: boolean
+        projectUuid:
           type: string
-        mimeType:
-          type: string
-        originalFilename:
-          type: string
-        name:
+        organizationUuid:
           type: string
       required:
-      - content
-      - mimeType
-      - originalFilename
-      - name
+      - jiraIssueTypeId
+      - jiraProjectId
+      - enabled
+      - projectUuid
+      - organizationUuid
       type: object
-    AiAgentReviewRemediationLiveState:
-      type: string
-      enum:
-      - writeback
-      - compiling
-      - verifying
-      description: 'The in-flight step of a remediation, derived from current status + which
-
-        events exist — never stored. Renders as the single accented "live" row.'
-    AiAgentRecommendation:
+    UpdateAiProviderBaseUrls:
       properties:
-        targetRefs:
-          items:
-            $ref: '#/components/schemas/AiAgentTargetRef'
-          type: array
-        rationale:
-          type: string
-        title:
-          type: string
-        actionType:
-          $ref: '#/components/schemas/AiAgentRecommendationAction'
-      required:
-      - targetRefs
-      - rationale
-      - title
-      - actionType
+        openai:
+          type:
+          - string
+          - 'null'
+        google:
+          type:
+          - string
+          - 'null'
+        anthropic:
+          type:
+          - string
+          - 'null'
       type: object
+    AiAgentThreadDumpArtifact:
+      properties:
+        dashboardConfig:
+          allOf:
+          - $ref: '#/components/schemas/Record_string.unknown_'
+        chartConfig:
+          allOf:
+          - $ref: '#/components/schemas/Record_string.unknown_'
+        description:
+          type:
+          - string
+          - 'null'
+        title:
+          type:
+          - string
+          - 'null'
+        artifactType:
+          type: string
+          enum:
+          - chart
+          - dashboard
+        versionNumber:
+          type: number
+          format: double
+        versionUuid:
+          type: string
+        artifactUuid:
+          type: string
+      required:
+      - dashboardConfig
+      - chartConfig
+      - description
+      - title
+      - artifactType
+      - versionNumber
+      - versionUuid
+      - artifactUuid
+      type: object
+    ApiSuccess_AiAgentReviewItemSummary-Array_:
+      properties:
+        results:
+          items:
+            $ref: '#/components/schemas/AiAgentReviewItemSummary'
+          type: array
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
+    AiAgentReviewItemEvent:
+      allOf:
+      - properties:
+          createdByUserUuid:
+            type:
+            - string
+            - 'null'
+          occurredAt:
+            type: string
+            format: date-time
+          fingerprint:
+            type: string
+          uuid:
+            type: string
+        required:
+        - createdByUserUuid
+        - occurredAt
+        - fingerprint
+        - uuid
+        type: object
+      - $ref: '#/components/schemas/AiAgentReviewItemEventDetail'
+    ApiSuccess_AiOrganizationRuntimeSettings_:
+      properties:
+        results:
+          $ref: '#/components/schemas/AiOrganizationRuntimeSettings'
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
+    Pick_AiReviewJiraDestination.enabled-or-jiraProjectId-or-jiraIssueTypeId_:
+      properties:
+        enabled:
+          type: boolean
+        jiraProjectId:
+          type:
+          - string
+          - 'null'
+        jiraIssueTypeId:
+          type:
+          - string
+          - 'null'
+      required:
+      - enabled
+      - jiraProjectId
+      - jiraIssueTypeId
+      type: object
+      description: From T, pick a set of properties whose keys are in the union K
     AiAgentReviewRemediationEventDetail:
       anyOf:
       - properties:
           payload:
             properties:
               sourcePromptUuid:
-                type: string
+                type:
+                - string
+                - 'null'
               sourceThreadUuid:
-                type: string
+                type:
+                - string
+                - 'null'
               excerpt:
                 type:
                 - string
@@ -2055,6 +5915,24 @@ components:
             type: string
             enum:
             - pr_opened
+        required:
+        - payload
+        - eventType
+        type: object
+      - properties:
+          payload:
+            properties:
+              prUrl:
+                type:
+                - string
+                - 'null'
+            required:
+            - prUrl
+            type: object
+          eventType:
+            type: string
+            enum:
+            - pr_updated
         required:
         - payload
         - eventType
@@ -2152,38 +6030,206 @@ components:
         - payload
         - eventType
         type: object
-    ApiAiAgentReviewItemPrDiffResponse:
-      $ref: '#/components/schemas/ApiSuccess_AiAgentReviewItemPrDiff_'
-    AiAgentDocumentSummary:
-      $ref: '#/components/schemas/Omit_AiAgentDocument.storageKey_'
-    AiAgentReviewItemDismissedReason:
-      type: string
-      enum:
-      - not_actionable
-      - expected_behavior
-      - duplicate
-      - low_confidence
-      - other
-    AiAgentEvidenceExcerpt:
+    ApiSuccess_KnexPaginatedData_AiAgentAdminMemoriesSummary__:
       properties:
-        redacted:
-          type: boolean
-        text:
-          type: string
-        source:
+        results:
+          $ref: '#/components/schemas/KnexPaginatedData_AiAgentAdminMemoriesSummary_'
+        status:
           type: string
           enum:
-          - user_prompt
-          - assistant_answer
-          - next_user_prompt
-          - conversation_context
-          - tool_call
-          - tool_result
-          - agent_config
+          - ok
       required:
-      - redacted
-      - text
-      - source
+      - results
+      - status
+      type: object
+    ApiSuccess_KnexPaginatedData_AiAgentAdminEvalsSummary__:
+      properties:
+        results:
+          $ref: '#/components/schemas/KnexPaginatedData_AiAgentAdminEvalsSummary_'
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
+    AiReviewJiraRouting:
+      properties:
+        jiraIssueTypeId:
+          type:
+          - string
+          - 'null'
+        jiraProjectId:
+          type:
+          - string
+          - 'null'
+        enabled:
+          type: boolean
+        projectUuids:
+          items:
+            type: string
+          type: array
+        applyToAllProjects:
+          type: boolean
+        organizationUuid:
+          type: string
+      required:
+      - jiraIssueTypeId
+      - jiraProjectId
+      - enabled
+      - projectUuids
+      - applyToAllProjects
+      - organizationUuid
+      type: object
+    Pick_AiAgentDocument.Exclude_keyofAiAgentDocument.storageKey__:
+      properties:
+        name:
+          type: string
+        updatedAt:
+          type: string
+          format: date-time
+        uuid:
+          type: string
+        organizationUuid:
+          type: string
+        projectUuid:
+          type:
+          - string
+          - 'null'
+        createdAt:
+          type: string
+          format: date-time
+        originalFilename:
+          type: string
+        mimeType:
+          type: string
+        contentSizeBytes:
+          type: number
+          format: double
+        alwaysIncludeInContext:
+          type: boolean
+        summary:
+          $ref: '#/components/schemas/AiAgentDocumentStructuredSummary'
+        agentAccess:
+          items:
+            type: string
+          type: array
+        createdByUserUuid:
+          type:
+          - string
+          - 'null'
+        updatedByUserUuid:
+          type:
+          - string
+          - 'null'
+      required:
+      - name
+      - updatedAt
+      - uuid
+      - organizationUuid
+      - projectUuid
+      - createdAt
+      - originalFilename
+      - mimeType
+      - contentSizeBytes
+      - alwaysIncludeInContext
+      - summary
+      - agentAccess
+      - createdByUserUuid
+      - updatedByUserUuid
+      type: object
+      description: From T, pick a set of properties whose keys are in the union K
+    ApiAiAgentAdminEvalsResponse:
+      $ref: '#/components/schemas/ApiSuccess_KnexPaginatedData_AiAgentAdminEvalsSummary__'
+    Pick_AiAgentSummary.uuid-or-name-or-imageUrl_:
+      properties:
+        imageUrl:
+          type:
+          - string
+          - 'null'
+        name:
+          type: string
+        uuid:
+          type: string
+      required:
+      - imageUrl
+      - name
+      - uuid
+      type: object
+      description: From T, pick a set of properties whose keys are in the union K
+    AiAgentSkillParsed:
+      properties:
+        resources:
+          items:
+            $ref: '#/components/schemas/AiAgentSkillParsedResource'
+          type: array
+        body:
+          type: string
+        frontmatter:
+          $ref: '#/components/schemas/AiAgentSkillFrontmatter'
+      required:
+      - resources
+      - body
+      - frontmatter
+      type: object
+    AiAgentAdminFeedbackSummary:
+      properties:
+        total:
+          type: number
+          format: double
+        neutral:
+          type: number
+          format: double
+        downvotes:
+          type: number
+          format: double
+        upvotes:
+          type: number
+          format: double
+      required:
+      - total
+      - neutral
+      - downvotes
+      - upvotes
+      type: object
+    ApiSuccess_AiReviewLinearDestination_:
+      properties:
+        results:
+          $ref: '#/components/schemas/AiReviewLinearDestination'
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
+    ApiSuccess_AiReviewJiraRouting_:
+      properties:
+        results:
+          $ref: '#/components/schemas/AiReviewJiraRouting'
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
+    UUID:
+      type: string
+      format: uuid
+      description: 'Stringified UUIDv4.
+
+        See [RFC 4112](https://tools.ietf.org/html/rfc4122)'
+      pattern: '[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-4[0-9A-Fa-f]{3}-[89ABab][0-9A-Fa-f]{3}-[0-9A-Fa-f]{12}'
+    ApiUpdateAiAgentSkill:
+      properties:
+        files:
+          $ref: '#/components/schemas/AiAgentSkillFiles'
+      required:
+      - files
       type: object
     AiAgentAdminThreadSummary:
       allOf:
@@ -2222,132 +6268,234 @@ components:
         - project
         - agent
         type: object
-    Pick_AiAgentSummary.uuid-or-name-or-imageUrl_:
-      properties:
-        name:
-          type: string
-        uuid:
-          type: string
-        imageUrl:
-          type:
-          - string
-          - 'null'
-      required:
-      - name
-      - uuid
-      - imageUrl
-      type: object
-      description: From T, pick a set of properties whose keys are in the union K
-    AiAgentDocumentStructuredSummary:
-      properties:
-        warning:
-          type:
-          - string
-          - 'null'
-        relevance:
-          $ref: '#/components/schemas/AiAgentDocumentRelevance'
-        useWhen:
-          type: string
-        relatedExploreNames:
-          items:
-            type: string
-          type: array
-        definedTerms:
-          items:
-            type: string
-          type: array
-        description:
-          type: string
-      required:
-      - warning
-      - relevance
-      - useWhen
-      - relatedExploreNames
-      - definedTerms
-      - description
-      type: object
-    AiAgentAdminSortField:
+    AiAgentReviewItemOwnerType:
       type: string
       enum:
-      - createdAt
-      - title
-    AiAgentAdminFeedbackSummary:
+      - semantic_layer_owner
+      - agent_admin
+      - product
+      - support
+      - unknown
+    ApiErrorPayload:
       properties:
-        total:
-          type: number
-          format: double
-        neutral:
-          type: number
-          format: double
-        downvotes:
-          type: number
-          format: double
-        upvotes:
-          type: number
-          format: double
+        error:
+          properties:
+            data:
+              $ref: '#/components/schemas/AnyType'
+              description: Optional data containing details of the error
+            message:
+              type: string
+              description: A friendly message summarising the error
+            name:
+              type: string
+              description: Unique name for the type of error
+            statusCode:
+              type: number
+              format: integer
+              description: HTTP status code
+          required:
+          - name
+          - statusCode
+          type: object
+        status:
+          type: string
+          enum:
+          - error
       required:
-      - total
-      - neutral
-      - downvotes
-      - upvotes
+      - error
+      - status
       type: object
-    AiAgentReviewItemActivity:
+      description: 'The Error object is returned from the api any time there is an error.
+
+        The message contains'
+    McpActivityStatus:
+      type: string
+      enum:
+      - success
+      - error
+    AiAgentSkillFrontmatter:
       properties:
-        liveMessage:
+        compatibility:
           type:
           - string
           - 'null'
-          description: Streaming progress text for the live row (writeback step messages).
-        liveState:
-          allOf:
-          - $ref: '#/components/schemas/AiAgentReviewRemediationLiveState'
-        events:
+        license:
+          type:
+          - string
+          - 'null'
+        metadata:
+          $ref: '#/components/schemas/AiAgentSkillMetadata'
+        availability:
           items:
-            $ref: '#/components/schemas/AiAgentReviewRemediationEvent'
+            $ref: '#/components/schemas/AiAgentSkillAvailability'
           type: array
+        userInvocable:
+          type: boolean
+        disableModelInvocation:
+          type: boolean
+        arguments:
+          items:
+            type: string
+          type: array
+        argumentHint:
+          type:
+          - string
+          - 'null'
+        whenToUse:
+          type:
+          - string
+          - 'null'
+        title:
+          type:
+          - string
+          - 'null'
+        description:
+          type: string
+        name:
+          type: string
       required:
-      - liveMessage
-      - liveState
-      - events
+      - compatibility
+      - license
+      - metadata
+      - availability
+      - userInvocable
+      - disableModelInvocation
+      - arguments
+      - argumentHint
+      - whenToUse
+      - title
+      - description
+      - name
       type: object
-    ApiSuccessEmpty:
+      description: Frontmatter fields Lightdash honours, after defaults are applied.
+    AiModelOption:
       properties:
-        results: {}
+        supersededBy:
+          type:
+          - string
+          - 'null'
+          description: Current same-provider model that replaces a deprecated one; null unless it is in this list
+        deprecated:
+          type: boolean
+        supportsReasoning:
+          type: boolean
+        default:
+          type: boolean
+        groupLabel:
+          type: string
+        provider:
+          type: string
+        description:
+          type: string
+        displayName:
+          type: string
+        modelId:
+          type: string
+        name:
+          type: string
+      required:
+      - supersededBy
+      - deprecated
+      - supportsReasoning
+      - default
+      - provider
+      - description
+      - displayName
+      - modelId
+      - name
+      type: object
+    AiAgentThreadDumpToolCall:
+      properties:
+        servedSkill:
+          allOf:
+          - $ref: '#/components/schemas/ServedSkillMetadata'
+        isError:
+          type: boolean
+        resultOmitted:
+          type:
+          - string
+          - 'null'
+        result:
+          type:
+          - string
+          - 'null'
+        args: {}
+        source:
+          type: string
+          enum:
+          - lightdash
+          - mcp
+        name:
+          type: string
+        parentToolCallId:
+          type:
+          - string
+          - 'null'
+        toolCallId:
+          type: string
+      required:
+      - servedSkill
+      - isError
+      - resultOmitted
+      - result
+      - args
+      - source
+      - name
+      - parentToolCallId
+      - toolCallId
+      type: object
+    ApiAiAgentSkillDeleteResponse:
+      properties:
+        results:
+          properties:
+            unboundAgentUuids:
+              items:
+                type: string
+              type: array
+          required:
+          - unboundAgentUuids
+          type: object
         status:
           type: string
           enum:
           - ok
       required:
+      - results
       - status
       type: object
-    ApiAiAgentReviewItemResponse:
-      $ref: '#/components/schemas/ApiSuccess_AiAgentReviewItemSummary_'
-    AiAgentReviewItemPrDiffFile:
+    AiAgentReviewRemediationLiveState:
+      type: string
+      enum:
+      - writeback
+      - compiling
+      - verifying
+      description: 'The in-flight step of a remediation, derived from current status + which
+
+        events exist — never stored. Renders as the single accented "live" row.'
+    ApiAiReviewLinearBackfillResponse:
+      $ref: '#/components/schemas/ApiSuccess_AiReviewLinearBackfillResult_'
+    Pick_AiReviewLinearDestination.enabled-or-linearTeamId-or-linearProjectId_:
       properties:
-        after:
-          type: string
-        before:
-          type: string
-        deletions:
-          type: number
-          format: double
-        additions:
-          type: number
-          format: double
-        status:
-          type: string
-        path:
-          type: string
+        enabled:
+          type: boolean
+        linearTeamId:
+          type:
+          - string
+          - 'null'
+        linearProjectId:
+          type:
+          - string
+          - 'null'
       required:
-      - after
-      - before
-      - deletions
-      - additions
-      - status
-      - path
+      - enabled
+      - linearTeamId
+      - linearProjectId
       type: object
-    ApiAiAgentReviewItemsResponse:
-      $ref: '#/components/schemas/ApiSuccess_AiAgentReviewItemSummary-Array_'
+      description: From T, pick a set of properties whose keys are in the union K
+    ApiAiAgentReviewItemActivityResponse:
+      $ref: '#/components/schemas/ApiSuccess_AiAgentReviewItemActivity_'
+    ApiAiAgentReviewItemWritebackPreviewResponse:
+      $ref: '#/components/schemas/ApiSuccess_AiAgentReviewItemWritebackPreview_'
     AiAgentFixTarget:
       type: string
       enum:
@@ -2360,47 +6508,163 @@ components:
       - runtime_reliability_ticket
       - feedback_needed
       - no_action
-    AiAgentReviewItemWritebackPreview:
-      anyOf:
-      - properties:
-          entryId:
+    ApiSuccess_AiAgentReviewItemSummary_:
+      properties:
+        results:
+          $ref: '#/components/schemas/AiAgentReviewItemSummary'
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
+    ? Pick_AiAgent.uuid-or-name-or-description-or-integrations-or-tags-or-projectUuid-or-organizationUuid-or-createdAt-or-updatedAt-or-instruction-or-imageUrl-or-imageUrlSource-or-groupAccess-or-userAccess-or-userAccessDetails-or-spaceAccess-or-enableDataAccess-or-enableSelfImprovement-or-enableContentTools-or-enableUserContext-or-enableSqlMode-or-enableSqlAutoApproval-or-adminOnly-or-modelConfig-or-providerCredentialUuid-or-version-or-threadRetentionHours_
+    : properties:
+        description:
+          type:
+          - string
+          - 'null'
+        imageUrl:
+          type:
+          - string
+          - 'null'
+        name:
+          type: string
+        updatedAt:
+          type: string
+          format: date-time
+        version:
+          type: number
+          format: double
+        uuid:
+          type: string
+        organizationUuid:
+          type: string
+        projectUuid:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        userAccess:
+          items:
             type: string
-          op:
+          type: array
+        imageUrlSource:
+          type:
+          - string
+          - 'null'
+          enum:
+          - url
+          - upload
+          - null
+        tags:
+          items:
             type: string
-            enum:
-            - create
-            - update
-          after:
+          type:
+          - array
+          - 'null'
+        integrations:
+          items:
+            properties:
+              channelId:
+                type: string
+              type:
+                type: string
+                enum:
+                - slack
+            required:
+            - channelId
+            - type
+            type: object
+          type: array
+        instruction:
+          type:
+          - string
+          - 'null'
+        groupAccess:
+          items:
             type: string
-          before:
+          type: array
+        userAccessDetails:
+          items:
+            properties:
+              email:
+                type: string
+              lastName:
+                type: string
+              firstName:
+                type: string
+              userUuid:
+                type: string
+            required:
+            - email
+            - lastName
+            - firstName
+            - userUuid
+            type: object
+          type: array
+        spaceAccess:
+          items:
             type: string
-          fileName:
-            type: string
-          available:
-            type: boolean
-            enum:
-            - true
-        required:
-        - entryId
-        - op
-        - after
-        - before
-        - fileName
-        - available
-        type: object
-      - properties:
-          available:
-            type: boolean
-            enum:
-            - false
-        required:
-        - available
-        type: object
-      description: 'Preview of the file change a writeback PR would make, computed deterministically
-
-        (no PR opened). Only available for the project_context strategy — semantic_layer
-
-        runs in a sandbox, so there is no static diff to show before the PR is created.'
+          type: array
+        enableDataAccess:
+          type: boolean
+        enableSelfImprovement:
+          type: boolean
+        enableContentTools:
+          type: boolean
+        enableUserContext:
+          type: boolean
+        enableSqlMode:
+          type: boolean
+        enableSqlAutoApproval:
+          type: boolean
+        adminOnly:
+          type: boolean
+        modelConfig:
+          allOf:
+          - $ref: '#/components/schemas/AiAgentModelConfig'
+        providerCredentialUuid:
+          type:
+          - string
+          - 'null'
+        threadRetentionHours:
+          type:
+          - number
+          - 'null'
+          format: double
+      required:
+      - description
+      - imageUrl
+      - name
+      - updatedAt
+      - version
+      - uuid
+      - organizationUuid
+      - projectUuid
+      - createdAt
+      - userAccess
+      - imageUrlSource
+      - tags
+      - integrations
+      - instruction
+      - groupAccess
+      - userAccessDetails
+      - spaceAccess
+      - enableDataAccess
+      - enableSelfImprovement
+      - enableContentTools
+      - enableUserContext
+      - enableSqlMode
+      - enableSqlAutoApproval
+      - adminOnly
+      - modelConfig
+      - providerCredentialUuid
+      - threadRetentionHours
+      type: object
+      description: From T, pick a set of properties whose keys are in the union K
   securitySchemes:
     session_cookie:
       type: apiKey

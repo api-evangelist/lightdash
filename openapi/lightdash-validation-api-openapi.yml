@@ -1,7 +1,7 @@
 openapi: 3.2.0
 info:
   title: Lightdash Validation API
-  version: 0.3156.1
+  version: 2.616.2
   description: 'Open API documentation for all public Lightdash API endpoints. # Authentication Before you get started, you might need to create a Personal Access Token to authenticate via the API. You can create a token by following this guide: https://docs.lightdash.com/references/personal_tokens'
   license:
     name: MIT
@@ -96,6 +96,18 @@ paths:
         required: false
         schema:
           type: string
+      - description: filter to errors caused by this model/table
+        in: query
+        name: tableName
+        required: false
+        schema:
+          type: string
+      - description: filter to errors caused by this field
+        in: query
+        name: fieldName
+        required: false
+        schema:
+          type: string
       - description: whether to include chart configuration warnings
         in: query
         name: includeChartConfigWarnings
@@ -108,6 +120,36 @@ paths:
         required: false
         schema:
           type: boolean
+  /api/v2/projects/{projectUuid}/validate/summary:
+    get:
+      operationId: GetValidationSummary
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiValidationSummaryResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: 'Get validation errors grouped by root cause (e.g. all errors caused by
+
+        one deleted model), with counts and a capped list of affected content.'
+      summary: Get validation summary
+      tags:
+      - Validation
+      security: []
+      parameters:
+      - description: the projectId for the validation
+        in: path
+        name: projectUuid
+        required: true
+        schema:
+          type: string
   /api/v2/projects/{projectUuid}/validate/{validationIdOrUuid}:
     get:
       operationId: GetValidationResult
@@ -145,6 +187,160 @@ paths:
         schema: {}
 components:
   schemas:
+    AnyType:
+      description: 'This AnyType is an alias for any
+
+        The goal is to make it easier to identify any type in the codebase
+
+        without having to eslint-disable all the time
+
+        These are only used on legacy `any` types, don''t use it for new types.
+
+        This is added on a separate file to avoid circular dependencies.'
+    ApiPaginatedValidateResponse:
+      $ref: '#/components/schemas/ApiSuccess_KnexPaginatedData_ValidationResponse-Array__'
+    KnexPaginateArgs:
+      properties:
+        page:
+          type: number
+          format: double
+        pageSize:
+          type: number
+          format: double
+      required:
+      - page
+      - pageSize
+      type: object
+    ValidationResponse:
+      anyOf:
+      - $ref: '#/components/schemas/ValidationErrorChartResponse'
+      - $ref: '#/components/schemas/ValidationErrorDashboardResponse'
+      - $ref: '#/components/schemas/ValidationErrorTableResponse'
+      - $ref: '#/components/schemas/ValidationErrorDataAppResponse'
+    ApiSuccess_ValidationResponse_:
+      properties:
+        results:
+          $ref: '#/components/schemas/ValidationResponse'
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
+    ValidationErrorGroup:
+      properties:
+        hasMoreAffectedContent:
+          type: boolean
+        affectedContent:
+          items:
+            $ref: '#/components/schemas/ValidationAffectedContent'
+          type: array
+        sampleError:
+          type: string
+        affectedDataApps:
+          type: number
+          format: double
+        affectedTables:
+          type: number
+          format: double
+        affectedDashboards:
+          type: number
+          format: double
+        affectedCharts:
+          type: number
+          format: double
+        errorCount:
+          type: number
+          format: double
+        fieldName:
+          type:
+          - string
+          - 'null'
+        tableName:
+          type:
+          - string
+          - 'null'
+        errorType:
+          $ref: '#/components/schemas/ValidationErrorType'
+        groupKey:
+          type: string
+      required:
+      - hasMoreAffectedContent
+      - affectedContent
+      - sampleError
+      - affectedDataApps
+      - affectedTables
+      - affectedDashboards
+      - affectedCharts
+      - errorCount
+      - fieldName
+      - tableName
+      - errorType
+      - groupKey
+      type: object
+    ChartKind:
+      enum:
+      - line
+      - horizontal_bar
+      - vertical_bar
+      - scatter
+      - area
+      - mixed
+      - pie
+      - table
+      - big_number
+      - funnel
+      - custom
+      - treemap
+      - gauge
+      - map
+      - sankey
+      - data_app_viz
+      type: string
+    ApiSuccess_ValidationGroupedSummary_:
+      properties:
+        results:
+          $ref: '#/components/schemas/ValidationGroupedSummary'
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
+    ValidationAffectedContent:
+      properties:
+        errorCount:
+          type: number
+          format: double
+        views:
+          type: number
+          format: double
+        source:
+          $ref: '#/components/schemas/ValidationSourceType'
+        name:
+          type: string
+        uuid:
+          type:
+          - string
+          - 'null'
+      required:
+      - errorCount
+      - views
+      - source
+      - name
+      - uuid
+      type: object
+    DashboardFilterValidationErrorType:
+      enum:
+      - field_does_not_exist
+      - field_table_mismatch
+      - table_not_used_by_any_chart
+      - table_does_not_exist
+      type: string
     ValidationErrorDashboardResponse:
       allOf:
       - $ref: '#/components/schemas/ValidationResponseBase'
@@ -165,96 +361,173 @@ components:
             type: string
           chartName:
             type: string
+          dashboardSlug:
+            type: string
           dashboardUuid:
             type: string
         required:
         - dashboardViews
         type: object
-    ValidationResponse:
-      anyOf:
-      - $ref: '#/components/schemas/ValidationErrorChartResponse'
-      - $ref: '#/components/schemas/ValidationErrorDashboardResponse'
-      - $ref: '#/components/schemas/ValidationErrorTableResponse'
-    Pick_ValidationResponseBase.Exclude_keyofValidationResponseBase.name__:
-      properties:
-        projectUuid:
-          type: string
-        createdAt:
-          type: string
-          format: date-time
-        error:
-          type: string
-        source:
-          $ref: '#/components/schemas/ValidationSourceType'
-        validationUuid:
-          type: string
-        validationId:
-          type:
-          - number
-          - 'null'
-          format: double
-          deprecated: true
-        errorType:
-          $ref: '#/components/schemas/ValidationErrorType'
-        spaceUuid:
-          type: string
-      required:
-      - projectUuid
-      - createdAt
-      - error
-      - validationUuid
-      - validationId
-      - errorType
-      type: object
-      description: From T, pick a set of properties whose keys are in the union K
-    AnyType:
-      description: 'This AnyType is an alias for any
-
-        The goal is to make it easier to identify any type in the codebase
-
-        without having to eslint-disable all the time
-
-        These are only used on legacy `any` types, don''t use it for new types.
-
-        This is added on a separate file to avoid circular dependencies.'
     ApiSingleValidationResponse:
       $ref: '#/components/schemas/ApiSuccess_ValidationResponse_'
-    Omit_ValidationResponseBase.name_:
-      $ref: '#/components/schemas/Pick_ValidationResponseBase.Exclude_keyofValidationResponseBase.name__'
-      description: Construct a type with the properties of T except for those in type K.
-    ChartKind:
-      enum:
-      - line
-      - horizontal_bar
-      - vertical_bar
-      - scatter
-      - area
-      - mixed
-      - pie
-      - table
-      - big_number
-      - funnel
-      - custom
-      - treemap
-      - gauge
-      - map
-      - sankey
-      type: string
-    ApiPaginatedValidateResponse:
-      $ref: '#/components/schemas/ApiSuccess_KnexPaginatedData_ValidationResponse-Array__'
+    ValidationGroupedSummary:
+      properties:
+        groups:
+          items:
+            $ref: '#/components/schemas/ValidationErrorGroup'
+          type: array
+        totalAffectedItems:
+          type: number
+          format: double
+        totalErrors:
+          type: number
+          format: double
+      required:
+      - groups
+      - totalAffectedItems
+      - totalErrors
+      type: object
+    ValidationErrorTableResponse:
+      allOf:
+      - $ref: '#/components/schemas/Omit_ValidationResponseBase.name_'
+      - properties:
+          name:
+            type: string
+        type: object
+    ValidationErrorChartResponse:
+      allOf:
+      - $ref: '#/components/schemas/ValidationResponseBase'
+      - properties:
+          chartName:
+            type: string
+          chartViews:
+            type: number
+            format: double
+          lastUpdatedAt:
+            type: string
+            format: date-time
+          lastUpdatedBy:
+            type: string
+          tableName:
+            type: string
+          fieldName:
+            type: string
+          chartKind:
+            $ref: '#/components/schemas/ChartKind'
+          chartUuid:
+            type: string
+        required:
+        - chartViews
+        type: object
+    KnexPaginatedData_ValidationResponse-Array_:
+      properties:
+        pagination:
+          allOf:
+          - $ref: '#/components/schemas/KnexPaginateArgs'
+          - properties:
+              totalResults:
+                type: number
+                format: double
+              totalPageCount:
+                type: number
+                format: double
+            required:
+            - totalResults
+            - totalPageCount
+            type: object
+        data:
+          items:
+            $ref: '#/components/schemas/ValidationResponse'
+          type: array
+      required:
+      - data
+      type: object
+    ApiSuccess_KnexPaginatedData_ValidationResponse-Array__:
+      properties:
+        results:
+          $ref: '#/components/schemas/KnexPaginatedData_ValidationResponse-Array_'
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
+    ApiErrorPayload:
+      properties:
+        error:
+          properties:
+            data:
+              $ref: '#/components/schemas/AnyType'
+              description: Optional data containing details of the error
+            message:
+              type: string
+              description: A friendly message summarising the error
+            name:
+              type: string
+              description: Unique name for the type of error
+            statusCode:
+              type: number
+              format: integer
+              description: HTTP status code
+          required:
+          - name
+          - statusCode
+          type: object
+        status:
+          type: string
+          enum:
+          - error
+      required:
+      - error
+      - status
+      type: object
+      description: 'The Error object is returned from the api any time there is an error.
+
+        The message contains'
+    ValidationErrorDataAppResponse:
+      allOf:
+      - $ref: '#/components/schemas/ValidationResponseBase'
+      - properties:
+          lastUpdatedAt:
+            type: string
+            format: date-time
+          lastUpdatedBy:
+            type: string
+          modelName:
+            type: string
+          fieldName:
+            type: string
+          appUuid:
+            type: string
+          source:
+            $ref: '#/components/schemas/ValidationSourceType.DataApp'
+        required:
+        - source
+        type: object
     ValidationSourceType:
       enum:
       - chart
       - dashboard
+      - data_app
       - table
       type: string
-    DashboardFilterValidationErrorType:
+    ValidationErrorType:
       enum:
-      - field_does_not_exist
-      - field_table_mismatch
-      - table_not_used_by_any_chart
-      - table_does_not_exist
+      - chart
+      - sorting
+      - filter
+      - metric
+      - model
+      - dimension
+      - custom metric
+      - chart configuration
+      - explore split
       type: string
+    Omit_ValidationResponseBase.name_:
+      $ref: '#/components/schemas/Pick_ValidationResponseBase.Exclude_keyofValidationResponseBase.name__'
+      description: Construct a type with the properties of T except for those in type K.
     ValidationResponseBase:
       properties:
         source:
@@ -289,138 +562,44 @@ components:
       - validationId
       - validationUuid
       type: object
-    ValidationErrorType:
-      enum:
-      - chart
-      - sorting
-      - filter
-      - metric
-      - model
-      - dimension
-      - custom metric
-      - chart configuration
-      type: string
-    ApiSuccess_ValidationResponse_:
+    Pick_ValidationResponseBase.Exclude_keyofValidationResponseBase.name__:
       properties:
-        results:
-          $ref: '#/components/schemas/ValidationResponse'
-        status:
-          type: string
-          enum:
-          - ok
-      required:
-      - results
-      - status
-      type: object
-    ApiSuccess_KnexPaginatedData_ValidationResponse-Array__:
-      properties:
-        results:
-          $ref: '#/components/schemas/KnexPaginatedData_ValidationResponse-Array_'
-        status:
-          type: string
-          enum:
-          - ok
-      required:
-      - results
-      - status
-      type: object
-    KnexPaginatedData_ValidationResponse-Array_:
-      properties:
-        pagination:
-          allOf:
-          - $ref: '#/components/schemas/KnexPaginateArgs'
-          - properties:
-              totalResults:
-                type: number
-                format: double
-              totalPageCount:
-                type: number
-                format: double
-            required:
-            - totalResults
-            - totalPageCount
-            type: object
-        data:
-          items:
-            $ref: '#/components/schemas/ValidationResponse'
-          type: array
-      required:
-      - data
-      type: object
-    ApiErrorPayload:
-      properties:
+        source:
+          $ref: '#/components/schemas/ValidationSourceType'
         error:
-          properties:
-            data:
-              $ref: '#/components/schemas/AnyType'
-              description: Optional data containing details of the error
-            message:
-              type: string
-              description: A friendly message summarising the error
-            name:
-              type: string
-              description: Unique name for the type of error
-            statusCode:
-              type: number
-              format: integer
-              description: HTTP status code
-          required:
-          - name
-          - statusCode
-          type: object
-        status:
           type: string
-          enum:
-          - error
+        projectUuid:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        spaceUuid:
+          type: string
+        validationUuid:
+          type: string
+        validationId:
+          type:
+          - number
+          - 'null'
+          format: double
+          deprecated: true
+        errorType:
+          $ref: '#/components/schemas/ValidationErrorType'
       required:
       - error
-      - status
+      - projectUuid
+      - createdAt
+      - validationUuid
+      - validationId
+      - errorType
       type: object
-      description: 'The Error object is returned from the api any time there is an error.
-
-        The message contains'
-    KnexPaginateArgs:
-      properties:
-        page:
-          type: number
-          format: double
-        pageSize:
-          type: number
-          format: double
-      required:
-      - page
-      - pageSize
-      type: object
-    ValidationErrorTableResponse:
-      allOf:
-      - $ref: '#/components/schemas/Omit_ValidationResponseBase.name_'
-      - properties:
-          name:
-            type: string
-        type: object
-    ValidationErrorChartResponse:
-      allOf:
-      - $ref: '#/components/schemas/ValidationResponseBase'
-      - properties:
-          chartName:
-            type: string
-          chartViews:
-            type: number
-            format: double
-          lastUpdatedAt:
-            type: string
-            format: date-time
-          lastUpdatedBy:
-            type: string
-          fieldName:
-            type: string
-          chartKind:
-            $ref: '#/components/schemas/ChartKind'
-          chartUuid:
-            type: string
-        required:
-        - chartViews
-        type: object
+      description: From T, pick a set of properties whose keys are in the union K
+    ApiValidationSummaryResponse:
+      $ref: '#/components/schemas/ApiSuccess_ValidationGroupedSummary_'
+    ValidationSourceType.DataApp:
+      enum:
+      - data_app
+      type: string
   securitySchemes:
     session_cookie:
       type: apiKey

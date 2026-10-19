@@ -1,7 +1,7 @@
 openapi: 3.2.0
 info:
   title: Lightdash Project API
-  version: 0.3156.1
+  version: 2.616.2
   description: 'Open API documentation for all public Lightdash API endpoints. # Authentication Before you get started, you might need to create a Personal Access Token to authenticate via the API. You can create a token by following this guide: https://docs.lightdash.com/references/personal_tokens'
   license:
     name: MIT
@@ -15,6 +15,57 @@ tags:
 - name: Project
 paths:
   /api/v2/projects/{projectUuid}/deploy:
+    put:
+      operationId: deployExplores
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiSetExploresResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: Deploy explores with the full dbt model inventory for selective cleanup.
+      summary: Deploy explores
+      tags:
+      - Project
+      security: []
+      parameters:
+      - in: path
+        name: projectUuid
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              properties:
+                target:
+                  $ref: '#/components/schemas/DeployTarget'
+                sourceUuid:
+                  type: string
+                dbtModelNames:
+                  items:
+                    type: string
+                  type: array
+                complete:
+                  type: boolean
+                explores:
+                  items:
+                    $ref: '#/components/schemas/AnyType'
+                  type: array
+              required:
+              - dbtModelNames
+              - complete
+              - explores
+              type: object
     post:
       operationId: startDeploySession
       responses:
@@ -111,8 +162,118 @@ paths:
         required: true
         schema:
           type: string
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              properties:
+                target:
+                  $ref: '#/components/schemas/DeployTarget'
+                sourceUuid:
+                  type: string
+                dbtModelNames:
+                  items:
+                    type: string
+                  type: array
+              type: object
 components:
   schemas:
+    ApiAddDeployBatchResponse:
+      properties:
+        results:
+          properties:
+            exploreCount:
+              type: number
+              format: double
+            batchNumber:
+              type: number
+              format: double
+          required:
+          - exploreCount
+          - batchNumber
+          type: object
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
+    DeployTarget:
+      properties:
+        region:
+          type: string
+        database:
+          type: string
+      required:
+      - database
+      type: object
+    AnyType:
+      description: 'This AnyType is an alias for any
+
+        The goal is to make it easier to identify any type in the codebase
+
+        without having to eslint-disable all the time
+
+        These are only used on legacy `any` types, don''t use it for new types.
+
+        This is added on a separate file to avoid circular dependencies.'
+    ExploreWarningSummary:
+      allOf:
+      - $ref: '#/components/schemas/Pick_Explore.name_'
+      - properties:
+          warnings:
+            $ref: '#/components/schemas/NonNullable_Explore-at-warnings_'
+        required:
+        - warnings
+        type: object
+    InlineErrorType:
+      enum:
+      - METADATA_PARSE_ERROR
+      - NO_DIMENSIONS_FOUND
+      - SKIPPED_JOIN
+      - MISSING_TABLE
+      - FIELD_ERROR
+      - SET_VALIDATION_ERROR
+      - SHOW_UNDERLYING_VALUES_ERROR
+      - INVALID_PARAMETER
+      - DUPLICATE_FIELD_NAME
+      - MODEL_FILTER_ERROR
+      - WAREHOUSE_COLUMN_ERROR
+      type: string
+    ApiSetExploresResponse:
+      properties:
+        results:
+          $ref: '#/components/schemas/ApiDeployExploresResults'
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
+    Pick_Explore.name_:
+      properties:
+        name:
+          type: string
+      required:
+      - name
+      type: object
+      description: From T, pick a set of properties whose keys are in the union K
+    ApiDeployExploresResults:
+      properties:
+        warnings:
+          $ref: '#/components/schemas/ExploreWarningReport'
+        exploreCount:
+          type: number
+          format: double
+      required:
+      - warnings
+      - exploreCount
+      type: object
     ApiFinalizeDeployResponse:
       properties:
         results:
@@ -149,51 +310,6 @@ components:
       - results
       - status
       type: object
-    ApiDeployExploresResults:
-      properties:
-        warnings:
-          $ref: '#/components/schemas/ExploreWarningReport'
-        exploreCount:
-          type: number
-          format: double
-      required:
-      - warnings
-      - exploreCount
-      type: object
-    ExploreWarningSummary:
-      allOf:
-      - $ref: '#/components/schemas/Pick_Explore.name_'
-      - properties:
-          warnings:
-            $ref: '#/components/schemas/NonNullable_Explore-at-warnings_'
-        required:
-        - warnings
-        type: object
-    Pick_Explore.name_:
-      properties:
-        name:
-          type: string
-      required:
-      - name
-      type: object
-      description: From T, pick a set of properties whose keys are in the union K
-    ExploreWarningReport:
-      properties:
-        exploresWithWarnings:
-          items:
-            $ref: '#/components/schemas/ExploreWarningSummary'
-          type: array
-        warningExploreCount:
-          type: number
-          format: double
-        warningCount:
-          type: number
-          format: double
-      required:
-      - exploresWithWarnings
-      - warningExploreCount
-      - warningCount
-      type: object
     InlineError:
       properties:
         message:
@@ -204,57 +320,6 @@ components:
       - message
       - type
       type: object
-    ApiAddDeployBatchResponse:
-      properties:
-        results:
-          properties:
-            exploreCount:
-              type: number
-              format: double
-            batchNumber:
-              type: number
-              format: double
-          required:
-          - exploreCount
-          - batchNumber
-          type: object
-        status:
-          type: string
-          enum:
-          - ok
-      required:
-      - results
-      - status
-      type: object
-    NonNullable_Explore-at-warnings_:
-      allOf:
-      - items:
-          $ref: '#/components/schemas/InlineError'
-        type: array
-      - properties: {}
-        type: object
-      description: Exclude null and undefined from T
-    AnyType:
-      description: 'This AnyType is an alias for any
-
-        The goal is to make it easier to identify any type in the codebase
-
-        without having to eslint-disable all the time
-
-        These are only used on legacy `any` types, don''t use it for new types.
-
-        This is added on a separate file to avoid circular dependencies.'
-    InlineErrorType:
-      enum:
-      - METADATA_PARSE_ERROR
-      - NO_DIMENSIONS_FOUND
-      - SKIPPED_JOIN
-      - MISSING_TABLE
-      - FIELD_ERROR
-      - SET_VALIDATION_ERROR
-      - INVALID_PARAMETER
-      - DUPLICATE_FIELD_NAME
-      type: string
     DeploySessionStatus:
       enum:
       - uploading
@@ -294,6 +359,31 @@ components:
       description: 'The Error object is returned from the api any time there is an error.
 
         The message contains'
+    NonNullable_Explore-at-warnings_:
+      allOf:
+      - items:
+          $ref: '#/components/schemas/InlineError'
+        type: array
+      - properties: {}
+        type: object
+      description: Exclude null and undefined from T
+    ExploreWarningReport:
+      properties:
+        exploresWithWarnings:
+          items:
+            $ref: '#/components/schemas/ExploreWarningSummary'
+          type: array
+        warningExploreCount:
+          type: number
+          format: double
+        warningCount:
+          type: number
+          format: double
+      required:
+      - exploresWithWarnings
+      - warningExploreCount
+      - warningCount
+      type: object
   securitySchemes:
     session_cookie:
       type: apiKey

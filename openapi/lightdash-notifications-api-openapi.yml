@@ -1,7 +1,7 @@
 openapi: 3.2.0
 info:
   title: Lightdash Notifications API
-  version: 0.3156.1
+  version: 2.616.2
   description: 'Open API documentation for all public Lightdash API endpoints. # Authentication Before you get started, you might need to create a Personal Access Token to authenticate via the API. You can create a token by following this guide: https://docs.lightdash.com/references/personal_tokens'
   license:
     name: MIT
@@ -76,10 +76,36 @@ paths:
               $ref: '#/components/schemas/ApiNotificationUpdateParams'
 components:
   schemas:
-    ApiNotificationResourceType.DashboardComments:
-      enum:
-      - dashboardComments
-      type: string
+    AnyType:
+      description: 'This AnyType is an alias for any
+
+        The goal is to make it easier to identify any type in the codebase
+
+        without having to eslint-disable all the time
+
+        These are only used on legacy `any` types, don''t use it for new types.
+
+        This is added on a separate file to avoid circular dependencies.'
+    NotificationAiCreditAllowance:
+      allOf:
+      - $ref: '#/components/schemas/NotificationBase'
+      - properties:
+          metadata:
+            properties:
+              periodEnd:
+                type: string
+              thresholdPercent:
+                $ref: '#/components/schemas/AiCreditAllowanceAlertThreshold'
+            required:
+            - periodEnd
+            - thresholdPercent
+            type: object
+          resourceType:
+            $ref: '#/components/schemas/ApiNotificationResourceType.AiCreditAllowance'
+        required:
+        - metadata
+        - resourceType
+        type: object
     NotificationDashboardComment:
       allOf:
       - $ref: '#/components/schemas/NotificationBase'
@@ -91,20 +117,6 @@ components:
         required:
         - resourceType
         type: object
-    Notification:
-      $ref: '#/components/schemas/NotificationDashboardComment'
-    ApiGetNotifications:
-      properties:
-        results:
-          $ref: '#/components/schemas/ApiNotificationsResults'
-        status:
-          type: string
-          enum:
-          - ok
-      required:
-      - results
-      - status
-      type: object
     NotificationDashboardTileCommentMetadata:
       properties:
         dashboardUuid:
@@ -122,50 +134,6 @@ components:
       - dashboardTileName
       type: object
       additionalProperties: true
-    Pick_Notification.viewed_:
-      properties:
-        viewed:
-          type: boolean
-      required:
-      - viewed
-      type: object
-      description: From T, pick a set of properties whose keys are in the union K
-    AnyType:
-      description: 'This AnyType is an alias for any
-
-        The goal is to make it easier to identify any type in the codebase
-
-        without having to eslint-disable all the time
-
-        These are only used on legacy `any` types, don''t use it for new types.
-
-        This is added on a separate file to avoid circular dependencies.'
-    NotificationBase:
-      properties:
-        url:
-          type: string
-        message:
-          type: string
-        resourceUuid:
-          type: string
-        viewed:
-          type: boolean
-        createdAt:
-          type: string
-          format: date-time
-        notificationId:
-          type: string
-      required:
-      - viewed
-      - createdAt
-      - notificationId
-      type: object
-    ApiNotificationUpdateParams:
-      $ref: '#/components/schemas/Pick_Notification.viewed_'
-    ApiNotificationResourceType:
-      enum:
-      - dashboardComments
-      type: string
     ApiSuccessEmpty:
       properties:
         results: {}
@@ -176,10 +144,107 @@ components:
       required:
       - status
       type: object
-    ApiNotificationsResults:
-      items:
-        $ref: '#/components/schemas/Notification'
-      type: array
+    AiReviewNotificationEvent:
+      enum:
+      - needs_review
+      - assigned
+      type: string
+    ApiNotificationResourceType:
+      enum:
+      - dashboardComments
+      - aiReview
+      - contentReview
+      - aiCreditAllowance
+      type: string
+    NotificationAiReview:
+      allOf:
+      - $ref: '#/components/schemas/NotificationBase'
+      - properties:
+          metadata:
+            properties:
+              searchParams:
+                type: string
+              count:
+                type: number
+                format: double
+              projectUuid:
+                type: string
+              rootCause:
+                type: string
+              title:
+                type: string
+              event:
+                $ref: '#/components/schemas/AiReviewNotificationEvent'
+              fingerprint:
+                type: string
+            required:
+            - searchParams
+            - count
+            - projectUuid
+            - rootCause
+            - title
+            - event
+            - fingerprint
+            type: object
+          resourceType:
+            $ref: '#/components/schemas/ApiNotificationResourceType.AiReview'
+        required:
+        - metadata
+        - resourceType
+        type: object
+    ContentReviewNotificationEvent:
+      enum:
+      - submitted
+      - approved
+      - rejected
+      type: string
+    Notification:
+      anyOf:
+      - $ref: '#/components/schemas/NotificationDashboardComment'
+      - $ref: '#/components/schemas/NotificationAiReview'
+      - $ref: '#/components/schemas/NotificationContentReview'
+      - $ref: '#/components/schemas/NotificationAiCreditAllowance'
+    ApiNotificationUpdateParams:
+      $ref: '#/components/schemas/Pick_Notification.viewed_'
+    ApiNotificationResourceType.ContentReview:
+      enum:
+      - contentReview
+      type: string
+    ContentReviewContentType:
+      enum:
+      - chart
+      - dashboard
+      - sql_chart
+      - document
+      type: string
+    ApiGetNotifications:
+      properties:
+        results:
+          $ref: '#/components/schemas/ApiNotificationsResults'
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
+    Pick_Notification.viewed_:
+      properties:
+        viewed:
+          type: boolean
+      required:
+      - viewed
+      type: object
+      description: From T, pick a set of properties whose keys are in the union K
+    ApiNotificationResourceType.AiReview:
+      enum:
+      - aiReview
+      type: string
+    ApiNotificationResourceType.AiCreditAllowance:
+      enum:
+      - aiCreditAllowance
+      type: string
     ApiErrorPayload:
       properties:
         error:
@@ -212,6 +277,78 @@ components:
       description: 'The Error object is returned from the api any time there is an error.
 
         The message contains'
+    NotificationBase:
+      properties:
+        url:
+          type: string
+        message:
+          type: string
+        resourceUuid:
+          type: string
+        viewed:
+          type: boolean
+        createdAt:
+          type: string
+          format: date-time
+        notificationId:
+          type: string
+      required:
+      - viewed
+      - createdAt
+      - notificationId
+      type: object
+    NotificationContentReview:
+      allOf:
+      - $ref: '#/components/schemas/NotificationBase'
+      - properties:
+          metadata:
+            properties:
+              event:
+                $ref: '#/components/schemas/ContentReviewNotificationEvent'
+              requesterName:
+                type: string
+              targetSpaceName:
+                type: string
+              contentName:
+                type: string
+              contentUuid:
+                type: string
+              contentType:
+                $ref: '#/components/schemas/ContentReviewContentType'
+              projectUuid:
+                type: string
+              requestUuid:
+                type: string
+            required:
+            - event
+            - requesterName
+            - targetSpaceName
+            - contentName
+            - contentUuid
+            - contentType
+            - projectUuid
+            - requestUuid
+            type: object
+          resourceType:
+            $ref: '#/components/schemas/ApiNotificationResourceType.ContentReview'
+        required:
+        - metadata
+        - resourceType
+        type: object
+    ApiNotificationsResults:
+      items:
+        $ref: '#/components/schemas/Notification'
+      type: array
+    ApiNotificationResourceType.DashboardComments:
+      enum:
+      - dashboardComments
+      type: string
+    AiCreditAllowanceAlertThreshold:
+      type: number
+      enum:
+      - 50
+      - 80
+      - 100
   securitySchemes:
     session_cookie:
       type: apiKey

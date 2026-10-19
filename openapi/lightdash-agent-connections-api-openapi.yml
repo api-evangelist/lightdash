@@ -1,0 +1,717 @@
+openapi: 3.2.0
+info:
+  title: Lightdash Agent connections API
+  version: 2.616.2
+  description: 'Open API documentation for all public Lightdash API endpoints. # Authentication Before you get started, you might need to create a Personal Access Token to authenticate via the API. You can create a token by following this guide: https://docs.lightdash.com/references/personal_tokens'
+  license:
+    name: MIT
+  contact:
+    name: Lightdash Support
+    email: support@lightdash.com
+    url: https://docs.lightdash.com/help-and-contact/contact/contact_info/
+servers:
+- url: /
+tags:
+- name: Agent connections
+paths:
+  /api/v2/user/agent-connections/requests:
+    post:
+      operationId: RequestApproval
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                anyOf:
+                - $ref: '#/components/schemas/AgentConnectionApprovalResponse'
+                - $ref: '#/components/schemas/AgentConnectionApprovalErrorResponse'
+        default:
+          description: Approval request error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AgentConnectionApprovalErrorResponse'
+      tags:
+      - Agent connections
+      security: []
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AgentConnectionApprovalRequest'
+      summary: Request approval
+      x-summary-source: derived
+  /api/v2/user/agent-connections/requests/{requestUuid}:
+    get:
+      operationId: ReviewApproval
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                anyOf:
+                - $ref: '#/components/schemas/AgentConnectionApprovalReviewResponse'
+                - $ref: '#/components/schemas/AgentConnectionApprovalErrorResponse'
+        default:
+          description: Approval request error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AgentConnectionApprovalErrorResponse'
+      tags:
+      - Agent connections
+      security: []
+      parameters:
+      - in: path
+        name: requestUuid
+        required: true
+        schema:
+          $ref: '#/components/schemas/UUID'
+      summary: Review approval
+      x-summary-source: derived
+  /api/v2/user/agent-connections/requests/{requestUuid}/decision:
+    post:
+      operationId: DecideApproval
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                anyOf:
+                - $ref: '#/components/schemas/AgentConnectionApprovalDecisionResponse'
+                - $ref: '#/components/schemas/AgentConnectionApprovalErrorResponse'
+        default:
+          description: Approval request error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AgentConnectionApprovalErrorResponse'
+      tags:
+      - Agent connections
+      security: []
+      parameters:
+      - in: path
+        name: requestUuid
+        required: true
+        schema:
+          $ref: '#/components/schemas/UUID'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AgentConnectionApprovalDecision'
+      summary: Decide approval
+      x-summary-source: derived
+  /api/v2/user/agent-connections/requests/{requestUuid}/completion:
+    get:
+      operationId: CompleteApproval
+      responses:
+        '302':
+          description: Return to client
+          content:
+            application/json:
+              schema:
+                anyOf:
+                - {}
+                - $ref: '#/components/schemas/AgentConnectionApprovalErrorResponse'
+        default:
+          description: Approval request error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AgentConnectionApprovalErrorResponse'
+      tags:
+      - Agent connections
+      security: []
+      parameters:
+      - in: path
+        name: requestUuid
+        required: true
+        schema:
+          $ref: '#/components/schemas/UUID'
+      summary: Complete approval
+      x-summary-source: derived
+  /api/v2/user/agent-connections:
+    get:
+      operationId: List
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                properties:
+                  results:
+                    items:
+                      $ref: '#/components/schemas/AgentConnectionRecord'
+                    type: array
+                  status:
+                    type: string
+                    enum:
+                    - ok
+                required:
+                - results
+                - status
+                type: object
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: Lists the signed-in person's agent connections and stored approvals.
+      summary: List agent connections
+      tags:
+      - Agent connections
+      security: []
+      parameters: []
+  /api/v2/user/agent-connections/{grantUuid}/status:
+    get:
+      operationId: GetConnectionStatus
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                properties:
+                  results:
+                    $ref: '#/components/schemas/AgentConnectionStatus'
+                  status:
+                    type: string
+                    enum:
+                    - ok
+                required:
+                - results
+                - status
+                type: object
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: 'Reads stored approval and current project and action restrictions.
+
+        An allowed action has current person permission, organisation agent policy
+
+        approval, and support from an agent connection in that project.
+
+        A request can still be refused by a narrower rule: private-space access,
+
+        a protected branch, a second required action (uploads need Deploy and upload),
+
+        or scheduled pre-aggregate refreshes in the project.'
+      summary: Get connection status
+      tags:
+      - Agent connections
+      security: []
+      parameters:
+      - in: path
+        name: grantUuid
+        required: true
+        schema:
+          $ref: '#/components/schemas/UUID'
+  /api/v2/user/agent-connections/{grantUuid}:
+    delete:
+      operationId: Revoke
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                properties:
+                  results:
+                    $ref: '#/components/schemas/AgentConnectionRecord'
+                  status:
+                    type: string
+                    enum:
+                    - ok
+                required:
+                - results
+                - status
+                type: object
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorPayload'
+      description: Revokes the whole connection and returns its stored state.
+      summary: Revoke agent connection
+      tags:
+      - Agent connections
+      security: []
+      parameters:
+      - in: path
+        name: grantUuid
+        required: true
+        schema:
+          $ref: '#/components/schemas/UUID'
+components:
+  schemas:
+    AgentCapability:
+      enum:
+      - read_discover
+      - query
+      - raw_sql
+      - content_write
+      - delete
+      - publish
+      - deploy_upload
+      - dbt_writeback
+      - export
+      - administration
+      - external_tools
+      type: string
+    AnyType:
+      description: 'This AnyType is an alias for any
+
+        The goal is to make it easier to identify any type in the codebase
+
+        without having to eslint-disable all the time
+
+        These are only used on legacy `any` types, don''t use it for new types.
+
+        This is added on a separate file to avoid circular dependencies.'
+    AgentConnectionApprovalErrorCode:
+      type: string
+      enum:
+      - authentication_required
+      - agent_identity_disabled
+      - person_required
+      - browser_session_required
+      - approval_forbidden
+      - csrf_failed
+      - invalid_approval_request
+      - too_many_projects
+      - pending_request_limit
+      - agent_connections_unavailable
+      - approval_request_not_found
+      - approval_request_expired
+      - approval_request_consumed
+      - approval_not_decided
+      - approval_selection_changed
+      - internal_error
+    UuidOrSlug:
+      type: string
+      description: A resource UUID or its URL slug. Resolve to a real UUID before using as a key.
+    UUID:
+      type: string
+      format: uuid
+      description: 'Stringified UUIDv4.
+
+        See [RFC 4112](https://tools.ietf.org/html/rfc4122)'
+      pattern: '[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-4[0-9A-Fa-f]{3}-[89ABab][0-9A-Fa-f]{3}-[0-9A-Fa-f]{12}'
+    AgentConnectionApprovalCapability:
+      properties:
+        reason:
+          type:
+          - string
+          - 'null'
+        reasonCode:
+          type:
+          - string
+          - 'null'
+        visibility:
+          type: string
+          enum:
+          - offered
+          - hidden
+          - blocked
+        capability:
+          $ref: '#/components/schemas/AgentCapability'
+      required:
+      - reason
+      - reasonCode
+      - visibility
+      - capability
+      type: object
+    AgentConnectionApprovalReview:
+      properties:
+        revision:
+          type: number
+          format: double
+        nonce:
+          type: string
+        projects:
+          items:
+            $ref: '#/components/schemas/AgentConnectionApprovalProject'
+          type: array
+        notice:
+          type: string
+          enum:
+          - Review only. No connection will be created.
+        request:
+          properties:
+            expiresAt:
+              type: string
+            expiresInSeconds:
+              type: number
+              format: double
+            clientLabel:
+              type: string
+            name:
+              type: string
+          required:
+          - expiresAt
+          - expiresInSeconds
+          - clientLabel
+          - name
+          type: object
+      required:
+      - revision
+      - nonce
+      - projects
+      - notice
+      - request
+      type: object
+    AgentConnectionApprovalReviewResponse:
+      properties:
+        results:
+          $ref: '#/components/schemas/AgentConnectionApprovalReview'
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
+    AgentConnectionApprovalErrorResponse:
+      properties:
+        error:
+          properties:
+            review:
+              $ref: '#/components/schemas/AgentConnectionApprovalReview'
+            message:
+              type: string
+            code:
+              $ref: '#/components/schemas/AgentConnectionApprovalErrorCode'
+            name:
+              type: string
+              enum:
+              - AgentConnectionApprovalError
+            statusCode:
+              type: number
+              format: double
+          required:
+          - message
+          - code
+          - name
+          - statusCode
+          type: object
+        status:
+          type: string
+          enum:
+          - error
+      required:
+      - error
+      - status
+      type: object
+    AgentConnectionRecord:
+      properties:
+        revokedAt:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        status:
+          type: string
+          enum:
+          - active
+          - expired
+          - revoked
+        lastUsedAt:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        expiresAt:
+          type: string
+          format: date-time
+        approvedAt:
+          type: string
+          format: date-time
+        approvedProjects:
+          items:
+            properties:
+              approvedCapabilities:
+                items:
+                  $ref: '#/components/schemas/AgentCapability'
+                type: array
+              name:
+                type:
+                - string
+                - 'null'
+              projectUuid:
+                $ref: '#/components/schemas/UUID'
+            required:
+            - approvedCapabilities
+            - name
+            - projectUuid
+            type: object
+          type: array
+        limitsStatus:
+          type: string
+          enum:
+          - ok
+          - invalid
+        clientId:
+          type: string
+        name:
+          type: string
+        grantUuid:
+          $ref: '#/components/schemas/UUID'
+      required:
+      - revokedAt
+      - status
+      - lastUsedAt
+      - expiresAt
+      - approvedAt
+      - approvedProjects
+      - limitsStatus
+      - clientId
+      - name
+      - grantUuid
+      type: object
+    AgentConnectionApprovalDecision:
+      properties:
+        capabilities:
+          items:
+            $ref: '#/components/schemas/AgentCapability'
+          type: array
+        projectUuids:
+          items:
+            $ref: '#/components/schemas/UUID'
+          type: array
+        nonce:
+          type: string
+        revision:
+          type: number
+          format: double
+        decision:
+          type: string
+          enum:
+          - approve
+          - deny
+      required:
+      - capabilities
+      - projectUuids
+      - nonce
+      - revision
+      - decision
+      type: object
+    AgentConnectionApprovalDecisionResponse:
+      properties:
+        results:
+          properties:
+            completionUrl:
+              type: string
+          required:
+          - completionUrl
+          type: object
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
+    AgentConnectionApprovalRequest:
+      properties:
+        resource:
+          type: string
+        codeChallengeMethod:
+          type: string
+          enum:
+          - S256
+        codeChallenge:
+          type: string
+        state:
+          type: string
+        redirectUri:
+          type: string
+        expiresInSeconds:
+          type: number
+          format: double
+        capabilities:
+          items:
+            $ref: '#/components/schemas/AgentCapability'
+          type: array
+        projects:
+          items:
+            $ref: '#/components/schemas/UuidOrSlug'
+          type:
+          - array
+          - 'null'
+        name:
+          type: string
+        clientId:
+          type: string
+          enum:
+          - lightdash-cli
+      required:
+      - resource
+      - codeChallengeMethod
+      - codeChallenge
+      - state
+      - redirectUri
+      - expiresInSeconds
+      - capabilities
+      - projects
+      - name
+      - clientId
+      type: object
+    ApiErrorPayload:
+      properties:
+        error:
+          properties:
+            data:
+              $ref: '#/components/schemas/AnyType'
+              description: Optional data containing details of the error
+            message:
+              type: string
+              description: A friendly message summarising the error
+            name:
+              type: string
+              description: Unique name for the type of error
+            statusCode:
+              type: number
+              format: integer
+              description: HTTP status code
+          required:
+          - name
+          - statusCode
+          type: object
+        status:
+          type: string
+          enum:
+          - error
+      required:
+      - error
+      - status
+      type: object
+      description: 'The Error object is returned from the api any time there is an error.
+
+        The message contains'
+    AgentConnectionStatus:
+      allOf:
+      - $ref: '#/components/schemas/AgentConnectionRecord'
+      - properties:
+          effectiveProjects:
+            items:
+              properties:
+                capabilities:
+                  items:
+                    properties:
+                      reason:
+                        type:
+                        - string
+                        - 'null'
+                        enum:
+                        - invalid_grant
+                        - not_supported
+                        - revoked
+                        - expired
+                        - agent_identity_disabled
+                        - project_access
+                        - person_permission
+                        - agent_policy
+                        - null
+                      allowed:
+                        type: boolean
+                        description: 'Current person permissions and organisation agent policy permit this
+
+                          action in this project, and an agent connection supports it.
+
+                          A request can still be refused by private-space access, a protected
+
+                          branch, a second required action (uploads also need Deploy and upload),
+
+                          or scheduled pre-aggregate refreshes in the project.'
+                      capability:
+                        $ref: '#/components/schemas/AgentCapability'
+                    required:
+                    - reason
+                    - allowed
+                    - capability
+                    type: object
+                  type: array
+                projectUuid:
+                  $ref: '#/components/schemas/UUID'
+              required:
+              - capabilities
+              - projectUuid
+              type: object
+            type: array
+        required:
+        - effectiveProjects
+        type: object
+    AgentConnectionApprovalResponse:
+      properties:
+        results:
+          properties:
+            expiresAt:
+              type: string
+            resource:
+              type: string
+            issuer:
+              type: string
+            authorizationUrl:
+              type: string
+          required:
+          - expiresAt
+          - resource
+          - issuer
+          - authorizationUrl
+          type: object
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
+    AgentConnectionApprovalProject:
+      properties:
+        capabilities:
+          items:
+            $ref: '#/components/schemas/AgentConnectionApprovalCapability'
+          type: array
+        reason:
+          type:
+          - string
+          - 'null'
+        selectable:
+          type: boolean
+        name:
+          type: string
+        projectUuid:
+          type: string
+      required:
+      - capabilities
+      - reason
+      - selectable
+      - name
+      - projectUuid
+      type: object
+  securitySchemes:
+    session_cookie:
+      type: apiKey
+      in: cookie
+      name: connect.sid
+    api_key:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: Value should be 'ApiKey <your key>'

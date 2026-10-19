@@ -1,7 +1,7 @@
 openapi: 3.2.0
 info:
   title: Lightdash GitHub API
-  version: 0.3156.1
+  version: 2.616.2
   description: 'Open API documentation for all public Lightdash API endpoints. # Authentication Before you get started, you might need to create a Personal Access Token to authenticate via the API. You can create a token by following this guide: https://docs.lightdash.com/references/personal_tokens'
   license:
     name: MIT
@@ -177,7 +177,9 @@ paths:
                 - results
                 - status
                 type: object
-      description: List GitHub repositories accessible via the installed app
+      description: 'List GitHub repositories accessible via the installed app. Requires
+
+        permission to manage the organization''s Git integration.'
       summary: List GitHub repositories
       security: []
       parameters: []
@@ -240,29 +242,6 @@ paths:
       - Github
 components:
   schemas:
-    ApiSuccessEmpty:
-      properties:
-        results: {}
-        status:
-          type: string
-          enum:
-          - ok
-      required:
-      - status
-      type: object
-    ApiGithubUserCredentialResponse:
-      properties:
-        results:
-          allOf:
-          - $ref: '#/components/schemas/GithubUserCredential'
-        status:
-          type: string
-          enum:
-          - ok
-      required:
-      - results
-      - status
-      type: object
     GithubUserCredential:
       properties:
         createdAt:
@@ -277,6 +256,19 @@ components:
       description: 'A user''s personally linked GitHub account. When present, write-backs are
 
         authored as this user instead of the Lightdash GitHub App bot.'
+    ApiGithubUserCredentialResponse:
+      properties:
+        results:
+          allOf:
+          - $ref: '#/components/schemas/GithubUserCredential'
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - results
+      - status
+      type: object
     GitIntegrationConfiguration:
       properties:
         installationId:
@@ -286,8 +278,25 @@ components:
       required:
       - enabled
       type: object
+    ApiSuccessEmpty:
+      properties:
+        results: {}
+        status:
+          type: string
+          enum:
+          - ok
+      required:
+      - status
+      type: object
     GitRepo:
       properties:
+        writable:
+          type: boolean
+        provider:
+          type: string
+          enum:
+          - github
+          - gitlab
         defaultBranch:
           type: string
         ownerLogin:
