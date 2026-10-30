@@ -1,4 +1,4 @@
-# Lightdash (lightdash)
+# Lightdash
 
 <!-- API-EVANGELIST-PROVENANCE:BEGIN -->
 > ### About this repository
@@ -64,63 +64,244 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-Lightdash is an open-source business intelligence platform built on top of dbt that connects directly to the semantic layer defined in dbt projects. It provides a REST API covering core data operations including catalog management, chart and dashboard CRUD, SQL runner queries, scheduling and automated deliveries, user and access control, AI agent threads, and integrations with GitHub, GitLab, Slack, and Google Sheets. Lightdash is available as a managed cloud service (Cloud Pro and Enterprise) or as a free self-hosted open-source deployment.
+Lightdash is an open-source business intelligence platform built on top of dbt that connects directly to the semantic layer defined in dbt projects. It provides a REST API covering core data operations including catalog management, chart and dashboard CRUD, SQL runner queries, scheduling and automated deliveries, user and access control, AI agent threads, and integrations with GitHub, GitLab, Slack, and Google Sheets. Authentication uses Personal Access Tokens passed via the Authorization header. Lightdash is available as a managed cloud service or self-hosted, with pricing based on cloud-hosted plans or free open-source self-hosting.
 
-**APIs.json:** https://raw.githubusercontent.com/api-evangelist/lightdash/refs/heads/main/apis.yml
+**Areas:** Business Intelligence · Analytics · dbt · Semantic Layer · Open Source · Dashboards · Data
 
-**Naftiko Fleet:** https://github.com/naftiko/fleet?utm_source=api-evangelist&utm_medium=readme&utm_campaign=lightdash-api-evangelist&utm_content=repo
+## Lightdash on APIs.io
 
-## Tags
+Everything profiled for Lightdash is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/lightdash/](https://apis.io/providers/lightdash/)** — or go straight to one of the APIs or properties below.
 
-- Business Intelligence
-- Analytics
-- dbt
-- Semantic Layer
-- Open Source
-- Dashboards
-- Data
+### APIs (49)
 
-## APIs
+- [Lightdash Bulk action API](https://apis.io/apis/lightdash/lightdash-bulk-action-api/) — The Bulk action API from Lightdash — 1 operation(s) for bulk action.
+- [Lightdash Catalog API](https://apis.io/apis/lightdash/lightdash-catalog-api/) — The Catalog API from Lightdash — 23 operation(s) for catalog.
+- [Lightdash Changesets API](https://apis.io/apis/lightdash/lightdash-changesets-api/) — The Changesets API from Lightdash — 4 operation(s) for changesets.
+- [Lightdash Charts API](https://apis.io/apis/lightdash/lightdash-charts-api/) — The Charts API from Lightdash — 15 operation(s) for charts.
+- [Lightdash Comments API](https://apis.io/apis/lightdash/lightdash-comments-api/) — The Comments API from Lightdash — 3 operation(s) for comments.
+- [Lightdash Content API](https://apis.io/apis/lightdash/lightdash-content-api/) — The Content API from Lightdash — 9 operation(s) for content.
+- [Lightdash Custom Roles API](https://apis.io/apis/lightdash/lightdash-custom-roles-api/) — The Custom Roles API from Lightdash — 5 operation(s) for custom roles.
+- [Lightdash Dashboards API](https://apis.io/apis/lightdash/lightdash-dashboards-api/) — The Dashboards API from Lightdash — 11 operation(s) for dashboards.
+- [Lightdash Explorer API](https://apis.io/apis/lightdash/lightdash-explorer-api/) — The Explorer API from Lightdash — 2 operation(s) for explorer.
+- [Lightdash Exploring API](https://apis.io/apis/lightdash/lightdash-exploring-api/) — The Exploring API from Lightdash — 3 operation(s) for exploring.
+- [Lightdash Exports API](https://apis.io/apis/lightdash/lightdash-exports-api/) — The Exports API from Lightdash — 1 operation(s) for exports.
+- [Lightdash Feature Flag API](https://apis.io/apis/lightdash/lightdash-feature-flag-api/) — The Feature Flag API from Lightdash — 1 operation(s) for feature flag.
+- [Lightdash Files API](https://apis.io/apis/lightdash/lightdash-files-api/) — The Files API from Lightdash — 1 operation(s) for files.
+- [Lightdash Funnel API](https://apis.io/apis/lightdash/lightdash-funnel-api/) — The Funnel API from Lightdash — 2 operation(s) for funnel.
+- [Lightdash Git Files API](https://apis.io/apis/lightdash/lightdash-git-files-api/) — The Git Files API from Lightdash — 3 operation(s) for git files.
+- [Lightdash Git Integration API](https://apis.io/apis/lightdash/lightdash-git-integration-api/) — The Git Integration API from Lightdash — 5 operation(s) for git integration.
+- [Lightdash Github API](https://apis.io/apis/lightdash/lightdash-github-api/) — The Github API from Lightdash — 8 operation(s) for github.
+- [Lightdash Gitlab API](https://apis.io/apis/lightdash/lightdash-gitlab-api/) — The Gitlab API from Lightdash — 4 operation(s) for gitlab.
+- [Lightdash Impersonation API](https://apis.io/apis/lightdash/lightdash-impersonation-api/) — The Impersonation API from Lightdash — 2 operation(s) for impersonation.
+- [Lightdash Integrations API](https://apis.io/apis/lightdash/lightdash-integrations-api/) — The Integrations API from Lightdash — 10 operation(s) for integrations.
+- [Lightdash Map API](https://apis.io/apis/lightdash/lightdash-map-api/) — The Map API from Lightdash — 1 operation(s) for map.
+- [Lightdash Metrics API](https://apis.io/apis/lightdash/lightdash-metrics-api/) — The Metrics API from Lightdash — 2 operation(s) for metrics.
+- [Lightdash Metrics Explorer API](https://apis.io/apis/lightdash/lightdash-metrics-explorer-api/) — The Metrics Explorer API from Lightdash — 2 operation(s) for metrics explorer.
+- [Lightdash Move content API](https://apis.io/apis/lightdash/lightdash-move-content-api/) — The Move content API from Lightdash — 2 operation(s) for move content.
+- [Lightdash My Account API](https://apis.io/apis/lightdash/lightdash-my-account-api/) — These routes allow users to manage their own user account.
+- [Lightdash Notifications API](https://apis.io/apis/lightdash/lightdash-notifications-api/) — The Notifications API from Lightdash — 2 operation(s) for notifications.
+- [Lightdash Org API](https://apis.io/apis/lightdash/lightdash-org-api/) — The Org API from Lightdash — 5 operation(s) for org.
+- [Lightdash Organization Roles API](https://apis.io/apis/lightdash/lightdash-organization-roles-api/) — The Organization Roles API from Lightdash — 5 operation(s) for organization roles.
+- [Lightdash Organization Warehouse Credentials API](https://apis.io/apis/lightdash/lightdash-organization-warehouse-credentials-api/) — The Organization Warehouse Credentials API from Lightdash — 2 operation(s) for organization warehouse credentials.
+- [Lightdash Organizations API](https://apis.io/apis/lightdash/lightdash-organizations-api/) — Each user is a member of a single organization. These routes allow users to manage their organization. Most actions are only available to admin users.
+- [Lightdash Parameters API](https://apis.io/apis/lightdash/lightdash-parameters-api/) — The Parameters API from Lightdash — 2 operation(s) for parameters.
+- [Lightdash Pre-Aggregates API](https://apis.io/apis/lightdash/lightdash-pre-aggregates-api/) — The Pre-Aggregates API from Lightdash — 3 operation(s) for pre-aggregates.
+- [Lightdash Project API](https://apis.io/apis/lightdash/lightdash-project-api/) — The Project API from Lightdash — 3 operation(s) for project.
+- [Lightdash Project Roles API](https://apis.io/apis/lightdash/lightdash-project-roles-api/) — The Project Roles API from Lightdash — 3 operation(s) for project roles.
+- [Lightdash Projects API](https://apis.io/apis/lightdash/lightdash-projects-api/) — Projects belong to a single organization. These routes allow users to manage their projects, browse content, and execute queries. Users inside an…
+- [Lightdash Pull Requests API](https://apis.io/apis/lightdash/lightdash-pull-requests-api/) — The Pull Requests API from Lightdash — 1 operation(s) for pull requests.
+- [Lightdash Query API](https://apis.io/apis/lightdash/lightdash-query-api/) — These routes allow users to execute and manage queries against their data warehouse. This includes metric queries, SQL queries, and retrieving query results.
+- [Lightdash Roles & Permissions API](https://apis.io/apis/lightdash/lightdash-roles-permissions-api/) — These routes allow users to manage roles and permissions for their organization.
+- [Lightdash Schedulers API](https://apis.io/apis/lightdash/lightdash-schedulers-api/) — The Schedulers API from Lightdash — 12 operation(s) for schedulers.
+- [Lightdash SCIM API](https://apis.io/apis/lightdash/lightdash-scim-api/) — The SCIM API from Lightdash — 12 operation(s) for scim.
+- [Lightdash Share links API](https://apis.io/apis/lightdash/lightdash-share-links-api/) — The Share links API from Lightdash — 2 operation(s) for share links.
+- [Lightdash Spaces API](https://apis.io/apis/lightdash/lightdash-spaces-api/) — Spaces allow you to organize charts and dashboards within a project. They also allow granular access to content by allowing you to create private spaces,…
+- [Lightdash Spotlight API](https://apis.io/apis/lightdash/lightdash-spotlight-api/) — The Spotlight API from Lightdash — 1 operation(s) for spotlight.
+- [Lightdash SQL runner API](https://apis.io/apis/lightdash/lightdash-sql-runner-api/) — The SQL runner API from Lightdash — 18 operation(s) for sql runner.
+- [Lightdash SSH Keypairs API](https://apis.io/apis/lightdash/lightdash-ssh-keypairs-api/) — The SSH Keypairs API from Lightdash — 1 operation(s) for ssh keypairs.
+- [Lightdash User attributes API](https://apis.io/apis/lightdash/lightdash-user-attributes-api/) — The User attributes API from Lightdash — 2 operation(s) for user attributes.
+- [Lightdash User Groups API](https://apis.io/apis/lightdash/lightdash-user-groups-api/) — The User Groups API from Lightdash — 4 operation(s) for user groups.
+- [Lightdash Validation API](https://apis.io/apis/lightdash/lightdash-validation-api/) — The Validation API from Lightdash — 2 operation(s) for validation.
+- [Lightdash AI Agents API](https://apis.io/apis/lightdash/lightdash-ai-agents-api/) — The AI Agents API from Lightdash — 13 operation(s) for ai agents.
 
-| Name | Description | Docs |
-|------|-------------|------|
-| Lightdash REST API | Public REST API for catalog, projects, charts, dashboards, spaces, SQL runner, schedulers, user management, AI agents, and integrations | [Docs](https://docs.lightdash.com/api-reference/v1/introduction) |
+### Published properties
 
-## Plans, Rate Limits, and FinOps
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
 
-| Resource | File |
-|----------|------|
-| Plans & Pricing | [plans/lightdash-plans-pricing.yml](plans/lightdash-plans-pricing.yml) |
-| Rate Limits | [rate-limits/lightdash-rate-limits.yml](rate-limits/lightdash-rate-limits.yml) |
-| FinOps | [finops/lightdash-finops.yml](finops/lightdash-finops.yml) |
+#### MCP servers (1)
 
-**Pricing summary:**
-- Open Source (Self-Hosted): Free
-- Cloud Pro: $3,000/month — unlimited users, AI agents, scheduled reports, 1-day SLA
-- Enterprise: Custom — on-premise option, SSO/SAML/SCIM 2.0, 8-hour SLA
+Model Context Protocol servers that expose the API to agents.
 
-## Timestamps
+- [lightdash](https://apis.io/servers/lightdash/lightdash/)
 
-- **Created:** 2026-06-12
-- **Modified:** 2026-06-12
+#### Agentic access (1)
 
-## Common Properties
+Which operations an agent can call, which act, and which need a human in the loop.
 
-| Type | URL |
-|------|-----|
-| Website | https://www.lightdash.com |
-| Documentation | https://docs.lightdash.com |
-| API Reference | https://docs.lightdash.com/api-reference/v1/introduction |
-| OpenAPI Spec | https://docs.lightdash.com/api-reference/openapi.json |
-| GitHub Organization | https://github.com/lightdash |
-| LinkedIn | https://www.linkedin.com/company/lightdash |
-| X (Twitter) | https://x.com/lightdash_devs |
-| Blog | https://www.lightdash.com/blog |
-| Pricing | https://www.lightdash.com/pricing |
-| Status Page | https://status.lightdash.com |
+- [Lightdash Agentic Access](https://apis.io/agentic-access/lightdash/lightdash-agentic-access/)
 
-## Maintainers
+#### JSON Schema (8)
 
-| Name | Email |
-|------|-------|
-| Kin Lane | kin@apievangelist.com |
+The data models the API reads and writes.
+
+- [ApiErrorPayload](https://apis.io/schemas/lightdash/lightdash-apierrorpayload/)
+- [ChartSummary](https://apis.io/schemas/lightdash/lightdash-chartsummary/)
+- [Dashboard](https://apis.io/schemas/lightdash/lightdash-dashboard/)
+- [Project](https://apis.io/schemas/lightdash/lightdash-project/)
+- [SchedulerAndTargets](https://apis.io/schemas/lightdash/lightdash-schedulerandtargets/)
+- [ScimUser](https://apis.io/schemas/lightdash/lightdash-scimuser/)
+- [ServiceAccount](https://apis.io/schemas/lightdash/lightdash-serviceaccount/)
+- [Space](https://apis.io/schemas/lightdash/lightdash-space/)
+
+#### JSON-LD (1)
+
+Linked-data contexts for the provider's vocabulary.
+
+- [Lightdash Context](https://apis.io/jsonld/lightdash/lightdash-context/)
+
+#### Vocabulary (1)
+
+The provider's domain terms, defined.
+
+- [Lightdash API Vocabulary](https://apis.io/vocabularies/lightdash/lightdash-vocabulary/)
+
+#### Examples (7)
+
+Example requests and responses.
+
+- [Lightdash My Account Example](https://apis.io/examples/lightdash/lightdash-my-account-example/)
+- [Lightdash Organization Warehouse Credentials Example](https://apis.io/examples/lightdash/lightdash-organization-warehouse-credentials-example/)
+- [Lightdash Organizations Example](https://apis.io/examples/lightdash/lightdash-organizations-example/)
+- [Lightdash Projects Example](https://apis.io/examples/lightdash/lightdash-projects-example/)
+- [Lightdash Scim Example](https://apis.io/examples/lightdash/lightdash-scim-example/)
+- [Lightdash User Attributes Example](https://apis.io/examples/lightdash/lightdash-user-attributes-example/)
+- [Lightdash V2 Example](https://apis.io/examples/lightdash/lightdash-v2-example/)
+
+#### Collections (50)
+
+Postman and Open Collection request collections.
+
+- [Lightdash AiAgents API](https://apis.io/collections/lightdash/open-lightdash-aiagents-api/)
+- [Lightdash AiAgents Bulk action API](https://apis.io/collections/lightdash/open-lightdash-bulk-action-api/)
+- [Lightdash AiAgents Catalog API](https://apis.io/collections/lightdash/open-lightdash-catalog-api/)
+- [Lightdash AiAgents Changesets API](https://apis.io/collections/lightdash/open-lightdash-changesets-api/)
+- [Lightdash AiAgents Charts API](https://apis.io/collections/lightdash/open-lightdash-charts-api/)
+- [Lightdash AiAgents Comments API](https://apis.io/collections/lightdash/open-lightdash-comments-api/)
+- [Lightdash AiAgents Content API](https://apis.io/collections/lightdash/open-lightdash-content-api/)
+- [Lightdash AiAgents Custom Roles API](https://apis.io/collections/lightdash/open-lightdash-custom-roles-api/)
+- [Lightdash AiAgents Dashboards API](https://apis.io/collections/lightdash/open-lightdash-dashboards-api/)
+- [Lightdash AiAgents Explorer API](https://apis.io/collections/lightdash/open-lightdash-explorer-api/)
+- [Lightdash AiAgents Exploring API](https://apis.io/collections/lightdash/open-lightdash-exploring-api/)
+- [Lightdash AiAgents Exports API](https://apis.io/collections/lightdash/open-lightdash-exports-api/)
+- [Lightdash AiAgents Feature Flag API](https://apis.io/collections/lightdash/open-lightdash-feature-flag-api/)
+- [Lightdash AiAgents Files API](https://apis.io/collections/lightdash/open-lightdash-files-api/)
+- [Lightdash AiAgents Funnel API](https://apis.io/collections/lightdash/open-lightdash-funnel-api/)
+- [Lightdash AiAgents Git Files API](https://apis.io/collections/lightdash/open-lightdash-git-files-api/)
+- [Lightdash AiAgents Git Integration API](https://apis.io/collections/lightdash/open-lightdash-git-integration-api/)
+- [Lightdash AiAgents Github API](https://apis.io/collections/lightdash/open-lightdash-github-api/)
+- [Lightdash AiAgents Gitlab API](https://apis.io/collections/lightdash/open-lightdash-gitlab-api/)
+- [Lightdash AiAgents Impersonation API](https://apis.io/collections/lightdash/open-lightdash-impersonation-api/)
+- [Lightdash AiAgents Integrations API](https://apis.io/collections/lightdash/open-lightdash-integrations-api/)
+- [Lightdash AiAgents Map API](https://apis.io/collections/lightdash/open-lightdash-map-api/)
+- [Lightdash AiAgents Metrics API](https://apis.io/collections/lightdash/open-lightdash-metrics-api/)
+- [Lightdash AiAgents Metrics Explorer API](https://apis.io/collections/lightdash/open-lightdash-metrics-explorer-api/)
+- [Lightdash AiAgents Move content API](https://apis.io/collections/lightdash/open-lightdash-move-content-api/)
+- …and 25 more published on APIs.io
+
+#### Governance rules (1)
+
+Spectral rulesets for the provider's contracts.
+
+- [Lightdash — jsonschema rules](https://apis.io/rules/lightdash/lightdash-jsonschema-spectral-rules/)
+
+#### Security (2)
+
+Authentication, trust centre, and vulnerability disclosure.
+
+- [Lightdash Authentication](https://apis.io/security/lightdash/lightdash-authentication/)
+- [Lightdash Domain Security](https://apis.io/security/lightdash/lightdash-domain-security/)
+
+#### Plans and pricing (2)
+
+Published plans, tiers and prices.
+
+- [Lightdash Plans Pricing](https://apis.io/plans/lightdash/lightdash-plans-pricing/)
+- [Lightdash Price Estimates](https://apis.io/plans/lightdash/lightdash-price-estimates/)
+
+#### Rate limits (1)
+
+Published request limits.
+
+- [Lightdash Rate Limits](https://apis.io/rate-limits/lightdash/lightdash-rate-limits/)
+
+#### FinOps (1)
+
+What the API costs to run, by operation.
+
+- [Lightdash Finops](https://apis.io/finops/lightdash/lightdash-finops/)
+
+## Where to find this API
+
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
+
+- [Website](https://www.lightdash.com)
+- [Documentation](https://docs.lightdash.com)
+- [Pricing](https://www.lightdash.com/pricing)
+- [Blog](https://www.lightdash.com/blog)
+- [GitHub](https://github.com/lightdash)
+- [Status](https://status.lightdash.com)
+
+## API Evangelist rating
+
+**Kin Score 44.3** — developing · rubric 0.25.0 · scored 2026-10-23
+
+| Facet | Score |
+|---|---|
+| Discoverability | 68.3 |
+| Contract quality | 60.9 |
+| Contract governance | 23.5 |
+| Operational transparency | 26.3 |
+| Developer ergonomics | 23.8 |
+| Access clarity | 42.1 |
+
+**Agent readiness 33.2** — agent-ready
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | yes |
+| Agentic Access | derived (partial credit) |
+| Reversibility Documented | documented (partial credit) |
+| MCP Server | platform (partial credit) |
+| Auth Clarity | bearer (partial credit) |
+| Idempotency | — |
+| Error Semantics | verified |
+| OpenAPI Examples | partial |
+| Rate Limit Signal | derived (partial credit) |
+| Event Surface Described | — |
+| Agent Skills | — |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | yes |
+| Delegated Identity | — |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+| Pagination Ratio | — |
+| Operation Distinctiveness | distinct |
+
+**Regulatory alignment 16.7** — Horizontal (data, software, accessibility, platform)
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/lightdash/](https://apis.io/providers/lightdash/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for Lightdash: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/lightdash/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
